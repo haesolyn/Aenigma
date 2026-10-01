@@ -1,0 +1,13 @@
+{
+  "name": "aenigma-detective-rpg",
+  "version": "1.0.0",
+  "description": "Psychological detective noir RPG inspired by Disco Elysium",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node build.js"
+  },
+  "keywords": ["game", "rpg", "detective"],
+  "author": "",
+  "license": "ISC"
+}

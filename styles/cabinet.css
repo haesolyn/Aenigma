@@ -1,0 +1,195 @@
+/* ==========================================================================
+   AENIGMA - Thought Cabinet ("Lemari Pikiran") CSS
+   ========================================================================== */
+
+.cabinet-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  height: 600px;
+}
+
+@media (max-width: 900px) {
+  .cabinet-layout-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+/* Left: Matrix of Thought Nodes */
+.thought-nodes-viewport {
+  background: rgba(10, 12, 16, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 16px;
+  overflow-y: auto;
+  align-content: start;
+}
+
+.thought-slot-node {
+  height: 140px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(224, 215, 199, 0.2);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+}
+
+.thought-slot-node:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+}
+
+.thought-slot-node.active-selected {
+  border-color: var(--gold-accent);
+  background: rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.25);
+}
+
+.thought-slot-node.internalizing {
+  border: 1px solid var(--color-psyche);
+  background: rgba(168, 98, 234, 0.08);
+}
+
+.thought-slot-node.internalized {
+  border: 1px solid var(--gold-accent);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(139, 30, 34, 0.2) 100%);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+}
+
+.thought-icon-emblem {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.thought-node-name {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.thought-status-pill {
+  position: absolute;
+  bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--text-secondary);
+}
+
+.thought-slot-node.internalizing .thought-status-pill {
+  color: var(--color-psyche);
+  border: 1px solid var(--color-psyche);
+}
+
+.thought-slot-node.internalized .thought-status-pill {
+  color: var(--gold-accent);
+  border: 1px solid var(--gold-accent);
+}
+
+/* Right: Inspector Details Panel */
+.thought-inspector-panel {
+  background: rgba(17, 20, 29, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.thought-inspector-panel .category-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--gold-burnished);
+  text-transform: uppercase;
+}
+
+.thought-inspector-panel .thought-heading {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.thought-flavor-quote {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #c0bbb0;
+  border-left: 2px solid var(--border-bright);
+  padding-left: 12px;
+}
+
+.thought-deep-explanation {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.thought-stat-box {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.thought-stat-box .box-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.thought-stat-box .penalty-text {
+  color: #f26c68;
+  font-size: 0.85rem;
+}
+
+.thought-stat-box .bonus-text {
+  color: #51cf66;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.internalize-action-btn {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+  padding: 12px 20px;
+  background: var(--gold-burnished);
+  color: #0b0c10;
+  border: 1px solid var(--gold-accent);
+  border-radius: 3px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.internalize-action-btn:hover {
+  background: var(--gold-accent);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
+}
