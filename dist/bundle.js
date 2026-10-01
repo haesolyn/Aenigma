@@ -1,16 +1,20 @@
-﻿/* Aenigma Detective Mystery RPG - Universal Standalone Bundle */
+/* Aenigma Detective Mystery RPG - Universal Standalone Bundle */
 (function() {
 'use strict';
 
 // --- BEGIN: audio.js ---
-// Aenigma Web Audio Engine - Generative Noir Soundscape
+// Aenigma Web Audio Engine - Haunting Psychological Noir Horror Soundscape
 class SoundEngine {
   constructor() {
     this.ctx = null;
     this.isMuted = false;
     this.droneGain = null;
-    this.noiseNode = null;
+    this.hissGain = null;
     this.isInitialized = false;
+    this.bellTimer = null;
+    this.heartbeatTimer = null;
+    this.isHeartbeatActive = false;
+    this.lastHoverTime = 0;
   }
 
   init() {
@@ -20,6 +24,7 @@ class SoundEngine {
       this.ctx = new AudioCtx();
       this.isInitialized = true;
       this.startAmbientDrone();
+      this.startCathedralBellScheduler();
     } catch (e) {
       console.warn('AudioContext failed to initialize:', e);
     }
@@ -36,47 +41,50 @@ class SoundEngine {
   toggleMute() {
     this.isMuted = !this.isMuted;
     if (this.droneGain && this.ctx) {
-      this.droneGain.gain.setTargetAtTime(this.isMuted ? 0 : 0.08, this.ctx.currentTime, 0.1);
+      this.droneGain.gain.setTargetAtTime(this.isMuted ? 0 : 0.12, this.ctx.currentTime, 0.1);
     }
     return this.isMuted;
   }
 
+  // --- HAUNTING GOTHIC NOIR AMBIENT DRONE ---
   startAmbientDrone() {
     if (!this.ctx) return;
     const now = this.ctx.currentTime;
 
     // Master Ambient Gain
     this.droneGain = this.ctx.createGain();
-    this.droneGain.gain.setValueAtTime(this.isMuted ? 0 : 0.08, now);
+    this.droneGain.gain.setValueAtTime(this.isMuted ? 0 : 0.12, now);
     this.droneGain.connect(this.ctx.destination);
 
-    // Deep Sub Drone (F1 = ~43.65 Hz)
+    // 1. Sub-bass abyssal drone (D1 = ~36.7 Hz)
     const osc1 = this.ctx.createOscillator();
     osc1.type = 'sawtooth';
-    osc1.frequency.setValueAtTime(43.65, now);
+    osc1.frequency.setValueAtTime(36.7, now);
 
-    // Filter for warm dark tone
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(140, now);
-    filter.Q.setValueAtTime(4, now);
-
-    // LFO to slowly sweep the cutoff frequency
-    const lfo = this.ctx.createOscillator();
-    lfo.frequency.setValueAtTime(0.08, now);
-    const lfoGain = this.ctx.createGain();
-    lfoGain.gain.setValueAtTime(40, now);
-    lfo.connect(lfoGain);
-    lfoGain.connect(filter.frequency);
-
-    // Minor second detuned oscillator for dark tension
+    // 2. Dissonant Tritone (Devil's Interval - G#1 = ~51.9 Hz) - creates psychological dread
     const osc2 = this.ctx.createOscillator();
     osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(65.4, now); // C2
+    osc2.frequency.setValueAtTime(51.9, now);
 
+    // 3. Detuned beating oscillator
     const osc3 = this.ctx.createOscillator();
     osc3.type = 'triangle';
-    osc3.frequency.setValueAtTime(44.2, now); // subtle beat frequency
+    osc3.frequency.setValueAtTime(37.2, now);
+
+    // Resonant Dark Filter (Gothic chamber acoustics)
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(110, now);
+    filter.Q.setValueAtTime(6.0, now);
+
+    // Slow creepy LFO sweeping the filter (wind through broken clocktower panes)
+    const lfo = this.ctx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(0.05, now); // 20s cycle
+    const lfoGain = this.ctx.createGain();
+    lfoGain.gain.setValueAtTime(50, now);
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
 
     osc1.connect(filter);
     osc2.connect(filter);
@@ -88,42 +96,348 @@ class SoundEngine {
     osc3.start(now);
     lfo.start(now);
 
-    // Vinyl / Tape Hiss Pink Noise
-    this.createTapeHiss();
+    // Rain and Tape Noise Layer
+    this.createAtmosphericRainAndHiss();
+
+    // Subtle rhythmic clock ticking inside the ambient
+    this.startClockTicking();
   }
 
-  createTapeHiss() {
+  createAtmosphericRainAndHiss() {
     if (!this.ctx) return;
     const bufferSize = this.ctx.sampleRate * 2;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const output = buffer.getChannelData(0);
-    let b0 = 0, b1 = 0, b2 = 0;
+    let lastOut = 0.0;
     for (let i = 0; i < bufferSize; i++) {
       const white = Math.random() * 2 - 1;
-      b0 = 0.99886 * b0 + white * 0.0555179;
-      b1 = 0.99332 * b1 + white * 0.0750759;
-      b2 = 0.96900 * b2 + white * 0.1538520;
-      output[i] = (b0 + b1 + b2) * 0.04;
+      output[i] = (lastOut + (0.02 * white)) / 1.02;
+      lastOut = output[i];
+      output[i] *= 2.8;
     }
     const noise = this.ctx.createBufferSource();
     noise.buffer = buffer;
     noise.loop = true;
 
-    const hissFilter = this.ctx.createBiquadFilter();
-    hissFilter.type = 'bandpass';
-    hissFilter.frequency.value = 1800;
-    hissFilter.Q.value = 1.2;
+    // Filter to sound like rain against high clocktower glass
+    const rainFilter = this.ctx.createBiquadFilter();
+    rainFilter.type = 'bandpass';
+    rainFilter.frequency.value = 1200;
+    rainFilter.Q.value = 0.8;
 
-    const hissGain = this.ctx.createGain();
-    hissGain.gain.value = 0.015;
+    this.hissGain = this.ctx.createGain();
+    this.hissGain.gain.value = 0.035;
 
-    noise.connect(hissFilter);
-    hissFilter.connect(hissGain);
-    hissGain.connect(this.droneGain);
+    noise.connect(rainFilter);
+    rainFilter.connect(this.hissGain);
+    this.hissGain.connect(this.droneGain);
     noise.start();
   }
 
-  // Typewriter / Dialogue Key Click
+  // Creepy clock ticking with room reverb
+  startClockTicking() {
+    if (!this.ctx) return;
+    const tickInterval = 1000; // 1 second tick
+
+    const playTick = () => {
+      if (!this.isMuted && this.ctx && this.ctx.state === 'running') {
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        osc.type = 'sine';
+        const isTock = Math.random() > 0.5;
+        osc.frequency.setValueAtTime(isTock ? 480 : 540, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.025);
+
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(650, now);
+        filter.Q.setValueAtTime(4, now);
+
+        gain.gain.setValueAtTime(0.035, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.droneGain);
+
+        osc.start(now);
+        osc.stop(now + 0.045);
+      }
+      setTimeout(playTick, tickInterval);
+    };
+
+    setTimeout(playTick, 1500);
+  }
+
+  // Periodic distant mournful cathedral bell toll (Saint Irene)
+  startCathedralBellScheduler() {
+    const scheduleNextBell = () => {
+      const delay = 24000 + Math.random() * 16000; // every 24-40 seconds
+      this.bellTimer = setTimeout(() => {
+        this.playCathedralBell();
+        scheduleNextBell();
+      }, delay);
+    };
+    scheduleNextBell();
+  }
+
+  playCathedralBell() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Realistic bell harmonics (fundamental + hum + tierce + quint + nominal)
+    const baseFreq = 146.83; // D3
+    const ratios = [0.5, 1.0, 1.189, 1.5, 2.0, 2.75];
+    const decayTimes = [6.0, 4.5, 3.8, 3.0, 2.2, 1.5];
+
+    ratios.forEach((ratio, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(baseFreq * ratio, now);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1200, now);
+
+      const amp = (0.05 / (idx + 1));
+      gain.gain.setValueAtTime(amp, now);
+      gain.gain.exponentialRampToValueAtTime(0.00001, now + decayTimes[idx]);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + decayTimes[idx]);
+    });
+  }
+
+  // Heartbeat sound effect for low Morale or low Health
+  setHeartbeatActive(active) {
+    if (active && !this.isHeartbeatActive) {
+      this.isHeartbeatActive = true;
+      this.loopHeartbeat();
+    } else if (!active) {
+      this.isHeartbeatActive = false;
+      if (this.heartbeatTimer) clearTimeout(this.heartbeatTimer);
+    }
+  }
+
+  loopHeartbeat() {
+    if (!this.isHeartbeatActive) return;
+    this.playHeartbeatThump();
+    this.heartbeatTimer = setTimeout(() => {
+      this.loopHeartbeat();
+    }, 850);
+  }
+
+  playHeartbeatThump() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Double thump: Lub-dub
+    [0, 0.16].forEach((offset, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(idx === 0 ? 55 : 46, now + offset);
+      osc.frequency.exponentialRampToValueAtTime(25, now + offset + 0.12);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(100, now + offset);
+
+      gain.gain.setValueAtTime(idx === 0 ? 0.22 : 0.16, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.14);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now + offset);
+      osc.stop(now + offset + 0.15);
+    });
+  }
+
+  // --- ITEM USE AUDIO EFFECTS ---
+  playCigaretteSmoke() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Match strike sizzle
+    const bufferSize = this.ctx.sampleRate * 0.35;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.08));
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2800, now);
+    filter.Q.setValueAtTime(1.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+
+    // Warm sigh / exhale tone
+    setTimeout(() => {
+      if (!this.ctx) return;
+      const t = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const ogain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(140, t);
+      osc.frequency.exponentialRampToValueAtTime(65, t + 0.8);
+      ogain.gain.setValueAtTime(0.06, t);
+      ogain.gain.exponentialRampToValueAtTime(0.0001, t + 0.85);
+      osc.connect(ogain);
+      ogain.connect(this.ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.85);
+    }, 280);
+  }
+
+  playMedicineDrink() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Glass uncork + swallowing water droplet resonances
+    [0, 0.12, 0.26].forEach((delay, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      const f = 500 - idx * 70;
+      osc.frequency.setValueAtTime(f, now + delay);
+      osc.frequency.exponentialRampToValueAtTime(f + 250, now + delay + 0.06);
+
+      gain.gain.setValueAtTime(0.09, now + delay);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.08);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + delay);
+      osc.stop(now + delay + 0.09);
+    });
+  }
+
+  playWatchInspect() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Metallic latch click followed by rapid brass gear whir
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(300, now + 0.04);
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.05);
+
+    // Rapid gear escapement tick sequence
+    for (let i = 0; i < 8; i++) {
+      const t = now + 0.07 + (i * 0.035);
+      const tosc = this.ctx.createOscillator();
+      const tgain = this.ctx.createGain();
+      tosc.type = 'sine';
+      tosc.frequency.setValueAtTime(1800 + (i % 2) * 400, t);
+      tgain.gain.setValueAtTime(0.04, t);
+      tgain.gain.exponentialRampToValueAtTime(0.0001, t + 0.02);
+      tosc.connect(tgain);
+      tgain.connect(this.ctx.destination);
+      tosc.start(t);
+      tosc.stop(t + 0.025);
+    }
+  }
+
+  playBookRead() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Leather book thud & paper rustle
+    const bufferSize = this.ctx.sampleRate * 0.4;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(950, now);
+    filter.Q.setValueAtTime(0.7, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.14, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // --- GAME OVER HORROR STINGER ---
+  playGameOver() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Low dreadful horror dissonance cluster
+    const cluster = [48.99, 51.91, 55.00, 77.78, 103.8]; // G1, G#1, A1, Eb2, G#2
+    cluster.forEach(freq => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.7, now + 2.5);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(220, now);
+
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.0);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 3.0);
+    });
+
+    // Reverberating bell strike on death
+    setTimeout(() => this.playCathedralBell(), 200);
+  }
+
+  // --- GENERAL SFX ---
   playTypewriter() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -133,14 +447,14 @@ class SoundEngine {
     const filter = this.ctx.createBiquadFilter();
 
     osc.type = 'triangle';
-    const baseFreq = 800 + Math.random() * 400;
+    const baseFreq = 750 + Math.random() * 450;
     osc.frequency.setValueAtTime(baseFreq, now);
-    osc.frequency.exponentialRampToValueAtTime(120, now + 0.035);
+    osc.frequency.exponentialRampToValueAtTime(100, now + 0.035);
 
     filter.type = 'highpass';
     filter.frequency.setValueAtTime(400, now);
 
-    gain.gain.setValueAtTime(0.045, now);
+    gain.gain.setValueAtTime(0.04, now);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
 
     osc.connect(filter);
@@ -151,7 +465,6 @@ class SoundEngine {
     osc.stop(now + 0.045);
   }
 
-  // Dice roll rattle physics sound
   playDiceRoll() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -186,7 +499,6 @@ class SoundEngine {
     }
   }
 
-  // Successful Skill Check Chime (Brassy golden chord)
   playSuccess() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -199,7 +511,7 @@ class SoundEngine {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(freq, now + idx * 0.04);
 
-      gain.gain.setValueAtTime(0.05, now + idx * 0.04);
+      gain.gain.setValueAtTime(0.06, now + idx * 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
 
       osc.connect(gain);
@@ -210,7 +522,6 @@ class SoundEngine {
     });
   }
 
-  // Failure Skill Check Stinger (Distorted low drop)
   playFailure() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -238,7 +549,6 @@ class SoundEngine {
     osc.stop(now + 0.9);
   }
 
-  // Suspense / Discovery Stinger
   playDiscovery() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -247,8 +557,8 @@ class SoundEngine {
     const gain = this.ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(440, now);
-    osc.frequency.exponentialRampToValueAtTime(880, now + 0.35);
+    osc.frequency.setValueAtTime(330, now);
+    osc.frequency.exponentialRampToValueAtTime(660, now + 0.35);
 
     gain.gain.setValueAtTime(0.06, now);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
@@ -260,7 +570,6 @@ class SoundEngine {
     osc.stop(now + 0.8);
   }
 
-  // UI button click / tap
   playUiClick() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -281,11 +590,4845 @@ class SoundEngine {
     osc.start(now);
     osc.stop(now + 0.03);
   }
+
+  // --- NEW ENHANCED PROCEDURAL AUDIO EFFECTS ---
+
+  // Subtle tactile button hover tick (throttled to avoid buzzing)
+  playUiHover() {
+    if (this.isMuted || !this.ctx) return;
+    const nowMs = Date.now();
+    if (nowMs - this.lastHoverTime < 50) return;
+    this.lastHoverTime = nowMs;
+
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1400, now);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.012);
+
+    gain.gain.setValueAtTime(0.018, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.015);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.016);
+  }
+
+  // POI Radar Marker Hover - resonant sonar harmonic ping
+  playPoiHover() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(1040, now + 0.09);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(900, now);
+    filter.Q.setValueAtTime(3.5, now);
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // POI Inspection Click - mechanical brass aperture click + chime
+  playPoiClick() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Metallic shutter click
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(900, now);
+    osc.frequency.exponentialRampToValueAtTime(150, now + 0.03);
+    gain.gain.setValueAtTime(0.09, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.04);
+
+    // Ethereal revelation chime
+    [587.33, 880.00].forEach((freq, idx) => {
+      const cOsc = this.ctx.createOscillator();
+      const cGain = this.ctx.createGain();
+      cOsc.type = 'sine';
+      cOsc.frequency.setValueAtTime(freq, now + 0.04 + idx * 0.03);
+      cGain.gain.setValueAtTime(0.05, now + 0.04 + idx * 0.03);
+      cGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5 + idx * 0.05);
+      cOsc.connect(cGain);
+      cGain.connect(this.ctx.destination);
+      cOsc.start(now + 0.04 + idx * 0.03);
+      cOsc.stop(now + 0.55);
+    });
+  }
+
+  // Supernatural Inner Voice Intrusive Whisper Drone
+  playInnerVoice() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Creepy resonant harmonic pair with slow beat
+    [220, 222.5, 440].forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = idx === 2 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(450, now);
+      filter.Q.setValueAtTime(4.0, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.04, now + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 1.15);
+    });
+  }
+
+  // Smooth Dossier / Tab Switch Sound (Paper & Leather Folder)
+  playTabSwitch() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const bufferSize = this.ctx.sampleRate * 0.15;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1400, now);
+    filter.frequency.exponentialRampToValueAtTime(400, now + 0.12);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.09, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Thought Cabinet Node Select (Neural Synapse Sparkle)
+  playThoughtNode() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1760, now + 0.15);
+
+    gain.gain.setValueAtTime(0.05, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Thought Internalization Completed (Ethereal Mental Crystallization Swell)
+  playThoughtInternalize() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const arpeggio = [329.63, 440.00, 554.37, 659.25, 880.00]; // E Maj / F#m ethereal
+    arpeggio.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+      gain.gain.setValueAtTime(0.045, now + idx * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + idx * 0.08);
+      osc.stop(now + 1.45);
+    });
+  }
+
+  // Visceral Damage Impact (Taking Physical HP Damage)
+  playDamageHit() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Low visceral punch
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(30, now + 0.25);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(200, now);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  }
+
+  // Psychological Morale Drain (Tinnitus Ringing + Low Rumble)
+  playMoraleDrain() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Piercing high-pitch tinnitus whistle
+    const oscHigh = this.ctx.createOscillator();
+    const gainHigh = this.ctx.createGain();
+    oscHigh.type = 'sine';
+    oscHigh.frequency.setValueAtTime(3800, now);
+    oscHigh.frequency.exponentialRampToValueAtTime(4200, now + 0.6);
+
+    gainHigh.gain.setValueAtTime(0.04, now);
+    gainHigh.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+
+    oscHigh.connect(gainHigh);
+    gainHigh.connect(this.ctx.destination);
+    oscHigh.start(now);
+    oscHigh.stop(now + 0.85);
+
+    // Dissonant descending wobble
+    const oscLow = this.ctx.createOscillator();
+    const gainLow = this.ctx.createGain();
+    oscLow.type = 'triangle';
+    oscLow.frequency.setValueAtTime(180, now);
+    oscLow.frequency.exponentialRampToValueAtTime(65, now + 0.7);
+
+    gainLow.gain.setValueAtTime(0.1, now);
+    gainLow.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+
+    oscLow.connect(gainLow);
+    gainLow.connect(this.ctx.destination);
+    oscLow.start(now);
+    oscLow.stop(now + 0.8);
+  }
+
+  // HUD Collapse / Expand Latch Sound
+  playHudToggle() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(750, now + 0.04);
+    osc.frequency.exponentialRampToValueAtTime(250, now + 0.08);
+
+    gain.gain.setValueAtTime(0.07, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.11);
+  }
+
+  // Radio Frequency Sweep (Language Change)
+  playRadioTune() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Heterodyne whistle tuning sweep
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, now);
+    osc.frequency.exponentialRampToValueAtTime(1600, now + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(950, now + 0.18);
+
+    gain.gain.setValueAtTime(0.05, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
+
+  // Atmospheric Distant Thunder Crack & Rolling Rumble
+  playThunderCrack() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Filtered noise buffer for sudden crack + prolonged sub-bass roll
+    const bufferSize = Math.floor(this.ctx.sampleRate * 2.2);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      const progress = i / bufferSize;
+      const decay = Math.exp(-progress * 3.5);
+      output[i] = (Math.random() * 2 - 1) * decay;
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, now);
+    filter.frequency.exponentialRampToValueAtTime(70, now + 2.0);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.18, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+
+    // Deep sub rumble layer
+    const osc = this.ctx.createOscillator();
+    const oscGain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(55, now);
+    osc.frequency.exponentialRampToValueAtTime(28, now + 1.8);
+    oscGain.gain.setValueAtTime(0.15, now);
+    oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
+    osc.connect(oscGain);
+    oscGain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 2.1);
+  }
+
+  // Heavy Detective Boots on Wet Wooden Floorboard
+  playFootsteps() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Two rapid heel-toe thuds
+    [0, 0.22].forEach((offset, idx) => {
+      const t = now + offset;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(idx === 0 ? 95 : 80, t);
+      osc.frequency.exponentialRampToValueAtTime(35, t + 0.12);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(250, t);
+
+      gain.gain.setValueAtTime(idx === 0 ? 0.08 : 0.05, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.15);
+    });
+  }
+
+  // Official Forensic Dossier Evidence Seal Stamp
+  playDossierStamp() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Wooden handle press + ink squelch + paper thud
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(45, now + 0.18);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+
+    // Ink slap noise
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.06);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+    const nGain = this.ctx.createGain();
+    nGain.gain.setValueAtTime(0.09, now);
+    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+    noise.connect(nGain);
+    nGain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Giant Pendulum Escapement Clockwork Tick & Resonance
+  playClockworkChime() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Heavy brass gear ratchet click
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(780, now);
+    osc.frequency.exponentialRampToValueAtTime(130, now + 0.08);
+
+    gain.gain.setValueAtTime(0.09, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.15);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.16);
+
+    // Metallic chime resonance ring
+    const chime = this.ctx.createOscillator();
+    const chimeGain = this.ctx.createGain();
+    chime.type = 'sine';
+    chime.frequency.setValueAtTime(1174.66, now); // D6 bell harmonic
+    chimeGain.gain.setValueAtTime(0.04, now);
+    chimeGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+    chime.connect(chimeGain);
+    chimeGain.connect(this.ctx.destination);
+    chime.start(now);
+    chime.stop(now + 0.95);
+  }
+
+  // Forensic Chalk Scratch on Crime Scene Floorboards
+  playChalkScratch() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.18);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(2200, now);
+    filter.frequency.linearRampToValueAtTime(1600, now + 0.16);
+    filter.Q.setValueAtTime(2.8, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Grand Case Closed Victory Fanfare (Melancholic Brass & Bells)
+  playVictoryChime() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Grand triumphal minor-major progression
+    const notes = [
+      { f: 220.00, t: 0 },    // A3
+      { f: 277.18, t: 0.25 }, // C#4
+      { f: 329.63, t: 0.5 },  // E4
+      { f: 440.00, t: 0.75 }, // A4
+      { f: 554.37, t: 1.1 }   // C#5
+    ];
+
+    notes.forEach(n => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(n.f, now + n.t);
+
+      gain.gain.setValueAtTime(0.08, now + n.t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + n.t + 2.2);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + n.t);
+      osc.stop(now + n.t + 2.3);
+    });
+
+    // Ringing cathedral bell
+    setTimeout(() => this.playCathedralBell(), 600);
+  }
 }
 
 const audio = new SoundEngine();
 
 // --- END: audio.js ---
+
+// --- BEGIN: dialogue_i18n.js ---
+// Aenigma Complete 12-Language Story & Clue Localizations
+// Fully covers all 38 Dialogue Nodes, 13 Case Clues, and Crime Scene POIs
+// Supported Languages: en, id, zh, ja, ko, es, fr, de, ru, it, pt, ar
+
+const DIALOGUE_I18N_FULL = {
+  "graves_dialogue_start": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "You finally dragged yourself up six flights of stairs, Detective. You reek like you slept in an open sewer behind the Whirling Gull. Take a look at this mess. The city magistrate is already screaming on the wire.",
+      "id": "Kamu akhirnya berhasil menyeret dirimu menaiki enam lantai tangga, Detektif. Baumu seperti tidur di saluran pembuangan Whirling Gull. Lihat kekacauan ini. Hakim kota sudah berteriak histeris di telepon.",
+      "zh": "你终于拖着沉重的身子爬上这六层阶梯了，探长。你身上的恶臭简直就像在回旋鸥后巷的阴沟里宿醉了一整夜。瞧瞧眼前的烂摊子，市政法官已经在警线那头咆哮了。",
+      "ja": "ようやく6階分の階段を這い上がってきたか、刑事。ワーリング・ガル裏の側溝で寝ていたかのような酷い臭いだ。この惨状を見ろ。治安判事はすでに電話口で怒鳴り散らしているぞ。",
+      "ko": "결국 6층 계단을 기어 올라오셨군, 형사님. 회전하는 갈매기 여관 뒷골목 하수구에서 밤을 지새운 것 같은 악취가 진동하오. 이 꼴을 좀 보시오. 시 치안판사가 벌써 전선 너머로 고래고래 소리를 지르고 있소.",
+      "es": "Por fin te arrastraste seis tramos de escaleras, detective. Apestas como si hubieras dormido en una cloaca tras la Gaviota Giratoria. Mira este desastre. El magistrado ya está gritando por la línea.",
+      "fr": "Vous avez enfin daigné gravir les six étages, Inspecteur. Vous empestez comme si vous aviez cuvé dans un égout derrière la Mouette Rieuse. Regardez ce carnage. Le magistrat hurle déjà au bout du fil.",
+      "de": "Sie haben sich endlich sechs Stockwerke hochgeschleppt, Detective. Sie stinken, als hätten Sie in der Gosse hinter der Taumelnden Möwe geschlafen. Sehen Sie sich das an. Der Magistrat tobt bereits am Fernsprecher.",
+      "ru": "Наконец-то ты приволокся на шестой этаж, детектив. От тебя разит так, словно ты ночевал в сточной канаве за «Кружащейся чайкой». Взгляни на этот хаос. Магистрат уже разрывает телефонную линию криками.",
+      "it": "Ti sei finalmente trascinato su per sei rampe di scale, detective. Puzzi come se avessi dormito nelle fogne dietro il Gabbiano Volteggiante. Guarda che disastro. Il magistrato urla già all'apparecchio.",
+      "pt": "Você finalmente se arrastou seis lances de escada, detetive. Você fede como se tivesse dormido num esgoto atrás do Gaivota Giratória. Olhe para este desastre. O magistrado já está berrando na linha.",
+      "ar": "لقد سحبت نفسك أخيرًا عبر ستة طوابق من السلالم يا حضرة المحقق. تفوح منك رائحة وكأنك نمت في مجاري الحانة الخلفية. انظر إلى هذه الفوضى، قاضي المدينة يصرخ بهستيريا على الخط بالفعل."
+    },
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Look at his collar. There's dried tobacco ash on his lapel, but his eyes are darting toward the widow. He's nervous. He wants this closed as an accident before dawn.",
+          "id": "Perhatikan kerah bajunya. Ada abu tembakau kering di lapelnya, tapi matanya terus melirik ke arah sang janda. Dia gelisah. Dia ingin kasus ini ditutup sebagai kecelakaan sebelum fajar.",
+          "zh": "看他的领口。驳领上沾着风干的烟灰，但他的眼神却频频瞥向那位遗孀。他在心虚。他迫不及待想在黎明前将此案草草定性为意外事故。",
+          "ja": "彼の襟元を見ろ。乾いた煙草の灰が付着しているが、その視線は未亡人へと泳いでいる。動揺しているのだ。夜明け前に事故として処理したがっている。",
+          "ko": "깃을 보십시오. 옷깃에 마른 담뱃재가 묻어 있지만, 그의 눈은 미망인을 향해 바쁘게 흔들립니다. 초조한 겁니다. 동이 트기 전에 단순 사고로 종결짓고 싶어 합니다.",
+          "es": "Mira su cuello. Hay ceniza de tabaco en su solapa, pero sus ojos se desvían hacia la viuda. Está nervioso. Quiere cerrar esto como un accidente antes del amanecer.",
+          "fr": "Regardez son col. Des cendres froides sur son revers, mais ses yeux fuient vers la veuve. Il est fébrile. Il veut clore l'affaire en accident avant l'aube.",
+          "de": "Sehen Sie sich seinen Kragen an. Asche auf dem Revers, doch sein Blick huscht zur Witwe. Er ist nervös. Er will den Fall vor Sonnenaufgang als Unfall abstempeln.",
+          "ru": "Посмотри на его воротник. На лацкане осыпался пепел, но его глаза то и дело косятся на вдову. Он нервничает. Хочет закрыть дело как несчастный случай до рассвета.",
+          "it": "Guarda il suo colletto. C'è cenere secca sul risvolto, ma i suoi occhi saettano verso la vedova. È nervoso. Vuole archiviare tutto come incidente prima dell'alba.",
+          "pt": "Olhe para o colarinho dele. Há cinzas secas na lapela, mas os olhos dele disparam em direção à viúva. Ele está nervoso. Quer encerrar isso como acidente antes da aurora.",
+          "ar": "انظر إلى ياقته. هناك رماد تبغ جاف على صدر سترته، لكن عينيه ترمقان الأرملة في توتر. إنه قلق ويريد إغلاق القضية كحادث عرضي قبل بزوغ الفجر."
+        }
+      }
+    ],
+    "options": [
+      {
+        "id": "graves_opt_preliminary",
+        "en": "\"What is your preliminary assessment, Graves?\"",
+        "id": "\"Bagaimana penilaian awalmu, Graves?\"",
+        "zh": "“格雷夫斯，你的初步现场判断是什么？”",
+        "ja": "「グレイヴス、お前の予備的な見立てはどうなんだ？」",
+        "ko": "\"그레이브스, 자네의 예비 소견은 어떤가?\"",
+        "es": "\"¿Cuál es tu evaluación preliminar, Graves?\"",
+        "fr": "\"Quelle est votre conclusion préliminaire, Graves ?\"",
+        "de": "\"Was ist Ihre vorläufige Einschätzung, Graves?\"",
+        "ru": "«Какова твоя предварительная оценка, Грейвс?»",
+        "it": "\"Qual è la tua valutazione preliminare, Graves?\"",
+        "pt": "\"Qual é a sua avaliação preliminar, Graves?\"",
+        "ar": "\"ما هو تقييمك الأولي يا غريفز؟\""
+      },
+      {
+        "id": "graves_opt_rhetoric",
+        "en": "[RHETORIC - Medium 10] \"You seem in an awful hurry to file this report, Graves. Who called you first?\"",
+        "id": "[RETORIKA - Sedang 10] \"Terburu-buru sekali kamu menutup laporan ini, Graves. Siapa yang menghubungimu duluan?\"",
+        "zh": "[修辞 - 难度10] “你似乎急不可耐地想结案归档啊，格雷夫斯。今晚到底是谁第一个给你通的信？”",
+        "ja": "[修辞学 - 難易度10] 「ひどく急いで報告書をまとめようとしているな、グレイヴス。最初に呼んだのは誰だ？」",
+        "ko": "[수사학 - 보통 10] \"보고서를 서둘러 넘기려는 기색이 역력하군, 그레이브스. 누가 자넬 먼저 불렀지?\"",
+        "es": "[RETÓRICA - Media 10] \"Pareces tener demasiada prisa por cerrar este informe, Graves. ¿Quién te llamó primero?\"",
+        "fr": "[RHÉTORIQUE - Moyen 10] \"Vous semblez bien pressé de classer ce dossier, Graves. Qui vous a contacté en premier ?\"",
+        "de": "[RHETORIK - Mittel 10] \"Sie haben es verdammt eilig mit dem Bericht, Graves. Wer hat Sie zuerst gerufen?\"",
+        "ru": "[РИТОРИКА - Сложность 10] «Ты подозрительно спешишь составить рапорт, Грейвс. Кто вызвал тебя первым?»",
+        "it": "[RETORICA - Medio 10] \"Sembri avere una fretta dannata di chiudere il rapporto, Graves. Chi ti ha chiamato per primo?\"",
+        "pt": "[RETÓRICA - Média 10] \"Você parece ter muita pressa para arquivar este relatório, Graves. Quem te chamou primeiro?\"",
+        "ar": "[البلاغة - متوسط 10] \"تبدو في عجلة مريبة لتقييد هذا التقرير يا غريفز. من الذي اتصل بك أولاً؟\""
+      },
+      {
+        "id": "graves_opt_conspiracy",
+        "en": "\"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is.\"",
+        "id": "\"Aku tahu tentang hadiah buronan Sindikat, Graves. Katakan di mana buku besar itu.\"",
+        "zh": "“我知道大辛迪加悬赏那本账册的事了，格雷夫斯。把它的藏匿处告诉我。”",
+        "ja": "「大シンジケートの懸賞金のことは知っているぞ、グレイヴス。帳簿がどこにあるか言え。」",
+        "ko": "\"거대 신디케이트의 현상금에 대해 알고 있네, 그레이브스. 그 장부가 어디 있는지 말하게.\"",
+        "es": "\"Sé lo de la recompensa del Gran Sindicato, Graves. Dime dónde está ese libro mayor.\"",
+        "fr": "\"Je suis au courant pour la prime du Grand Syndicat, Graves. Dites-moi où est ce registre.\"",
+        "de": "\"Ich weiß von dem Kopfgeld des Großen Syndikats, Graves. Wo ist dieses Hauptbuch?\"",
+        "ru": "«Я знаю о награде Гранд-Синдиката, Грейвс. Говори, где этот гроссбух.»",
+        "it": "\"So della taglia del Grande Sindacato, Graves. Dimmi dov'è quel registro.\"",
+        "pt": "\"Eu sei sobre a recompensa do Grande Sindicato, Graves. Diga-me onde está o livro-razão.\"",
+        "ar": "\"أعرف بشأن مكافأة نقابة الجريمة يا غريفز. أخبرني أين يقع ذلك السجل المحاسبي.\""
+      },
+      {
+        "id": "graves_opt_cigarette",
+        "en": "\"I need a cigarette before my synapses completely disconnect.\"",
+        "id": "\"Aku butuh sebatang rokok sebelum sinapsis sarafku benar-benar putus.\"",
+        "zh": "“在我脑神经彻底短路前，我需要来根烟提神。”",
+        "ja": "「シナプスが完全に焼き切れる前に、煙草を一本くれ。」",
+        "ko": "\"신경 시냅스가 완전히 끊기기 전에 담배 한 대 피워야겠군.\"",
+        "es": "\"Necesito un cigarrillo antes de que mis sinapsis se desconecten del todo.\"",
+        "fr": "\"J'ai besoin d'une cigarette avant que mes synapses ne lâchent prise.\"",
+        "de": "\"Ich brauche eine Zigarette, bevor meine Synapsen vollends versagen.\"",
+        "ru": "«Мне нужна сигарета, пока мои синапсы окончательно не отключились.»",
+        "it": "\"Ho bisogno di una sigaretta prima che le mie sinapsi si scolleghino.\"",
+        "pt": "\"Preciso de um cigarro antes que minhas sinapses pifem de vez.\"",
+        "ar": "\"أحتاج إلى سيجارة قبل أن تنقطع نقاط تشابكي العصبي تمامًا.\""
+      },
+      {
+        "id": "graves_opt_leave",
+        "en": "[Step away from Inspector Graves]",
+        "id": "[Tinggalkan percakapan dengan Graves]",
+        "zh": "[暂别格雷夫斯警探]",
+        "ja": "[グレイヴス警部との会話を終える]",
+        "ko": "[그레이브스 형사와의 대화를 마치고 물러난다]",
+        "es": "[Alejarse del inspector Graves]",
+        "fr": "[Mettre fin à l'échange avec Graves]",
+        "de": "[Das Gespräch mit Graves beenden]",
+        "ru": "[Закончить разговор с инспектором Грейвсом]",
+        "it": "[Allontanati dall'ispettore Graves]",
+        "pt": "[Afastar-se do inspetor Graves]",
+        "ar": "[الابتعاد عن المفتش غريفز]"
+      }
+    ]
+  },
+  "graves_assessment": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "Old Aurelia was up here tinkering with the escapement at three in the morning. She slipped on machine grease, grabbed the pendulum to catch herself, and the counterweight drove through her ribs. Gruesome, but an industrial accident. Case closed, we go home and dry our boots.",
+      "id": "Aurelia tua sedang mengotak-atik roda escapement pukul tiga pagi. Dia terpeleset minyak pelumas mesin, meraih pendulum untuk menahan diri, dan beban penyeimbang menembus tulang rusuknya. Mengerikan, tapi murni kecelakaan kerja. Kasus ditutup, kita bisa pulang dan mengeringkan sepatu kita.",
+      "zh": "老奥蕾莉亚凌晨三点在上头摆弄擒纵轮。她踩到机械润滑机油滑倒，想伸手抓住摆锤稳住重心，结果铸铁配重块直接贯穿了她的肋骨。虽然惨绝人寰，但纯粹是工伤意外。结案收工，大家回去烤干湿透的皮靴。",
+      "ja": "老オレリアは午前3時にここで脱進機をいじっていた。機械油に足を滑らせ、体勢を立て直そうと振り子を掴んだが、重いカウンターウェイトが肋骨を貫通した。陰惨だが、単なる労働災害だ。事件終了、長靴を乾かしに帰るぞ。",
+      "ko": "늙은 오렐리아는 새벽 3시에 여기서 탈진기를 손보고 있었소. 기계 기름에 발이 미끄러져 몸을 지탱하려 진자를 붙잡았는데, 평형추가 갈비뼈를 그대로 꿰뚫어 버렸지. 끔찍하지만 명백한 산업재해 사고라오. 수사 종결짓고 마른 신발이나 갈아 신으러 갑시다.",
+      "es": "La vieja Aurelia estaba trasteando con el escape a las tres de la mañana. Resbaló con grasa de máquina, se agarró al péndulo y el contrapeso le atravesó las costillas. Espantoso, pero un accidente laboral. Caso cerrado, nos vamos a casa a secar las botas.",
+      "fr": "La vieille Aurelia bricolait l'échappement à trois heures du matin. Elle a glissé sur de la graisse, s'est raccrochée au balancier, et le contrepoids lui a transpercé les côtes. Sinistre, mais un bête accident de travail. Affaire classée, on rentre sécher nos godasses.",
+      "de": "Die alte Aurelia werkelte um drei Uhr morgens an der Hemmung herum. Sie rutschte auf Maschinenfett aus, klammerte sich ans Pendel und das Gegengewicht bohrte sich durch ihre Rippen. Schrecklich, aber ein Betriebsunfall. Fall gelöst, wir gehen heim.",
+      "ru": "Старуха Аурелия возилась здесь со спусковым механизмом в три часа ночи. Поскользнулась на машинном масле, схватилась за маятник, и противовес пробил ей грудь. Жутко, но это производственная травма. Дело закрыто, пора сушить сапоги.",
+      "it": "La vecchia Aurelia armeggiava con lo scappamento alle tre del mattino. È scivolata sull'olio, si è aggrappata al pendolo e il contrappeso le ha trafitto le costole. Macabro, ma un banale incidente sul lavoro. Caso chiuso, andiamo ad asciugarci gli stivali.",
+      "pt": "A velha Aurelia estava mexendo no escape às três da manhã. Escorregou na graxa, agarrou o pêndulo e o contrapeso perfurou suas costelas. Hediondo, mas um acidente de trabalho. Caso encerrado, vamos para casa secar as botas.",
+      "ar": "كانت العجوز أوريليا تعبث بترس الميزان في الثالثة فجرًا. انزلقت في شحم الماكينات وحاولت التشبث بالبندول فخرق ثقل الموازنة أضلاعها. حادث شنيع لكنه عرضي بحت. القضية أغلقت، فلنعد لنجفف أحذيتنا."
+    },
+    "voices": [
+      {
+        "voice": {
+          "en": "Carnal",
+          "id": "Insting Karnal",
+          "zh": "肉体本能",
+          "ja": "肉体本能",
+          "ko": "육체 본능",
+          "es": "Instinto Carnal",
+          "fr": "Carnal",
+          "de": "Körperinstinkt",
+          "ru": "Карнал",
+          "it": "Istinto Carnale",
+          "pt": "Instinto Carnal",
+          "ar": "الغريزة الجسدية"
+        },
+        "badge": {
+          "en": "CARNAL [Physique]",
+          "id": "KARNAL [Fisik]",
+          "zh": "肉体本能 [体魄]",
+          "ja": "肉体 [肉体]",
+          "ko": "육체 [체력]",
+          "es": "CARNAL [Físico]",
+          "fr": "CARNAL [Physique]",
+          "de": "KARNAL [Physis]",
+          "ru": "КАРНАЛ [Физика]",
+          "it": "CARNALE [Fisico]",
+          "pt": "CARNAL [Físico]",
+          "ar": "الجسدية [القوة]"
+        },
+        "text": {
+          "en": "Lies. A woman who slips forward doesn't land impaled through the back of her shoulder blades with her hands neatly folded. Someone held her down while the heavy iron arm descended.",
+          "id": "Bohong. Seseorang yang terpeleset ke depan tidak akan tertusuk dari belakang belikat dengan tangan terlipat rapi. Seseorang menahannya saat lengan besi raksasa itu menghujam ke bawah.",
+          "zh": "一派胡言。前倾滑倒的人绝不可能肩胛骨正后方被重物洞穿，双手还整整齐齐地叠放在胸前。在重锤落下前，一定有人将她死死按在地上。",
+          "ja": "嘘だ。前方に足を滑らせた人間が、両手を整然と揃えたまま肩甲骨の後ろから串刺しになるはずがない。何者かが彼女を押さえつけ、鉄の腕を振り下ろさせたのだ。",
+          "ko": "거짓말입니다. 앞으로 넘어진 사람이 두 손을 단정히 모은 채 등 뒤 견갑골을 관통당할 수는 없습니다. 무거운 쇳덩이가 내려앉는 동안 누군가 그녀를 짓누르고 있었던 겁니다.",
+          "es": "Mentiras. Alguien que resbala hacia adelante no acaba empalada por la espalda con las manos ordenadamente dobladas. Alguien la inmovilizó mientras bajaba el brazo de hierro.",
+          "fr": "Mensonges. Une personne qui glisse en avant ne finit pas empalée par les omoplates avec les mains bien jointes. Quelqu'un l'a maintenue pendant que le lourd balancier s'abattait.",
+          "de": "Lügen. Wer nach vorn stürzt, wird nicht von hinten durch die Schulterblätter aufgespießt, während die Hände gefaltet sind. Jemand hielt sie nieder, als der Eisenarm herabsank.",
+          "ru": "Ложь. Человек, упавший вперед, не может оказаться пробитым через спину с аккуратно сложенными руками. Кто-то удерживал ее, пока опускался тяжелый стальной рычаг.",
+          "it": "Menzogne. Chi scivola in avanti non finisce trafitto dietro le scapole con le mani composte. Qualcuno l'ha tenuta ferma mentre il braccio d'acciaio scendeva.",
+          "pt": "Mentiras. Alguém que escorrega para frente não acaba empalada pelas costas com as mãos dobradas. Alguém a segurou enquanto o pesado braço de ferro descia.",
+          "ar": "هذا كذب صريح. من يسقط إلى الأمام لا يُطعن عبر عظام الكتف من الخلف بيدين مطويتين بعناية. شخص ما ثبّتها بإحكام أثناء هبوط الذراع الحديدي الثقيل."
+        }
+      }
+    ],
+    "options": [
+      {
+        "en": "\"Accident? Look at the wound entry angle. That is biomechanically impossible.\"",
+        "id": "\"Kecelakaan? Lihat sudut masuk lukanya. Secara biomekanik itu mustahil.\"",
+        "zh": "“意外？看清楚创口刺入的倾角，这在生物力学上绝不可能。”",
+        "ja": "「事故だと？創傷の進入角度を見ろ。生体力学的にあり得ない。」",
+        "ko": "\"사고라고? 상처의 진입 각도를 보시오. 생체역학적으로 불가능하오.\"",
+        "es": "\"¿Accidente? Mira el ángulo de entrada. Es biomecánicamente imposible.\"",
+        "fr": "\"Un accident ? Regardez l'angle d'impact. C'est biomécaniquement impossible.\"",
+        "de": "\"Ein Unfall? Schauen Sie sich den Eintrittswinkel an. Das ist biomechanisch unmöglich.\"",
+        "ru": "«Несчастный случай? Посмотри на угол раны. Это биомеханически невозможно.»",
+        "it": "\"Incidente? Guarda l'angolo di penetrazione. È biomeccanicamente impossibile.\"",
+        "pt": "\"Acidente? Olhe o ângulo de entrada da ferida. Isso é biomecanicamente impossível.\"",
+        "ar": "\"حادث؟ انظر لزاوية دخول الجرح، هذا مستحيل بيوميكانيكيًا.\""
+      },
+      {
+        "en": "\"Who was the last person to see her alive?\"",
+        "id": "\"Siapa orang terakhir yang melihatnya hidup?\"",
+        "zh": "“今晚生前最后一个见到她的人是谁？”",
+        "ja": "「彼女が生きていたのを最後に見たのは誰だ？」",
+        "ko": "\"그녀가 살아있을 때 마지막으로 본 사람은 누구요?\"",
+        "es": "\"¿Quién fue la última persona en verla con vida?\"",
+        "fr": "\"Qui est la dernière personne à l'avoir vue vivante ?\"",
+        "de": "\"Wer hat sie zuletzt lebend gesehen?\"",
+        "ru": "«Кто видел ее живой последним?»",
+        "it": "\"Chi è stata l'ultima persona a vederla viva?\"",
+        "pt": "\"Quem foi a última pessoa a vê-la viva?\"",
+        "ar": "\"من كان آخر شخص رآها على قيد الحياة؟\""
+      },
+      {
+        "en": "[Return to main inquiry with Graves]",
+        "id": "[Kembali ke penyelidikan utama bersama Graves]",
+        "zh": "[返回向格雷夫斯的主线盘问]",
+        "ja": "[グレイヴスとの主捜査へ戻る]",
+        "ko": "[그레이브스와의 기본 심문으로 복귀]",
+        "es": "[Volver a la indagación principal]",
+        "fr": "[Revenir à l'interrogatoire principal]",
+        "de": "[Zurück zur Hauptbefragung]",
+        "ru": "[Вернуться к основному опросу Грейвса]",
+        "it": "[Torna all'indagine principale]",
+        "pt": "[Voltar à inquirição principal]",
+        "ar": "[العودة إلى الاستجواب الرئيسي مع غريفز]"
+      }
+    ]
+  },
+  "graves_rhetoric_win": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "Graves flinches, his jaw tightening around the matchstick. 'Lower your damn voice! A courier from the Grand Syndicate arrived at my flat at 02:00. He said Vance had stolen a prototype clockwork ledger. If we recover that ledger, there is a ten-thousand guilder bounty for both of us.'",
+      "id": "Graves tersentak, rahangnya mengetat di sekitar batang korek api. 'Kecilkan suaramu! Kurir dari Sindikat Agung datang ke flatku pukul 02:00. Katanya Vance mencuri prototipe buku besar alkimia. Jika kita mengamankannya, ada hadiah sepuluh ribu guilder untuk kita berdua.'",
+      "zh": "格雷夫斯神色一紧，下颌死死咬住火柴棒。“把声音给我压低点！联合大辛迪加的信使凌晨两点砸开了我公寓的门。他说梵斯偷走了一份机械原型秘密账簿。只要把账簿搞到手，咱俩能平分一万基尔德的巨额赏金！”",
+      "ja": "グレイヴスは顔を強張らせ、マッチの軸を強く噛みしめた。「声を落とせ！午前2時、大シンジケートの密使が俺の部屋に来たんだ。ヴァンスが試作時計の帳簿を盗み出したとさ。回収すれば、俺たち二人に1万ギルダーの報奨金が出る。」",
+      "ko": "그레이브스가 흠칫하며 성냥개비를 어금니로 꽉 뭅니다. '목소리 낮춰! 새벽 2시에 거대 신디케이트의 배달원이 내 셋방을 찾아왔소. 밴스가 프로토타입 태엽 장부책을 훔쳐 달아났다고 하더군. 그걸 회수하면 우리 둘 몫으로 1만 길더의 현상금이 떨어지오.'",
+      "es": "Graves se estremece y aprieta la mandíbula sobre la cerilla. '¡Baja la maldita voz! Un emisario del Gran Sindicato llegó a mi piso a las 02:00. Dijo que Vance había robado un libro de contabilidad alquímico. Hay una recompensa de diez mil florines para los dos si lo recuperamos.'",
+      "fr": "Graves tressaille, la mâchoire crispée sur son allumette. 'Baissez d'un ton ! Un coursier du Grand Syndicat a débarqué chez moi à deux heures. Il prétendait que Vance avait dérobé un registre d'horlogerie secret. Il y a dix mille florins de prime à la clé pour nous deux.'",
+      "de": "Graves zuckt zusammen und verbeißt sich ins Streichholz. 'Leiser, verdammt! Um zwei Uhr nachts stand ein Kurier des Großen Syndikats vor meiner Tür. Vance hätte ein alchemistisches Prototyp-Buch gestohlen. Zehntausend Gulden Belohnung für uns beide, wenn wir es beschaffen.'",
+      "ru": "Грейвс вздрагивает, стиснув спичку зубами. «Убавь голос! В два часа ночи ко мне на квартиру приперся курьер из Великого Синдиката. Сказал, Вэнс украла гроссбух с чертежами прототипа. Если найдем его — получим десять тысяч гульденов на двоих.»",
+      "it": "Graves sussulta, serrando la mascella attorno allo zolfanello. 'Abbassa quella dannata voce! Un corriere del Grande Sindacato è venuto a casa mia alle due. Diceva che la Vance aveva rubato un mastro segreto. C'è una taglia di diecimila fiorini per entrambi se lo recuperiamo.'",
+      "pt": "Graves estremece, travando a mandíbula no fósforo. 'Abaixe a voz! Um mensageiro do Grande Sindicato bateu na minha porta às duas da manhã. Disse que Vance roubou um livro-razão protótipo. Há uma recompensa de dez mil florins para nós dois se o recuperarmos.'",
+      "ar": "يرتجف غريفز ويطبق فكيه على عود الثقاب: 'اخفض صوتك اللعين! جاءني مبعوث من النقابة الكبرى في شقتي عند الثانية فجرًا، وقال إن فانس سرقت دفتر الحسابات الخيميائي السري. إذا استعدناه، فهناك مكافأة عشرة آلاف خيلدر نتقاسمها سوية.'"
+    },
+    "options": [
+      {
+        "en": "\"So this was never about an accident. Where is the ledger now?\"",
+        "id": "\"Jadi ini bukan soal kecelakaan. Di mana buku besar itu sekarang?\"",
+        "zh": "“所以这根本不是什么意外。账簿现在藏在何处？”",
+        "ja": "「やはり事故などではなかったな。その帳簿は今どこにある？」",
+        "ko": "\"결국 단순 사고 따위가 아니었군. 그 장부는 지금 어디 있나?\"",
+        "es": "\"Así que esto nunca fue un accidente. ¿Dónde está el libro ahora?\"",
+        "fr": "\"Ce n'a donc jamais été un accident. Où se trouve ce registre ?\"",
+        "de": "\"Es war also nie ein Unfall. Wo ist das Buch jetzt?\"",
+        "ru": "«Значит, дело вовсе не в несчастном случае. Где гроссбух сейчас?»",
+        "it": "\"Quindi non si è mai trattato di un incidente. Dov'è il mastro adesso?\"",
+        "pt": "\"Então nunca se tratou de um acidente. Onde está o livro agora?\"",
+        "ar": "\"إذن لم يكن الأمر حادثًا قط. أين دفتر الحسابات الآن؟\""
+      },
+      {
+        "en": "[Return to investigation]",
+        "id": "[Kembali ke penyelidikan]",
+        "zh": "[返回案情排查]",
+        "ja": "[捜査へ戻る]",
+        "ko": "[수사로 복귀]",
+        "es": "[Volver a la investigación]",
+        "fr": "[Poursuivre les investigations]",
+        "de": "[Zurück zur Untersuchung]",
+        "ru": "[Вернуться к расследованию]",
+        "it": "[Torna alle indagini]",
+        "pt": "[Voltar à investigação]",
+        "ar": "[العودة إلى التحقيق]"
+      }
+    ]
+  },
+  "graves_cigarette": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "Graves tosses you a wrinkled cardboard box. 'Astra Red. Take one. You look like a walking cadaver.'",
+      "id": "Graves melemparkan kotak kardus kusut. 'Astra Merah. Ambil satu. Kamu terlihat seperti mayat hidup yang berjalan.'",
+      "zh": "格雷夫斯朝你扔来一包皱巴巴的纸盒。“阿斯特拉红牌无嘴烟。拿一支去抽吧，你现在活像一具行尸走肉。”",
+      "ja": "グレイヴスは皺くちゃの紙箱を放り投げてきた。「アストラ・レッドだ。1本吸え。歩く死体のような顔をしてるぞ。」",
+      "ko": "그레이브스가 구겨진 담뱃갑을 툭 던집니다. '아스트라 레드요. 한 대 피우시오. 걸어 다니는 시체 꼴이오.'",
+      "es": "Graves te lanza una cajetilla arrugada. 'Astra Rojo. Coge uno. Pareces un cadáver andante.'",
+      "fr": "Graves vous lance un paquet écorné. 'Astra Rouge. Prenez-en une. Vous avez l'air d'un macchabée sur pattes.'",
+      "de": "Graves wirft Ihnen eine zerknitterte Schachtel zu. 'Astra Rot. Nehmen Sie eine. Sie sehen aus wie eine wandelnde Leiche.'",
+      "ru": "Грейвс бросает тебе измятую пачку. «Астра Красная». Возьми одну. Ты выглядишь как ходячий покойник.»",
+      "it": "Graves ti lancia un pacchetto sgualcito. 'Astra Rossa. Prendine una. Sembri un cadavere che cammina.'",
+      "pt": "Graves joga um maço amassado para você. 'Astra Vermelho. Pegue um. Você parece um cadáver ambulante.'",
+      "ar": "يرمي غريفز إليك علبة سجائر مجعدة: 'أسترا الحمراء، خذ واحدة. مظهرك يبدو كجثة متحركة.'"
+    },
+    "options": [
+      {
+        "en": "[Blow smoke into the gloom and return]",
+        "id": "[Hembuskan asap ke dalam kegelapan menara dan kembali]",
+        "zh": "[将浓烈的烟雾吐入钟楼昏暗中，归队]",
+        "ja": "[暗がりへ煙を吹き出し、捜査に戻る]",
+        "ko": "[어스름 속으로 연기를 내뿜으며 복귀한다]",
+        "es": "[Exhalar el humo en la penumbra y regresar]",
+        "fr": "[Souffler la fumée dans la pénombre et reprendre]",
+        "de": "[Rauch in die Dunkelheit blasen und zurückkehren]",
+        "ru": "[Выпустить дым в полумрак и вернуться]",
+        "it": "[Espira il fumo nell'ombra e ritorna]",
+        "pt": "[Soprar fumaça na penumbra e retornar]",
+        "ar": "[نفث الدخان في عتمة البرج والعودة]"
+      }
+    ]
+  },
+  "examine_pendulum_start": {
+    "speaker": {
+      "en": "Forensic Observation",
+      "id": "Pengamatan Forensik",
+      "zh": "现场法医观察",
+      "ja": "法医学的観察",
+      "ko": "법의학적 관찰",
+      "es": "Observación Forense",
+      "fr": "Observation Légale",
+      "de": "Forensische Beobachtung",
+      "ru": "Судебно-медицинский осмотр",
+      "it": "Osservazione Forense",
+      "pt": "Observação Forense",
+      "ar": "الملاحظة الجنائية"
+    },
+    "text": {
+      "en": "The body of Aurelia Vance is pinned like an insect against the brass counterweight. Her linen blouse is stiff with dried crimson. Strangely, the pool of coagulated blood is not directly underneath her—it forms a dark smear six paces toward the window.",
+      "id": "Tubuh Aurelia Vance tertancap seperti serangga pada beban kuningan pendulum. Blus linennya kaku oleh noda darah kering. Anehnya, genangan darah beku tidak berada tepat di bawahnya—melainkan membentuk jejak seretan enam langkah ke arah jendela.",
+      "zh": "奥蕾莉亚·梵斯的尸身如同一只被标本针钉住的昆虫，惨烈地挂在巨大的黄铜配重块上。她的亚麻衬衣已被发黑的干涸血迹浸透板结。古怪的是，凝固的大滩血泊并不在悬挂处正下方——而在六步之遥的靠窗木板上拖出一道明显的拖拽痕迹。",
+      "ja": "オレリア・ヴァンスの遺体は、昆虫の標本のように真鍮のカウンターウェイトに磔にされている。麻のシャツは乾いた血で固まっている。奇妙なことに、凝固した血だまりは真下ではなく、窓に向かって6歩ほどの位置に引きずられた痕跡を残していた。",
+      "ko": "오렐리아 밴스의 시신은 표본 곤충처럼 황동 평형추에 꿰뚫려 있습니다. 리넨 셔츠는 말라붙은 핏물로 뻣뻣합니다. 기이하게도 응고된 혈흔은 진자 바로 밑이 아닌, 창문 쪽으로 여섯 걸음 떨어진 바닥에 짙게 번져 있습니다.",
+      "es": "El cuerpo de Aurelia Vance está clavado como un insecto contra el contrapeso de latón. Su blusa de lino está rígida de sangre seca. Extrañamente, el charco de sangre coagulada no está debajo de ella, sino que forma una mancha arrastrada a seis pasos hacia la ventana.",
+      "fr": "Le corps d'Aurelia Vance est cloué tel un insecte contre le contrepoids de laiton. Sa blouse de lin est rigide de sang séché. Curieusement, la mare de sang ne se trouve pas sous elle, mais forme une traînée macabre à six pas vers la fenêtre.",
+      "de": "Der Leichnam von Aurelia Vance ist wie ein Insekt an das Messinggewicht gespießt. Ihre Bluse ist von getrocknetem Blut erstarrt. Seltsamerweise liegt die Blutlache nicht unter ihr, sondern bildet eine Schleifspur sechs Schritte weit zum Fenster.",
+      "ru": "Тело Аурелии Вэнс наколото на латунный противовес, словно насекомое. Льняная блуза затвердела от запекшейся крови. Странно, но лужа крови находится не под телом — она тянется широким следом волочения в шести шагах от окна.",
+      "it": "Il corpo di Aurelia Vance è infilzato come un insetto contro il contrappeso d'ottone. La sua camicetta è irrigidita dal sangue secco. Stranamente la pozza di sangue non è sotto di lei, ma forma una scia trascinata a sei passi verso la finestra.",
+      "pt": "O corpo de Aurelia Vance está cravado como um inseto contra o contrapeso de latão. Sua camisa de linho está endurecida de sangue seco. Estranhamente, a poça de sangue coagulado não está sob ela, mas forma um rastro arrastado a seis passos em direção à janela.",
+      "ar": "جسد أوريليا فانس مثبت كحشرة معلقة ضد ثقل الموازنة النحاسي. قميصها الكتاني متصلب بالدماء الجافة. المريب أن بركة الدم المتخثر ليست تحتها مباشرة، بل تشكل أثر جر واضح يبعد ست خطوات نحو النافذة."
+    },
+    "options": [
+      {
+        "en": "[PERCEPTION - Challenging 12] Pry open her frozen right hand to inspect what she clenched.",
+        "id": "[PERSEPSI - Sulit 12] Buka paksa genggaman tangan kanannya yang membeku untuk melihat apa yang ia cengkeram.",
+        "zh": "[感知 - 困难12] 掰开她僵死冰冷的右手，检查死者死前紧攥之物。",
+        "ja": "[知覚 - 難度12] 硬直した右手をこじ開け、死の間際に何を握りしめていたか検分する。",
+        "ko": "[지각 - 난이도 12] 굳어버린 오른손을 강제로 벌려 쥐고 있던 것을 확인한다.",
+        "es": "[PERCEPCIÓN - Desafiante 12] Abrir su mano congelada para examinar qué apretaba.",
+        "fr": "[PERCEPTION - Difficile 12] Forcer sa main raidie pour examiner ce qu'elle serrait.",
+        "de": "[WAHRNEHMUNG - Schwer 12] Ihre erstarrte rechte Hand aufbiegen und untersuchen.",
+        "ru": "[ВОСПРИЯТИЕ - Сложность 12] Разжать ее одеревеневшие пальцы и изучить предмет в руке.",
+        "it": "[PERCEZIONE - Impegnativo 12] Apri la sua mano irrigidita per vedere cosa stringeva.",
+        "pt": "[PERCEPÇÃO - Desafiador 12] Forçar a mão direita congelada para ver o que segurava.",
+        "ar": "[الإدراك - صعب 12] فتح قبضتها اليمنى المتصلبة لمعاينة ما كانت تمسكه بقوة."
+      },
+      {
+        "en": "[ESOTERICA - Medium 10] Study the strange geometric incision carved into her collarbone.",
+        "id": "[ESOTERIKA - Sedang 10] Teliti ukiran geometris ganjil yang disayat di tulang selangkanya.",
+        "zh": "[秘教 - 难度10] 细细研读刻在她锁骨处那道诡异的几何几何星位刻痕。",
+        "ja": "[秘教 - 難易度10] 彼女の鎖骨に刻まれた奇妙な幾何学的印章を調べる。",
+        "ko": "[비전학 - 보통 10] 쇄골에 새겨진 기이한 기하학적 문양을 분석한다.",
+        "es": "[ESOTERISMO - Medio 10] Estudiar la extraña incisión geométrica tallada en su clavícula.",
+        "fr": "[ÉSOTÉRISME - Moyen 10] Étudier l'étrange incision géométrique gravée sur sa clavicule.",
+        "de": "[ESOTERIK - Mittel 10] Die seltsame geometrische Ritzung an ihrem Schlüsselbein untersuchen.",
+        "ru": "[ЭЗОТЕРИКА - Сложность 10] Изучить странный геометрический знак, вырезанный на ключице.",
+        "it": "[ESOTERISMO - Medio 10] Esamina la strana incisione geometrica incisa sulla clavicola.",
+        "pt": "[ESOTERISMO - Médio 10] Estudar a estranha incisão geométrica talhada na clavícula dela.",
+        "ar": "[العلوم الباطنية - متوسط 10] دراسة النقش الهندسي الغريب المحفور على عظمة ترقوتها."
+      },
+      {
+        "en": "[Step away from the pendulum]",
+        "id": "[Mundur dari area pendulum]",
+        "zh": "[从钟摆齿轮区域退步]",
+        "ja": "[振り子の遺体から離れる]",
+        "ko": "[진자 시신에서 물러난다]",
+        "es": "[Alejarse del péndulo]",
+        "fr": "[S'éloigner du balancier]",
+        "de": "[Vom Pendel zurücktreten]",
+        "ru": "[Отойти от маятника]",
+        "it": "[Allontanati dal pendolo]",
+        "pt": "[Afastar-se do pêndulo]",
+        "ar": "[التراجع عن منطقة البندول]"
+      }
+    ]
+  },
+  "pendulum_pry_win": {
+    "speaker": {
+      "en": "Forensic Discovery",
+      "id": "Penemuan Forensik",
+      "zh": "关键法医发现",
+      "ja": "決定的証拠の発見",
+      "ko": "결정적 증거 발견",
+      "es": "Hallazgo Forense",
+      "fr": "Découverte Légale",
+      "de": "Forensischer Fund",
+      "ru": "Ключевая улика",
+      "it": "Scoperta Forense",
+      "pt": "Descoberta Forense",
+      "ar": "اكتشاف جنائي بالغ الأهمية"
+    },
+    "text": {
+      "en": "With a sharp snap of dried tendons, her fingers yield. Resting inside her palm is a carved ivory chess piece: a Black Queen with a silver needle embedded in its base. The needle tip is stained with a bitter, sweet-smelling violet residue.",
+      "id": "Dengan suara retakan urat kering, jari-jemarinya meregang. Terbaring di telapak tangannya sebutir bidak catur gading: Ratu Hitam dengan jarum perak terpasang di dasarnya. Ujung jarum ternoda residu ungu berbau manis yang mematikan.",
+      "zh": "随着僵硬肌腱一声清脆的脱开声，她的手指终于松开。掌心里赫然躺着一枚精雕细琢的象牙黑后棋子，底部暗藏着一根银质中空细针。针尖上隐约附着一层带有苦杏仁甜腻异香的紫黑色毒素残渣。",
+      "ja": "乾燥した腱の鈍い音とともに、指が開いた。彼女の掌にあったのは、彫刻された象牙のチェス駒――底に銀の針が仕込まれた黒のクイーンだった。針先には甘く苦い香りを放つ紫色の残留物が付着している。",
+      "ko": "굳어있던 힘줄이 뚝 하는 소리와 함께 풀립니다. 그녀의 손바닥에 놓여 있던 것은 정교한 상아 체스 말, 바닥에 은침이 박힌 검은 퀸이었습니다. 바늘 끝에는 달콤하면서도 씁쓸한 보랏빛 독극물 찌꺼기가 묻어 있습니다.",
+      "es": "Con un crujido de tendones secos, sus dedos ceden. En su palma descansa una pieza de ajedrez de marfil: una Reina Negra con una aguja de plata en su base. La punta está manchada con un residuo violeta de olor dulzón.",
+      "fr": "Dans un craquement sinistre de tendons raidis, ses doigts cèdent. Au creux de sa paume repose une reine d'échecs en ivoire sombre, dissimulant une aiguille d'argent à sa base souillée d'un résidu violet à l'odeur douceâtre.",
+      "de": "Mit einem Knacken erstarrter Sehnen öffnen sich ihre Finger. In ihrer Hand liegt eine geschnitzte Elfenbein-Schachfigur: eine Schwarze Dame mit einer Silbernadel im Sockel, benetzt mit violettem, süßlichem Gift.",
+      "ru": "С сухим хрустом одеревеневшие пальцы разжимаются. На ладони лежит резная шахматная фигура из слоновой кости: Черный ферзь с тонкой серебряной иглой в основании. На кончике иглы виднеется сладковато пахнущий фиолетовый осадок.",
+      "it": "Con uno scricchiolio di tendini, le dita cedono. Nel palmo c'è una regina degli scacchi d'avorio intagliata: ha un ago d'argento celato nella base, macchiato da un residuo violaceo dall'odore dolciastro.",
+      "pt": "Com um estalo de tendões secos, os dedos cedem. Na palma descansa uma rainha de xadrez de marfim com uma agulha de prata oculta na base. A ponta está manchada com um resíduo violeta de cheiro adocicado.",
+      "ar": "مع صوت طقطقة أوتارها الجافة، تنفتح أصابعها. في راحة يدها قطعة شطرنج عاجية منحوتة: وزير أسود بإبرة فضية مجوفة مدمجة بقاعدتها، وطرفها ملوث ببلورات سم بنفسجية تفوح برائحة لوزية حلوة."
+    },
+    "options": [
+      {
+        "en": "\"The killer did not use brute force. They used a parlor trick.\"",
+        "id": "\"Pembunuhnya tidak memakai tenaga kasar. Mereka memakai trik ruang tamu yang licik.\"",
+        "zh": "“凶手根本不是靠蛮力行凶。这是一场精心策划的沙龙式暗杀。”",
+        "ja": "「犯人は腕力で殺したのではない。サロンの毒針という陰湿な手口だ。」",
+        "ko": "\"범인은 완력을 쓰지 않았소. 살롱식 속임수 독살극이었던 거지.\"",
+        "es": "\"El asesino no usó la fuerza bruta. Usó un truco de salón.\"",
+        "fr": "\"L'assassin n'a pas usé de la force brute. C'était un assassinat de salon.\"",
+        "de": "\"Der Mörder brauchte keine rohe Gewalt. Es war ein tückisches Giftattentat.\"",
+        "ru": "«Убийца не применял грубую силу. Это было коварное салонное убийство.»",
+        "it": "\"L'assassino non ha usato la forza bruta. È stato un trucco velenoso da salotto.\"",
+        "pt": "\"O assassino não usou força bruta. Foi um truque engenhoso de salão.\"",
+        "ar": "\"القاتل لم يستخدم القوة الغاشمة بل حيلة صالونات ماكرة قاتلة.\""
+      }
+    ]
+  },
+  "examine_watch_start": {
+    "speaker": {
+      "en": "The Stopped Pocket Watch",
+      "id": "Jam Saku yang Terhenti",
+      "zh": "止步的炼金怀表",
+      "ja": "止まった懐中時計",
+      "ko": "멈춰 선 회중시계",
+      "es": "El Reloj de Bolsillo Detenido",
+      "fr": "La Montre de Poche Arrêtée",
+      "de": "Die Stehengebliebene Taschenuhr",
+      "ru": "Остановившиеся карманные часы",
+      "it": "L'Orologio da Taschino Fermo",
+      "pt": "O Relógio de Bolso Parado",
+      "ar": "ساعة الجيب المتوقفة"
+    },
+    "text": {
+      "en": "Resting beside Aurelia's dropped briefcase is an exquisite alchemical pocket watch. The crystal glass is shattered, but the heavy gold casing remains intact. The hands are frozen at 03:42:18.",
+      "id": "Tergeletak di sebelah tas kerja Aurelia yang terjatuh adalah sebuah jam saku alkimia yang sangat indah. Kaca kristalnya hancur, namun casing emasnya masih utuh. Jarum jam terhenti membeku pada pukul 03:42:18.",
+      "zh": "遗落在死者公文包旁的是一枚做工巧夺天工的炼金怀表。表盘的水晶玻璃已经碎裂，但厚重的纯金外壳依旧完好。指针精确地定格在凌晨03:42:18。",
+      "ja": "オレリアの書類鞄の傍らに、精緻を極めた錬金術式懐中時計が転がっている。風防ガラスは砕けているが、重厚な金無垢のケースは無傷だ。針は午前03時42分18秒で凍りついている。",
+      "ko": "오렐리아의 서류 가방 곁에 정교하기 이를 데 없는 연금술 회중시계가 떨어져 있습니다. 유리 덮개는 박살 났지만 묵직한 금제 케이스는 온전합니다. 시곗바늘은 03:42:18에 멈춰 있습니다.",
+      "es": "Junto al maletín caído descansa un exquisito reloj de bolsillo alquímico. El cristal está roto, pero la caja de oro macizo está intacta. Las agujas están congeladas a las 03:42:18.",
+      "fr": "Près de la mallette renversée repose une montre de poche alchimique admirable. Le verre est brisé mais le boîtier en or reste intact. Les aiguilles sont figées à 03:42:18.",
+      "de": "Neben der Aktentasche liegt eine meisterhafte alchemistische Taschenuhr. Das Glas ist zersprungen, das Goldgehäuse intakt. Die Zeiger stehen starr auf 03:42:18 Uhr.",
+      "ru": "Рядом с брошенным саквояжем лежат изысканные алхимические карманные часы. Стекло разбито, но массивный золотой корпус цел. Стрелки застыли на 03:42:18.",
+      "it": "Accanto alla ventiquattrore caduta giace uno squisito orologio alchemico. Il vetro è in frantumi ma la cassa d'oro è intatta. Le lancette sono immobili sulle 03:42:18.",
+      "pt": "Ao lado da pasta caída repousa um requintado relógio alquímico. O vidro está quebrado, mas a caixa de ouro maciço está intacta. Os ponteiros congelaram em 03:42:18.",
+      "ar": "بجانب حقيبة أوريليا الملقاة، ترقد ساعة جيب خيميائية بالغة البراعة. زجاجها مكسور لكن غلافها الذهبي الثقيل سليم، وعقاربها متجمدة بدقة عند 03:42:18."
+    },
+    "options": [
+      {
+        "en": "[INTERFACING - Medium 10] Pry open the rear balance cock to inspect the escapement gears.",
+        "id": "[PENYELARASAN - Sedang 10] Buka tutup belakang mekanisme untuk memeriksa roda escapement.",
+        "zh": "[机械交互 - 难度10] 挑开后盖摆轮夹板，仔细检视内部擒纵机芯。",
+        "ja": "[機構連動 - 難易度10] 裏蓋のテンプ受けを開け、脱進機内部を検分する。",
+        "ko": "[기계 인터페이스 - 보통 10] 뒷면 밸런스 콕을 조심스레 열어 무브먼트 내부를 검사한다.",
+        "es": "[INTERFAZ - Medio 10] Abrir la tapa trasera para inspeccionar los engranajes.",
+        "fr": "[INTERACTION - Moyen 10] Ouvrir le couvercle arrière pour examiner le mécanisme.",
+        "de": "[VERZAHNUNG - Mittel 10] Den Unruhkloben aufhebeln und das Getriebe inspizieren.",
+        "ru": "[МЕХАНИКА - Сложность 10] Вскрыть заднюю крышку механизма и осмотреть шестерни.",
+        "it": "[INTERFACCIAMENTO - Medio 10] Apri il fondello posteriore per esaminare lo scappamento.",
+        "pt": "[INTERFACIAMENTO - Médio 10] Abrir a tampa traseira para inspecionar as engrenagens.",
+        "ar": "[التفاعل الآلي - متوسط 10] فك غطاء الميزان الخلفي لمعاينة تروس الحركة الدقيقة."
+      },
+      {
+        "en": "[Put the watch down]",
+        "id": "[Kembalikan jam saku ke tempatnya]",
+        "zh": "[放低怀表]",
+        "ja": "[時計を元に戻す]",
+        "ko": "[회중시계를 내려놓는다]",
+        "es": "[Dejar el reloj]",
+        "fr": "[Reposer la montre]",
+        "de": "[Die Uhr weglegen]",
+        "ru": "[Отложить часы]",
+        "it": "[Riponi l'orologio]",
+        "pt": "[Guardar o relógio]",
+        "ar": "[إعادة الساعة إلى مكانها]"
+      }
+    ]
+  },
+  "watch_open_win": {
+    "speaker": {
+      "en": "The Engraved Mechanism",
+      "id": "Mekanisme Berukir Rahasia",
+      "zh": "暗刻绝密机芯",
+      "ja": "彫刻された秘密機構",
+      "ko": "음각된 비밀 기구",
+      "es": "El Mecanismo Grabado",
+      "fr": "Le Mécanisme Gravé",
+      "de": "Das Gravierte Uhrwerk",
+      "ru": "Тайный гравированный механизм",
+      "it": "Il Meccanismo Inciso",
+      "pt": "O Mecanismo Gravado",
+      "ar": "آلية الحركة المنقوشة سرًا"
+    },
+    "text": {
+      "en": "The gold case pops open. Engraved with a diamond scribe onto the balance wheel are three distinct numbers: [ 7 - 3 - 12 ], beneath which is etched a personal dedication: 'To my beloved Vivienne, who measured all my hours.'",
+      "id": "Casing emas terbuka dengan denting halus. Terukir goresan intan pada roda balance tiga angka sandi: [ 7 - 3 - 12 ], di bawahnya tertulis dedikasi pribadi: 'Untuk Vivienne tercinta, pengukur seluruh waktu hidupku.'",
+      "zh": "金质底盖应声弹开。用金刚石刻针在摆轮精细镌刻着三个阿拉伯数字：【 7 - 3 - 12 】，下方还刻着一段深情的题词：“献给我挚爱的薇薇安，你丈量了我一生的全部时光。”",
+      "ja": "金の裏蓋が小さく弾け開いた。ダイヤモンド針でテンプ輪に刻まれていたのは3つの数字――【 7 - 3 - 12 】、そしてその下には「すべての時を測りし最愛のヴィヴィアンへ」と彫られていた。",
+      "ko": "황금 케이스가 경쾌하게 열립니다. 밸런스 휠에 다이아몬드 조각도로 새겨진 세 자리 암호가 드러납니다: [ 7 - 3 - 12 ]. 그 아래에는 '내 모든 시간을 재어준 사랑하는 비비안에게'라는 헌사가 적혀 있습니다.",
+      "es": "La caja de oro se abre. Grabados con un estilete de diamante en el volante hay tres números: [ 7 - 3 - 12 ], y una dedicatoria: 'Para mi amada Vivienne, quien midió todas mis horas.'",
+      "fr": "Le boîtier doré s'ouvre. Gravés au diamant sur le balancier se trouvent trois chiffres : [ 7 - 3 - 12 ], et une dédicace : 'À ma bien-aimée Vivienne, qui compta chacune de mes heures.'",
+      "de": "Das Gehäuse springt auf. Mit einer Diamantspitze sind drei Zahlen eingraviert: [ 7 - 3 - 12 ], darunter die Widmung: 'Für meine geliebte Vivienne, die all meine Stunden zählte.'",
+      "ru": "Золотая крышка с щелчком откидывается. На колесе баланса алмазной иглой выбиты три цифры: [ 7 - 3 - 12 ], а ниже надпись: «Моей возлюбленной Вивьен, отмерявшей все часы моей жизни».",
+      "it": "La cassa d'oro scatta aperta. Incisi sul bilanciere ci sono tre numeri: [ 7 - 3 - 12 ], e una dedica: 'Alla mia amata Vivienne, che ha contato tutte le mie ore.'",
+      "pt": "A caixa se abre. Gravados no balanço estão três números: [ 7 - 3 - 12 ], com a dedicação: 'Para minha amada Vivienne, que mediu todas as minhas horas.'",
+      "ar": "ينفتح الغلاف الذهبي بنقرة رقيقة. محفور برأس ألماسي على عجلة التوازن ثلاثة أرقام شفرة: [ 7 - 3 - 12 ]، وتحتها إهداء خاص: 'إلى حبيبني فيفيان، التي وزنت كل ساعات عمري.'"
+    },
+    "options": [
+      {
+        "en": "\"A combination code. This unlocks the floorboard safe.\"",
+        "id": "\"Kode kombinasi brankas. Ini kunci untuk membuka brankas tersembunyi.\"",
+        "zh": "“这是暗格保险箱的密码。正好用来解开地板下的三位机械转盘。”",
+        "ja": "「金庫の暗証番号だ。これで床下の隠し金庫を開けられる。」",
+        "ko": "\"비밀번호로군. 바닥 밑 금고를 열 수 있는 조합이다.\"",
+        "es": "\"Una combinación secreta. Esto abre la caja fuerte del suelo.\"",
+        "fr": "\"Une combinaison secrète. Elle déverrouille le coffre sous le plancher.\"",
+        "de": "\"Ein Zahlencode. Das öffnet den Bodensafe.\"",
+        "ru": "«Шифр комбинации. Это откроет сейф под половицами.»",
+        "it": "\"Una combinazione numerica. Apre la cassaforte sotto il pavimento.\"",
+        "pt": "\"Uma combinação secreta. Isso destranca o cofre sob o piso.\"",
+        "ar": "\"شفرة ثلاثية لفتح الخزنة المطمورة تحت الأرضية.\""
+      }
+    ]
+  },
+  "examine_safe_start": {
+    "speaker": {
+      "en": "Concealed Floorboard Safe",
+      "id": "Brankas Lantai Tersembunyi",
+      "zh": "地板暗格保险箱",
+      "ja": "床下の隠し金庫",
+      "ko": "바닥 판자 은닉 금고",
+      "es": "Caja Fuerte Oculta bajo el Suelo",
+      "fr": "Coffre Secret sous le Plancher",
+      "de": "Verborgenes Bodenschließfach",
+      "ru": "Тайный сейф под полом",
+      "it": "Cassaforte Nascosta sotto il Pavimento",
+      "pt": "Cofre Oculto sob o Assoalho",
+      "ar": "الخزنة السرية تحت الأرضية"
+    },
+    "text": {
+      "en": "Underneath greasy machine rags and spent bullet shells is a heavy cast-iron safe sunken into the floor joists. A precision alchemical three-tumbler lock secures the door.",
+      "id": "Di bawah kain pelumas berminyak dan selongsong peluru berserakan, terdapat sebuah brankas besi cor berat yang tertanam di balok lantai. Kunci tiga putaran presisi mengunci pintunya.",
+      "zh": "在油污油布与锈迹斑斑的旧弹壳遮掩下，一口厚重铸铁保险箱深深嵌死在地板龙骨之中。门上赫然装有一具精密度极高的三位炼金滚轮密码锁。",
+      "ja": "油まみれのウエスと薬莢の下に、床梁に埋め込まれた重厚な鋳鉄製金庫がある。精密な三連ダイヤル式の錠前がその扉を固く閉ざしている。",
+      "ko": "기름에 젖은 걸레와 탄피 아래, 바닥 장선 속에 매립된 묵직한 주철 금고가 드러납니다. 정밀한 3중 회전식 자물쇠가 문을 단단히 지키고 있습니다.",
+      "es": "Bajo trapos con grasa y casquillos usados descansa una pesada caja fuerte de hierro fundido. Una cerradura alquímica de tres cilindros protege la puerta.",
+      "fr": "Sous des chiffons huileux et des douilles percutées repose un coffre en fonte scellé dans le plancher. Une serrure alchimique à trois crans verrouille la porte.",
+      "de": "Unter öligen Putzlappen und Patronenhülsen liegt ein massiver gusseiserner Tresor im Boden. Ein dreistelliges Kombinationsschloss sichert die Tür.",
+      "ru": "Под замасленным тряпьем и стреляными гильзами в балки пола врезан тяжелый чугунный сейф. Дверцу блокирует точный трехдисковый алхимический замок.",
+      "it": "Sotto stracci bisunti e bossoli usati c'è una pesante cassaforte di ghisa incassata nel pavimento. Una serratura alchemica a tre ghiere sigilla lo sportello.",
+      "pt": "Sob panos engraxados e cápsulas de munição há um pesado cofre de ferro fundido embutido nas vigas. Uma trava alquímica de três cilindros sela a porta.",
+      "ar": "تحت خرق الزيت وفوارغ الرصاص، ترقد خزنة حديدية ثقيلة مثبتة في عوارض الأرضية موصدة بقفل خيميائي ثلاثي التروس فائق الدقة."
+    },
+    "options": [
+      {
+        "en": "[INPUT WATCH CODE: 7-3-12] Turn the tumblers to the numbers inscribed in Aurelia's pocket watch.",
+        "id": "[MASUKKAN KODE JAM: 7-3-12] Putar roda kombinasi ke angka yang terukir di jam saku Aurelia.",
+        "zh": "【输入怀表密码：7-3-12】按照奥蕾莉亚怀表摆轮上所刻的密码转动滚轮。",
+        "ja": "【時計の暗号入力：7-3-12】オレリアの懐中時計に刻まれていた番号へダイヤルを回す。",
+        "ko": "[회중시계 암호 입력: 7-3-12] 오렐리아의 회중시계에 적혀 있던 세 자리 번호로 다이얼을 돌린다.",
+        "es": "[INTRODUCIR CÓDIGO: 7-3-12] Girar los cilindros según el código del reloj de Aurelia.",
+        "fr": "[ENTRER LE CODE : 7-3-12] Aligner les crans sur les chiffres de la montre d'Aurelia.",
+        "de": "[UHR-CODE EINGEBEN: 7-3-12] Die Zahlenkombination aus der Taschenuhr einstellen.",
+        "ru": "[ВВЕСТИ КОД ИЗ ЧАСОВ: 7-3-12] Набрать шифр, выгравированный на часах Аурелии.",
+        "it": "[INSERISCI CODICE: 7-3-12] Allinea le ghiere sui numeri dell'orologio di Aurelia.",
+        "pt": "[INSERIR CÓDIGO: 7-3-12] Girar os cilindros para os números gravados no relógio.",
+        "ar": "[إدخال شفرة الساعة: 7-3-12] تدوير الأقراص وفقًا للأرقام المنقوشة في ساعة الجيب."
+      },
+      {
+        "en": "[LOGIC - Challenging 13] Crack the alchemical combination tumbler by mechanical acoustic resonance.",
+        "id": "[LOGIKA - Sulit 13] Retas kombinasi brankas dengan mendengarkan resonansi akustik mekanik.",
+        "zh": "[逻辑 - 困难13] 贴耳细听内部簧片震颤，纯靠严密逻辑与机械声学共振破译密码。",
+        "ja": "[論理 - 難度13] 機械的な音響共鳴と冷徹な推論だけで金庫のダイヤルを解読する。",
+        "ko": "[논리 - 난이도 13] 음향 공명과 순수 논리적 연역으로 금고의 암호를 해킹한다.",
+        "es": "[LÓGICA - Desafiante 13] Descifrar la combinación mediante resonancia acústica.",
+        "fr": "[LOGIQUE - Difficile 13] Décoder la combinaison par résonance acoustique.",
+        "de": "[LOGIK - Schwer 13] Das Schloss durch akustische Resonanzanalyse knacken.",
+        "ru": "[ЛОГИКА - Сложность 13] Взломать замок по акустическому резонансу шестерен.",
+        "it": "[LOGICA - Impegnativo 13] Decifra la combinazione mediante risonanza acustica.",
+        "pt": "[LÓGICA - Desafiador 13] Decifrar a combinação por ressonância acústica mecânica.",
+        "ar": "[المنطق - صعب 13] فك شفرة الخزنة عبر الاستماع لرنين الميكانيكا الداخلي."
+      },
+      {
+        "en": "[Leave safe for now]",
+        "id": "[Tinggalkan brankas untuk sementara]",
+        "zh": "[暂离保险箱]",
+        "ja": "[今は金庫から離れる]",
+        "ko": "[금고에서 잠시 물러난다]",
+        "es": "[Dejar la caja fuerte]",
+        "fr": "[S'éloigner du coffre]",
+        "de": "[Den Tresor vorerst belassen]",
+        "ru": "[Оставить сейф]",
+        "it": "[Lascia la cassaforte]",
+        "pt": "[Deixar o cofre por enquanto]",
+        "ar": "[ترك الخزنة في الوقت الحالي]"
+      }
+    ]
+  },
+  "safe_open_code": {
+    "speaker": {
+      "en": "The Floorboard Safe Pops Open",
+      "id": "Brankas Terbuka Lebar",
+      "zh": "保险箱开启",
+      "ja": "金庫の開錠",
+      "ko": "금고 개방",
+      "es": "La Caja Fuerte se Abre",
+      "fr": "Le Coffre s'Ouvre",
+      "de": "Der Tresor Öffnet Sich",
+      "ru": "Сейф открыт",
+      "it": "La Cassaforte si Apre",
+      "pt": "O Cofre se Abre",
+      "ar": "الخزنة تفتح"
+    },
+    "text": {
+      "en": "CLICK-CLACK-CHUNK. The triple iron deadbolts retract with heavy grace. Inside lies the Grand Syndicate Perpetuum Ledger—thick vellum bound in black pigskin, containing detailed bribe logs, payment slips to Precinct 4 officers, and the architectural blueprints for a city-wide delay-detonation network.",
+      "id": "KLIK-KLAK-DEG. Tiga gerendel besi tebal tertarik ke dalam. Di dalamnya terbaring Buku Besar Perpetuum Sindikat Agung—perkamen tebal bersampul kulit babi hitam, berisi catatan suap lengkap, slip pembayaran ke perwira Distrik 4, dan cetak biru bom penunda waktu.",
+      "zh": "咔哒——咔——沉重的三道实心钢栓优雅收缩弹回。箱内静静躺着联合大辛迪加的《永动机密会总账簿》——用黑色鞣皮装订的厚实牛皮纸册，里面详尽记录了向第四警区各级警官行贿的汇款底单，以及一套企图在全市引发延迟连锁大爆炸的恶魔蓝图！",
+      "ja": "カチ、カチ、ガコン。重厚な三重ボルトが後退した。内部にあったのは大シンジケートの『永久機関カルテル秘密台帳』――黒い豚革で装丁された厚い羊皮紙に、第4分署警官への賄賂台帳と、都市全域爆破計画の青写真が記されていた。",
+      "ko": "철컥, 쿵. 묵직한 3중 강철 빗장이 부드럽게 풀립니다. 안에는 거대 신디케이트의 '영구기관 비밀 원장'이 들어 있었습니다. 흑색 가죽에 철해진 양피지에는 제4관할서 수뇌부 뇌물 장부와 도시 폭파 설계도가 고스란히 담겨 있었습니다.",
+      "es": "CLIC-CLAC-CLANK. Los tres cerrojos se retraen. Dentro descansa el Libro Mayor del Cartel Perpetuum: pergamino grueso encuadernado en cuero negro con sobornos a agentes del Distrito 4 y planos de una red de detonación retardada.",
+      "fr": "CLIC-CLAC-CLAC. Les pênes se rétractent lourdement. À l'intérieur repose le Grand Livre du Cartel Perpetuum : un registre contenant les preuves de corruption du District 4 et les plans d'une bombe à retardement gigantesque.",
+      "de": "KLACK-KLACK-RUMMS. Die Bolzen weichen zurück. Darin liegt das Hauptbuch des Perpetuum-Kartells – mit Schmiergeldlisten für Beamte von Bezirk 4 und den Bauplänen für ein verzögertes Brandbombennetz.",
+      "ru": "ЩЕЛК-КЛАЦ. Засовы мягко расходятся. Внутри лежит гроссбух картеля «Перпетуум» — книга в черной свиной коже с платежками продажным офицерам 4-го участка и чертежами тайного взрывного часового механизма.",
+      "it": "CLIC-CLAC-SDENG. I tre chiavistelli si ritraggono. All'interno giace il Mastro del Cartello Perpetuum: contiene i registri delle tangenti al Distretto 4 e i piani di una rete incendiaria a detonazione ritardata.",
+      "pt": "CLIQUE-CLAC. Os três ferrolhos se retraem. Dentro jaz o Livro-Razão do Cartel Perpetuum com subornos para policiais do Distrito 4 e plantas para uma rede incendiária de detonação retardada.",
+      "ar": "طقطقة معدنية ثقيلة... تنفتح المزالج الثلاثية. بداخلها يرقد دفتر حسابات كارتل بيربيتوم السري، متضمنًا سجلات الرشاوى المفصلة لضباط المنطقة 4 ومخططات تفجير الماكينات الكبرى."
+    },
+    "options": [
+      {
+        "en": "\"Conclusive proof of corruption and conspiracy.\"",
+        "id": "\"Bukti konklusif konspirasi dan korupsi sindikat.\"",
+        "zh": "“这是辛迪加黑幕与警局内部腐败的确凿死证。”",
+        "ja": "「警察内部の腐敗と陰謀の動かぬ決定的証拠だ。」",
+        "ko": "\"부패와 거대 음모를 단죄할 결정적 물증이다.\"",
+        "es": "\"Prueba concluyente de corrupción y conspiración.\"",
+        "fr": "\"Preuve irréfutable de conspiration et de corruption.\"",
+        "de": "\"Der endgültige Beweis für Verschwörung und Korruption.\"",
+        "ru": "«Неопровержимое доказательство коррупции и заговора.»",
+        "it": "\"La prova definitiva di corruzione e cospirazione.\"",
+        "pt": "\"Prova irrefutável de conspiração e corrupção.\"",
+        "ar": "\"دليل قاطع لا يقبل الشك على الفساد والمؤامرة الكبرى.\""
+      }
+    ]
+  },
+  "madame_dialogue_start": {
+    "speaker": {
+      "en": "Madame Vivienne Vance",
+      "id": "Nyonya Vivienne Vance",
+      "zh": "薇薇安·梵斯夫人",
+      "ja": "ヴィヴィアン・ヴァンス夫人",
+      "ko": "비비안 밴스 부인",
+      "es": "Madame Vivienne Vance",
+      "fr": "Madame Vivienne Vance",
+      "de": "Madame Vivienne Vance",
+      "ru": "Мадам Вивьен Вэнс",
+      "it": "Madame Vivienne Vance",
+      "pt": "Madame Vivienne Vance",
+      "ar": "السيدة فيفيان فانس"
+    },
+    "text": {
+      "en": "Madame Vance turns slowly. Her face is pale as alabaster, framed by wet raven curls and a black silk veil. 'Are you the investigator? You look... unraveled, Detective. Did you come here to solve Aurelia's death, or merely to gawk at our ruin?'",
+      "id": "Nyonya Vance berbalik perlahan. Wajahnya sepucat marmer, dibingkai rambut hitam basah dan kerudung sutra hitam. 'Apakah kamu sang penyelidik? Kamu tampak... berantakan, Detektif. Apakah kamu datang untuk memecahkan kematian Aurelia, atau sekadar menonton kehancuran kami?'",
+      "zh": "梵斯夫人缓缓转过身来。她的面容苍白如汉白玉雕像，湿漉漉的乌黑卷发隐没在一袭黑色薄纱之后。“你就是探长？你看上去……快要崩溃了，警官。你是来查清奥蕾莉亚的死因，还是纯粹来冷眼旁观我们的破败？”",
+      "ja": "ヴァンス夫人がゆっくりと振り返る。漆黒のベールに包まれた顔は白磁のように冷たい。「あなたが捜査官？ずいぶんと……擦り切れたお姿ね、刑事さん。オレリアの死を解きに来たの？それとも私たちの破滅を覗き見に来たの？」",
+      "ko": "밴스 부인이 천천히 돌아섭니다. 검은 면사포 너머의 얼굴은 대리석처럼 창백합니다. '당신이 수사관인가요? 꽤나... 망가진 꼴이군요, 형사님. 오렐리아의 죽음을 밝히러 오셨나요, 아니면 우리 집안의 파멸을 구경하러 오셨나요?'",
+      "es": "Madame Vance se gira despacio. Su rostro es pálido como el alabastro bajo su velo negro. '¿Es usted el investigador? Parece... desmoronado, detective. ¿Vino a resolver la muerte de Aurelia o sólo a contemplar nuestra ruina?'",
+      "fr": "Madame Vance se tourne lentement. Son visage est pâle comme l'albâtre sous son voile de crêpe. 'Êtes-vous l'enquêteur ? Vous semblez... en lambeaux, Inspecteur. Venez-vous élucider la mort d'Aurelia ou contempler nos ruines ?'",
+      "de": "Madame Vance dreht sich langsam um. Ihr Gesicht ist wächsern unter dem schwarzen Schleier. 'Sind Sie der Ermittler? Sie wirken... zerrüttet, Detective. Kamen Sie, um Aurelias Tod aufzuklären, oder gaffen Sie nur auf unseren Ruin?'",
+      "ru": "Мадам Вэнс медленно поворачивается. Ее лицо бледно, как алебастр, под черной вуалью. «Вы следователь? Вы выглядите... изможденным, детектив. Пришли раскрыть смерть Аурелии или поглазеть на наше крушение?»",
+      "it": "Madame Vance si volta lentamente. Il suo viso è pallido come l'alabastro sotto il velo nero. 'È lei l'investigatore? Sembra... a pezzi, detective. È venuto a risolvere la morte di Aurelia o solo a contemplare la nostra rovina?'",
+      "pt": "Madame Vance vira-se devagar. O rosto é pálido sob o véu negro de seda. 'Você é o investigador? Parece... em frangalhos, detetive. Veio resolver a morte de Aurelia ou apenas contemplar nossa ruína?'",
+      "ar": "تلتفت السيدة فانس ببطء، وجهها شاحب كالرخام تحت وشاحها الحريري الأسود: 'هل أنت المحقق؟ تبدو... ممزقًا ومشتتًا يا حضرة المحقق. هل جئت لكشف حقيقة موت أوريليا أم لمجرد التفرج على خرابنا؟'"
+    },
+    "voices": [
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "灵觉",
+          "ja": "秘教感応",
+          "ko": "초월감각",
+          "es": "Elisya",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليسيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "灵觉 [心智]",
+          "ja": "霊感 [精神]",
+          "ko": "초월 [정신]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليسيا [النفس]"
+        },
+        "text": {
+          "en": "Her grief is a performance. Beneath the mourning crepe, her pulse is steady, rhythmic, almost mechanical. Like she is reciting lines she rehearsed in front of a dressing room mirror for a month.",
+          "id": "Kesedihannya hanyalah sandiwara. Di balik kerudung dukanya, denyut nadinya stabil dan teratur, nyaris mekanis. Seperti menghafal naskah yang telah ia latih di depan cermin selama sebulan penuh.",
+          "zh": "她的悲伤是一场精湛的剧场演出。在黑纱之下，她的脉搏平稳沉静，规律得宛如机械。就像一个在试衣间镜子前整整排练了一个月台词的职业演员。",
+          "ja": "彼女の悲哀は完璧な演技だ。喪服の奥で脈拍は時計仕掛けのように規則正しく打っている。1ヶ月間鏡の前で練習した台詞を朗読しているかのようだ。",
+          "ko": "부인의 슬픔은 잘 짜인 연극입니다. 검은 상복 아래 그녀의 맥박은 기계처럼 규칙적으로 뛰고 있습니다. 한 달 내내 거울 앞에서 연습한 대사를 읊는 배우처럼요.",
+          "es": "Su dolor es una actuación. Su pulso es rítmico, casi mecánico. Como si recitara líneas ensayadas ante el espejo durante un mes.",
+          "fr": "Son chagrin est une mise en scène. Son pouls est régulier, presque mécanique. Comme si elle récitait un rôle répété devant sa glace depuis un mois.",
+          "de": "Ihre Trauer ist eine Inszenierung. Ihr Puls geht ruhig und mechanisch wie ein Uhrwerk. Sie sagt Verse auf, die sie wochenlang vorm Spiegel probte.",
+          "ru": "Ее скорбь — отрепетированный спектакль. Пульс под вуалью ровный, почти механический. Будто она читает текст, заученный перед зеркалом.",
+          "it": "Il suo dolore è una recita. Il suo polso è calmo, ritmico, quasi meccanico. Come se stesse recitando battute provate allo specchio per un mese.",
+          "pt": "O luto dela é uma encenação. O pulso é compassado, mecânico. Como se recitasse falas ensaiadas diante do espelho por um mês.",
+          "ar": "حزنها مجرد تمثيلية بارعة. تحت وشاح الحداد، نبضها منتظم وهادئ كدقات ساعة، وكأنها تتلو نصوصًا تدربت عليها أمام مرآتها لشهر كامل."
+        }
+      }
+    ],
+    "options": [
+      {
+        "en": "\"Where were you at 03:42 AM when the tower clock stopped?\"",
+        "id": "\"Di mana kamu berada pada pukul 03:42 saat jam menara berhenti?\"",
+        "zh": "“凌晨03:42钟楼停摆的那一刻，你在什么地方？”",
+        "ja": "「時計が止まった午前3時42分、あなたはどこにいた？」",
+        "ko": "\"시계탑이 멈춘 오전 03시 42분에 부인은 어디 있었소?\"",
+        "es": "\"¿Dónde estaba usted a las 03:42 cuando se detuvo el reloj?\"",
+        "fr": "\"Où étiez-vous à 03h42 quand l'horloge s'est arrêtée ?\"",
+        "de": "\"Wo waren Sie um 03:42 Uhr, als die Turmuhr stehenblieb?\"",
+        "ru": "«Где вы были в 03:42, когда часы башни остановились?»",
+        "it": "\"Dov'era alle 03:42 quando l'orologio si è fermato?\"",
+        "pt": "\"Onde você estava às 03:42 quando o relógio da torre parou?\"",
+        "ar": "\"أين كنتِ في تمام الساعة 03:42 فجرًا حين توقفت ساعة البرج؟\""
+      },
+      {
+        "en": "[EMPATHY - Medium 10] \"You did not love her, did you, Madame?\"",
+        "id": "[EMPATI - Sedang 10] \"Kamu sebenarnya tidak mencintainya lagi, bukan begitu Nyonya?\"",
+        "zh": "[同理心 - 难度10] “你其实早已不再爱她了，对吗，夫人？”",
+        "ja": "[共感 - 難易度10] 「あなたは彼女を愛してなどいなかった、そうですね夫人？」",
+        "ko": "[공감 - 보통 10] \"부인은 그녀를 더 이상 사랑하지 않았지요?\"",
+        "es": "[EMPATÍA - Medio 10] \"Usted ya no la amaba, ¿verdad, Madame?\"",
+        "fr": "[EMPATHIE - Moyen 10] \"Vous ne l'aimiez plus, n'est-ce pas, Madame ?\"",
+        "de": "[EMPATHIE - Mittel 10] \"Sie haben sie nicht mehr geliebt, nicht wahr, Madame?\"",
+        "ru": "[ЭМПАТИЯ - Сложность 10] «Вы ведь больше не любили ее, мадам?»",
+        "it": "[EMPATIA - Medio 10] \"Non la amava più, non è vero, Madame?\"",
+        "pt": "[EMPATIA - Médio 10] \"Você não a amava mais, não é, Madame?\"",
+        "ar": "[التعاطف - متوسط 10] \"لم تعودي تحبينها على الإطلاق، أليس كذلك يا سيدتي؟\""
+      },
+      {
+        "en": "[RED CHECK] [AUTHORITY - Challenging 13] \"Enough theatrics, Vivienne. We have the poisoned queen, the cyanide vials, and the Perpetuum ledger. You killed her.\"",
+        "id": "[UJI MERAH] [OTORITAS - Sulit 13] \"Cukup sandiwaranya, Vivienne. Kami memiliki ratu catur beracun, ampul sianida, dan buku besar Perpetuum. Kamu yang membunuhnya.\"",
+        "zh": "【绝命检定】[权威 - 困难13] “闹剧该结束了，薇薇安。毒针黑后、带毒安瓿和总账簿全在我们手上。是你动的手。”",
+        "ja": "【赤の判定】[威信 - 難度13] 「茶番は終わりだ、ヴィヴィアン。毒のクイーンも金庫の台帳も手に入った。お前が殺したんだ。」",
+        "ko": "[결전 판정] [권위 - 난이도 13] \"연극은 끝났소, 비비안. 독침 퀸과 금고 원장을 전부 확보했소. 당신이 죽인 거요.\"",
+        "es": "[CONTROL ROJO] [AUTORIDAD - 13] \"Basta de teatro, Vivienne. Tenemos la reina envenenada y el libro mayor. Fuiste tú.\"",
+        "fr": "[TEST ROUGE] [AUTORITÉ - 13] \"Assez de comédie, Vivienne. Nous avons la reine empoisonnée et le registre. C'est vous.\"",
+        "de": "[ROTE PROBE] [AUTORITÄT - 13] \"Genug Theater, Vivienne. Wir haben die giftige Dame und das Hauptbuch. Sie haben sie getötet.\"",
+        "ru": "[КРАСНАЯ ПРОВЕРКА] [АВТОРИТЕТ - 13] «Хватит спектаклей, Вивьен. У нас есть отравленный ферзь и гроссбух. Вы убили ее.»",
+        "it": "[PROVA ROSSA] [AUTORITÀ - 13] \"Basta con la commedia, Vivienne. Abbiamo la regina avvelenata e il mastro. Sei stata tu.\"",
+        "pt": "[TESTE VERMELHO] [AUTORIDADE - 13] \"Chega de teatro, Vivienne. Temos a rainha envenenada e o livro-razão. Foi você.\"",
+        "ar": "[فحص أحمر حاسم] [السلطة - صعب 13] \"كفى مسرحيات يا فيفيان. ملكة الشطرنج المسمومة ودفتر الحسابات كلاهما بحوزتنا. أنتِ من قتلتها.\""
+      },
+      {
+        "en": "[Step away from Madame Vance]",
+        "id": "[Mundur dari hadapan Nyonya Vance]",
+        "zh": "[暂别薇薇安夫人]",
+        "ja": "[未亡人から距離を置く]",
+        "ko": "[비비안 부인에게서 물러난다]",
+        "es": "[Alejarse de Madame Vance]",
+        "fr": "[S'éloigner de Madame Vance]",
+        "de": "[Sich von Madame Vance entfernen]",
+        "ru": "[Отойти от мадам Вэнс]",
+        "it": "[Allontanati da Madame Vance]",
+        "pt": "[Afastar-se de Madame Vance]",
+        "ar": "[التراجع عن السيدة فانس]"
+      }
+    ]
+  },
+  "madame_confession_win": {
+    "speaker": {
+      "en": "The Breaking of the Ice",
+      "id": "Runtuhnya Topeng Keheningan",
+      "zh": "坚冰碎裂之时",
+      "ja": "仮面の崩壊",
+      "ko": "가면의 붕괴",
+      "es": "La Máscara se Rompe",
+      "fr": "Le Masque se Brise",
+      "de": "Das Brechen des Eises",
+      "ru": "Крах ледяной маски",
+      "it": "La Maschera si Infrange",
+      "pt": "A Máscara Cai",
+      "ar": "انهيار القناع الجليدي"
+    },
+    "text": {
+      "en": "Madame Vance staggers backward against the stone arch. Tears cut through the powdered chalk on her cheeks. 'Yes! Yes, I gave her the poisoned queen! But do you know what she did when I pressed the needle into her palm? She smiled. She thanked me. She looked into my eyes and said, *The pendulum is already set, Vivienne. Thank you for freeing me from the winding.* She wanted to die! She rigged the clock so the Syndicate would never get their war machine!'",
+      "id": "Nyonya Vance terhuyung ke belakang menabrak lengkungan batu. Air mata membelah bedak tebal di pipinya. 'Ya! Ya, aku yang memberikan ratu beracun itu! Tapi tahukah kamu apa yang dia lakukan saat aku menusukkan jarum ke tangannya? Dia tersenyum. Dia berterima kasih padaku! Dia berkata, *Pendulum sudah disetel, Vivienne. Terima kasih telah membebaskanku dari putaran pegas ini.* Dia yang ingin mati! Dia merancang kematiannya agar Sindikat tidak mendapatkan senjata pemusnah mereka!'",
+      "zh": "梵斯夫人踉跄后退，单薄的背脊撞在冰冷的石拱门上。滚烫的泪水冲刷过她敷满白粉的双颊。“没错！是我……是我亲手把那枚淬毒黑后递给她的！但你知道当我把毒针刺进她手心时，她做了什么吗？她在微笑！她含着泪谢谢我！她说：‘钟摆已经校准了，薇薇安，谢谢你解开我这具活发条的折磨。’是她自己一心求死！她亲手设计停摆，就是为了不让辛迪加把她的毕生心血制成屠杀工人的战争机器！”",
+      "ja": "ヴァンス夫人はよろめき、石のアーチに身を預けた。涙が白粉の頬を濡らす。「そうよ！私が毒のクイーンを渡したわ！でも針を掌に刺した時、彼女がどうしたか知ってる？笑ったのよ。感謝してくれたの！『振り子はもう合わせたわ、ヴィヴィアン。私をこのゼンマイの檻から解放してくれてありがとう』ってね！彼女は死を望んでいたのよ！自分の発明がシンジケートの戦争兵器にされるのを防ぐために！」",
+      "ko": "밴스 부인이 휘청거리며 석조 아치 기둥에 몸을 기댑니다. 눈물이 분칠한 뺨을 타고 흘러내립니다. '그래요! 내가 그 독침 퀸을 건넸어요! 하지만 바늘을 손바닥에 찔렀을 때 그녀가 무어라 했는지 아시나요? 웃었어요. 고맙다고 했소! *진자는 이미 맞춰졌어, 비비안. 태엽 감는 삶에서 날 해방해 줘서 고마워.* 그녀는 죽기를 원했던 거예요! 신디케이트가 살인 기계를 손에 넣지 못하게 스스로를 멈춘 거요!'",
+      "es": "Madame Vance se tambalea contra el arco de piedra. Las lágrimas surcan sus mejillas. '¡Sí! ¡Yo le di la reina envenenada! Pero cuando clavé la aguja, ella sonrió y dijo: *El péndulo ya está listo, Vivienne. Gracias por liberarme.* ¡Ella quería morir para que el Sindicato no tuviera su arma!'",
+      "fr": "Madame Vance vacille contre l'arche de pierre. Des larmes coulent sur sa poudre blanche. 'Oui ! C'est moi qui lui ai donné la reine empoisonnée ! Mais elle a souri en murmurant : *Le balancier est amorcé, Vivienne. Merci de me libérer des rouages.* Elle voulait mourir pour empêcher le Syndicat d'obtenir cette machine de guerre !'",
+      "de": "Madame Vance taumelt gegen den Steinbogen. Tränen bahnen sich Wege durch den Puder. 'Ja! Ich gab ihr die giftige Dame! Doch als die Nadel stach, lächelte sie: *Das Pendel ist gestellt, Vivienne. Danke, dass du mich aufziehst.* Sie wollte sterben, damit das Syndikat ihre Kriegsmaschine nicht bekommt!'",
+      "ru": "Мадам Вэнс оседает на каменную арку. Слезы текут по напудренным щекам. «Да! Я дала ей отравленного ферзя! Но когда игла вошла в ладонь, она улыбнулась и сказала: *Маятник уже взведен, Вивьен. Спасибо, что избавила меня от завода.* Она сама хотела умереть, чтобы Синдикат не получил орудие войны!»",
+      "it": "Madame Vance barcolla contro l'arco di pietra. Le lacrime rigano la cipria. 'Sì! Sono stata io a darle la regina avvelenata! Ma quando l'ago è penetrato, lei ha sorriso: *Il pendolo è pronto, Vivienne. Grazie per avermi liberata.* Voleva morire affinché il Sindacato non avesse l'arma!'",
+      "pt": "Madame Vance cambaleia contra o arco de pedra. Lágrimas lavam seu rosto. 'Sim! Fui eu quem deu a rainha envenenada! Mas ela sorriu e disse: *O pêndulo já está regulado, Vivienne. Obrigada por me libertar.* Ela queria morrer para que o Sindicato não ficasse com sua máquina!'",
+      "ar": "تترنح السيدة فانس لتسند ظهرها إلى القوس الحجري. تنحدر الدموع فوق مسحوق وجهها الشاحب: 'نعم! أنا من سلمتها قطعة الشطرنج المسمومة! لكن أتعلم ماذا فعلت حين غرست الإبرة في كفها؟ لقد ابتسمت وشكرتني قائلة: *البندول مضبوط بالفعل يا فيفيان، شكرًا لتحريري من دوران التروس.* لقد أرادت الموت لمنع النقابة من تحويل ابتكارها إلى آلة حرب دمار شامل!'"
+    },
+    "options": [
+      {
+        "en": "[DELIVER FINAL JUDGMENT: Arrest Madame Vance for Murder Under the Law]",
+        "id": "[PUTUSAN AKHIR: Borgol dan Tangkap Vivienne Vance atas Nama Hukum]",
+        "zh": "【下达最终裁决：以杀人重罪当场逮捕薇薇安·梵斯】",
+        "ja": "【最終審判：法の名のもとにヴィヴィアン・ヴァンスを逮捕する】",
+        "ko": "[최종 판결: 법의 이름으로 비비안 밴스를 살인 혐의로 체포한다]",
+        "es": "[VEREDICTO FINAL: Arrestar a Madame Vance según la Ley]",
+        "fr": "[VERDICT FINAL : Arrêter Madame Vance au nom de la Loi]",
+        "de": "[URTEIL: Madame Vance im Namen des Gesetzes verhaften]",
+        "ru": "[ПРИГОВОР: Арестовать мадам Вэнс за убийство по букве Закона]",
+        "it": "[VERDETTO FINALE: Arresta Madame Vance in nome della Legge]",
+        "pt": "[VEREDITO FINAL: Prender Madame Vance em nome da Lei]",
+        "ar": "[الحكم النهائي: اعتقال السيدة فيفيان فانس بتهمة القتل بحكم القانون]"
+      },
+      {
+        "en": "[DELIVER FINAL JUDGMENT: Hide the Perpetuum Ledger and Stamp it as Accidental Death]",
+        "id": "[PUTUSAN AKHIR: Sembunyikan Buku Besar dan Stempel sebagai Kecelakaan Kerja]",
+        "zh": "【下达最终裁决：隐匿机密账簿，赦免遗孀，将此案作为纯粹工伤意外归档】",
+        "ja": "【最終審判：秘密台帳を隠蔽し、未亡人を救って労働災害として処理する】",
+        "ko": "[최종 판결: 장부를 숨기고 미망인을 방면하며 단순 산재 사고로 종결한다]",
+        "es": "[VEREDICTO FINAL: Ocultar el libro mayor y cerrarlo como accidente]",
+        "fr": "[VERDICT FINAL : Dissimuler le registre et classer l'affaire en accident]",
+        "de": "[URTEIL: Das Hauptbuch verbergen und den Fall als Unfall archivieren]",
+        "ru": "[ПРИГОВОР: Скрыть гроссбух и списать гибель на производственную травму]",
+        "it": "[VERDETTO FINALE: Nascondi il mastro e archivia come incidente]",
+        "pt": "[VEREDITO FINAL: Ocultar o livro-razão e arquivar como acidente]",
+        "ar": "[الحكم النهائي: إخفاء دفتر الحسابات وإغلاق القضية كحادث عرضي برحمة]"
+      },
+      {
+        "en": "[DELIVER FINAL JUDGMENT: Expose the Syndicate and Corrupt Police to the Free Press]",
+        "id": "[PUTUSAN AKHIR: Bongkar Konspirasi Sindikat & Polisi Korup ke Surat Kabar Rakyat]",
+        "zh": "【下达最终裁决：将辛迪加罪证与警局受贿铁证公之于众，掀起风暴】",
+        "ja": "【最終審判：シンジケートと警察の癒着を民衆新聞へ告発し、全貌を暴く】",
+        "ko": "[최종 판결: 신디케이트와 경찰의 유착을 언론에 폭로하여 혁명을 촉발한다]",
+        "es": "[VEREDICTO FINAL: Denunciar al Sindicato y a la policía ante la prensa libre]",
+        "fr": "[VERDICT FINAL : Dénoncer le Syndicat et la police corrompue à la presse]",
+        "de": "[URTEIL: Das Syndikat und die korrupte Polizei an die freie Presse verraten]",
+        "ru": "[ПРИГОВОР: Передать улики на Синдикат и продажную полицию в газеты]",
+        "it": "[VERDETTO FINALE: Consegna le prove sulla corruzione del Sindacato alla stampa]",
+        "pt": "[VEREDITO FINAL: Expor o Sindicato e a polícia corrupta à imprensa livre]",
+        "ar": "[الحكم النهائي: فضح النقابة والشرطة الفاسدة عبر الصحافة المستقلة للرأي العام]"
+      }
+    ]
+  },
+  "ending_arrest": {
+    "speaker": {
+      "en": "The Letter of the Law",
+      "id": "Hukum yang Kaku & Dingin",
+      "zh": "律法铁腕之裁",
+      "ja": "厳格なる法の執行",
+      "ko": "차가운 법의 집행",
+      "es": "La Letra de la Ley",
+      "fr": "La Lettre de la Loi",
+      "de": "Der Buchstabe des Gesetzes",
+      "ru": "Буква Закона",
+      "it": "La Lettera della Legge",
+      "pt": "A Letra da Lei",
+      "ar": "حرفية القانون الصارم"
+    },
+    "text": {
+      "en": "You snap the cold steel manacles around Vivienne Vance's wrists. Inspector Graves stares in awe and grudging respect as you hand him the poisoned ivory queen. The law has been served. Tomorrow the newspapers will proclaim the brilliance of Precinct 4. But as you walk down into the rain, you wonder if justice was truly done to a woman whose soul died thirty years ago.",
+      "id": "Kamu memasang borgol baja dingin di pergelangan tangan Vivienne Vance. Inspektur Graves menatap takjub bercampur hormat saat kamu menyerahkan ratu gading beracun itu kepadanya. Hukum telah ditegakkan. Besok koran akan memuji kehebatan Distrik 4. Namun saat melangkah ke dalam hujan, kamu bertanya-tanya apakah keadilan benar-benar terwujud bagi wanita yang jiwanya telah mati tiga puluh tahun lalu.",
+      "zh": "你将冰冷的精钢手铐扣在薇薇安·梵斯纤细的手腕上。格雷夫斯警探接过淬毒象牙黑后时，眼中流露出惊异与由衷的敬畏。法律得到了伸张，明早的各大报纸头条必将盛赞第四警区的神勇。但当你独自走入寒雨中时，心头却不禁自问：对一个灵魂早在三十年前就已死去的女人而言，这算得上真正的正义吗？",
+      "ja": "冷たい鋼鉄の手錠をヴィヴィアン・ヴァンスの手首に嵌めた。毒針のクイーンを受け取ったグレイヴス警部は、驚嘆と敬意の眼差しを向けた。法は守られた。明日の朝刊は第4分署の手柄を大々的に報じるだろう。だが冷雨の中を歩きながら、あなたは自問する――30年前にすでに魂が死んでいた女に対して、これが本当に正義だったのかと。",
+      "ko": "비비안 밴스의 손목에 차가운 강철 수갑을 채웁니다. 그레이브스 형사는 독침 퀸을 건네받으며 경외 어린 시선으로 당신을 바라봅니다. 법은 집행되었습니다. 내일 아침 조간신문은 제4관할서의 눈부신 활약을 대서특필할 것입니다. 하지만 빗속을 걸어 내려가며 당신은 스스로에게 묻습니다. 30년 전에 이미 영혼이 죽어버린 여인에게, 이것이 과จริง 정의였는지를.",
+      "es": "Colocas las esposas de acero en las muñecas de Vivienne. Graves te mira con respeto al recibir la reina envenenada. La ley se ha cumplido. Los periódicos elogiarán al Distrito 4, pero te preguntas si se ha hecho justicia a un alma muerta hace treinta años.",
+      "fr": "Vous refermez les fers glacés sur les poignets de Vivienne. Graves vous observe avec un respect mêlé de crainte. La loi a triomphé. Mais en descendant sous la pluie, vous vous demandez si justice a vraiment été rendue à une femme brisée depuis trente ans.",
+      "de": "Sie legen Vivienne die Handschellen an. Graves blickt Sie mit Respekt an, als Sie die giftige Dame übergeben. Das Gesetz hat gesiegt. Doch im Regen fragen Sie sich, ob einer Frau Gerechtigkeit widerfahren ist, deren Seele vor dreißig Jahren starb.",
+      "ru": "Вы защелкиваете стальные наручники на запястьях Вивьен. Грейвс с благоговением принимает отравленного ферзя. Закон восторжествовал. Но спускаясь под холодный дождь, вы думаете: свершилось ли правосудие над женщиной, чья душа умерла тридцать лет назад?",
+      "it": "Stringi le manette d'acciaio ai polsi di Vivienne. Graves ti guarda con rispetto reverenziale. La legge è stata applicata. Ma scendendo nella pioggia ti chiedi se sia stata davvero fatta giustizia a un'anima morta trent'anni prima.",
+      "pt": "Você fecha as algemas frias nos pulsos de Vivienne. Graves olha com respeito relutante ao receber a rainha envenenada. A lei foi cumprida, mas você se pergunta se houve justiça para uma mulher cuja alma morreu há trinta anos.",
+      "ar": "تطبق الأصفاد الفولاذية الباردة حول معصمي فيفيان فانس. ينظر المفتش غريفز بإجلال واحترام وهو يتسلم قطعة الشطرنج المسمومة. لقد نُفذ القانون، وغدًا ستشيد الصحف بعبقرية المنطقة 4، لكنك تتساءل في صمت تحت المطر إن كانت هذه عدالة حقيقية لامرأة ماتت روحها قبل ثلاثين عامًا."
+    },
+    "options": [
+      {
+        "en": "[CASE CONCLUDED: View Final Case Dossier]",
+        "id": "[KASUS SELESAI: Lihat Ringkasan Akhir Dossier]",
+        "zh": "【案情终结：查阅终卷档案与调查总结】",
+        "ja": "【事件解決：最終事件調書を閲覧する】",
+        "ko": "[사건 종결: 최종 사건 기록부 열람]",
+        "es": "[CASO CONCLUIDO: Ver expediente final]",
+        "fr": "[AFFAIRE CLASSÉE : Consulter le dossier final]",
+        "de": "[FALL GELÖST: Abschlussbericht ansehen]",
+        "ru": "[ДЕЛО ЗАКРЫТО: Просмотреть итоговое досье]",
+        "it": "[CASO CONCLUSO: Visualizza il dossier finale]",
+        "pt": "[CASO CONCLUÍDO: Ver dossiê final do caso]",
+        "ar": "[القضية أغلقت: استعراض ملف القضية النهائي]"
+      }
+    ]
+  },
+  "ending_coverup": {
+    "speaker": {
+      "en": "The Sovereign Bureaucrat",
+      "id": "Sang Penentu Keadilan Moral",
+      "zh": "隐秘主权官僚",
+      "ja": "至高なる調停者",
+      "ko": "자비로운 조율자",
+      "es": "El Burócrata Soberano",
+      "fr": "Le Burocrate Souverain",
+      "de": "Der Souveräne Bürokrat",
+      "ru": "Властелин милосердия",
+      "it": "Il Burocrate Sovrano",
+      "pt": "O Burocrata Soberano",
+      "ar": "مهندس الرحمة والعدالة"
+    },
+    "text": {
+      "en": "You slide the Perpetuum Ledger into your inner coat pocket and slip the cyanide ampoule into your pocket. You look Graves in the eye and say, 'Industrial grease on the catwalk. Aurelia slipped. Stamp the papers.' Vivienne looks at you through her veil with tears of disbelief. You walk out into the dawn of District 7, not as an officer of the law, but as an architect of mercy.",
+      "id": "Kamu menyelipkan Buku Besar Perpetuum dan ampul sianida ke dalam saku mantel dalammu. Kamu menatap mata Graves dan berkata: 'Minyak mesin pada titian. Aurelia terpeleset murni kecelakaan. Stempel berkasnya.' Vivienne menatapmu dari balik kerudungnya dengan air mata kelegaan yang tak terkatakan. Kamu melangkah keluar menyambut fajar Distrik 7, bukan sebagai budak hukum tertulis, melainkan sebagai penentu belas kasih.",
+      "zh": "你将那份足以引发城市地震的《永动机总账簿》滑入风衣内袋，悄然收起剧毒安瓿。你直视格雷夫斯的眼睛沉声说道：“是走廊上的工业机油。奥蕾莉亚纯属失足意外。盖章结案吧。”薇薇安隔着黑纱泪流满面，难以置信地注视着你。你大步迈入第七区初升的晨光中——此时此刻，你不再是死板条文的附庸，而是执掌宽恕与仁慈的命运裁决者。",
+      "ja": "永久機関の秘密台帳と青酸アンプルをコートの内ポケットへ滑り込ませた。グレイヴスの目をまっすぐ見つめ、「通路の機械油だ。オレリアは足を滑らせた事故死。書類に判を押せ」と言い放つ。ヴィヴィアンは信じられない面持ちで涙を流した。あなたは第7区の夜明けの中へと歩き出す。単なる警察官としてではなく、慈悲の設計者として。",
+      "ko": "영구기관 비밀 장부와 청산가리 앰플을 코트 안주머니에 조용히 찔러 넣습니다. 그레이브스의 눈을 똑바로 응시하며 말합니다. '통로에 묻은 기계 기름 때문이오. 오렐리아는 발을 헛디뎌 추락했소. 도장 찍으시오.' 비비안이 눈물을 흘리며 멍하니 바라봅니다. 당신은 제7구역의 새벽빛을 향해 걸어 나갑니다. 융통성 없는 법의 집행자가 아니라, 자비의 설계자로서.",
+      "es": "Guardas el libro mayor y la ampolla en tu abrigo. Miras a Graves a los ojos: 'Grasa industrial en la pasarela. Accidente. Sella los papeles.' Vivienne llora de alivio. Sales al amanecer del Distrito 7, no como un autómata de la ley, sino como un arquitecto de la piedad.",
+      "fr": "Vous glissez le registre et l'ampoule dans votre manteau. Vous fixez Graves : 'Graisse industrielle. Chute accidentelle. Tamponnez.' Vivienne pleure de reconnaissance. Vous marchez vers l'aube du District 7, non comme un pion de la loi, mais comme un artisan de miséricorde.",
+      "de": "Sie stecken das Hauptbuch und die Giftampulle ein. Sie sehen Graves an: 'Maschinenfett auf dem Steg. Reiner Unfall. Stempeln Sie es ab.' Vivienne weint vor Dankbarkeit. Sie treten in den Morgen von Bezirk 7 – nicht als Diener des Gesetzes, sondern als Architekt der Gnade.",
+      "ru": "Вы прячете гроссбух во внутренний карман пальто. Вы смотрите Грейвсу прямо в глаза: «Машинное масло на мостках. Несчастный случай. Ставь штамп». Вивьен плачет от благодарности. Вы выходите в рассвет 7-го района не просто слугой закона, а вершителем милосердия.",
+      "it": "Inscatoli il mastro e l'ampolla nel cappotto. Fissi Graves: 'Olio sui camminamenti. Morte accidentale. Metti il timbro.' Vivienne piange di sollievo. Esci verso l'alba del Distretto 7, non come servo della legge, ma come architetto di misericordia.",
+      "pt": "Você guarda o livro-razão no casaco e encara Graves: 'Graxa na passarela. Acidente. Carimbe os papéis.' Vivienne chora de alívio. Você caminha para a aurora do Distrito 7 como um arquiteto da misericórdia.",
+      "ar": "تدس دفتر الحسابات وأمبول السم في جيب معطفك الداخلي. تنظر في عيني غريفز بثبات وتقول: 'شحم ماكينات على الممر، أوريليا انزلقت وماتت بحادث عرضي. اختم الأوراق.' تنهمر دموع فيفيان ممتنة. تمضي نحو فجر المنطقة 7 لا كعبد للنصوص الميتة، بل كمهندس للرحمة الحقيقية."
+    },
+    "options": [
+      {
+        "en": "[CASE CONCLUDED: View Final Case Dossier]",
+        "id": "[KASUS SELESAI: Lihat Ringkasan Akhir Dossier]",
+        "zh": "【案情终结：查阅终卷档案与调查总结】",
+        "ja": "【事件解決：最終事件調書を閲覧する】",
+        "ko": "[사건 종결: 최종 사건 기록부 열람]",
+        "es": "[CASO CONCLUIDO: Ver expediente final]",
+        "fr": "[AFFAIRE CLASSÉE : Consulter le dossier final]",
+        "de": "[FALL GELÖST: Abschlussbericht ansehen]",
+        "ru": "[ДЕЛО ЗАКРЫТО: Просмотреть итоговое досье]",
+        "it": "[CASO CONCLUSO: Visualizza il dossier finale]",
+        "pt": "[CASO CONCLUÍDO: Ver dossiê final do caso]",
+        "ar": "[القضية أغلقت: استعراض ملف القضية النهائي]"
+      }
+    ]
+  },
+  "ending_syndicate_bust": {
+    "speaker": {
+      "en": "The Revolutionary Firebrand",
+      "id": "Api Revolusi Rakyat",
+      "zh": "燎原革命者",
+      "ja": "革命の烽火",
+      "ko": "혁명의 불꽃",
+      "es": "La Chispa Revolucionaria",
+      "fr": "L'Étincelle Révolutionnaire",
+      "de": "Der Revolutionäre Funke",
+      "ru": "Искра Революции",
+      "it": "La Scintilla Rivoluzionaria",
+      "pt": "A Faísca Revolucionária",
+      "ar": "شعلة الثورة الشعبية"
+    },
+    "text": {
+      "en": "You refuse Graves's bribes and Vivienne's fatalism. At dawn, you hand the Perpetuum Ledger and the Syndicate bribery slips directly to the clandestine printing press of the District 7 Worker's Union. By midday, 50,000 gazettes hit the cobblestones. The corrupt precinct captain is ousted, the cartel's factories are paralyzed by general strike, and the truth of Aurelia Vance becomes an indelible spark of liberation.",
+      "id": "Kamu menolak suap Graves maupun kepasrahan Vivienne. Saat fajar menyingsing, kamu menyerahkan Buku Besar Perpetuum dan bukti suap langsung ke percetakan gelap Serikat Buruh Distrik 7. Tengah hari, 50.000 surat kabar membanjiri jalanan. Kapten korup digulingkan, pabrik kartel dilumpuhkan oleh pemogokan massal, dan kebenaran Aurelia Vance menjadi martir pembebasan rakyat.",
+      "zh": "你断然拒绝了格雷夫斯的分赃诱惑，也拒绝了薇薇安悲观的宿命论。黎明时分，你将《永动机总账簿》与警局受贿底单亲手递交给了第七区工人联合会的秘密地下印刷所。正午未至，五万份号外特刊铺天盖地撒满石板路！腐败的警长被当场革职查办，辛迪加财阀的军工流水线在全市总罢工中彻底瘫痪。奥蕾莉亚·梵斯的真相，化作了唤醒整座沉睡工业之城的燎原烈火！",
+      "ja": "あなたはグレイヴスの賄賂もヴィヴィアンの諦念も拒絶した。夜明け、永久機関の台帳と警官汚職の証拠を第7区労働組合の地下印刷所へ直接持ち込んだ。正午には5万部の号外が街中に撒かれ、腐敗した警察署長は失脚、シンジケートの兵器工場はゼネストで完全に麻痺した。オレリアの死は、解放への消えぬ火花となった。",
+      "ko": "당신은 그레이브스의 회유도, 비비안의 패배주의도 거부했습니다. 동틀 녘, 당신은 영구기관 장부와 경찰 수뇌부 수뢰 내역을 제7구역 노동조합의 지하 인쇄소로 직접 넘겼습니다. 정오가 되자 5만 부의 호외가 거리를 뒤덮었습니다. 부패한 서장은 쫓겨났고, 카르텔 공장은 총파업으로 마비되었으며, 오렐리아 밴스의 진실은 거대한 해방의 불씨가 되었습니다.",
+      "es": "Rechazas los sobornos y el fatalismo. Al alba entregas los libros a la prensa clandestina del Sindicato de Trabajadores. Al mediodía, 50.000 periódicos inundan las calles. El capitán corrupto es destituido y las fábricas del cartel son paralizadas por la huelga.",
+      "fr": "Vous refusez les pots-de-vin et le fatalisme. À l'aube, vous remettez les registres à l'imprimerie clandestine des travailleurs. À midi, 50 000 journaux inondent la ville. Le commissaire corrompu est déchu et la grève générale paralyse le cartel.",
+      "de": "Sie verweigern Schmiergelder und Fatalismus. Im Morgengrauen übergeben Sie das Hauptbuch der Gewerkschaftspresse. Am Mittag überfluten 50.000 Sonderblätter die Straßen. Der korrupte Polizeichef stürzt und die Fabriken stehen still.",
+      "ru": "Вы отвергаете взятки и фатализм. На рассвете вы передаете гроссбух в подпольную типографию профсоюза рабочих. К полудню 50 000 листовок наводняют город. Коррумпированное начальство смещено, заводы бастуют, а правда об Аурелии Вэнс зажигает восстание.",
+      "it": "Rifiuti le tangenti e il fatalismo. All'alba consegni i registri alla tipografia clandestina del sindacato operaio. A mezzogiorno 50.000 copie inondano la città, il capitano corrotto cade e lo sciopero generale paralizza il cartello.",
+      "pt": "Você rejeita o suborno e o fatalismo. Ao amanhecer entrega os livros à imprensa clandestina dos trabalhadores. Ao meio-dia 50.000 jornais cobrem a cidade, o capitão corrupto é deposto e a greve geral paralisa o cartel.",
+      "ar": "ترفض رشاوى غريفز وقدرية فيفيان. عند الفجر، تسلم دفتر الحسابات وملفات الفساد إلى المطبعة السرية لنقابة عمال المنطقة 7. بحلول الظهيرة، تنتشر خمسون ألف صحيفة في الشوارع، ويُطاح بالقادة الفاسدين وتشل مصانع الكارتل بإضراب عام تاريخي."
+    },
+    "options": [
+      {
+        "en": "[CASE CONCLUDED: View Final Case Dossier]",
+        "id": "[KASUS SELESAI: Lihat Ringkasan Akhir Dossier]",
+        "zh": "【案情终结：查阅终卷档案与调查总结】",
+        "ja": "【事件解決：最終事件調書を閲覧する】",
+        "ko": "[사건 종결: 최종 사건 기록부 열람]",
+        "es": "[CASO CONCLUIDO: Ver expediente final]",
+        "fr": "[AFFAIRE CLASSÉE : Consulter le dossier final]",
+        "de": "[FALL GELÖST: Abschlussbericht ansehen]",
+        "ru": "[ДЕЛО ЗАКРЫТО: Просмотреть итоговое досье]",
+        "it": "[CASO CONCLUSO: Visualizza il dossier finale]",
+        "pt": "[CASO CONCLUÍDO: Ver dossiê final do caso]",
+        "ar": "[القضية أغلقت: استعراض ملف القضية النهائي]"
+      }
+    ]
+  },
+  "graves_rhetoric_fail": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "Graves laughs harshly, coughing into his fist. 'Don't play grand interrogator with me, partner. You don't even remember your own badge number after last night's binge. Check the body or let me do my job.'",
+      "id": "Graves tertawa getir sambil batuk. 'Jangan sok jadi detektif agung di depanku, sobat. Nomor lencanamu saja kamu lupa setelah mabuk semalam. Periksa mayat itu atau biarkan aku yang bekerja.'",
+      "zh": "格雷夫斯冷笑一声，握拳咳嗽。“别在我面前装大审讯官了，搭档。昨晚狂喝之后你连自己警徽号都记不清了吧？去查尸体，不然就别挡着我办公。”",
+      "ja": "グレイヴスは冷笑し、咳き込んだ。「偉そうに尋問官気取るんじゃねえ。昨夜の酒でバッジ番号も忘れたくせに。遺体を調べるか、邪魔するな。」",
+      "ko": "그레이브스는 헛기침하며 비웃었습니다. '위대한 심문관 흉내 내지 마시오. 어젯밤 술로 배지 번호도 까먹었으면서. 시체나 보든가 방해 말든가 하시오.'",
+      "es": "Graves se ríe con aspereza tosiendo en su puño. 'No te hagas el gran inquisidor. Ni recuerdas tu placa tras la borrachera. Revisa el cadáver o déjame trabajar.'",
+      "fr": "Graves ricane et tousse dans son poing. 'Ne jouez pas les inquisiteurs. Vous ignorez votre matricule après votre cuite. Examinez le corps ou laissez-moi faire.'",
+      "de": "Graves lacht heiser in die Faust. 'Spielen Sie nicht den Großinquisitor. Nach dem Rausch wissen Sie nicht mal Ihre Dienstnummer. Prüfen Sie die Leiche oder lassen Sie mich arbeiten.'",
+      "ru": "Грейвс резко усмехается и кашляет в кулак. «Не строй из себя следователя. После пьянки ты свой жетон не помнишь. Осматривай труп или не мешай.»",
+      "it": "Graves ride aspramente tossendo nel pugno. 'Non fare il grande inquisitore. Non ricordi la matricola dopo la sbronza. Esamina il cadavere o lasciami fare.'",
+      "pt": "Graves ri com aspereza tossindo no punho. 'Não se faça de grande inquisidor. Nem lembra sua placa após a bebedeira. Examine o corpo ou deixe-me trabalhar.'",
+      "ar": "ضحك غريفز باستهزاء وسعل في قبضته: 'لا تمارس دور المحقق العظيم، فأنت لا تذكر رقم شارتك بعد خمر البارحة! افحص الجثة أو دعني أعمل.'"
+    },
+    "options": [
+      {
+        "en": "\"Fine. Let me inspect the corpse.\"",
+        "id": "\"Baiklah. Biarkan aku memeriksa jenazahnya.\"",
+        "zh": "“好吧，我去勘验尸体。”",
+        "ja": "「いいだろう。遺体を調べる。」",
+        "ko": "\"좋소. 시신을 확인하겠소.\"",
+        "es": "\"Bien. Dejadme inspeccionar el cuerpo.\"",
+        "fr": "\"Bien. Laissez-moi examiner le cadavre.\"",
+        "de": "\"Schön. Ich untersuche die Leiche.\"",
+        "ru": "«Ладно. Пойду осмотрю труп.»",
+        "it": "\"Va bene. Vado a esaminare il corpo.\"",
+        "pt": "\"Certo. Deixe-me examinar o corpo.\"",
+        "ar": "\"حسنًا، دعني أفحص الجثة بنفسي.\""
+      }
+    ]
+  },
+  "graves_debate_wound": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "Graves scowls, waving his lantern over the corpse. 'Maybe she fell from the upper gantry! Look, Detective, until you show me a second set of footprints or a weapon with someone else's fingerprints, the Captain wants this stamped as accidental death.'",
+      "id": "Graves merengut sambil melambaikan lenteranya. 'Mungkin dia jatuh dari lantai atas! Dengar Detektif, sampai kamu bisa menunjukkan jejak kaki kedua atau senjata dengan sidik jari orang lain, Kapten ingin kasus ini dicap sebagai kecelakaan.'",
+      "zh": "格雷夫斯皱眉晃了晃提灯。“说不定她是从上层高架走道跌落的！听着，除非你拿出第二副脚印或凶器指纹，否则队长就定性为意外身亡。”",
+      "ja": "グレイヴスは顔をしかめてカンテラを掲げた。「上層通路から落ちたのかも知れんだろ！第2の足跡か指紋付きの凶器が出ない限り、隊長は事故死で処理する腹だ。」",
+      "ko": "그레이브스는 찌푸리며 등불을 비췄습니다. '상층 통로에서 떨어졌을 수도 있잖소! 제2의 발자국이나 지문 묻은 흉기가 없는 한 서장님은 사고사로 처리할 거요.'",
+      "es": "Graves frunce el ceño agitando la linterna. '¡Quizá cayó de la pasarela! Sin segundas huellas o arma con huellas ajenas, el capitán quiere que sea accidente.'",
+      "fr": "Graves se renfrogne en agitant sa lanterne. 'Peut-être a-t-elle chuté de la passerelle ! Sans autres empreintes ou arme, le Capitaine veut classer en accident.'",
+      "de": "Graves finstert und schwenkt die Laterne. 'Vielleicht stürzte sie vom oberen Steg! Ohne zweite Spuren oder Waffe mit Fingerabdrücken will der Captain einen Unfall.'",
+      "ru": "Грейвс хмурится и светит фонарем. «Может, она упала с верхних мостков! Пока нет вторых следов или оружия с чужими пальцами, капитан требует оформить несчастный случай.»",
+      "it": "Graves si acciglia agitando la lanterna. 'Forse è caduta dal camminamento! Senza una seconda serie d'impronte o un'arma, il Capitano vuole l'incidente.'",
+      "pt": "Graves franze a testa com a lanterna. 'Talvez ela tenha caído da passarela! Sem outras pegadas ou arma com digitais, o Capitão quer isso como acidente.'",
+      "ar": "قطب غريفز ملوحًا بفانوسه: 'ربما سقطت من الممشى العلوي! ما لم تحضر آثار أقدام أخرى أو سلاحًا يحمل بصمات، فإن القائد يريده حادثًا عرضيًا.'"
+    },
+    "options": [
+      {
+        "en": "\"I will find the evidence. Just stay out of my way.\"",
+        "id": "\"Aku akan temukan buktinya. Menyingkirlah dari jalanku.\"",
+        "zh": "“我会找到证据的，别挡我的路。”",
+        "ja": "「証拠は見つける。邪魔をするな。」",
+        "ko": "\"증거는 내가 찾겠소. 걸리적거리지나 마시오.\"",
+        "es": "\"Encontraré las pruebas. Solo no te metas en mi camino.\"",
+        "fr": "\"Je trouverai les preuves. Ne restez pas dans mon chemin.\"",
+        "de": "\"Ich werde die Beweise finden. Gehen Sie mir nur aus dem Weg.\"",
+        "ru": "«Я найду улики. Не стой на пути.»",
+        "it": "\"Troverò le prove. Tu non intralciarmi.\"",
+        "pt": "\"Eu encontrarei as provas. Apenas saia do meu caminho.\"",
+        "ar": "\"سأجد الدليل، فقط ابتعد عن طريقي.\""
+      }
+    ]
+  },
+  "graves_last_seen": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "'The widow. Madame Vivienne. She claims she brought him peppermint tea at midnight, then went down to the parish rectory for all-night vigil prayers. Convenient alibi, if you ask me.'",
+      "id": "'Sang janda. Nyonya Vivienne. Dia mengaku membawakan teh peppermint untuk Aurelia tengah malam tadi, lalu turun ke kapel untuk doa malam. Alibi yang sangat rapi jika kamu tanya pendapatku.'",
+      "zh": "“是未亡人薇薇安夫人。她说午夜给奥蕾莉亚送了薄荷茶，之后便下楼到教区祈祷守夜。要我说，这不在场证明可真方便。”",
+      "ja": "「未亡人のヴィヴィアン夫人だ。真夜中にペパーミントティーを届け、徹夜祈祷へ行ったと主張している。随分都合のいいアリバイだがな。」",
+      "ko": "\"미망인 비비안 부인이오. 자정에 박하차를 가져다주고 밤샘 기도를 드리러 사제관으로 내려갔다고 하오. 참 편리한 알리바이요.\"",
+      "es": "'La viuda. Madame Vivienne. Dice que llevó té de menta a medianoche y bajó a rezar la vigilia. Coartada muy conveniente.'",
+      "fr": "'La veuve. Madame Vivienne. Elle dit avoir apporté du thé à minuit avant de descendre veiller en prière. Bien commode.'",
+      "de": "'Die Witwe. Madame Vivienne. Sie behauptet, um Mitternacht Pfefferminztee gebracht zu haben und dann zur Nachtwache gegangen zu sein. Sehr praktisch.'",
+      "ru": "«Вдова. Мадам Вивьен. Утверждает, что принесла чай в полночь, а затем пошла в часовню на всенощную. Удобное алиби.»",
+      "it": "'La vedova. Madame Vivienne. Dice di aver portato tè alla menta a mezzanotte e di essere scesa per la veglia. Molto comodo.'",
+      "pt": "'A viúva. Madame Vivienne. Diz ter levado chá de hortelã à meia-noite e descido para a vigília. Álibi conveniente.'",
+      "ar": "'الأرملة السيدة فيفيان. تدعي أنها قدمت لها شاي النعناع بمنتصف الليل ثم نزلت لصلاة الليل بالكنيسة. حجة مريحة ومريبة.'"
+    },
+    "options": [
+      {
+        "en": "\"I should speak with Madame Vance directly.\"",
+        "id": "\"Aku harus bicara langsung dengan Nyonya Vance.\"",
+        "zh": "“我得直接找薇薇安夫人谈谈。”",
+        "ja": "「ヴィヴィアン夫人と直接話そう。」",
+        "ko": "\"비비안 부인과 직접 대면해야겠소.\"",
+        "es": "\"Hablaré con Madame Vance directamente.\"",
+        "fr": "\"Je devrais parler à Madame Vance directement.\"",
+        "de": "\"Ich sollte direkt mit Madame Vance sprechen.\"",
+        "ru": "«Мне нужно поговорить с мадам Вэнс лично.»",
+        "it": "\"Dovrei parlare direttamente con Madame Vance.\"",
+        "pt": "\"Devo falar diretamente com Madame Vance.\"",
+        "ar": "\"يجب أن أستجوب السيدة فانس مباشرة.\""
+      }
+    ]
+  },
+  "graves_ledger_hunt": {
+    "speaker": {
+      "en": "Inspector Graves",
+      "id": "Inspektur Graves",
+      "zh": "格雷夫斯警探",
+      "ja": "グレイヴス警部",
+      "ko": "그레이브스 형사",
+      "es": "Inspector Graves",
+      "fr": "Inspecteur Graves",
+      "de": "Inspektor Graves",
+      "ru": "Инспектор Грейвс",
+      "it": "Ispettore Graves",
+      "pt": "Inspetor Graves",
+      "ar": "المفتش غريفز"
+    },
+    "text": {
+      "en": "'If I knew where it was, I wouldn't be freezing my kidneys off in this tower! Vance had a hidden floorboard safe somewhere beneath the secondary escapement. But the lock is an alchemical three-tumbler dial.'",
+      "id": "'Kalau aku tahu di mana tempatnya, aku tidak akan kedinginan sampai ke tulang di menara ini! Vance punya brankas tersembunyi di bawah lantai ruang escapement. Tapi kuncinya kombinasi tiga putaran alkimia.'",
+      "zh": "“我要是知道在哪，何必在这冻掉腰子！奥蕾莉亚在副擒纵机构下的地板藏了保险箱，但那是三圈炼金滚轮密码锁。”",
+      "ja": "「場所を知ってりゃこんな凍える塔に突っ立ってねえよ！ヴァンスは副脱進機下の床板に金庫を隠していた。だが3重の錬金ダイヤル錠だ。」",
+      "ko": "\"장소를 알았다면 이 탑에서 얼어붙고 있겠소? 밴스는 보조 탈진기 바닥 밑에 금고를 숨겨뒀소. 3중 연금술 다이얼 자물쇠요.\"",
+      "es": "'¡Si lo supiera no me estaría congelando aquí! Vance tenía una caja oculta bajo el piso tras el escape. Pero tiene cerradura de tres diales.'",
+      "fr": "'Si je le savais, je ne gèlerais pas ici ! Vance avait un coffre sous le plancher sous l'échappement. Mais c'est un cadran à trois disques.'",
+      "de": "'Wüsste ich das, würde ich nicht hier frieren! Vance hatte einen Bodentresor unter dem Werk. Doch das Schloss hat drei Alchemie-Drehscheiben.'",
+      "ru": "«Знал бы я, не мерз бы здесь! У Вэнс был тайник под полом за спусковым механизмом. Но там трехдисковый алхимический замок.»",
+      "it": "'Se lo sapessi non sarei qui a congelare! La Vance aveva una cassaforte nel pavimento sotto lo scappamento con tre dischi alchemici.'",
+      "pt": "'Se eu soubesse não estaria congelando aqui! Vance tinha um cofre no chão sob o escape com fechadura de três tambores.'",
+      "ar": "'لو كنت أعلم مكانه لما تجمدت هنا! كان لدى فانس خزنة تحت ألواح الأرضية لكن قفلها مركب من ثلاثة أقراص كيميائية.'"
+    },
+    "options": [
+      {
+        "en": "\"I'll inspect the floorboards.\"",
+        "id": "\"Aku akan periksa papan lantainya.\"",
+        "zh": "“我去搜查地板。”",
+        "ja": "「床板を調べてみよう。」",
+        "ko": "\"바닥판을 살펴보겠소.\"",
+        "es": "\"Inspeccionaré los tablones.\"",
+        "fr": "\"Je vais inspecter le plancher.\"",
+        "de": "\"Ich werde die Dielen untersuchen.\"",
+        "ru": "«Я осмотрю половицы.»",
+        "it": "\"Ispezionerò le assi del pavimento.\"",
+        "pt": "\"Vou inspecionar o assoalho.\"",
+        "ar": "\"سأفحص ألواح الأرضية.\""
+      }
+    ]
+  },
+  "pendulum_gear_crush": {
+    "speaker": {
+      "en": "Mechanical Hazard",
+      "id": "Bahaya Mekanik",
+      "zh": "齿轮绞夹危险",
+      "ja": "歯車の危険",
+      "ko": "기계 장치 위협",
+      "es": "Peligro Mecánico",
+      "fr": "Danger Mécanique",
+      "de": "Gefahr im Getriebe",
+      "ru": "Механическая ловушка",
+      "it": "Pericolo Meccanico",
+      "pt": "Perigo Mecânico",
+      "ar": "خطر ميكانيكي"
+    },
+    "text": {
+      "en": "You lean too close to the oscillating gear train. A brass spur catches your sleeve, violently jerking you toward the teeth! You wrench yourself free just in time (-1 Health)!",
+      "id": "Kamu membungkuk terlalu dekat ke susunan roda gigi yang berosilasi. Roda gigi kuningan menyambar lengan bajumu, menyentakmu ke arah gerigi tajam! Kamu berhasil melepaskan diri tepat waktu (-1 Daya Tahan)!",
+      "zh": "你靠得太近，转动的黄铜齿轮猛地绞住了衣袖，差点将你卷入齿列！你奋力挣脱（生命值 -1）！",
+      "ja": "歯車列に近付きすぎた。真鍮の突起が袖を噛み、鋭い歯車へ引きずり込もうとする！間一髪で引き剥がした（体力 -1）！",
+      "ko": "톱니바퀴 축에 너무 접근했습니다. 황동 톱니가 소매를 낚아채 끌어당깁니다! 필사적으로 몸을 빼냈습니다 (체력 -1)!",
+      "es": "Te inclinas demasiado. ¡Un diente de latón atrapa tu manga tirando hacia los engranajes! Te liberas a tiempo (-1 Salud).",
+      "fr": "Trop près du rouage, une dent en laiton happe votre manche et vous tire ! Vous vous dégagez de justesse (-1 Santé).",
+      "de": "Sie beugen sich zu nah ran. Ein Zahn erfasst den Ärmel und zerrt Sie ins Räderwerk! Sie reißen sich los (-1 Gesundheit).",
+      "ru": "Ты наклоняешься слишком близко. Шестерня цепляет рукав и дергает в зубья! Едва успеваешь вырваться (-1 Здоровье).",
+      "it": "Ti sporgi troppo. Un dente d'ottone aggancia la manica trascinandoti verso gli ingranaggi! Ti liberi a stento (-1 Salute).",
+      "pt": "Você se inclina demais. Um dente puxa sua manga para as engrenagens! Você se liberta no último segundo (-1 Saúde).",
+      "ar": "اقتربت من التروس فعلق كمك بأسنان الترس وسحبك نحو المحور الحاد! انتزعت نفسك بأعجوبة (-1 صحة)!"
+    },
+    "options": [
+      {
+        "en": "\"That was reckless of me.\"",
+        "id": "\"Tindakan yang ceroboh.\"",
+        "zh": "“刚才太莽撞了。”",
+        "ja": "「軽率だったな。」",
+        "ko": "\"경솔했군.\"",
+        "es": "\"Eso fue imprudente.\"",
+        "fr": "\"C'était imprudent.\"",
+        "de": "\"Das war leichtsinnig.\"",
+        "ru": "«Это было неосторожно.»",
+        "it": "\"È stata un'imprudenza.\"",
+        "pt": "\"Isso foi imprudente.\"",
+        "ar": "\"كان ذلك تصرفًا طائشًا.\""
+      }
+    ]
+  },
+  "pendulum_pry_fail": {
+    "speaker": {
+      "en": "Forensic Attempt",
+      "id": "Kegagalan Otopsi",
+      "zh": "强行掰动受创",
+      "ja": "検死の失敗",
+      "ko": "부검 시도 실패",
+      "es": "Intento Forense Fallido",
+      "fr": "Tentative Ratée",
+      "de": "Misslungener Versuch",
+      "ru": "Неудачная попытка",
+      "it": "Tentativo Fallito",
+      "pt": "Tentativa Fracassada",
+      "ar": "محاولة فحص فاشلة"
+    },
+    "text": {
+      "en": "The cadaveric spasm is like cast iron. As you force her fingers, a concealed needle pricks your index finger, burning your flesh with neurotoxin (-2 Health, -1 Morale)!",
+      "id": "Spasme mayat sangat kaku. Saat kamu memaksa membuka jemarinya, jarum beracun yang tersembunyi menyengat jarimu! Kamu tersentak kesakitan saat racun membakar kulitmu (-2 Daya Tahan, -1 Kewarasan).",
+      "zh": "尸僵如铁。你强行掰开手指时，隐藏的毒针刺破了食指，神经毒素灼烧皮肉（生命值 -2，士气 -1）！",
+      "ja": "死後痙攣は鉄のようだった。指を無理に開こうとした瞬間、隠し針が指を刺し神経毒が走る（体力 -2、正気度 -1）！",
+      "ko": "시체 경직이 쇠처럼 단단합니다. 억지로 손가락을 펴자 숨겨진 바늘이 손가락을 찔러 독이 번집니다 (체력 -2, 사기 -1)!",
+      "es": "El espasmo es como hierro. Al forzar los dedos, una aguja oculta pincha tu índice con neurotoxina (-2 Salud, -1 Moral).",
+      "fr": "Le spasme est dur comme fer. En forçant les doigts, une aiguille cachée vous pique de neurotoxine (-2 Santé, -1 Moral).",
+      "de": "Der Leichenkrampf ist wie Gusseisen. Beim Aufbiegen sticht eine verdeckte Nadel mit Neurotoxin zu (-2 Gesundheit, -1 Moral)!",
+      "ru": "Трупное окоченение словно железо. При попытке разжать пальцы скрытая игла ранит руку нейротоксином (-2 Здоровье, -1 Мораль)!",
+      "it": "Lo spasmo è come ghisa. Forzando le dita, un ago nascosto ti punge bruciando di neurotossina (-2 Salute, -1 Morale).",
+      "pt": "O espasmo é como ferro. Uma agulha escondida fura seu dedo com neurotoxina (-2 Saúde, -1 Moral).",
+      "ar": "التشنج الجنائزي صلب كالفولاذ، فانطلقت إبرة مخفية وخزت إصبعك بالسم العصبي (-2 صحة، -1 معنويات)!"
+    },
+    "options": [
+      {
+        "en": "\"Damn my trembling hands...\"",
+        "id": "\"Sialan! Tangan terkutuk ini dipasangi perangkap!\"",
+        "zh": "“可恶，手掌里竟装了毒针陷阱……”",
+        "ja": "「くそっ、手に罠が仕組まれていたか……」",
+        "ko": "\"손에 함정이 설치되어 있었군...\"",
+        "es": "\"¡Maldición, mis manos temblorosas!\"",
+        "fr": "\"Maudites mains tremblantes...\"",
+        "de": "\"Verdammt, eine Falle...\"",
+        "ru": "«Черт, рука была с ловушкой!»",
+        "it": "\"Maledette mani tremanti...\"",
+        "pt": "\"Droga de mãos trêmulas...\"",
+        "ar": "\"سحقًا، كانت اليد مفخخة بسم!\""
+      }
+    ]
+  },
+  "pendulum_esoterica_win": {
+    "speaker": {
+      "en": "Occult Deduction",
+      "id": "Deduksi Okultisme Horologis",
+      "zh": "钟表秘教玄学推演",
+      "ja": "時計神秘主義の推論",
+      "ko": "오컬트 시계학적 추론",
+      "es": "Deducción Oculta",
+      "fr": "Déduction Occulte",
+      "de": "Okkulte Deduktion",
+      "ru": "Оккультная дедукция",
+      "it": "Deduzione Occulta",
+      "pt": "Dedução Oculta",
+      "ar": "استنتاج الطوائف الباطنية"
+    },
+    "text": {
+      "en": "Beneath the blood-crusted collar lies an alchemical mark: a circle quartered by three intersecting crescents. The seal of 'The Order of the Pale Meridian'—a secret cabal of horologists who believed time itself could be reversed through mechanical resonance.",
+      "id": "Di balik kerahnya yang berlumuran darah terdapat segel alkimia: lingkaran yang dibelah oleh tiga bulan sabit bersilangan. Simbol 'Ordo Meridian Pucat'—perkumpulan rahasia para pembuat jam yang percaya aliran waktu dapat dibalikkan melalui resonansi mekanik.",
+      "zh": "在血迹凝固的领口下藏着炼金印记：被三道新月相交的圆环。“苍白子午线密教”的徽章——深信机械共振可逆转光阴的秘密钟表结社。",
+      "ja": "血染の襟の下に錬金術の刻印がある。3つの三日月が交差する円。機械の共鳴で時間を逆転できると信じる「蒼白の子午線教団」の証印だ。",
+      "ko": "피 묻은 옷깃 아래 연금술 표식이 보입니다. 세 개의 초승달이 교차하는 원형 인장. 공명으로 시간을 되돌릴 수 있다고 믿는 '창백한 자오선 교단'의 인장입니다.",
+      "es": "Bajo el cuello ensangrentado hay una marca alquímica: un círculo con tres lunas. El sello de la 'Orden del Meridiano Pálido', que creía poder revertir el tiempo.",
+      "fr": "Sous le col ensanglanté gît une marque alchimique : un cercle coupé de trois croissants. Le sceau de 'L'Ordre du Méridien Pâle', obsédé par l'inversion du temps.",
+      "de": "Unter dem Kragen liegt ein Alchemie-Zeichen: ein von drei Mondsicheln geteilter Kreis. Das Siegel des 'Ordens des Bleichen Meridians', der die Zeit umkehren wollte.",
+      "ru": "Под воротником скрыт алхимический символ: круг с тремя полумесяцами. Печать «Ордена Бледного Меридиана», верившего в обращение времени вспять.",
+      "it": "Sotto il colletto c'è un marchio alchemico: cerchio con tre mezzelune. Il sigillo dell'Ordine del Meridiano Pallido', che credeva di invertire il tempo.",
+      "pt": "Sob o colarinho ensanguentado há uma marca alquímica: o selo da 'Ordem do Meridiano Pálido', que acreditava na reversão do tempo.",
+      "ar": "تحت الياقة الدامية يكمن نقش كيميائي: دائرة تقطعها ثلاثة أهلة، ختم 'طائفة خط الزوال الشاحب' التي اعتقدت إمكانية عكس الزمن بالرنين."
+    },
+    "options": [
+      {
+        "en": "\"She was trying to build a machine that could un-live hours.\"",
+        "id": "\"Dia sedang merakit mesin yang dapat memutar balik waktu.\"",
+        "zh": "“她竟在制造能倒流时间的机械装置。”",
+        "ja": "「彼女は時を巻き戻す機械を造ろうとしていたのか。」",
+        "ko": "\"시간을 되돌리는 기계를 만들려 했군.\"",
+        "es": "\"Estaba intentando construir una máquina para des-vivir las horas.\"",
+        "fr": "\"Elle tentait de construire une machine pour remonter le temps.\"",
+        "de": "\"Sie baute eine Maschine, um Stunden ungeschehen zu machen.\"",
+        "ru": "«Она пыталась создать машину, поворачивающую время вспять.»",
+        "it": "\"Cercava di costruire una macchina per riavvolgere il tempo.\"",
+        "pt": "\"Ela tentava construir uma máquina para retroceder o tempo.\"",
+        "ar": "\"كانت تحاول بناء آلة تسترجع الساعات الضائعة.\""
+      }
+    ]
+  },
+  "pendulum_esoterica_fail": {
+    "speaker": {
+      "en": "Occult Deduction",
+      "id": "Deduksi Buntu",
+      "zh": "秘教解读毫无头绪",
+      "ja": "神秘解読の行き詰まり",
+      "ko": "오컬트 해석 실패",
+      "es": "Deducción Frustrada",
+      "fr": "Impasse Occulte",
+      "de": "Rätselhafte Runen",
+      "ru": "Оккультный тупик",
+      "it": "Deduzione Frustrata",
+      "pt": "Impasse Oculto",
+      "ar": "غموض الرموز"
+    },
+    "text": {
+      "en": "The scratches look like random surgical cuts or lacerations from broken clock springs. You cannot make sense of the geometry; it just produces a throbbing headache in your temples.",
+      "id": "Goresan itu tampak seperti luka acak akibat pecahan pegas jam. Kamu tidak bisa memahami geometrinya; kepalamu hanya berdenyut nyeri.",
+      "zh": "刻痕看起来如同弹簧崩裂造成的随机划痕。你看不透其中的几何含义，太阳穴隐隐作痛。",
+      "ja": "傷跡は壊れたゼンマイによる乱雑な切り傷に見える。幾何学の意味が掴めず、こめかみが痛むだけだ。",
+      "ko": "상처는 튕겨 나온 태엽에 긁힌 무작위 흉터처럼 보입니다. 기하학적 의미를 알 수 없어 두통만 밀려옵니다.",
+      "es": "Los arañazos parecen cortes al azar de resortes rotos. No logras descifrar la geometría y te duele la cabeza.",
+      "fr": "Les éraflures ressemblent à de banales entailles de ressorts. Impossible d'en tirer du sens, les tempes battent.",
+      "de": "Die Kratzer wirken wie Schnittwunden geborstener Federn. Sie erkennen keinen Sinn, die Schläfen pochen.",
+      "ru": "Царапины кажутся случайными порезами от пружин. Ты не видишь смысла, только виски ломит от боли.",
+      "it": "I graffi sembrano tagli casuali di molle spezzate. Non cogli la geometria; ricavi solo mal di testa.",
+      "pt": "Os arranhões parecem cortes de molas partidas. Você não decifra a geometria e sente dor de cabeça.",
+      "ar": "تبدو الخدوش كجروح عشوائية من زنبركات محطمة ولم تستوعب هندستها بل أصابك صداع نابض."
+    },
+    "options": [
+      {
+        "en": "[Blink and look away]",
+        "id": "[Kedipkan mata dan berpaling]",
+        "zh": "【眨眼移开视线】",
+        "ja": "【瞬きして視線を逸らす】",
+        "ko": "[눈을 깜빡이며 시선을 돌린다]",
+        "es": "[Parpadear y apartar la vista]",
+        "fr": "[Cligner des yeux et détourner le regard]",
+        "de": "[Blinzeln und wegschauen]",
+        "ru": "[Моргнуть и отвести взгляд]",
+        "it": "[Sbatti le palpebre e guarda altrove]",
+        "pt": "[Piscar e desviar o olhar]",
+        "ar": "[إشاحة النظر]"
+      }
+    ]
+  },
+  "watch_open_fail": {
+    "speaker": {
+      "en": "Mechanical Mistake",
+      "id": "Kesalahan Mekanik",
+      "zh": "机械拆解失手",
+      "ja": "機械操作の失敗",
+      "ko": "기계적 실수",
+      "es": "Error Mecánico",
+      "fr": "Erreur Mécanique",
+      "de": "Mechanischer Fehler",
+      "ru": "Механическая оплошность",
+      "it": "Errore Meccanico",
+      "pt": "Erro Mecânico",
+      "ar": "خطأ ميكانيكي عارض"
+    },
+    "text": {
+      "en": "Your thumbnail slips on the oiled bevel, snapping the delicate hinge. The hairspring flies out like a coiled brass viper and cuts your hand (-1 Health)!",
+      "id": "Kukumu tergelincir pada engsel yang berminyak. Pegas rambut melesat bagai ular kuningan yang marah dan menyayat jarimu (-1 Daya Tahan)!",
+      "zh": "指甲在沾满机油的斜边上一滑，脆弱的精密铰链崩断。游丝如黄铜毒蛇猛烈弹射，割伤了你的手（生命值 -1）！",
+      "ja": "油の縁で爪が滑り、繊細な蝶番を弾き飛ばした。ヒゲゼンマイが真鍮の毒蛇のように飛び出し手を切った（体力 -1）！",
+      "ko": "기름 묻은 모서리에서 손톱이 미끄러져 경첩이 부러졌습니다. 헤어스프링이 튀어 올라 손등을 베었습니다 (체력 -1)!",
+      "es": "Tu uña resbala y rompe la bisagra. El espiral salta como una víbora cortando tu mano (-1 Salud).",
+      "fr": "Votre ongle glisse et brise la charnière. Le spiral jaillit comme une vipère et vous entaille la main (-1 Santé).",
+      "de": "Ihr Nagel rutscht ab und bricht das Scharnier. Die Spiralfeder schnellt heraus und schneidet die Hand (-1 Gesundheit).",
+      "ru": "Ноготь соскальзывает с масляного края, ломая петлю. Волосок баланса вылетает и режет ладонь (-1 Здоровье).",
+      "it": "L'unghia scivola rompendo la cerniera. La spirale schizza fuori tagliandoti la mano (-1 Salute).",
+      "pt": "Sua unha escorrega e quebra a dobradiça. A mola espiral salta cortando sua mão (-1 Saúde).",
+      "ar": "انزلق ظفرك على الحافة الزيتية فانكسر المفصل الدقيق، وطفر زنبرك الشعر الحاد جريحًا يدك (-1 صحة)!"
+    },
+    "options": [
+      {
+        "en": "\"Ouch! The spring cut my finger.\"",
+        "id": "\"Aduh! Pegasnya menyayat tanganku.\"",
+        "zh": "“好疼！被发条割伤了。”",
+        "ja": "「痛っ！ゼンマイで手を切った。」",
+        "ko": "\"아야! 스프링에 손이 베였군.\"",
+        "es": "\"¡Ay! El resorte me ha cortado.\"",
+        "fr": "\"Aïe ! Le ressort m'a coupé la main.\"",
+        "de": "\"Autsch! Die Feder hat mich geschnitten.\"",
+        "ru": "«Ай! Пружина порезала палец.»",
+        "it": "\"Ahi! La molla mi ha tagliato la mano.\"",
+        "pt": "\"Ai! A mola cortou meu dedo.\"",
+        "ar": "\"آخ! جرحني الزنبرك الحاد في يدي.\""
+      }
+    ]
+  },
+  "examine_watch_done": {
+    "speaker": {
+      "en": "Inventory Update",
+      "id": "Inventaris Diperbarui",
+      "zh": "证物妥善归档",
+      "ja": "遺留品保管",
+      "ko": "소지품 갱신",
+      "es": "Inventario Actualizado",
+      "fr": "Inventaire Mis à Jour",
+      "de": "Inventar Aktualisiert",
+      "ru": "Вещдок сохранен",
+      "it": "Inventario Aggiornato",
+      "pt": "Inventário Atualizado",
+      "ar": "حفظ المضبوطات"
+    },
+    "text": {
+      "en": "You wrap the pocket watch in a clean silk handkerchief and slip it into your trenchcoat pocket.",
+      "id": "Kamu membungkus jam saku dengan saputangan sutra dan menyimpannya di saku mantel detektifmu.",
+      "zh": "你用干净的丝帕将怀表包裹妥当，收入风衣口袋深处。",
+      "ja": "懐中時計を清潔な絹のハンカチで包み、トレンチコートのポケットに収めた。",
+      "ko": "회중시계를 깨끗한 비단 손수건으로 감싸 트렌치코트 안주머니에 보관했습니다.",
+      "es": "Envuelves el reloj en un pañuelo de seda y lo guardas en tu gabardina.",
+      "fr": "Vous enveloppez la montre dans un mouchoir de soie propre et la glissez dans votre manteau.",
+      "de": "Sie wickeln die Taschenuhr in ein Seidentuch und stecken sie in den Mantel.",
+      "ru": "Ты заворачиваешь карманные часы в шелковый платок и убираешь во внутренний карман пальто.",
+      "it": "Avvolgi l'orologio in un fazzoletto di seta e lo infili nel cappotto.",
+      "pt": "Você embrulha o relógio num lenço de seda e o guarda no sobretudo.",
+      "ar": "قمت بلف ساعة الجيب بمنديل حريري نظيف ودسستها بعناية داخل جيب معطفك."
+    },
+    "options": [
+      {
+        "en": "[Continue investigation]",
+        "id": "[Lanjutkan penyelidikan]",
+        "zh": "【继续现场勘验】",
+        "ja": "【現場検証を続ける】",
+        "ko": "[수사를 계속한다]",
+        "es": "[Continuar investigación]",
+        "fr": "[Poursuivre l'enquête]",
+        "de": "[Untersuchung fortsetzen]",
+        "ru": "[Продолжить расследование]",
+        "it": "[Continua l'indagine]",
+        "pt": "[Continuar investigação]",
+        "ar": "[مواصلة التحقيق]"
+      }
+    ]
+  },
+  "examine_balcony_start": {
+    "speaker": {
+      "en": "The Precipice of Saint Irene",
+      "id": "Tepi Menara Saint Irene",
+      "zh": "圣艾琳雨夜露台",
+      "ja": "聖アイリーンの高所テラス",
+      "ko": "성 아이린 첨탑 테라스",
+      "es": "El Precipicio de Saint Irene",
+      "fr": "Le Précipice de Saint Irene",
+      "de": "Der Abgrund von Saint Irene",
+      "ru": "Карниз башни Сент-Ирен",
+      "it": "Il Precipizio di Saint Irene",
+      "pt": "O Precipício de Saint Irene",
+      "ar": "شرفة برج القديسة إيرين"
+    },
+    "text": {
+      "en": "Cold wind howls through the stone archway. Below lies the murky chasm of District 7—gas lamps flickering like dying stars across the canal barges. Rain spatters against your face.",
+      "id": "Angin dingin melolong melalui lengkungan batu menara. Di bawah terbentang kegelapan Distrik 7—lampu-lampu gas berkelap-kelip seperti bintang yang meredup di atas tongkang kanal. Hujan deras menerpa wajahmu.",
+      "zh": "寒风在石拱门间肆虐呼啸。下方是第七区的无边暗夜，煤气灯如残星在运河驳船间摇曳。冷雨打在脸上。",
+      "ja": "冷たい風が石のアーチを吹き抜ける。見下ろせば第7区の暗闇、ガス灯が運河で死にかけの星のように瞬く。冷たい雨が顔を打つ。",
+      "ko": "차가운 비바람이 석조 아치를 통과해 몰아칩니다. 발밑엔 제7구역의 어둠이 펼쳐져 있고 가스등이 가물거립니다.",
+      "es": "El viento aúlla por el arco de piedra. Abajo yace el abismo del Distrito 7; las farolas titilan como estrellas moribundas.",
+      "fr": "Le vent hurle sous l'arche. En bas s'étend le gouffre du District 7, les réverbères vacillant sur les canaux.",
+      "de": "Kalter Wind heult durch die Steinbögen. Unten liegt der Abgrund des 7. Distrikts; Gaslaternen flackern wie sterbende Sterne.",
+      "ru": "Холодный ветер воет в каменных арках. Внизу чернеет бездна 7-го района — газовые фонари мерцают, как угасающие звезды.",
+      "it": "Il vento sibila tra le arcate. Sotto si stende l'abisso del Distretto 7 con lampioni che tremolano sui canali.",
+      "pt": "O vento uiva pelo arco de pedra. Abaixo jaz o abismo do Distrito 7; lâmpadas a gás tremeluzem na neblina.",
+      "ar": "تعصف الرياح الباردة عبر الأقواس الحجرية، وتنبسط في الأسفل هوة المنطقة 7 المظلمة حيث تتلألأ فوانيس الغاز كنجوم تحتضر."
+    },
+    "options": [
+      {
+        "en": "[PERCEPTION - Easy 8] Search the wet flagstones for trace evidence.",
+        "id": "[PERSEPSI - Mudah 8] Cari jejak bukti di atas ubin batu yang basah.",
+        "zh": "【感知 - 简单 8】搜索湿润石板上的残留物证。",
+        "ja": "【知覚 - 容易 8】濡れた敷石から痕跡を探す。",
+        "ko": "[지각 - 쉬움 8] 젖은 석판 바닥에서 미세 흔적을 찾는다.",
+        "es": "[PERCEPCIÓN - Fácil 8] Buscar indicios en las losas mojadas.",
+        "fr": "[PERCEPTION - Facile 8] Fouiller les dalles humides à la recherche d'indices.",
+        "de": "[WAHRNEHMUNG - Leicht 8] Die nassen Steinplatten nach Spuren absuchen.",
+        "ru": "[ВОСПРИЯТИЕ - Легко 8] Осмотреть мокрые каменные плиты в поисках улик.",
+        "it": "[PERCEZIONE - Facile 8] Cerca tracce sulle lastre di pietra bagnate.",
+        "pt": "[PERCEPÇÃO - Fácil 8] Procurar vestígios nas lajes molhadas.",
+        "ar": "[الإدراك الحسي - سهل 8] فحص البلاط الحجري المبتل بحثًا عن آثار أدلة جنائية."
+      },
+      {
+        "en": "Look over the railing into the fog.",
+        "id": "Tatap kabut malam di atas kota.",
+        "zh": "凭栏远眺浓雾迷蒙的城区。",
+        "ja": "手すりから霧の中の街を見下ろす。",
+        "ko": "난간 너머 안개 낀 도시를 응시한다.",
+        "es": "Mirar sobre la barandilla hacia la niebla.",
+        "fr": "Regarder dans le brouillard par-dessus le garde-corps.",
+        "de": "Über das Geländer in den Nebel blicken.",
+        "ru": "Посмотреть за перила в туманную тьму.",
+        "it": "Guarda oltre la ringhiera nella nebbia.",
+        "pt": "Olhar pela balaustrada na neblina.",
+        "ar": "التحديق من فوق السياج في أعماق الضباب."
+      },
+      {
+        "en": "[Return inside]",
+        "id": "[Kembali ke dalam]",
+        "zh": "【返回室内】",
+        "ja": "【室内へ戻る】",
+        "ko": "[실내로 복귀]",
+        "es": "[Volver al interior]",
+        "fr": "[Retourner à l'intérieur]",
+        "de": "[Wieder hineingehen]",
+        "ru": "[Вернуться внутрь]",
+        "it": "[Torna all'interno]",
+        "pt": "[Voltar para dentro]",
+        "ar": "[الرجوع للداخل]"
+      }
+    ]
+  },
+  "balcony_search_win": {
+    "speaker": {
+      "en": "Trace Evidence Found",
+      "id": "Bukti Jejak Terungkap",
+      "zh": "起获关键微量物证",
+      "ja": "痕跡証拠の回収",
+      "ko": "결정적 흔적 증거 발견",
+      "es": "Indicio Encontrado",
+      "fr": "Indice Matériel",
+      "de": "Spur Gesichert",
+      "ru": "Улика найдена",
+      "it": "Traccia Trovata",
+      "pt": "Vestígio Encontrado",
+      "ar": "العثور على أثر حاسم"
+    },
+    "text": {
+      "en": "Snagged on the wrought-iron gargoyle is a torn shred of midnight-blue velvet. It matches the high collar of Madame Vance's mourning coat. Next to it, an empty glass ampoule labeled 'Tincture of Somnus & Cyanide'.",
+      "id": "Tersangkut pada patung gargoyle besi tempa adalah sobekan beludru biru tua. Warnanya identik dengan kerah mantel berkabung milik Nyonya Vance. Di sebelahnya, tergeletak ampul kaca kosong bertuliskan 'Tinktur Somnus & Sianida'.",
+      "zh": "铸铁滴水兽上挂着一片深蓝丝绒布料，与薇薇安夫人的丧服衣领完全吻合。旁边遗落着贴有“催眠酊剂与氰化物”的空玻璃安瓿。",
+      "ja": "錬鉄のガーゴイルに濃紺のビロード布片が引っかかっていた。ヴィヴィアン夫人の喪服襟と完全に一致する。隣には『青酸』の空アンプルがあった。",
+      "ko": "가고일에 짙은 남색 벨벳 조각이 찢겨 걸려 있었습니다. 비비안 부인의 상복 칼라와 일치합니다. 옆에는 '청산가리' 빈 앰플이 떨어져 있었습니다.",
+      "es": "Enganchado en la gárgola hay terciopelo azul noche. Coincide con el abrigo de Madame Vance. Al lado, una ampolla de 'Cianuro'.",
+      "fr": "Accroché à la gargouille, un lambeau de velours bleu nuit. Il correspond au manteau de Madame Vance. À côté, une fiole de 'Cyanure'.",
+      "de": "Am Wasserspeier hängt mitternachtsblauer Samt von Madame Vances Mantel. Daneben ein leeres Fläschchen mit 'Zyankali'.",
+      "ru": "На горгулье зацепился лоскут синего бархата от пальто мадам Вэнс. Рядом лежит пустая ампула «Цианид».",
+      "it": "Nel doccione c'è un brandello di velluto blu notte identico all'abito di Vivienne. Accanto, un'ampolla con scritto 'Cianuro'.",
+      "pt": "Preso na gárgula há veludo azul-marinho do casaco de Vivienne. Ao lado, uma ampola rotulada 'Cianeto'.",
+      "ar": "علق بتمثال المزراب شريط مخملي أزرق ممزق يتطابق مع معطف السيدة فانس، وبجواره أمبول زجاجي فارغ موسوم بـ 'سيانيد'."
+    },
+    "options": [
+      {
+        "en": "\"The smoking gun. She was here on the balcony right after Vance died.\"",
+        "id": "\"Bukti tak terbantahkan. Vivienne berada di balkon ini tepat setelah Aurelia tewas.\"",
+        "zh": "“确凿铁证。奥蕾莉亚刚遇害时她就在这露台上。”",
+        "ja": "「動かぬ証拠だ。ヴァンスの絶命直後、彼女はここにいた。」",
+        "ko": "\"결정적 물증이오. 밴스가 숨진 직후 그녀는 이곳 발코니에 있었소.\"",
+        "es": "\"La prueba irrefutable. Estuvo aquí en el balcón justo tras la muerte de Vance.\"",
+        "fr": "\"La preuve irréfutable. Elle était sur ce balcon juste après la mort de Vance.\"",
+        "de": "\"Der rauchende Colt. Sie war unmittelbar nach Vances Tod hier auf dem Balkon.\"",
+        "ru": "«Неопровержимая улика. Она была здесь сразу после смерти Аурелии.»",
+        "it": "\"La pistola fumante. Era qui sul balcone subito dopo la morte di Vance.\"",
+        "pt": "\"A prova irrefutável. Ela esteve nesta sacada logo após a morte de Vance.\"",
+        "ar": "\"الدليل القاطع: كانت فيفيان هنا على الشرفة فور وقوع الجريمة.\""
+      }
+    ]
+  },
+  "balcony_search_fail": {
+    "speaker": {
+      "en": "Diluted Traces",
+      "id": "Jejak Terhapus",
+      "zh": "雨水冲刷无存",
+      "ja": "雨に流された足跡",
+      "ko": "빗물에 씻겨나간 흔적",
+      "es": "Rastros Diluidos",
+      "fr": "Traces Effacées",
+      "de": "Verwaschene Spuren",
+      "ru": "Размытые следы",
+      "it": "Tracce Cancellate",
+      "pt": "Rastros Lavados",
+      "ar": "آثار محاها المطر"
+    },
+    "text": {
+      "en": "The driving downpour has washed away almost all footsteps. You only find muddy smears and puddles of soot.",
+      "id": "Hujan deras telah menghapus hampir semua jejak kaki. Kamu hanya menemukan noda lumpur dan genangan jelaga mesin.",
+      "zh": "暴雨冲刷掉了所有脚印痕迹，只剩下泥泞的污渍与煤烟水洼。",
+      "ja": "激しい雨が足跡を洗い流してしまった。泥と煤の水たまりしか残っていない。",
+      "ko": "폭우가 발자국을 깨끗이 씻어내 버렸습니다. 진흙과 그을음 웅덩이만 남았습니다.",
+      "es": "El aguacero ha borrado casi todas las huellas. Solo hallas barro y hollín.",
+      "fr": "La pluie battante a emporté les empreintes. Vous ne trouvez que de la suie boueuse.",
+      "de": "Der Wolkenbruch hat fast alle Fußspuren weggespült. Nur Schlamm und Rußpfützen bleiben.",
+      "ru": "Ливень смыл почти все следы. Вокруг лишь размытая грязь и лужи сажи.",
+      "it": "Il rovescio ha cancellato quasi ogni impronta. Trovi solo fango e pozzanghere di fuliggine.",
+      "pt": "A chuva forte lavou quase todas as pegadas. Você só encontra lama e fuligem.",
+      "ar": "جرفت الأمطار الغزيرة آثار الأقدام تمامًا، ولم تترك سوى بقع طين وسخام."
+    },
+    "options": [
+      {
+        "en": "[Step back inside]",
+        "id": "[Melangkah kembali ke dalam]",
+        "zh": "【返回室内】",
+        "ja": "【中へ戻る】",
+        "ko": "[실내로 물러선다]",
+        "es": "[Volver adentro]",
+        "fr": "[Ranger et rentrer]",
+        "de": "[Wieder eintreten]",
+        "ru": "[Шагнуть внутрь]",
+        "it": "[Torna dentro]",
+        "pt": "[Voltar para dentro]",
+        "ar": "[الرجوع للداخل]"
+      }
+    ]
+  },
+  "balcony_fog_reflection": {
+    "speaker": {
+      "en": "Atmospheric Reverie",
+      "id": "Renungan Suasana Hujan",
+      "zh": "冷雨夜形而上沉思",
+      "ja": "雨の瞑想",
+      "ko": "냉혹한 빗속의 사색",
+      "es": "Ensueño Atmosférico",
+      "fr": "Rêverie Atmosphérique",
+      "de": "Atmosphärische Einkehr",
+      "ru": "Атмосферное раздумье",
+      "it": "Riflessione Notturna",
+      "pt": "Devaneio Noturno",
+      "ar": "تأملات المطر"
+    },
+    "text": {
+      "en": "You stare down at the sprawling darkness of Malkuth-on-Thames. You have unlocked a new avenue of introspection: 'Metaphysics of Cold Rain'. You can internalize this thought in your Thought Cabinet.",
+      "id": "Kamu menatap kegelapan kota di bawah hujan. Kamu membuka pikiran baru: 'Metafisika Hujan Dingin'. Kamu bisa menginternalisasikannya di Lemari Pikiran.",
+      "zh": "你凝望雨雾深渊。新的思维之门轰然洞开：“冷雨形而上学”。可在思维阁中内化此思想。",
+      "ja": "雨煙る街の暗闇を見下ろす。新たな思考「冷雨の形而上学」がアンロックされた。思考キャビネットで内面化可能だ。",
+      "ko": "빗속 도시의 어둠을 내려다봅니다. 새로운 생각 '차가운 비의 형이상학'이 열렸습니다. 생각 보관함에서 내면화할 수 있습니다.",
+      "es": "Miras la oscuridad de la ciudad bajo la lluvia. Desbloqueas: 'Metafísica de la Lluvia Fría' para el Gabinete.",
+      "fr": "Vous contemplez les ténèbres sous le déluge. Une nouvelle pensée s'éveille : 'Métaphysique de la Pluie Froide'.",
+      "de": "Sie blicken in das Dunkel im Regen. Sie schalten 'Metaphysik des Kalten Regens' frei.",
+      "ru": "Ты смотришь в черную бездну города под дождем. Открыта мысль: «Метафизика холодного дождя».",
+      "it": "Fissi l'oscurità della città sotto la pioggia. Sblocchi il pensiero: 'Metafisica della Pioggia Fredda'.",
+      "pt": "Você contempla a escuridão sob a chuva. Desbloqueado: 'Metafísica da Chuva Fria'.",
+      "ar": "تحدق في ظلام المدينة تحت المطر، وانفتحت لك فكرة: 'ميتافيزيقا المطر البارد' في خزانة الأفكار."
+    },
+    "options": [
+      {
+        "en": "[Return to the gear room]",
+        "id": "[Kembali ke ruang roda gigi]",
+        "zh": "【返回齿轮大厅】",
+        "ja": "【歯車室へ戻る】",
+        "ko": "[톱니바퀴 방으로 복귀]",
+        "es": "[Volver a la sala de engranajes]",
+        "fr": "[Retourner à la salle des rouages]",
+        "de": "[Zurück zum Räderwerk]",
+        "ru": "[Вернуться в зал шестерен]",
+        "it": "[Torna alla sala degli ingranaggi]",
+        "pt": "[Voltar à sala de engrenagens]",
+        "ar": "[العودة لغرفة التروس]"
+      }
+    ]
+  },
+  "safe_brute_trap": {
+    "speaker": {
+      "en": "Lethal Anti-Tamper Trap",
+      "id": "Perangkap Maut Brankas",
+      "zh": "防盗自毁反噬",
+      "ja": "防犯トラップ作動",
+      "ko": "방범 트랩 발동",
+      "es": "Trampa Letal",
+      "fr": "Piège Mortel",
+      "de": "Tödliche Sicherheitsfalle",
+      "ru": "Смертоносная ловушка",
+      "it": "Trappola Letale",
+      "pt": "Armadilha Letal",
+      "ar": "فخ الموت بالخزنة"
+    },
+    "text": {
+      "en": "As your crowbar strains against the hinge, an internal shear-pin snaps. A pressurized needle array fires into your forearm, and chlorine gas erupts (-3 Health, -2 Morale)!",
+      "id": "Saat linggismu menekan engsel, pin pengaman internal patah. Rangkaian jarum bertekanan menembus lenganmu, dan gas klorin menyembur (-3 Daya Tahan, -2 Kewarasan)!",
+      "zh": "铁撬压向合页时安全销折断！数十枚微型毒针射入前臂，刺鼻氯气喷涌（生命值 -3，士气 -2）！",
+      "ja": "バールで力を込めた瞬間、安全ピンが破断した。加圧毒針が無数に刺さり塩素ガスが噴出する（体力 -3、正気度 -2）！",
+      "ko": "쇠지렛대로 비트는 순간 핀이 부러졌습니다. 가압 독침이 쏘아지고 염소 가스가 폭발합니다 (체력 -3, 사기 -2)!",
+      "es": "Al forzar la bisagra salta un pasador. ¡Agujas presurizadas perforan tu brazo y estalla cloro (-3 Salud, -2 Moral)!",
+      "fr": "Le gond cède et brise une goupille. Des aiguilles vous criblent le bras sous un nuage de chlore (-3 Santé, -2 Moral)!",
+      "de": "Als Sie hebeln, bricht ein Stift. Drucknadeln schießen in Ihren Arm und Chlorgas strömt aus (-3 Gesundheit, -2 Moral)!",
+      "ru": "Монтировка ломает штифт. Залп игл впивается в руку, и хлорный газ бьет в лицо (-3 Здоровье, -2 Мораль)!",
+      "it": "La leva spezza un perno. Aghi pressurizzati ti colpiscono ed esplode cloro (-3 Salute, -2 Morale)!",
+      "pt": "Um pino se rompe. Agulhas perfuram seu antebraço e gás venenoso irrompe (-3 Saúde, -2 Moral)!",
+      "ar": "انكسر صمام الأمان الداخلي فانطلقت مصفوفة إبر مضغوطة طعنت ذراعك وتصاعد غاز الكلور الخانق (-3 صحة، -2 معنويات)!"
+    },
+    "options": [
+      {
+        "en": "\"Coughing blood... what a vicious trap!\"",
+        "id": "\"Batuk darah... perangkap yang sangat keji!\"",
+        "zh": "“咳血……好恶毒的机关！”",
+        "ja": "「ゲホッ……なんという凶悪な罠だ……」",
+        "ko": "\"쿨럭... 끔찍한 함정이군...\"",
+        "es": "\"Cof... ¡qué trampa tan perversa!\"",
+        "fr": "\"Toux... quel piège vicieux !\"",
+        "de": "\"Hust... was für eine Falle!\"",
+        "ru": "«Кашляет кровью... ну и ловушка!»",
+        "it": "\"Tosse... che trappola maledetta!\"",
+        "pt": "\"Tosse... que armadilha cruel!\"",
+        "ar": "\"سعال دامٍ... يا له من فخ خبيث!\""
+      }
+    ]
+  },
+  "safe_logic_fail": {
+    "speaker": {
+      "en": "Lockpick Attempt",
+      "id": "Perangkap Brankas Meledak!",
+      "zh": "防盗机械闭锁反击",
+      "ja": "金庫の防犯機構作動",
+      "ko": "금고 잠금 함정 발동",
+      "es": "Mecanismo Bloqueado",
+      "fr": "Échec du Crochetage",
+      "de": "Fehlschlag am Tresor",
+      "ru": "Ошибка взлома",
+      "it": "Tentativo Fallito",
+      "pt": "Falha no Arrombamento",
+      "ar": "تعطل محاولة الفتح"
+    },
+    "text": {
+      "en": "The internal tumblers jam with a harsh screech. An internal anti-tamper glass vial cracks, releasing foul sulfur gas and a spring trap snaps on your hands (-2 Health, -1 Morale)!",
+      "id": "Silinder internal macet dengan derit memekakkan telinga. Ampul kaca anti-pencuri pecah, menyemburkan gas belerang beracun dan penjepit baja menghantam jarimu (-2 Daya Tahan, -1 Kewarasan)!",
+      "zh": "滚轮齿槽尖叫卡死。防盗玻璃管碎裂释放硫磺毒气，弹簧钢夹咬碎了你的手指（生命值 -2，士气 -1）！",
+      "ja": "タンブラーが耳障りに噛み合わなくなった。防犯ガラスが割れ硫黄ガスとバネ罠が手を直撃する（体力 -2、正気度 -1）！",
+      "ko": "텀블러가 날카로운 소리를 내며 잠깁니다. 유리관이 깨져 유황 가스가 뿜어지고 스프링이 손을 칩니다 (-2 체력, -1 사기)!",
+      "es": "Los tambores se atascan. Una ampolla se rompe soltando azufre y una trampa golpea tus manos (-2 Salud, -1 Moral).",
+      "fr": "Les gorges se bloquent. Une fiole libère du soufre gazeux tandis qu'un piège frappe vos doigts (-2 Santé, -1 Moral).",
+      "de": "Das Werk blockiert kreischend. Eine Glasampulle platzt, Schwefelgas strömt aus und die Falle schnappt zu (-2 Gesundheit, -1 Moral)!",
+      "ru": "Диски заклинивает со скрежетом. Серный газ бьет в лицо, а капкан бьет по рукам (-2 Здоровье, -1 Мораль)!",
+      "it": "I tamburi si inceppano. Una fiala rilascia gas di zolfo e una trappola scatta sulle tue dita (-2 Salute, -1 Morale).",
+      "pt": "Os tambores travam. Uma ampola libera gás sulfuroso e a armadilha machuca suas mãos (-2 Saúde, -1 Moral).",
+      "ar": "تعطلت الأقراص بصرير حاد وانكسرت أسطوانة الزجاج لتنشر غاز الكبريت وطبق زنبرك الفخ على يديك (-2 صحة، -1 معنويات)!"
+    },
+    "options": [
+      {
+        "en": "\"Damn anti-tamper traps!\"",
+        "id": "\"Sialan! Perangkap brankas terkutuk!\"",
+        "zh": "“该死……阴险的防盗自毁机关！”",
+        "ja": "「くそっ、厄介な防犯トラップめ！」",
+        "ko": "\"빌어먹을 방범 장치 같으니!\"",
+        "es": "\"¡Malditas trampas de seguridad!\"",
+        "fr": "\"Maudits pièges de sécurité !\"",
+        "de": "\"Verdammte Sicherheitsfallen!\"",
+        "ru": "«Проклятые ловушки от взлома!»",
+        "it": "\"Maledette trappole antimanomissione!\"",
+        "pt": "\"Malditas armadilhas antifurto!\"",
+        "ar": "\"سحقًا لفخاخ الحماية الغادرة!\""
+      }
+    ]
+  },
+  "madame_premature_arrest_fail": {
+    "speaker": {
+      "en": "Catastrophic Blunder",
+      "id": "Tindakan Gegabah yang Fatal",
+      "zh": "严重渎职与灾难",
+      "ja": "破滅的な失態",
+      "ko": "치명적인 실책",
+      "es": "Error Catastrófico",
+      "fr": "Bévue Catastrophique",
+      "de": "Katastrophaler Fehltritt",
+      "ru": "Фатальная ошибка",
+      "it": "Errore Catastrofico",
+      "pt": "Erro Catastrófico",
+      "ar": "خطأ مهني كارثي"
+    },
+    "text": {
+      "en": "Inspector Graves grabs your shoulder and cocks his service revolver. 'That is enough, Detective! You have no proof, you reek of alcohol, and you are terrorizing a grieving citizen under police protection. Hand over your badge. You are under arrest for extortion and gross misconduct!'",
+      "id": "Inspektur Graves mencengkeram bahumu dan mengokang pistol dinasnya. 'Cukup, Detektif! Kamu menuduh warga tanpa selembar pun bukti fisik sambil berbau alkohol. Serahkan lencana dan senjatamu. Kamu ditangkap atas pemerasan dan pelanggaran berat!'",
+      "zh": "格雷夫斯抓住你的肩膀，拔出左轮手枪压下击锤！“够了！手里毫无证据却浑身酒气恐吓市民。交出警徽，你被捕了！”",
+      "ja": "グレイヴスが肩を掴み拳銃を起こした。「そこまでだ！証拠もなしに酒臭い息で市民を脅すとは。バッジを渡せ、逮捕する！」",
+      "ko": "그레이브스가 어깨를 낚아채며 권총을 겨눕니다. '그만하시오! 물증도 없이 술 냄새를 풍기며 유족을 협박하다니. 배지 내놓으시오, 체포요!'",
+      "es": "Graves te agarra y amartilla su revólver. '¡Basta! Sin pruebas y oliendo a alcohol está amenazando a una ciudadana. Queda arrestado.'",
+      "fr": "L'inspecteur Graves arme son revolver. 'Ça suffit ! Sans preuves et empestant l'alcool, vous terrorisez une citoyenne. Vous êtes aux arrêts !'",
+      "de": "Graves packt Sie und spannt den Hahn. 'Es reicht! Ohne Beweise schikanieren Sie Bürger. Geben Sie die Marke ab, Sie sind verhaftet!'",
+      "ru": "Грейвс хватает тебя за плечо и взводит курок. «Хватит! Без улик, пьяный, ты терроризируешь потерпевшую. Сдай жетон, ты арестован!»",
+      "it": "Graves ti afferra e arma il revolver. 'Basta! Senza prove e puzzando di alcol minacci una cittadina. Consegna il distintivo, sei in arresto!'",
+      "pt": "Graves agarra seu ombro e engatilha o revólver. 'Chega! Sem provas você aterroriza a viúva. Entregue o distintivo, está preso!'",
+      "ar": "أمسك غريفز بكتفك وسحب مطرقة مسدسه: 'كفى! بلا دليل وتفوح منك الخمر وترهب مواطنة! سلم شارتك، أنت معتقل!'"
+    },
+    "options": [
+      {
+        "en": "[Yield to the handcuffs]",
+        "id": "[Pasrah pada borgol baja]",
+        "zh": "【认罪受缚，戴上手铐】",
+        "ja": "【手錠を受け入れる】",
+        "ko": "[수갑에 순응한다]",
+        "es": "[Ceder ante las esposas]",
+        "fr": "[Céder aux menottes]",
+        "de": "[Sich den Handschellen beugen]",
+        "ru": "[Смириться с наручниками]",
+        "it": "[Arrenditi alle manette]",
+        "pt": "[Render-se às algemas]",
+        "ar": "[الاستسلام للقيود]"
+      }
+    ]
+  },
+  "madame_alibi": {
+    "speaker": {
+      "en": "Madame Vivienne Vance",
+      "id": "Nyonya Vivienne Vance",
+      "zh": "薇薇安·梵斯夫人",
+      "ja": "ヴィヴィアン・ヴァンス夫人",
+      "ko": "비비안 밴스 부인",
+      "es": "Madame Vivienne Vance",
+      "fr": "Madame Vivienne Vance",
+      "de": "Madame Vivienne Vance",
+      "ru": "Мадам Вивьен Вэнс",
+      "it": "Madame Vivienne Vance",
+      "pt": "Madame Vivienne Vance",
+      "ar": "السيدة فيفيان فانس"
+    },
+    "text": {
+      "en": "'I told your companion Inspector Graves: I was downstairs in the Saint Irene chapel, lighting candles for the departed souls of the epidemic. The priest can attest to my presence—though he was asleep in his confessional booth.'",
+      "id": "'Sudah kukatakan pada rekanmu Inspektur Graves: aku berada di bawah di kapel Saint Irene, menyalakan lilin untuk jiwa-jiwa korban wabah. Romo gereja bisa bersaksi—meski dia tertidur di bilik pengakuan dosanya.'",
+      "zh": "“我已经告诉过格雷夫斯警探了：当时我在楼下小礼拜堂为大瘟疫亡灵点烛祈祷。神父能作证——尽管他整晚都在告解室打盹。”",
+      "ja": "「グレイヴス警部にも話した通りよ。礼拝堂で犠牲者のために蝋燭を灯していたわ。司祭様が証明してくれる——居眠りしていたけれど。」",
+      "ko": "\"그레이브스 형사에게도 말했듯, 전 아래층 예배당에서 촛불을 켜고 있었어요. 사제님께서 증언해 주실 거예요. 졸고 계셨지만요.\"",
+      "es": "'Ya se lo dije a Graves: estuve en la capilla encendiendo velas por la epidemia. El párroco puede atestiguarlo, aunque dormitaba.'",
+      "fr": "'Je l'ai dit à votre collègue : j'allumais des cierges pour les défunts. Le prêtre peut l'attester, même s'il sommeillait.'",
+      "de": "'Ich sagte es Graves: Ich entzündete Kerzen in der Kapelle für die Seuchenopfer. Der Priester bezeugt es, obwohl er döste.'",
+      "ru": "«Я уже сказала Грейвсу: я была в часовне и зажигала свечи за упокой. Священник подтвердит, хоть он и дремал.»",
+      "it": "'L'ho detto a Graves: ero nella cappella ad accendere candele. Il parroco può confermare, anche se dormiva.'",
+      "pt": "'Já disse ao inspetor: estava na capela acendendo velas pela epidemia. O padre pode atestar, embora cochilasse.'",
+      "ar": "'أخبرت غريفز مسبقًا: كنت بالمصلى أوقد الشموع لضحايا الوباء، وبوسع الكاهن أن يشهد رغم أنه كان يغفو بمقصورته.'"
+    },
+    "options": [
+      {
+        "en": "\"Convenient. An alibi witnessed by a sleeping priest.\"",
+        "id": "\"Alibi yang nyaman. Disaksikan seorang pendeta yang tertidur.\"",
+        "zh": "“真方便，一个熟睡神父作证的不在场证明。”",
+        "ja": "「眠っていた司祭のアリバイか。実に都合がいい。」",
+        "ko": "\"졸고 있던 사제가 증인이라니 편리한 알리바이군요.\"",
+        "es": "\"Conveniente. Una coartada presenciada por un cura dormido.\"",
+        "fr": "\"Commode. Un alibi attesté par un prêtre endormi.\"",
+        "de": "\"Praktisch. Ein Alibi von einem schlafenden Priester.\"",
+        "ru": "«Очень удобно. Алиби от спящего священника.»",
+        "it": "\"Comodo. Un alibi da un prete che dormiva.\"",
+        "pt": "\"Conveniente. Álibi de um padre dorminhoco.\"",
+        "ar": "\"حجة غياب ملائمة، شاهدها كاهن نائم.\""
+      }
+    ]
+  },
+  "madame_empathy_win": {
+    "speaker": {
+      "en": "Madame Vivienne Vance",
+      "id": "Nyonya Vivienne Vance",
+      "zh": "薇薇安·梵斯夫人",
+      "ja": "ヴィヴィアン・ヴァンス夫人",
+      "ko": "비비안 밴스 부인",
+      "es": "Madame Vivienne Vance",
+      "fr": "Madame Vivienne Vance",
+      "de": "Madame Vivienne Vance",
+      "ru": "Мадам Вивьен Вэнс",
+      "it": "Madame Vivienne Vance",
+      "pt": "Madame Vivienne Vance",
+      "ar": "السيدة فيفيان فانس"
+    },
+    "text": {
+      "en": "Her eyes widen slightly, and for a split second the porcelain mask drops. 'Love? Aurelia did not love human beings, Detective. She loved springs, escapements, and cold brass gears. For thirty years I was just a domestic pendulum swinging in her hallway. While our daughter died of consumption, she was upstairs building an alchemical chronometer to sell to foreign bankers.'",
+      "id": "Matanya membesar sesaat, dan topeng porselennya runtuh. 'Cinta? Aurelia tidak mencintai manusia, Detektif. Dia mencintai pegas, roda gigi, dan kuningan dingin. Selama tiga puluh tahun aku hanyalah pendulum rumah tangga di lorongnya. Saat putri kami meninggal karena penyakit paru-paru, dia malah di lantai atas merakit kronometer alkimia untuk dijual ke bankir asing.'",
+      "zh": "她的眼眸颤动，面具轰然瓦解。“爱？奥蕾莉亚从不爱人类，探长。她只爱发条与冰冷齿轮。三十年来我不过是走廊里的钟摆。女儿因痨病痛苦死去时，她却在楼上拼装卖给银行家的军械！”",
+      "ja": "仮面が崩れ落ちた。「愛？オレリアは人間など愛していなかった。冷たい歯車だけを愛したのよ。30年、私はただの振り子だった。娘が結核で死ぬ時も、彼女は武器を組み立てていたわ。」",
+      "ko": "도자기 가면이 깨집니다. '사랑이요? 오렐리아는 인간을 사랑하지 않았어요. 차가운 톱니만 사랑했죠. 딸아이가 폐결핵으로 죽어갈 때도 외국에 팔아넘길 시계를 조립하고 있었어요.'",
+      "es": "Cae su máscara. '¿Amor? Aurelia amaba los engranajes fríos. Mientras nuestra hija moría de tuberculosis, ella armaba armas para banqueros.'",
+      "fr": "Le masque tombe. 'L'amour ? Aurelia n'aimait que ses froids rouages. Quand notre fille mourait de phtisie, elle fabriquait des armes pour des banquiers.'",
+      "de": "Ihre Maske fällt. 'Liebe? Aurelia liebte nur Messingräder. Als unsere Tochter starb, baute sie Waffen für ausländische Bankiers.'",
+      "ru": "Маска падает. «Любовь? Аурелия любила только шестеренки. Пока дочь умирала от чахотки, она собирала механизм на продажу банкирам.»",
+      "it": "La maschera cade. 'Amore? Aurelia amava solo gli ingranaggi. Mentre nostra figlia moriva, lei costruiva congegni per i banchieri.'",
+      "pt": "A máscara cai. 'Amor? Aurelia só amava engrenagens. Enquanto nossa filha morria de tuberculose, ela montava armas para banqueiros.'",
+      "ar": "سقط قناعها: 'حب؟ لم تكن تحب إلا التروس الباردة! حين كانت ابنتنا تحتضر بالسل، كانت هي عاكفة على بيع أسلحة الساعات للبنوك!'"
+    },
+    "options": [
+      {
+        "en": "\"So you decided to stop her clock once and for all.\"",
+        "id": "\"Jadi kamu memutuskan untuk menghentikan jam hidupnya untuk selamanya.\"",
+        "zh": "“所以你决定让她的生命指针彻底停滞。”",
+        "ja": "「だから時計の針を永遠に止めたのか。」",
+        "ko": "\"그래서 그녀의 시계를 영원히 멈추기로 했군요.\"",
+        "es": "\"Así que decidió detener su reloj de una vez por todas.\"",
+        "fr": "\"Vous avez donc décidé d'arrêter son horloge pour toujours.\"",
+        "de": "\"Also beschlossen Sie, ihre Uhr für immer anzuhalten.\"",
+        "ru": "«И вы решили остановить ее часы раз и навсегда.»",
+        "it": "\"Così ha deciso di fermare il suo orologio per sempre.\"",
+        "pt": "\"Então você decidiu parar o relógio dela de uma vez por todas.\"",
+        "ar": "\"ولهذا قررتِ إيقاف عقارب حياتها للأبد.\""
+      }
+    ]
+  },
+  "madame_empathy_fail": {
+    "speaker": {
+      "en": "Madame Vivienne Vance",
+      "id": "Nyonya Vivienne Vance",
+      "zh": "薇薇安·梵斯夫人",
+      "ja": "ヴィヴィアン・ヴァンス夫人",
+      "ko": "비비안 밴스 부인",
+      "es": "Madame Vivienne Vance",
+      "fr": "Madame Vivienne Vance",
+      "de": "Madame Vivienne Vance",
+      "ru": "Мадам Вивьен Вэнс",
+      "it": "Madame Vivienne Vance",
+      "pt": "Madame Vivienne Vance",
+      "ar": "السيدة فيفيان فانس"
+    },
+    "text": {
+      "en": "'How vulgar. You stumble in here, smelling of gin and cheap tobacco, and dare question thirty years together? Inspector Graves, remove this animal from my presence!'",
+      "id": "'Betapa menjijikkan. Kamu tersandung masuk ke sini dengan bau alkohol murahan, dan berani mempertanyakan tiga puluh tahun kebersamaan kami? Inspektur Graves, singkirkan makhluk ini dari hadapanku!'",
+      "zh": "“粗俗之尤！你一身劣质杜松子酒的恶臭闯进来，竟敢质疑我们三十年的相守？格雷夫斯警探，请把这个狂徒带走！”",
+      "ja": "「下品ね。安酒の臭いを撒き散らして闖入し、私たちの30年を侮辱する気？グレイヴス、この男を追い出して！」",
+      "ko": "\"천박하군요. 싸구려 술 냄새를 풍기며 들어와 우리의 30년을 모욕하다니. 그레이브스 형사, 당장 내쫓으세요!\"",
+      "es": "'Qué vulgar. Entra oliendo a ginebra barata y cuestiona treinta años de matrimonio. ¡Graves, aparte a este animal!'",
+      "fr": "'Quelle vulgarité. Vous empestez le gin et osez juger trente ans de mariage ? Graves, éloignez cet individu !'",
+      "de": "'Wie vulgär. Sie stinken nach Schnaps und wagen es, dreißig Jahre Ehe anzuzweifeln? Graves, schaffen Sie ihn fort!'",
+      "ru": "«Какая пошлость. Вы заваливаетесь с запахом джина и смеете судить о 30 годах брака? Грейвс, уберите его!»",
+      "it": "'Che volgarità. Puzzi di gin scadente e osi giudicare trent'anni insieme? Graves, allontanalo!'",
+      "pt": "'Que vulgar. Cheirando a gim barato você ousa questionar trinta anos de união? Graves, tire-o daqui!'",
+      "ar": "'يا لك من سوقي! تفوح منك رائحة الكحول الرخيصة وتشكك في ثلاثين عامًا من زواجنا؟ يا غريفز أبعده عني!'"
+    },
+    "options": [
+      {
+        "en": "\"Hold your tongue, Madame. I am not finished.\"",
+        "id": "\"Jaga lidahmu, Nyonya. Aku belum selesai.\"",
+        "zh": "“放尊重点，夫人。审问还没结束。”",
+        "ja": "「口を慎め、夫人。まだ終わっていない。」",
+        "ko": "\"말조심하시오. 아직 끝나지 않았소.\"",
+        "es": "\"Cuidado con su lengua, señora. No he terminado.\"",
+        "fr": "\"Surveillez vos paroles, Madame. Je n'ai pas fini.\"",
+        "de": "\"Hüten Sie Ihre Zunge, Madame. Ich bin nicht fertig.\"",
+        "ru": "«Придержите язык, мадам. Я не закончил.»",
+        "it": "\"Badi a come parla, Madame. Non ho finito.\"",
+        "pt": "\"Cuidado com a língua, senhora. Não terminei.\"",
+        "ar": "\"الزمي حدودك يا سيدتي، لم أنته بعد.\""
+      }
+    ]
+  },
+  "madame_confession_fail": {
+    "speaker": {
+      "en": "Unshakable Defiance",
+      "id": "Bantahan Dingin",
+      "zh": "寸步不让的冷酷抵抗",
+      "ja": "揺るぎなき拒絶",
+      "ko": "냉혹한 전면 부인",
+      "es": "Desafío Inquebrantable",
+      "fr": "Défiance Inébranlable",
+      "de": "Eiskalte Abweisung",
+      "ru": "Ледяное отрицание",
+      "it": "Sfida Incrollabile",
+      "pt": "Desafio Inabalável",
+      "ar": "الإنكار الجليدي الصارم"
+    },
+    "text": {
+      "en": "'Are you insane?' Her voice turns to ice. 'Fabricating evidence against a grieving partner in front of another police officer? Graves, arrest this incompetent maniac before this creature desecrates Aurelia's remains any further!' Graves steps between you with his hand on his revolver (-2 Morale).",
+      "id": "'Apakah kamu sudah gila?' Suaranya membeku bagai es. 'Merekayasa tuduhan terhadap pasangan yang berduka di depan perwira polisi lainnya? Graves, tangkap orang mabuk ini sebelum dia menodai jasad Aurelia lebih jauh!' Graves melangkah maju dengan tangan di gagang pistolnya (-2 Kewarasan).",
+      "zh": "“你疯了吗？”她的声音冷若冰霜。“在另一位警察面前伪造证据构陷遗孀？格雷夫斯，快拘捕这个疯子，免得他玷污遗体！”格雷夫斯手按配枪挡在中间（士气 -2）。",
+      "ja": "「正気？他の警官の前で証拠を捏造するなんて。グレイヴス、遺体を冒涜される前にこの狂人を拘束して！」グレイヴスが割って入る（正気度 -2）。",
+      "ko": "\"미쳤나요? 다른 경찰관 앞에서 증거를 조작해 유족을 모함하다니요. 그레이브스, 당장 체포해요!\" 그레이브스가 총을 쥐고 막아섭니다 (사기 -2).",
+      "es": "'¿Está loco?' Su voz es hielo. '¿Fabricar pruebas contra una viuda ante otro oficial? ¡Graves, arreste a este loco!' Graves se interpone (-2 Moral).",
+      "fr": "'Êtes-vous fou ?' Sa voix se glace. 'Fabriquer des preuves contre une veuve devant un policier ? Graves, arrêtez-le !' Graves s'interpose (-2 Moral).",
+      "de": "'Sind Sie verrückt?' Ihre Stimme wird Eis. 'Beweise gegen eine Witwe zu fälschen? Graves, verhaften Sie ihn!' Graves tritt dazwischen (-2 Moral).",
+      "ru": "«Вы с ума сошли?» Голос звенит льдом. «Фабриковать улики против вдовы при полиции? Грейвс, уйми его!» Грейвс встает между вами (-2 Мораль).",
+      "it": "'È impazzito?' La voce si gela. 'Fabbricare prove contro una vedova davanti a un collega? Graves, arrestalo!' Graves interviene (-2 Morale).",
+      "pt": "'Está louco?' A voz vira gelo. 'Forjando provas contra uma viúva na frente de outro policial? Graves, prenda-o!' Graves intervém (-2 Moral).",
+      "ar": "'هل جننت؟ تلفق أدلة ضد أرملة مفجوعة أمام زميلك؟ يا غريفز اعتقل هذا المعتوه!' تقدم غريفز بينكما واضعًا يده على مسدسه (-2 معنويات)."
+    },
+    "options": [
+      {
+        "en": "\"This isn't over, Vivienne.\"",
+        "id": "\"Ini belum berakhir, Vivienne.\"",
+        "zh": "“这还没完，薇薇安。”",
+        "ja": "「まだ終わっていないぞ、ヴィヴィアン。」",
+        "ko": "\"아직 끝나지 않았소, 비비안.\"",
+        "es": "\"Esto no ha terminado, Vivienne.\"",
+        "fr": "\"Ce n'est pas fini, Vivienne.\"",
+        "de": "\"Das ist noch nicht vorbei, Vivienne.\"",
+        "ru": "«Это еще не конец, Вивьен.»",
+        "it": "\"Non è ancora finita, Vivienne.\"",
+        "pt": "\"Isso não acabou, Vivienne.\"",
+        "ar": "\"لم تنته القضية بعد يا فيفيان.\""
+      }
+    ]
+  },
+  "examine_gantry_lantern": {
+    "speaker": {
+      "en": "Alchemical Lantern Catwalk",
+      "id": "Anjungan Lentera Alkimia",
+      "zh": "上层提灯悬空栈桥",
+      "ja": "ランタン通路の検証",
+      "ko": "연금술 등불 통로 조사",
+      "es": "Pasarela de la Linterna",
+      "fr": "Passerelle de la Lanterne",
+      "de": "Laternensteg-Untersuchung",
+      "ru": "Мостки алхимического фонаря",
+      "it": "Camminamento della Lanterna",
+      "pt": "Passarela da Lanterna",
+      "ar": "فحص ممر الفانوس العلوي"
+    },
+    "text": {
+      "en": "A cold draft rushes through the high iron grating. Shards of amber chemical glass crunch beneath your boot. Etched into a broken neck piece is the Grand Syndicate's mercury serpent seal.",
+      "id": "Angin dingin berhembus melalui kisi-kisi besi tinggi. Serpihan kaca kimia berwarna kuning kecokelatan berderak di bawah sol sepatumu. Terukir pada pecahan leher botol terdapat lambang ular merkuri milik Sindikat Agung.",
+      "zh": "阴冷夜风掠过镂空铁栅。脚底踩碎了琥珀色化学玻璃片。破损瓶颈处烙着辛迪加的水银双头蛇印记。",
+      "ja": "高い鉄格子の上を冷風が吹き抜ける。琥珀色の薬品ガラス片が靴底で砕けた。瓶の首にはシンジケートの水銀蛇の紋章が刻印されている。",
+      "ko": "철제 통로 위로 찬 바람이 붑니다. 호박색 화학 유리병 파편이 발밑에서 바삭거립니다. 깨진 병목에 신디케이트의 수은 뱀 문장이 새겨져 있습니다.",
+      "es": "Una corriente fría cruza la rejilla. Cacos de vidrio crujen bajo tu bota con el sello de la serpiente de mercurio del Sindicato.",
+      "fr": "Un courant d'air glacé traverse la grille. Des éclats de verre crissent sous vos bottes, marqués du serpent de mercure du Syndicat.",
+      "de": "Zugwind weht über das Gitter. Bernsteinfarbene Glassplitter knirschen unter der Sohle mit dem Schlangen-Siegel des Syndikats.",
+      "ru": "Холодный сквозняк свистит сквозь решетку. Осколки янтарного стекла хрустят под сапогом с печатью ртутного змея Синдиката.",
+      "it": "Una corrente gelida sferza la grata. Vetri ambrati scricchiolano sotto gli stivali col serpente di mercurio del Sindacato.",
+      "pt": "Vento frio sopra pela grade. Cacos de vidro estalam sob a bota com a serpente de mercúrio do Sindicato.",
+      "ar": "ريح باردة تعصف عبر القضبان وشظايا الزجاج الكهرماني تطقطق تحت حذائك ممهورة بختم أفعى الزئبق الخاصة بالنقابة."
+    },
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "This confirms a clandestine drop hours before the death. The Syndicate delivered the chemical precursors directly to this tower.",
+          "id": "Ini mengonfirmasi adanya transaksi rahasia beberapa jam sebelum kematian. Sindikat mengantarkan zat kimia langsung ke menara ini.",
+          "zh": "这坐实了案发前数小时的秘密碰头。辛迪加将高危化学试剂亲手送到了钟楼！",
+          "ja": "犯行数時間前に密使の接触があった決定打だ。シンジケートが薬品をこの塔へ直接届けたのだ。",
+          "ko": "사건 몇 시간 전 은밀한 접선이 있었음을 증명합니다. 신디케이트가 화학 시약을 탑으로 직접 배달한 것입니다.",
+          "es": "Esto confirma una entrega clandestina horas antes de la muerte.",
+          "fr": "Ceci confirme un échange clandestin quelques heures avant le drame.",
+          "de": "Das bestätigt eine geheime Übergabe wenige Stunden vor der Tat.",
+          "ru": "Это доказывает тайную встречу за пару часов до гибели.",
+          "it": "Ciò conferma una consegna clandestina poche ore prima del delitto.",
+          "pt": "Isso confirma uma entrega secreta horas antes da morte.",
+          "ar": "يؤكد هذا حدوث تسليم سري قبل الجريمة بساعات، حيث سلمت النقابة المواد إلى أعلى البرج."
+        }
+      }
+    ],
+    "options": [
+      {
+        "en": "[Log clue: Shattered Reagents & Syndicate Crest]",
+        "id": "[Catat bukti: Serpihan Reagen Kimia & Lambang Sindikat]",
+        "zh": "【记录线索：碎裂的试剂瓶与辛迪加火漆印】",
+        "ja": "【手がかりを記録：破壊された試薬瓶と紋章】",
+        "ko": "[단서 기록: 깨진 시약병과 신디케이트 문장]",
+        "es": "[Registrar pista: Reactivos Rotos y Emblema]",
+        "fr": "[Noter l'indice : Réactifs Brisés et Sceau]",
+        "de": "[Hinweis aufnehmen: Zerschlagene Reagenzien]",
+        "ru": "[Записать улику: Осколки реагентов и печать]",
+        "it": "[Registra indizio: Reagenti Infranti e Sigillo]",
+        "pt": "[Registrar pista: Reagentes Quebrados e Brasão]",
+        "ar": "[تسجيل الدليل: زجاجات كواشف محطمة وخاتم النقابة]"
+      },
+      {
+        "en": "[Step back down to the main floor]",
+        "id": "[Kembali ke lantai utama]",
+        "zh": "【回到主钟楼】",
+        "ja": "【主フロアへ戻る】",
+        "ko": "[메인 플로어로 복귀]",
+        "es": "[Bajar al piso principal]",
+        "fr": "[Redescendre au niveau principal]",
+        "de": "[Zurück zum Hauptboden]",
+        "ru": "[Спуститься на главный этаж]",
+        "it": "[Torna al piano principale]",
+        "pt": "[Descer para o piso principal]",
+        "ar": "[النزول للطابق الرئيسي]"
+      }
+    ]
+  },
+  "examine_chime_bell": {
+    "speaker": {
+      "en": "Colossal Bell & Acoustic Escapement",
+      "id": "Lonceng Raksasa & Escapement Akustik",
+      "zh": "圣艾琳青铜巨钟与共振击发机构",
+      "ja": "巨大青銅鐘と音響脱進機",
+      "ko": "청동 거대 종과 음향 탈진 장치",
+      "es": "Campana Colosal y Disparador Acústico",
+      "fr": "Cloche Colossale et Déclencheur Acoustique",
+      "de": "Kolossale Glocke und Auslöser",
+      "ru": "Исполинский колокол и спуск",
+      "it": "Campana Colossale e Scappamento Acustico",
+      "pt": "Sino Colossal e Escape Acústico",
+      "ar": "الجرس الضخم وآلية الإفلات بالرنين"
+    },
+    "text": {
+      "en": "You look up into the cavernous rim of the eight-ton bronze bell. Tied to the heavy iron clapper is a taut piano wire running through tiny brass pulleys down to the pendulum latch.",
+      "id": "Kamu menatap ke dalam rongga lonceng perunggu seberat delapan ton. Terikat pada pemukul besi adalah kawat piano tegang yang menjulur melalui puli kuningan kecil menuju kait pendulum.",
+      "zh": "你仰望八吨重的青铜大钟内膛。铁铸钟锤上栓着紧绷的琴钢丝，穿过微型滑轮直通下方的钟摆搭扣！",
+      "ja": "8トンの巨大な青銅鐘の内側を見上げる。重い打鐘レバーにピアノ線が結ばれ、極小滑車を通って振り子の掛け金へ繋がっている。",
+      "ko": "8톤짜리 청동 종 안쪽을 올려다봅니다. 무거운 종 추에 팽팽한 피아노선이 묶여 황동 도르래를 통해 진자 걸쇠까지 이어져 있습니다.",
+      "es": "Miras dentro de la campana de bronce. Atado al badajo hay un alambre de piano que baja hacia el pestillo del péndulo.",
+      "fr": "Vous levez les yeux sous la cloche de huit tonnes. Relié au battant, un fil d'acier court jusqu'au loquet du balancier.",
+      "de": "Sie blicken in die Acht-Tonnen-Glocke. Ein Klavierdraht führt vom Klöppel über winzige Rollen zum Pendelriegel.",
+      "ru": "Ты заглядываешь под свод восьмитонного колокола. К языку привязан стальной тросик, идущий через шкивы к защелке маятника.",
+      "it": "Guardi sotto la campana da otto tonnellate. Una corda d'acciaio legata al battaglio scende fino al fermo del pendolo.",
+      "pt": "Você olha sob o sino de oito toneladas. Preso ao badalo há um fio de aço que desce até o trinco do pêndulo.",
+      "ar": "نظرت لتجويف الجرس البرونزي ذي الثمانية أطنان، فرأيت سلك بيانو مشدودًا يربط لسان الجرس الحديدي بسقاطة البندول."
+    },
+    "voices": [
+      {
+        "voice": {
+          "en": "Reflex",
+          "id": "Refleks",
+          "zh": "反应力",
+          "ja": "反射神経",
+          "ko": "반사신경",
+          "es": "Reflejo",
+          "fr": "Réflexe",
+          "de": "Reflex",
+          "ru": "Рефлекс",
+          "it": "Riflesso",
+          "pt": "Reflexo",
+          "ar": "رد الفعل"
+        },
+        "badge": {
+          "en": "REFLEX [Motorics]",
+          "id": "REFLEKS [Motorik]",
+          "zh": "反应力 [运动敏捷]",
+          "ja": "反射神経 [運動]",
+          "ko": "반사신경 [운동]",
+          "es": "REFLEJO [Motricidad]",
+          "fr": "RÉFLEXE [Motricité]",
+          "de": "REFLEX [Motorik]",
+          "ru": "РЕФЛЕКС [Моторика]",
+          "it": "RIFLESSO [Motorica]",
+          "pt": "REFLEXO [Motricidade]",
+          "ar": "رد الفعل [الحركية]"
+        },
+        "text": {
+          "en": "Ingenious acoustics. When the clock struck 03:42, the vibration and swing of the clapper yanked the tripwire, releasing the fatal counterweight automatically.",
+          "id": "Akustik yang sangat jenius. Saat jam berdentang pukul 03:42, getaran dan ayunan pemukul menarik kawat picu, menjatuhkan beban maut secara otomatis.",
+          "zh": "惊人的声学联动！03:42大钟鸣响的瞬间，钟锤的震荡直接扯动引线，自动解开了杀人的致命配重！",
+          "ja": "見事な音響機械だ。時計が3時42分を打った瞬間、鐘の振動がワイヤーを引き、カウンターウェイトを自動的に落としたのだ。",
+          "ko": "기막힌 음향 기계입니다. 3시 42분을 치는 순간 종 추의 진동이 와이어를 당겨 평형추를 자동으로 떨어뜨린 겁니다.",
+          "es": "Acústica ingeniosa. Al dar las 03:42, la vibración del badajo tiró del cable soltando el contrapeso.",
+          "fr": "Acoustique ingénieuse. Au coup de 03h42, la vibration du battant a tiré le fil libérant le contrepoids.",
+          "de": "Geniale Akustik. Beim Schlag um 03:42 Uhr riss die Schwingung am Draht und löste das Gegengewicht aus.",
+          "ru": "Гениальная механика. В 03:42 удар колокола дернул тросик и автоматически спустил противовес.",
+          "it": "Acustica geniale. Al rintocco delle 03:42, la vibrazione ha azionato il cavo liberando il contrappeso.",
+          "pt": "Acústica engenhosa. Às 03:42, a vibração puxou o fio soltando o contrapeso automaticamente.",
+          "ar": "هندسة صوتية بارعة! حين دقت الساعة عند 03:42 سحب اهتزاز لسان الجرس سلك التفجير وأفلت ثقل الموازنة آليًا."
+        }
+      }
+    ],
+    "options": [
+      {
+        "en": "[Log clue: Acoustic Resonance Tripwire Mechanism]",
+        "id": "[Catat bukti: Mekanisme Kawat Picu Akustik]",
+        "zh": "【记录线索：钟鸣共振引线机构】",
+        "ja": "【手がかりを記録：音響共鳴トラップワイヤー】",
+        "ko": "[단서 기록: 음향 공명 격발 와이어 장치]",
+        "es": "[Registrar pista: Mecanismo de Resonancia]",
+        "fr": "[Noter l'indice : Mécanisme de Déclenchement]",
+        "de": "[Hinweis aufnehmen: Akustischer Auslösedraht]",
+        "ru": "[Записать улику: Акустический спусковой механизм]",
+        "it": "[Registra indizio: Meccanismo a Risonanza]",
+        "pt": "[Registrar pista: Mecanismo de Fio Acústico]",
+        "ar": "[تسجيل الدليل: آلية سلك التفجير بالرنين الصوتي]"
+      },
+      {
+        "en": "[Step down from the bell housing]",
+        "id": "[Turun dari kubah lonceng]",
+        "zh": "【走下钟楼支架】",
+        "ja": "【鐘楼から降りる】",
+        "ko": "[종탑에서 내려온다]",
+        "es": "[Bajar del campanario]",
+        "fr": "[Descendre de la cloche]",
+        "de": "[Vom Glockengehäuse herabsteigen]",
+        "ru": "[Спуститься из-под колокола]",
+        "it": "[Scendi dalla cella campanaria]",
+        "pt": "[Descer da torre do sino]",
+        "ar": "[النزول من حجرة الجرس]"
+      }
+    ]
+  }
+};
+
+const CLUES_I18N_FULL = {
+  "clue_syndicate_bounty": {
+    "title": {
+      "en": "The Grand Syndicate Ledger Bounty",
+      "id": "Hadiah Sayembara Sindikat Jam",
+      "zh": "辛迪加黑金悬赏令",
+      "ja": "大シンジケートの賞金首調書",
+      "ko": "거대 신디케이트의 현상금 장부",
+      "es": "La Recompensa del Gran Sindicato",
+      "fr": "La Prime du Grand Syndicat",
+      "de": "Das Kopfgeld des Großen Syndikats",
+      "ru": "Награда Великого Синдиката",
+      "it": "La Taglia del Grande Sindacato",
+      "pt": "A Recompensa do Grande Sindicato",
+      "ar": "مكافأة دفتر النقابة الكبرى"
+    },
+    "desc": {
+      "en": "Inspector Graves was paid off by the Syndicate to retrieve an alchemical prototype ledger stolen by Vance.",
+      "id": "Inspektur Graves disuap oleh Sindikat untuk mengamankan buku besar alkimia rahasia yang dicuri Vance.",
+      "zh": "格雷夫斯警探收受了辛迪加巨额贿赂，奉命追回奥蕾莉亚偷走的炼金原型秘密账簿。",
+      "ja": "グレイヴス警部は、ヴァンスが持ち出した錬金術試作台帳を回収するためシンジケートから買収されていた。",
+      "ko": "그레이브스 형사는 밴스가 빼돌린 프로토타입 장부를 회수하는 대가로 신디케이트에 매수되었습니다.",
+      "es": "El inspector Graves fue sobornado por el Sindicato para recuperar un libro prototipo robado por Vance.",
+      "fr": "L'inspecteur Graves a été soudoyé par le Syndicat pour récupérer un registre secret dérobé par Vance.",
+      "de": "Inspektor Graves wurde vom Syndikat bestochen, um ein von Vance gestohlenes Prototyp-Buch zu beschaffen.",
+      "ru": "Инспектор Грейвс был подкуплен Синдикатом, чтобы вернуть украденный Вэнс чертежный гроссбух.",
+      "it": "L'ispettore Graves è stato corrotto dal Sindacato per recuperare un mastro prototipo rubato dalla Vance.",
+      "pt": "O inspetor Graves foi subornado pelo Sindicato para recuperar um livro protótipo roubado por Vance.",
+      "ar": "تلقى المفتش غريفز رشوة من النقابة لاستعادة دفتر الحسابات الخيميائي المسروق من فانس."
+    }
+  },
+  "clue_poison_needle": {
+    "title": {
+      "en": "The Poisoned Ivory Queen",
+      "id": "Bidak Ratu Catur Beracun",
+      "zh": "淬毒象牙黑后棋子",
+      "ja": "毒針仕込みの象牙クイーン",
+      "ko": "독침이 장치된 상아 퀸",
+      "es": "La Reina de Marfil Envenenada",
+      "fr": "La Reine d'Ivoire Empoisonnée",
+      "de": "Die Vergiftete Elfenbein-Dame",
+      "ru": "Отравленный ферзь из слоновой кости",
+      "it": "La Regina d'Avorio Avvelenata",
+      "pt": "A Rainha de Marfim Envenenada",
+      "ar": "ملكة الشطرنج العاجية المسمومة"
+    },
+    "desc": {
+      "en": "Aurelia Vance was paralyzed by a hollow needle concealed in a chess piece before being hung on the pendulum.",
+      "id": "Aurelia Vance dilumpuhkan dengan jarum berongga beracun di dalam bidak catur sebelum digantung di pendulum.",
+      "zh": "奥蕾莉亚·梵斯在被挂上大钟摆前，遭人利用棋子暗藏的中空毒针注入致命神经毒素瘫痪。",
+      "ja": "オレリア・ヴァンスは大振り子に吊るされる前に、チェス駒に隠された毒針で麻痺させられていた。",
+      "ko": "오렐리아 밴스는 시계추에 매달리기 전, 체스 말에 숨겨진 독침에 찔려 마비되었습니다.",
+      "es": "Aurelia Vance fue paralizada con una aguja hueca oculta en una pieza de ajedrez antes de ser colgada del péndulo.",
+      "fr": "Aurelia Vance a été paralysée par une aiguille empoisonnée dissimulée dans une pièce d'échecs avant d'être pendue au balancier.",
+      "de": "Aurelia Vance wurde durch eine in einer Schachfigur versteckte Nadel gelähmt, bevor man sie ans Pendel hängte.",
+      "ru": "Аурелия Вэнс была парализована полой иглой с ядом, скрытой в шахматной фигуре, перед тем как ее повесили на маятник.",
+      "it": "Aurelia Vance è stata paralizzata da un ago avvelenato celato in un pezzo degli scacchi prima di essere appesa al pendolo.",
+      "pt": "Aurelia Vance foi paralisada por uma agulha oca com veneno oculta na peça de xadrez antes de ser presa ao pêndulo.",
+      "ar": "شُلت حركة أوريليا فانس بإبرة مجوفة مسمومة كانت مخبأة داخل قطعة شطرنج قبل تعليقها على البندول."
+    }
+  },
+  "clue_meridian_seal": {
+    "title": {
+      "en": "The Pale Meridian Seal",
+      "id": "Segel Meridian Pucat",
+      "zh": "苍白子午线密教印记",
+      "ja": "蒼白の子午線教団の刻印",
+      "ko": "창백한 자오선 교단의 인장",
+      "es": "El Sello del Meridiano Pálido",
+      "fr": "Le Sceau du Méridien Pâle",
+      "de": "Das Siegel des Bleichen Meridians",
+      "ru": "Печать Бледного Меридиана",
+      "it": "Il Sigillo del Meridiano Pallido",
+      "pt": "O Selo do Meridiano Pálido",
+      "ar": "ختم خط الزوال الشاحب"
+    },
+    "desc": {
+      "en": "The victim was initiated into an occult horological order attempting to reverse the entropy of time.",
+      "id": "Korban merupakan anggota sekte horologis rahasia yang terobsesi membalikkan aliran waktu.",
+      "zh": "受害者加入了崇尚机械逆熵、企图倒转时光流向的狂热秘密钟表教派。",
+      "ja": "被害者は時間の不可逆性を覆そうと試みる神秘主義の時計結社に深く関与していた。",
+      "ko": "피해자는 시간의 엔트로피를 역전시키려던 오컬트 시계 교단에 입단한 상태였습니다.",
+      "es": "La víctima pertenecía a una orden horológica oculta que intentaba revertir la entropía del tiempo.",
+      "fr": "La victime avait été initiée à un ordre horloger occulte tentant d'inverser l'entropie temporelle.",
+      "de": "Das Opfer war Mitglied eines okkulten Uhrmacher-Ordens, der die Zeit umkehren wollte.",
+      "ru": "Жертва состояла в оккультном ордене часовщиков, пытавшемся повернуть время вспять.",
+      "it": "La vittima faceva parte di un ordine orologico occulto che tentava di invertire l'entropia del tempo.",
+      "pt": "A vítima foi iniciada em uma ordem horológica oculta que tentava reverter a entropia do tempo.",
+      "ar": "كانت الضحية منتمية لجماعة ساعاتيّة باطنية سرية تسعى لعكس انسياب الزمن."
+    }
+  },
+  "clue_watch_code": {
+    "title": {
+      "en": "Floorboard Safe Combination (7-3-12)",
+      "id": "Kombinasi Brankas Lantai (7-3-12)",
+      "zh": "暗格金库密码 (7-3-12)",
+      "ja": "床下金庫の暗証コード (7-3-12)",
+      "ko": "바닥 금고 암호 (7-3-12)",
+      "es": "Combinación de la Caja Fuerte (7-3-12)",
+      "fr": "Combinaison du Coffre (7-3-12)",
+      "de": "Kombination des Bodentresors (7-3-12)",
+      "ru": "Шифр сейфа в полу (7-3-12)",
+      "it": "Combinazione della Cassaforte (7-3-12)",
+      "pt": "Combinação do Cofre (7-3-12)",
+      "ar": "شفرة الخزنة الأرضية (7-3-12)"
+    },
+    "desc": {
+      "en": "The victim inscribed the safe combination code inside her watch balance cock, linking it to Madame Vivienne Vance.",
+      "id": "Korban mengukir kode kombinasi brankas rahasia di dalam jam sakunya, menghubungkannya ke Vivienne Vance.",
+      "zh": "死者将暗格金库的三位密码深深刻在随身怀表内，并刻下了对薇薇安·梵斯的深情题词。",
+      "ja": "被害者は懐中時計のテンプ受けに金庫の解錠コードを刻み、未亡人ヴィヴィアンへの献辞を遺していた。",
+      "ko": "피해자는 회중시계 무브먼트 내부에 금고 암호를 새겨 넣었으며, 이는 비비안 밴스 부인과 직결됩니다.",
+      "es": "La víctima grabó el código de la caja fuerte en su reloj de bolsillo, vinculándolo a Vivienne Vance.",
+      "fr": "La victime avait gravé le code du coffre dans sa montre à gousset, le liant directement à Vivienne Vance.",
+      "de": "Das Opfer ritzte den Tresorcode in seine Taschenuhr und verknüpfte ihn mit Vivienne Vance.",
+      "ru": "Жертва выгравировала код от сейфа внутри своих карманных часов, связав его с Вивьен Вэнс.",
+      "it": "La vittima ha inciso il codice della cassaforte nel bilanciere dell'orologio, legandolo a Vivienne Vance.",
+      "pt": "A vítima gravou o código do cofre em seu relógio de bolso, ligando-o a Vivienne Vance.",
+      "ar": "نقشت الضحية شفرة فتح الخزنة داخل ساعة جيبها وربطتها بإهداء صريح لفيفيان فانس."
+    }
+  },
+  "clue_velvet_cyanide": {
+    "title": {
+      "en": "Torn Blue Velvet & Cyanide Vial",
+      "id": "Sobekan Beludru Biru & Ampul Sianida",
+      "zh": "撕裂的蓝丝绒碎片与剧毒氰化安瓿",
+      "ja": "裂けた青いビロードと青酸アンプル",
+      "ko": "찢겨진 청색 벨벳 조각과 청산가리 앰플",
+      "es": "Terciopelo Azul Rasgado y Vial de Cianuro",
+      "fr": "Velours Bleu Déchiré et Fiole de Cyanure",
+      "de": "Zerrissener Blauer Samt und Zyankali-Fläschchen",
+      "ru": "Оторванный синий бархат и ампула с цианидом",
+      "it": "Velluto Blu Strappato e Fiala di Cianuro",
+      "pt": "Veludo Azul Rasgado e Frasco de Cianeto",
+      "ar": "قطعة مخمل أزرق ممزقة وأمبول سيانيد"
+    },
+    "desc": {
+      "en": "Found on the rain balcony. A direct physical match to Madame Vivienne Vance's mourning dress.",
+      "id": "Ditemukan di balkon hujan. Cocok secara fisik dengan mantel beludru Nyonya Vivienne Vance.",
+      "zh": "在风雨露台栏杆起获。其纤维编织与磨损破口与薇薇安·梵斯夫人身上的丧服大衣完全吻合。",
+      "ja": "雨のバルコニーで発見。ヴィヴィアン・ヴァンス夫人の喪服コートの裂け目と完全に一致する。",
+      "ko": "빗물 고인 발코니에서 발견되었습니다. 비비안 밴스 부인의 상복 코트 찢긴 자국과 정확히 일치합니다.",
+      "es": "Hallado en el balcón. Coincide exactamente con el abrigo de luto de Madame Vivienne Vance.",
+      "fr": "Découvert sur le balcon. Correspond parfaitement au manteau de deuil de Madame Vivienne Vance.",
+      "de": "Auf dem Regen-Balkon gefunden. Passt exakt zum Trauermantel von Madame Vivienne Vance.",
+      "ru": "Найдено на мокром балконе. Физически совпадает с разрывом на траурном пальто мадам Вивьен Вэнс.",
+      "it": "Trovato sul balcone bagnato di pioggia. Corrisponde perfettamente all'abito di Vivienne Vance.",
+      "pt": "Encontrado na sacada de chuva. Corresponde perfeitamente ao casaco de luto de Madame Vivienne Vance.",
+      "ar": "عُثر عليه بشرفة المطر، ويتطابق تمامًا مع معطف حداد السيدة فيفيان فانس."
+    }
+  },
+  "clue_perpetuum_ledger": {
+    "title": {
+      "en": "The Perpetuum Cartel Ledger",
+      "id": "Buku Besar Perpetuum Sindikat",
+      "zh": "永动机辛迪加绝密总账簿",
+      "ja": "永久機関カルテルの秘密台帳",
+      "ko": "영구기관 카르텔의 비밀 원장",
+      "es": "El Libro Mayor del Cartel Perpetuum",
+      "fr": "Le Grand Livre du Cartel Perpetuum",
+      "de": "Das Hauptbuch des Perpetuum-Kartells",
+      "ru": "Секретный гроссбух картеля «Перпетуум»",
+      "it": "Il Mastro del Cartello Perpetuum",
+      "pt": "O Livro-Razão do Cartel Perpetuum",
+      "ar": "دفتر حسابات كارتل بيربيتوم السري"
+    },
+    "desc": {
+      "en": "Definitive proof that Vance was silenced to prevent her from exposing the Grand Syndicate arson conspiracy.",
+      "id": "Bukti definitif bahwa Vance dibungkam agar tidak membongkar konspirasi pembakaran kota oleh Sindikat.",
+      "zh": "铁证如山：辛迪加为了阻止奥蕾莉亚揭露全市延迟纵火爆炸黑幕，雇佣杀手将她彻底灭口。",
+      "ja": "シンジケートの大規模放火陰謀の告発を防ぐため、ヴァンスが口封じされた決定的な物証。",
+      "ko": "신디케이트의 도시 방화 음모를 폭로하려던 밴스를 침묵시키기 위해 입막음 살해했다는 확증입니다.",
+      "es": "Prueba definitiva de que Vance fue silenciada para encubrir la conspiración incendiaria del Sindicato.",
+      "fr": "Preuve accablante que Vance a été assassinée pour étouffer le complot d'incendie du Grand Syndicat.",
+      "de": "Der endgültige Beweis, dass Vance mundtot gemacht wurde, um die Brandstiftungsverschwörung zu decken.",
+      "ru": "Главное доказательство того, что Вэнс устранили, дабы скрыть заговор Синдиката о поджоге города.",
+      "it": "La prova schiacciante che la Vance è stata messa a tacere per coprire i roghi dolosi del Sindacato.",
+      "pt": "Prova definitiva de que Vance foi silenciada para abafar a conspiração incendiária do Sindicato.",
+      "ar": "الدليل القاطع على تصفية فانس لمنعها من كشف مؤامرة حرائق النقابة الكبرى المدمرة."
+    }
+  },
+  "clue_madame_motive": {
+    "title": {
+      "en": "Vivienne's Motive: Vengeance & Neglect",
+      "id": "Motif Vivienne: Dendam & Pengabaian",
+      "zh": "薇薇安的杀意动机：复仇与冷酷漠视",
+      "ja": "ヴィヴィアンの動機：復讐と長年の冷遇",
+      "ko": "비비안의 범행 동기: 복수와 오랜 방치",
+      "es": "El Motivo de Vivienne: Venganza y Negligencia",
+      "fr": "Le Mobile de Vivienne : Vengeance et Abandon",
+      "de": "Viviennes Motiv: Rache und Vernachlässigung",
+      "ru": "Мотив Вивьен: месть за пренебрежение",
+      "it": "Il Movente di Vivienne: Vendetta e Abbandono",
+      "pt": "O Motivo de Vivienne: Vingança e Desprezo",
+      "ar": "دافع فيفيان: الانتقام والمرارة والإهمال"
+    },
+    "desc": {
+      "en": "Aurelia neglected their dying daughter to finish the clockwork war machine for the Syndicate.",
+      "id": "Aurelia menelantarkan putri mereka yang sekarat demi menyelesaikan mesin pesanan Sindikat.",
+      "zh": "奥蕾莉亚当年为了替辛迪加赶制致命军火，冷血抛下重病垂危的亲生女儿不顾。",
+      "ja": "オレリアは兵器製造に没头し、結核で瀕死だった一人娘の看病を放棄していた。",
+      "ko": "오렐리아는 신디케이트의 전쟁 기계를 완성하느라 결핵으로 죽어가던 친딸을 외면했습니다.",
+      "es": "Aurelia desatendió a su hija moribunda para terminar la máquina bélica del Sindicato.",
+      "fr": "Aurelia avait délaissé leur fille mourante pour achever la machine de guerre du Syndicat.",
+      "de": "Aurelia vernachlässigte ihre sterbende Tochter, um die Kriegsmaschine fertigzustellen.",
+      "ru": "Аурелия бросила умирающую дочь ради завершения военной машины для Синдиката.",
+      "it": "Aurelia ha trascurato la figlia morente per terminare la macchina da guerra del Sindacato.",
+      "pt": "Aurelia negligenciou a filha doente para terminar a máquina bélica do Sindicato.",
+      "ar": "أهملت أوريليا ابنتهما المحتضرة لإتمام آلة الحرب لحساب النقابة الكبرى."
+    }
+  },
+  "clue_confession_full": {
+    "title": {
+      "en": "THE FULL TRUTH: A Mutual Martyrdom",
+      "id": "KEBENARAN PENUH: Perjanjian Kematian Bersama",
+      "zh": "终极真相：互谋殉道之死",
+      "ja": "真実の全貌：同意の上の殉教的暗殺",
+      "ko": "완전한 진실: 상호 합의된 순교적 결말",
+      "es": "LA VERDAD TOTAL: Un Martirio Consentido",
+      "fr": "LA VÉRITÉ COMPLÈTE : Un Martyre Partagé",
+      "de": "DIE VOLLE WAHRHEIT: Ein Gegenseitiges Martyrium",
+      "ru": "ВСЯ ПРАВДА: Взаимное мученичество",
+      "it": "LA VERITÀ COMPLETA: Un Martirio Consensuale",
+      "pt": "A VERDADE COMPLETA: Um Martírio Consensual",
+      "ar": "الحقيقة الكاملة: استشهاد متبادل بالاتفاق"
+    },
+    "desc": {
+      "en": "Vivienne poisoned Aurelia with her full consent to prevent the Syndicate from seizing her delay-detonation blueprints.",
+      "id": "Vivienne meracuni Aurelia atas persetujuannya agar rancangan bom penunda waktu tidak jatuh ke tangan Sindikat.",
+      "zh": "薇薇安是在奥蕾莉亚的含笑请求下亲手下毒，借此让绝密军火图纸与钟表大师一同长眠，阻止辛迪加屠杀工人。",
+      "ja": "ヴィヴィアンはオレリア本人の合意のもと毒を盛り、軍事兵器の設計図を道連れにして時計塔を永久に止めた。",
+      "ko": "비비안은 신디케이트가 살상 무기 도면을 탈취하지 못하도록, 오렐리아 본인의 간곡한 동의 하에 독침을 찔렀습니다.",
+      "es": "Vivienne envenenó a Aurelia con su consentimiento para evitar que el Sindicato obtuviera los planos.",
+      "fr": "Vivienne a empoisonné Aurelia avec son plein accord pour que le Syndicat ne s'empare pas des plans.",
+      "de": "Vivienne vergiftete Aurelia mit deren Einverständnis, um die Entführung der Pläne zu vereiteln.",
+      "ru": "Вивьен отравила Аурелию с ее полного согласия, чтобы чертежи не достались Синдикату.",
+      "it": "Vivienne ha avvelenato Aurelia con il suo consenso per impedire al Sindacato di prendere i piani.",
+      "pt": "Vivienne envenenou Aurelia com o consentimento dela para impedir que o Sindicato tomasse as plantas.",
+      "ar": "سممت فيفيان أوريليا بموافقتها التامة لمنع النقابة من الاستيلاء على مخططات السلاح الكارثي."
+    }
+  },
+  "clue_shattered_reagents": {
+    "title": {
+      "en": "Shattered Reagents & Syndicate Crest",
+      "id": "Serpihan Reagen Kimia & Lambang Sindikat",
+      "zh": "碎裂的化学试剂瓶与辛迪加火漆印",
+      "ja": "破壊された試薬瓶とシンジケートの紋章",
+      "ko": "깨진 시약병과 신디케이트 문장",
+      "es": "Reactivos Rotos y Emblema del Sindicato",
+      "fr": "Réactifs Brisés et Sceau du Syndicat",
+      "de": "Zerschlagene Reagenzien und Syndikats-Wappen",
+      "ru": "Осколки реагентов и печать Синдиката",
+      "it": "Reagenti Infranti e Sigillo del Sindacato",
+      "pt": "Reagentes Quebrados e Brasão do Sindicato",
+      "ar": "زجاجات كواشف محطمة وخاتم النقابة"
+    },
+    "desc": {
+      "en": "Discovered on the lantern catwalk. Chemical glass vials bearing the Grand Syndicate mercury seal, confirming delivery hours before death.",
+      "id": "Ditemukan di anjungan lentera. Botol kaca kimia berstempel segel merkuri Sindikat Agung, membuktikan kurir datang beberapa jam sebelum maut.",
+      "zh": "在提灯走廊铁网间寻获。带有辛迪加水银火漆印的化学安瓿碎片，证实凶案发生前数小时曾有暗部信使出入钟楼。",
+      "ja": "ランタン通路で回収。シンジケートの水銀刻印が施された薬瓶の破片で、犯行直前に密使が接触した証拠。",
+      "ko": "등불 통로에서 발견되었습니다. 신디케이트의 수은 인장이 찍힌 시약병 파편으로, 사건 직전 밀사가 다녀간 흔적입니다.",
+      "es": "Hallado en la pasarela de la linterna. Viales químicos con el sello de mercurio del Gran Sindicato entregados horas antes.",
+      "fr": "Découvert sur la passerelle. Des fioles chimiques portant le sceau du Syndicat, livrées quelques heures avant le drame.",
+      "de": "Auf dem Laternensteg gefunden. Glasfläschchen mit dem Siegel des Syndikats, wenige Stunden zuvor geliefert.",
+      "ru": "Найдено на мостках фонаря. Осколки ампул с печатью Синдиката, доставленные за пару часов до трагедии.",
+      "it": "Trovato sul camminamento della lanterna. Fiale chimiche col sigillo del Syndacato consegnate poche ore prima.",
+      "pt": "Encontrado na passarela da lanterna. Frascos químicos com o selo do Sindicato entregues horas antes.",
+      "ar": "عُثر عليها بممر الفانوس، زجاجات كيميائية ممهورة بختم النقابة الزئبقي سُلمت قبل ساعات من الجريمة."
+    }
+  },
+  "clue_acoustic_tripwire": {
+    "title": {
+      "en": "Acoustic Resonance Tripwire Mechanism",
+      "id": "Mekanisme Kawat Picu Akustik",
+      "zh": "钟鸣声学共振触动引线",
+      "ja": "音響共鳴トラップワイヤー機構",
+      "ko": "음향 공명 격발 와이어 장치",
+      "es": "Mecanismo de Resonancia Acústica",
+      "fr": "Mécanisme de Déclenchement Acoustique",
+      "de": "Akustischer Resonanz-Auslösedraht",
+      "ru": "Акустический спусковой механизм колокола",
+      "it": "Meccanismo a Risonanza Acustica",
+      "pt": "Mecanismo de Fio de Ressonância Acústica",
+      "ar": "آلية سلك التفجير بالرنين الصوتي"
+    },
+    "desc": {
+      "en": "Fastened inside the Saint Irene bronze bell. It explains how the pendulum was mechanically tripped precisely on the 42nd minute stroke.",
+      "id": "Terpasang di dalam lonceng perunggu Saint Irene. Menjelaskan bagaimana pendulum dijatuhkan secara mekanis tepat di menit ke-42.",
+      "zh": "巧妙固定在圣艾琳青铜大钟内部。完美解释了钟摆为何能在无人触碰的情况下，精准在第42分钟钟锤敲击时自行脱钩切断！",
+      "ja": "聖アイリーンの青銅鐘の内部に結ばれていた。人の手を介さず、42分の鐘の打撃で振り子が機械的に停止した仕掛けを証明する。",
+      "ko": "청동 종 안쪽에 설치된 장치입니다. 사람이 없었음에도 42분 종소리의 진동으로 진자가 스스로 탈착된 트릭을 설명해 줍니다.",
+      "es": "Fijado dentro de la campana de bronce. Explica cómo el péndulo se soltó mecánicamente en el golpe del minuto 42.",
+      "fr": "Fixé dans la cloche en bronze. Explique comment le balancier s'est déclenché mécaniquement au 42e coup de cloche.",
+      "de": "In der Bronzeglocke befestigt. Erklärt, wie das Pendel mechanisch exakt zur 42. Minute ausgelöst wurde.",
+      "ru": "Закреплен внутри бронзового колокола. Объясняет, как маятник сработал точно на 42-й минуте от вибрации удара колокола.",
+      "it": "Fissato all'interno della campana di bronzo. Spiega come il pendolo sia scattato meccanicamente al rintocco del 42° minuto.",
+      "pt": "Preso dentro do sino de bronze. Explica como o pêndulo foi acionado mecanicamente na batida do 42º minuto.",
+      "ar": "مثبت داخل الجرس البرونزي الضخم، ويفسر كيفية إفلات البندول آليًا عبر اهتزاز دقة الدقيقة 42 دون حضور بشري."
+    }
+  },
+  "clue_needle_puncture": {
+    "title": {
+      "en": "Microscopic Cyanide Puncture",
+      "id": "Luka Suntikan Mikroskopis di Leher Korban",
+      "zh": "颈后微型氰化物注射针孔",
+      "ja": "首筋の微細なシアン化物注射創",
+      "ko": "목 뒤의 미세한 청산가리 주사 상흔",
+      "es": "Punción Microscópica de Cianuro",
+      "fr": "Piqûre Microscopique de Cyanure",
+      "de": "Mikroskopische Zyankali-Einstichstelle",
+      "ru": "Микроскопический след инъекции цианида",
+      "it": "Puntura Microscopica di Cianuro",
+      "pt": "Perfuração Microscópica de Cianeto",
+      "ar": "أثر وخز مجهري لسيانيد في الرقبة"
+    },
+    "desc": {
+      "en": "Precision magnification reveals a tiny blue puncture wound on Aurelia's neck, confirming lethal injection before the fall.",
+      "id": "Lensa presisi membuktikan racun disuntikkan ke leher Aurelia sebelum tubuhnya dipindahkan ke pendulum.",
+      "zh": "高倍放大镜显现出死者颈椎凹陷处有一枚细如牛毛的浅蓝淤血点，证实她在钟摆坠落前已遭毒杀。",
+      "ja": "高倍率ルーペにより、遺体の首筋に青く変色した微細な注射痕を発見。落下前の薬殺を決定づける。",
+      "ko": "정밀 돋보기로 목 뒤에서 푸르스름한 미세 주사 바늘 자국을 확인하여 추락 전 독살되었음을 증명합니다.",
+      "es": "Un aumento preciso revela una diminuta punción azulada en el cuello de Aurelia, confirmando la inyección letal.",
+      "fr": "Un examen minutieux révèle une minuscule piqûre bleutée au cou d'Aurelia, confirmant une injection létale.",
+      "de": "Präzise Vergrößerung enthüllt eine winzige Einstichstelle am Nacken, die die tödliche Injektion beweist.",
+      "ru": "Увеличение выявило крошечный след укола на шее Аурелии, подтверждающий смертельную инъекцию до падения.",
+      "it": "Un ingrandimento rivela una minuscola puntura bluastra sul collo di Aurelia, confermando l'iniezione letale.",
+      "pt": "Uma ampliação precisa revela uma minúscula marca de picada azul no pescoço, confirmando injeção letal.",
+      "ar": "الفحص المجهري الدقيق يكشف عن وخزة إبرة زرقاء دقيقة في عنق أوريليا، مما يؤكد حقنها بالسم القاتل قبل سقوطها."
+    }
+  },
+  "clue_syndicate_bribe": {
+    "title": {
+      "en": "Syndicate Payoff Ledger",
+      "id": "Catatan Suap Sindikat ke Vivienne Vance",
+      "zh": "辛迪加致薇薇安密约收据",
+      "ja": "シンジケートの買収受領書",
+      "ko": "신디케이트의 비비안 매수 영수증",
+      "es": "Recibo de Soborno del Sindicato",
+      "fr": "Reçu de Pot-de-Vin du Syndicat",
+      "de": "Bestechungsbeleg des Syndikats",
+      "ru": "Расписка о взятке Синдиката",
+      "it": "Ricevuta di Corruzione del Sindacato",
+      "pt": "Recibo de Suborno do Sindicato",
+      "ar": "إيصال رشوة النقابة لفيفيان"
+    },
+    "desc": {
+      "en": "Records prove Vivienne Vance accepted 50,000 guilders to deliver Aurelia's delay-detonation blueprints.",
+      "id": "Catatan membuktikan Vivienne menerima 50.000 guilder untuk menyerahkan rancangan Aurelia kepada kartel.",
+      "zh": "账目存根证明薇薇安曾被许诺五万金币报酬，条件是将奥蕾莉亚的定时引爆专利全盘交给军火财阀。",
+      "ja": "ヴィヴィアンが5万ギルダーの報酬と引き換えに、オレリアの起爆装置設計図を渡す約束を交わしていた証拠。",
+      "ko": "비비안이 5만 길더의 대가를 받고 오렐리아의 지연 기폭장치 도면을 넘기기로 합의했던 서류입니다.",
+      "es": "Los registros demuestran que Vivienne aceptó 50.000 florines para entregar los planos de Aurelia.",
+      "fr": "Les registres prouvent que Vivienne a accepté 50 000 florins pour livrer les plans d'Aurelia.",
+      "de": "Dokumente belegen, dass Vivienne 50.000 Gulden annahm, um Aurelias Pläne an das Kartell auszuliefern.",
+      "ru": "Записи доказывают, что Вивьен приняла 50 000 гульденов за передачу чертежей Аурелии картелю.",
+      "it": "I registri provano che Vivienne ha accettato 50.000 fiorini per consegnare i progetti di Aurelia al cartello.",
+      "pt": "Registros comprovam que Vivienne aceitou 50.000 florins para entregar as plantas de Aurelia.",
+      "ar": "الوثائق تثبت قبول فيفيان خمسين ألف غيلدر لتسليم مخططات أوريليا للتفجير المؤجل إلى كارتل النقابة."
+    }
+  },
+  "clue_poison_mechanism": {
+    "title": {
+      "en": "Spring-Loaded Needle Mechanism",
+      "id": "Mekanisme Jarum Pegas Ratu Gading",
+      "zh": "黑后棋底座暗藏微簧棘刺弹簧针",
+      "ja": "チェス駒内蔵のバネ仕掛け毒針機構",
+      "ko": "체스 퀸 스프링 암살 독침 메커니즘",
+      "es": "Mecanismo de Resorte de la Reina de Marfil",
+      "fr": "Mécanisme à Ressort de la Reine d'Ivoire",
+      "de": "Federmechanismus der Elfenbein-Dame",
+      "ru": "Пружинный механизм шахматной фигуры",
+      "it": "Meccanismo a Scatto della Regina d'Avorio",
+      "pt": "Mecanismo de Mola da Rainha de Marfim",
+      "ar": "آلية الإبرة الزنبركية بملكة الشطرنج"
+    },
+    "desc": {
+      "en": "The ivory queen conceals a pressurized needle chamber loaded with fatal prussic acid.",
+      "id": "Ratu catur gading menyembunyikan jarum bertekanan pegas yang diisi asam prusat mematikan.",
+      "zh": "雕刻象牙黑后棋子中空内部嵌有精密的微型气压弹簧针室，灌注了足以十秒见血封喉的纯氢氰酸液。",
+      "ja": "象牙のクイーン内部には極小の加圧バネ針室が仕込まれており、致死性の青酸が充填されていた。",
+      "ko": "상아 체스 퀸 내부에는 미세 스프링 압축 챔버가 숨겨져 치명적인 청산가리가 채워져 있었습니다.",
+      "es": "La reina de marfil oculta una cámara de aguja presurizada cargada con ácido prúsico fatal.",
+      "fr": "La reine d'ivoire dissimule une chambre à aiguille sous pression remplie d'acide prussique mortel.",
+      "de": "Die Elfenbein-Dame verbirgt eine druckbelastete Nadelkammer voller Blausäure.",
+      "ru": "Внутри фигуры ферзя спрятана полость с пружинной иглой, заряженная синильной кислотой.",
+      "it": "La regina d'avorio cela una camera d'ago pressurizzata carica di acido cianidrico letale.",
+      "pt": "A rainha de marfim oculta uma câmara de agulha pressurizada carregada com ácido prússico fatal.",
+      "ar": "تخفي قطعة ملكة الشطرنج العاجية حجرة إبرة مضغوطة بزنبرك معبأة بحمض البروسيك القاتل."
+    }
+  }
+};
+
+const NEW_POIS_I18N = {
+  "poi_gantry_lantern": {
+    "title": {
+      "en": "Upper Gantry & Alchemical Lantern",
+      "id": "Anjungan Atas & Lentera Alkimia",
+      "zh": "提灯上层悬空回廊与炼金探灯",
+      "ja": "上層キャットウォークと錬金ランタン",
+      "ko": "상층 통로와 연금술 등불",
+      "es": "Pasarela Superior y Linterna Alquímica",
+      "fr": "Passerelle Supérieure et Lanterne Alchimique",
+      "de": "Oberer Laufsteg und Alchemielaterne",
+      "ru": "Верхние мостки и алхимический фонарь",
+      "it": "Passerella Superiore e Lanterna Alchemica",
+      "pt": "Passarela Superior e Lanterna Alquímica",
+      "ar": "الممر العلوي وفانوس الكيمياء"
+    },
+    "description": {
+      "en": "A narrow iron grating over the gear abyss. Broken glass and alchemical soot mark where a clandestine visitor waited.",
+      "id": "Kisi besi sempit di atas jurang roda gigi. Pecahan kaca dan jelaga alkimia menandai tempat kurir rahasia mengintai.",
+      "zh": "悬空于齿轮深渊上方的狭窄铁栅回廊。碎玻璃与炼金煤烟残留在此，暴露出曾有秘密访客在暗中窥伺。",
+      "ja": "歯車の深淵に架かる細い鉄格子通路。割れたガラスと錬金術の煤が、何者かが潜んでいた痕跡を物語る。",
+      "ko": "톱니바퀴 심연 위에 놓인 좁은 철제 격자 통로. 깨진 유리와 연금술 그을음이 밀사의 잠복 흔적을 보여줍니다.",
+      "es": "Una estrecha rejilla de hierro sobre el abismo de engranajes. Restos de vidrio y hollín alquímico marcan una visita secreta.",
+      "fr": "Une étroite grille de fer au-dessus des engrenages. Du verre brisé et de la suie alchimique trahissent un intrus.",
+      "de": "Ein schmaler Eisensteg über den Zahnrädern. Glasscherben und Ruß beweisen einen heimlichen Besucher.",
+      "ru": "Узкая железная решетка над пропастью шестерен. Осколки стекла и сажа выдают присутствие тайного гостя.",
+      "it": "Una stretta grata di ferro sull'abisso di ingranaggi. Vetri rotti e fuliggine alchemica indicano una presenza segreta.",
+      "pt": "Uma estreita grade de ferro sobre o abismo de engrenagens. Cacos de vidro e fuligem revelam uma visita clandestina.",
+      "ar": "ممر حديدي ضيق فوق هاوية التروس. زجاج محطم وسخام كيميائي يشيران إلى ترصد زائر سري قبل الحادث."
+    }
+  },
+  "poi_clock_chime_bell": {
+    "title": {
+      "en": "Colossal Bronze Bell & Chime Gearing",
+      "id": "Lonceng Perunggu Raksasa & Gigi Dentang",
+      "zh": "圣艾琳青铜大钟与共振撞锤齿轮",
+      "ja": "聖アイリーンの巨鐘と鐘打撃歯車",
+      "ko": "성 아이린 청동 거대 종과 타종 기어",
+      "es": "Campana Monumental y Engranajes del Carrillón",
+      "fr": "Cloche Colossale et Engrenages de Sonnerie",
+      "de": "Kolossale Bronzeglocke und Schlagwerk",
+      "ru": "Исполинский бронзовый колокол и бойный механизм",
+      "it": "Campana Monumentale e Meccanismo del Rintocco",
+      "pt": "Sino Colossal de Bronze e Engrenagens do Carrilhão",
+      "ar": "الجرس البرونزي الضخم وتروس دق الساعات"
+    },
+    "description": {
+      "en": "The eight-ton bell that tolls for District 7. A fine steel wire is wrapped through the clapper linkage down into the pendulum escapement.",
+      "id": "Lonceng delapan ton yang berdentang bagi Distrik 7. Kawat baja tipis terlilit dari pemukul lonceng menuju mekanisme pendulum.",
+      "zh": "重达八吨的圣艾琳主钟。一根极细的高张力钢丝从钟锤连杆悄然延伸至下方的钟摆脱扣装置上！",
+      "ja": "第7区に時を告げる8トンの大鐘。打鐘レバーから振り子の脱進機へと細い鋼鉄ワイヤーが巧みに結ばれている。",
+      "ko": "제7구역에 시각을 알리는 8톤 청동 종. 종 치는 추의 연결부에서 진자 탈착부까지 정교한 강철 와이어가 이어져 있습니다.",
+      "es": "La campana de ocho toneladas que dobla para el Distrito 7. Un fino cable de acero conecta el badajo al péndulo.",
+      "fr": "La cloche de huit tonnes qui sonne pour le District 7. Un fil d'acier fin relie le battant au balancier.",
+      "de": "Die Acht-Tonnen-Glocke des Distrikts 7. Ein dünner Stahldraht verbindet den Klöppel mit dem Pendelwerk.",
+      "ru": "Восьмитонный колокол 7-го района. Тонкий стальной тросик тянется от языка колокола к спусковому механизму маятника.",
+      "it": "La campana da otto tonnellate del Distretto 7. Un sottile cavo d'acciaio collega il battaglio allo scappamento.",
+      "pt": "O sino de oito toneladas que toca pelo Distrito 7. Um fino fio de aço liga o badalo ao escape do pêndulo.",
+      "ar": "الجرس الضخم البالغ وزنه ثمانية أطنان. سلك فولاذي رفيع يربط لسان الجرس بآلية فك قفل البندول بدقة ميكانيكية."
+    }
+  }
+};
+
+// --- END: dialogue_i18n.js ---
+
+// --- BEGIN: i18n.js ---
+// Aenigma Multi-Language Localization System (12 Native Languages)
+// Supported: id (Indonesian), en (English), ja (Japanese), zh (Chinese Simplified),
+// ko (Korean), es (Spanish), fr (French), de (German), ru (Russian),
+// it (Italian), pt (Portuguese), ar (Arabic)
+
+const SUPPORTED_LANGUAGES = [
+  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧', dir: 'ltr' },
+  { code: 'id', name: 'Bahasa Indonesia', native: 'Bahasa Indonesia', flag: '🇮🇩', dir: 'ltr' },
+  { code: 'zh', name: 'Chinese', native: '简体中文', flag: '🇨🇳', dir: 'ltr' },
+  { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵', dir: 'ltr' },
+  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', dir: 'ltr' },
+  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', dir: 'ltr' },
+  { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', dir: 'ltr' },
+  { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪', dir: 'ltr' },
+  { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺', dir: 'ltr' },
+  { code: 'it', name: 'Italian', native: 'Italiano', flag: '🇮🇹', dir: 'ltr' },
+  { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹', dir: 'ltr' },
+  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', dir: 'rtl' },
+];
+
+const PROGRESS_LABELS = {
+  en: 'PROGRESS',
+  id: 'PROGRES',
+  zh: '破案进度',
+  ja: '捜査進捗',
+  ko: '수사 진행',
+  es: 'PROGRESO',
+  fr: 'PROGRESSION',
+  de: 'FORTSCHRITT',
+  ru: 'ПРОГРЕСС',
+  it: 'PROGRESSO',
+  pt: 'PROGRESSO',
+  ar: 'تقدم القضية'
+};
+
+const SKILL_NAMES_I18N = {
+  logic: { en: 'Logic', id: 'Logika', zh: '逻辑', ja: '論理', ko: '논리', es: 'Lógica', fr: 'Logique', de: 'Logik', ru: 'Логика', it: 'Logica', pt: 'Lógica', ar: 'المنطق' },
+  encyclopedia: { en: 'Encyclopedia', id: 'Ensiklopedia', zh: '百科', ja: '百科事典', ko: '백과사전', es: 'Enciclopedia', fr: 'Encyclopédie', de: 'Enzyklopädie', ru: 'Энциклопедия', it: 'Enciclopedia', pt: 'Enciclopédia', ar: 'الموسوعة' },
+  rhetoric: { en: 'Rhetoric', id: 'Retorika', zh: '修辞', ja: '修辞学', ko: '수사학', es: 'Retórica', fr: 'Rhétorique', de: 'Rhetorik', ru: 'Риторика', it: 'Retorica', pt: 'Retórica', ar: 'البلاغة' },
+  conceptualization: { en: 'Conceptualization', id: 'Konseptualisasi', zh: '概念化', ja: '概念化', ko: '개념화', es: 'Conceptualización', fr: 'Conceptualisation', de: 'Konzeptualisierung', ru: 'Концептуализация', it: 'Concettualizzazione', pt: 'Conceptualização', ar: 'المفاهيم' },
+  empathy: { en: 'Empathy', id: 'Empati', zh: '共情', ja: '共感', ko: '공감', es: 'Empatía', fr: 'Empathie', de: 'Empathie', ru: 'Эмпатия', it: 'Empatia', pt: 'Empatia', ar: 'التعاطف' },
+  esoterica: { en: 'Esoterica', id: 'Esoterika', zh: '秘教', ja: '秘教', ko: '비전', es: 'Esotérica', fr: 'Ésotérisme', de: 'Esoterik', ru: 'Эзотерика', it: 'Esoterismo', pt: 'Esoterismo', ar: 'الباطنية' },
+  authority: { en: 'Authority', id: 'Otoritas', zh: '威信', ja: '威信', ko: '권위', es: 'Autoridad', fr: 'Autorité', de: 'Autorität', ru: 'Авторитет', it: 'Autorità', pt: 'Autoridade', ar: 'السلطة' },
+  suggestion: { en: 'Suggestion', id: 'Sugesti', zh: '暗示', ja: '暗示', ko: '암시', es: 'Sugestión', fr: 'Suggestion', de: 'Suggestion', ru: 'Внушение', it: 'Suggestione', pt: 'Sugestão', ar: 'الإيحاء' },
+  endurance: { en: 'Endurance', id: 'Daya Tahan', zh: '耐力', ja: '耐久力', ko: '인내력', es: 'Resistencia', fr: 'Endurance', de: 'Ausdauer', ru: 'Стойкость', it: 'Resistenza', pt: 'Resistência', ar: 'التحمل' },
+  painThreshold: { en: 'Pain Threshold', id: 'Ambang Rasa Sakit', zh: '疼痛阈值', ja: '痛覚閾値', ko: '통증 역치', es: 'Umbral de Dolor', fr: 'Seuil de Douleur', de: 'Schmerzgrenze', ru: 'Болевой порог', it: 'Soglia del Dolore', pt: 'Limiar de Dor', ar: 'عتبة الألم' },
+  electrochemistry: { en: 'Electrochemistry', id: 'Elektrokimia', zh: '生化反应', ja: '生化学', ko: '생체화학', es: 'Electroquímica', fr: 'Électrochimie', de: 'Elektrochemie', ru: 'Электрохимия', it: 'Elettrochimica', pt: 'Eletroquímica', ar: 'الكيمياء الحيوية' },
+  physicalInstrument: { en: 'Physical Instrument', id: 'Kekuatan Fisik', zh: '肉体器械', ja: '身体能力', ko: '신체적 도구', es: 'Instrumento Físico', fr: 'Instrument Physique', de: 'Körperkraft', ru: 'Физический инструмент', it: 'Strumento Fisico', pt: 'Instrumento Físico', ar: 'الأداة البدنية' },
+  perception: { en: 'Perception', id: 'Persepsi', zh: '知觉', ja: '知覚', ko: '지각', es: 'Percepción', fr: 'Perception', de: 'Wahrnehmung', ru: 'Внимательность', it: 'Percezione', pt: 'Percepção', ar: 'الإدراك' },
+  handEyeCoord: { en: 'Hand-Eye Coord', id: 'Koordinasi Tangan-Mata', zh: '手眼协调', ja: '手眼協調', ko: '협응력', es: 'Coord. Ojo-Mano', fr: 'Coord. Œil-Main', de: 'Hand-Auge-Koord.', ru: 'Координация', it: 'Coord. Occhio-Mano', pt: 'Coord. Mão-Olho', ar: 'التناسق الحركي' },
+  savoirFaire: { en: 'Savoir Faire', id: 'Savoir Faire', zh: '处世之道', ja: '処世術', ko: '기민성', es: 'Savoir Faire', fr: 'Savoir-Faire', de: 'Savoir Faire', ru: 'Самообладание', it: 'Savoir-Faire', pt: 'Savoir-Faire', ar: 'الكياسة' },
+  interfacing: { en: 'Interfacing', id: 'Penyelarasan Mesin', zh: '机构连动', ja: '機構連動', ko: '기계 조율', es: 'Conexión Mecánica', fr: 'Interfaçage', de: 'Mechanik', ru: 'Взаимодействие', it: 'Interazione', pt: 'Interação', ar: 'التعامل الميكانيكي' }
+};
+
+function tSkill(skillKey, lang = 'en') {
+  if (SKILL_NAMES_I18N[skillKey]) {
+    return SKILL_NAMES_I18N[skillKey][lang] || SKILL_NAMES_I18N[skillKey]['en'] || skillKey.toUpperCase();
+  }
+  return skillKey.toUpperCase();
+}
+
+const DISTRICT_LABELS = {
+  en: 'DISTRICT 7',
+  id: 'SEKTOR 7',
+  zh: '第七区',
+  ja: '第7管区',
+  ko: '제7구역',
+  es: 'DISTRITO 7',
+  fr: 'SECTEUR 7',
+  de: 'SEKTOR 7',
+  ru: 'СЕКТОР 7',
+  it: 'DISTRETTO 7',
+  pt: 'DISTRITO 7',
+  ar: 'المنطقة 7'
+};
+
+const UI_TRANSLATIONS = {
+  id: {
+    game_title: 'A E N I G M A',
+    case_badge: 'KASUS #04: SANG PEMBUAT JAM YANG BISU',
+    loader_quote: '“Detik jam tak pernah berhenti. Hanya daging di dalamnya yang lupa cara berdetak.”',
+    loader_telemetry: 'Menginisialisasi telemetri saraf...',
+    loader_enter: 'MASUKI PIKIRAN',
+    creator_title: 'DOSSIER PENYELIDIK',
+    creator_subtitle: 'PEMBUATAN KARAKTER',
+    gender_female: '♀ WANITA',
+    gender_male: '♂ PRIA',
+    randomize_dossier: '🎲 ACAK DOSSIER',
+    precinct_label: 'Divisi Pembunuhan Distrik 4 · Sektor Timur 7',
+    name_label: 'NAMA LENGKAP DETEKTIF',
+    alias_label: 'JULUKAN / GELAR PSIKOLOGIS',
+    facets_title: 'ASPEK KEJIWAAN',
+    points_available: 'Poin Tersedia',
+    intellect_name: 'INTELEK',
+    intellect_desc: 'Logika, Ensiklopedia, Retorika, Konseptualisasi. Deduksi dingin dan analisis rasional.',
+    psyche_name: 'KEJIWAAN',
+    psyche_desc: 'Esoterika, Empati, Otoritas, Sugesti. Firasat supranatural dan gravitasi emosional.',
+    physique_name: 'FISIK',
+    physique_desc: 'Daya Tahan, Ambang Rasa Sakit, Elektrokimia. Adrenalin, naluri purba, dan stamina bertahan hidup.',
+    motorics_name: 'MOTORIK',
+    motorics_desc: 'Persepsi, Koordinasi Tangan-Mata, Penyelarasan, Savoir Faire. Kepekaan panca indra dan petunjuk mikro.',
+    signature_title: 'KEAHLIAN KHUSUS (+2 BONUS & SUARA BATIN)',
+    vices_title: 'KEBIASAAN BURUK & CACAT KEJIWAAN',
+    start_inquiry: 'MULAI INVESTIGASI',
+    endurance_label: 'DAYA TAHAN',
+    morale_label: 'KEWARASAN',
+    hp_pip: 'HP',
+    sp_pip: 'SP',
+    day_prefix: 'HARI',
+    nav_cabinet: '🧠 LEMARI PIKIRAN',
+    nav_clues: '📌 DOSSIER BUKTI',
+    nav_inventory: '💼 INVENTARIS',
+    nav_audio: 'AUDIO',
+    nav_language: 'BAHASA',
+    scene_location: 'Menara Jam Saint Irene · Sektor 7',
+    scene_timestamp: 'Nyonya Horologis Aurelia Vance · Jenazah ditemukan pukul 03:42 di tengah dentang jam',
+    speaker_forensic: 'Pengamatan Forensik',
+    interlocutor_active: 'INTERAKSI AKTIF',
+    modal_cabinet_title: 'LEMARI PIKIRAN · THOUGHT CABINET',
+    modal_inventory_title: 'MANTEL DETEKTIF & KANTONG BUKTI',
+    modal_clues_title: 'DOSSIER KASUS · MATRIKS DEDUKSI BUKTI',
+    modal_dice_title: 'UJI KEAHLIAN',
+    modal_language_title: 'PILIH BAHASA TERJEMAHAN',
+    modal_victory_title: 'KASUS SELESAI',
+    modal_gameover_title: 'INVESTIGASI GAGAL: TERMINASI',
+    dice_tally: 'LEMPARAN 2D6 + MODIFIKASI:',
+    dice_rolling: 'MEMUTAR DADU...',
+    dice_passed: 'UJI KEAHLIAN BERHASIL!',
+    dice_failed: 'UJI KEAHLIAN GAGAL!',
+    dice_proceed: 'LANJUTKAN DENGAN HASIL INI',
+    btn_restart: 'MULAI INVESTIGASI BARU',
+    btn_retry: 'MULAI ULANG INVESTIGASI',
+    btn_use: 'GUNAKAN',
+    btn_inspect: 'PERIKSA',
+    btn_read: 'BACA',
+    badge_passive: 'PASIF',
+    badge_uses: 'tersisa',
+    toast_item_acquired: 'BARANG DIDAPATKAN:',
+    toast_item_used: 'BARANG DIGUNAKAN:',
+    toast_clue_discovered: 'BUKTI KRUSIAL TERUNGKAP:',
+    toast_thought_unlocked: 'PIKIRAN BARU DITEMUKAN:',
+    toast_thought_internalized: 'PIKIRAN TELAH DIINTERNALISASI:',
+    toast_xp_gained: 'PENGALAMAN BERTAMBAH:',
+    toast_level_up: 'NAIK TINGKAT! POIN KEAHLIAN DIDAPATKAN',
+    toast_damage_health: 'TERLUKA! DAYA TAHAN BERKURANG',
+    toast_damage_morale: 'TERGUNCANG! KEWARASAN BERKURANG'
+  },
+  en: {
+    game_title: 'A E N I G M A',
+    case_badge: 'CASE #04: THE SILENT WATCHMAKER',
+    loader_quote: '“The clock never stops. Only the flesh within it forgets how to beat.”',
+    loader_telemetry: 'Initializing neural telemetry...',
+    loader_enter: 'ENTER THE MIND',
+    creator_title: 'INVESTIGATOR DOSSIER',
+    creator_subtitle: 'CHARACTER CREATION',
+    gender_female: '♀ FEMALE',
+    gender_male: '♂ MALE',
+    randomize_dossier: '🎲 RANDOMIZE DOSSIER',
+    precinct_label: 'Precinct 4 Homicide Division · Eastern District 7',
+    name_label: 'DETECTIVE FULL NAME',
+    alias_label: 'ALIAS / PSYCHOLOGICAL TITLE',
+    facets_title: 'FACETS OF PSYCHE',
+    points_available: 'Points Available',
+    intellect_name: 'INTELLECT',
+    intellect_desc: 'Logic, Encyclopedia, Rhetoric, Conceptualization. Cold deduction and rational analysis.',
+    psyche_name: 'PSYCHE',
+    psyche_desc: 'Esoterica, Empathy, Authority, Suggestion. Supernatural hunches and emotional gravity.',
+    physique_name: 'PHYSIQUE',
+    physique_desc: 'Endurance, Pain Threshold, Electrochemistry. Adrenaline, gut instinct, and survival stamina.',
+    motorics_name: 'MOTORICS',
+    motorics_desc: 'Perception, Hand-Eye Coordination, Interfacing, Savoir Faire. Senses and micro-clues.',
+    signature_title: 'SIGNATURE SKILL (+2 BONUS & INTRUSIVE VOICE)',
+    vices_title: 'PERSONAL VICE & PSYCHOLOGICAL FLAW',
+    start_inquiry: 'COMMENCE THE INQUIRY',
+    endurance_label: 'ENDURANCE',
+    morale_label: 'MORALE',
+    hp_pip: 'HP',
+    sp_pip: 'SP',
+    day_prefix: 'DAY',
+    nav_cabinet: '🧠 THOUGHT CABINET',
+    nav_clues: '📌 CASE DOSSIER',
+    nav_inventory: '💼 INVENTORY',
+    nav_audio: 'AUDIO',
+    nav_language: 'LANGUAGE',
+    scene_location: 'Saint Irene Clocktower · District 7',
+    scene_timestamp: 'Mistress Horologist Aurelia Vance · Body discovered at 03:42 AM mid-stroke',
+    speaker_forensic: 'Forensic Observation',
+    interlocutor_active: 'ACTIVE INTERACTION',
+    modal_cabinet_title: 'THOUGHT CABINET',
+    modal_inventory_title: 'DETECTIVE COAT & EVIDENCE BAG',
+    modal_clues_title: 'CASE DOSSIER · EVIDENCE DEDUCTION MATRIX',
+    modal_dice_title: 'SKILL CHECK',
+    modal_language_title: 'CHOOSE SUBTITLE & UI LANGUAGE',
+    modal_victory_title: 'CASE CONCLUDED',
+    modal_gameover_title: 'INVESTIGATION TERMINATED',
+    dice_tally: '2D6 ROLL + MODIFIERS:',
+    dice_rolling: 'ROLLING...',
+    dice_passed: 'SKILL CHECK PASSED!',
+    dice_failed: 'SKILL CHECK FAILED!',
+    dice_proceed: 'PROCEED WITH OUTCOME',
+    btn_restart: 'BEGIN A NEW INQUIRY',
+    btn_retry: 'RETRY INVESTIGATION',
+    btn_use: 'USE',
+    btn_inspect: 'INSPECT',
+    btn_read: 'READ',
+    badge_passive: 'PASSIVE',
+    badge_uses: 'uses left',
+    toast_item_acquired: 'ITEM ACQUIRED:',
+    toast_item_used: 'ITEM USED:',
+    toast_clue_discovered: 'CRITICAL CLUE UNLOCKED:',
+    toast_thought_unlocked: 'NEW THOUGHT DISCOVERED:',
+    toast_thought_internalized: 'THOUGHT INTERNALIZED:',
+    toast_xp_gained: 'EXPERIENCE GAINED:',
+    toast_level_up: 'LEVEL UP! SKILL POINT GAINED',
+    toast_damage_health: 'INJURED! ENDURANCE REDUCED',
+    toast_damage_morale: 'SHAKEN! MORALE COMPROMISED'
+  },
+  ja: {
+    game_title: 'エ ニ グ マ',
+    case_badge: '事件 #04: 沈黙の時計師',
+    loader_quote: '「時計の針は止まらない。止まるのは、鼓動を忘れた肉体だけだ。」',
+    loader_telemetry: '神経テレメトリ初期化中...',
+    loader_enter: '深層意識へ潜行',
+    creator_title: '捜査官調書',
+    creator_subtitle: 'キャラクター作成',
+    gender_female: '♀ 女性',
+    gender_male: '♂ 男性',
+    randomize_dossier: '🎲 調書をランダム生成',
+    precinct_label: '第4分署 凶悪犯罪課 · 東部第7区',
+    name_label: '捜査官 氏名',
+    alias_label: '通称 / 精神的肩書',
+    facets_title: '精神の諸相',
+    points_available: '割り振り可能ポイント',
+    intellect_name: '知性',
+    intellect_desc: '論理、百科事典、修辞学、概念化。冷徹な演繹と合理的分析。',
+    psyche_name: '精神',
+    psyche_desc: '秘教、共感、威信、暗示。超常的な予感と感情的重力。',
+    physique_name: '肉体',
+    physique_desc: '耐久力、痛覚閾値、生化学。アドレナリンと生存本能。',
+    motorics_name: '運動神経',
+    motorics_desc: '知覚、手眼協調、機構連動、処世術。鋭敏な五感と微小痕跡。',
+    signature_title: '象徴技能 (+2 ボーナス & 内なる声)',
+    vices_title: '個人的悪癖 & 精神の綻び',
+    start_inquiry: '捜査を開始する',
+    endurance_label: '肉体耐久',
+    morale_label: '精神力',
+    hp_pip: 'HP',
+    sp_pip: 'SP',
+    day_prefix: '日目',
+    nav_cabinet: '🧠 思考の閣僚',
+    nav_clues: '📌 証拠調書',
+    nav_inventory: '💼 所持品',
+    nav_audio: '音響',
+    nav_language: '言語',
+    scene_location: '聖アイリーン時計塔 · 第7区',
+    scene_timestamp: '時計師オレリア・ヴァンス · 午前3時42分 鐘の途上で発見',
+    speaker_forensic: '法医学的観察',
+    interlocutor_active: '接触中',
+    modal_cabinet_title: '思考の閣僚 · THOUGHT CABINET',
+    modal_inventory_title: '捜査官コート & 証拠品袋',
+    modal_clues_title: '事件調書 · 証拠演繹マトリクス',
+    modal_dice_title: '技能判定',
+    modal_language_title: '字幕および表示言語を選択',
+    modal_victory_title: '事件解決',
+    modal_gameover_title: '捜査終了: 殉職 / 破滅',
+    dice_tally: '2D6 ダイス + 修正値:',
+    dice_rolling: 'ダイス回転中...',
+    dice_passed: '判定成功！',
+    dice_failed: '判定失敗！',
+    dice_proceed: '結果を受け入れて続行',
+    btn_restart: '新たな捜査を開始',
+    btn_retry: '事件を再捜査する',
+    btn_use: '使用',
+    btn_inspect: '調査',
+    btn_read: '読了',
+    badge_passive: '常時発動',
+    badge_uses: '回使用可能',
+    toast_item_acquired: '証拠品入手:',
+    toast_item_used: 'アイテム使用:',
+    toast_clue_discovered: '決定的手掛かり発見:',
+    toast_thought_unlocked: '新たな思考が芽生えた:',
+    toast_thought_internalized: '思考の内面化が完了:',
+    toast_xp_gained: '経験値獲得:',
+    toast_level_up: 'レベル上昇！技能ポイント獲得',
+    toast_damage_health: '負傷！耐久値減少',
+    toast_damage_morale: '精神動揺！精神力減少'
+  },
+  zh: {
+    game_title: 'A E N I G M A',
+    case_badge: '案件 #04: 沉默的钟表宗师',
+    loader_quote: '“钟摆永不停歇。唯有齿轮间的血肉，遗忘了跳动的律动。”',
+    loader_telemetry: '神经遥测初始化中...',
+    loader_enter: '步入深层意识',
+    creator_title: '调查员档案',
+    creator_subtitle: '角色塑造',
+    gender_female: '♀ 女性',
+    gender_male: '♂ 男性',
+    randomize_dossier: '🎲 随机生成档案',
+    precinct_label: '第四警区凶杀科 · 东部第七区',
+    name_label: '侦探全名',
+    alias_label: '化名 / 心理头衔',
+    facets_title: '心智维度',
+    points_available: '可用属性点',
+    intellect_name: '智力',
+    intellect_desc: '逻辑、百科全书、修辞、概念化。冷酷演绎与理性洞察。',
+    psyche_name: '心智',
+    psyche_desc: '秘教、同理心、权威、暗示。通灵直觉与情感引力。',
+    physique_name: '体魄',
+    physique_desc: '忍耐力、痛觉阈值、电化学。肾上腺素与原始生存本能。',
+    motorics_name: '身手',
+    motorics_desc: '感知、手眼协调、机械交互、从容自若。敏锐感官与微观痕迹。',
+    signature_title: '专精技能 (+2 增益与心之低语)',
+    vices_title: '人格缺陷与恶习',
+    start_inquiry: '开启侦查',
+    endurance_label: '体能',
+    morale_label: '理智',
+    hp_pip: 'HP',
+    sp_pip: 'SP',
+    day_prefix: '第',
+    nav_cabinet: '🧠 思维内阁',
+    nav_clues: '📌 案卷证据',
+    nav_inventory: '💼 物品栏',
+    nav_audio: '音频',
+    nav_language: '语言',
+    scene_location: '圣艾琳钟楼 · 第七区',
+    scene_timestamp: '钟表宗师奥蕾莉亚·梵斯 · 凌晨03:42于钟摆撞击间身亡',
+    speaker_forensic: '法医现场观察',
+    interlocutor_active: '交互中',
+    modal_cabinet_title: '思维内阁 · THOUGHT CABINET',
+    modal_inventory_title: '风衣内衬与物证袋',
+    modal_clues_title: '案情档案 · 线索演绎矩阵',
+    modal_dice_title: '技能检定',
+    modal_language_title: '选择字幕及交互语言',
+    modal_victory_title: '案情告破',
+    modal_gameover_title: '调查溃败: 绝境终结',
+    dice_tally: '2D6 掷骰 + 修正值:',
+    dice_rolling: '掷骰中...',
+    dice_passed: '检定通过！',
+    dice_failed: '检定失败！',
+    dice_proceed: '承接检定后果',
+    btn_restart: '开启新案调查',
+    btn_retry: '重启案情调查',
+    btn_use: '使用',
+    btn_inspect: '检视',
+    btn_read: '研读',
+    badge_passive: '被动生效',
+    badge_uses: '次剩余',
+    toast_item_acquired: '获得证物:',
+    toast_item_used: '使用物品:',
+    toast_clue_discovered: '揭示关键线索:',
+    toast_thought_unlocked: '解锁新思绪:',
+    toast_thought_internalized: '思绪已完全内化:',
+    toast_xp_gained: '获得经验:',
+    toast_level_up: '等级提升！获得技能点',
+    toast_damage_health: '受伤！体能扣减',
+    toast_damage_morale: '精神受创！理智扣减'
+  },
+  ko: {
+    game_title: 'A E N I G M A',
+    case_badge: '사건 #04: 침묵의 시계 장인',
+    loader_quote: '“시계는 결코 멈추지 않는다. 멈추는 것은 고동을 잊은 육신뿐.”',
+    loader_telemetry: '신경 원격 측정 초기화 중...',
+    loader_enter: '심상으로 진입',
+    creator_title: '수사관 기록부',
+    creator_subtitle: '캐릭터 생성',
+    gender_female: '♀ 여성',
+    gender_male: '♂ 남성',
+    randomize_dossier: '🎲 기록부 무작위 생성',
+    precinct_label: '제4관할서 강력계 · 동부 제7구역',
+    name_label: '형사 성명',
+    alias_label: '이명 / 심리적 직함',
+    facets_title: '심리적 특성',
+    points_available: '잔여 포인트',
+    intellect_name: '지성',
+    intellect_desc: '논리, 백과사전, 수사학, 개념화. 냉철한 연역과 이성적 분석.',
+    psyche_name: '정신',
+    psyche_desc: '비전, 공감, 권위, 암시. 초자연적 직관과 감정적 중력.',
+    physique_name: '신체',
+    physique_desc: '인내력, 통증 역치, 전기화학. 아드레날린과 원초적 생존 본능.',
+    motorics_name: '운동능력',
+    motorics_desc: '지각, 손-눈 협응, 기계연동, 처세술. 미세한 단서 포착력.',
+    signature_title: '시그니처 기술 (+2 보너스 & 내면의 목소리)',
+    vices_title: '개인적 악벽과 정신적 결함',
+    start_inquiry: '본격 수사 착수',
+    endurance_label: '체력',
+    morale_label: '사기',
+    hp_pip: 'HP',
+    sp_pip: 'SP',
+    day_prefix: '일차',
+    nav_cabinet: '🧠 생각의 방',
+    nav_clues: '📌 증거 서류',
+    nav_inventory: '💼 소지품',
+    nav_audio: '오디오',
+    nav_language: '언어',
+    scene_location: '성 아이린 시계탑 · 제7구역',
+    scene_timestamp: '시계 장인 오렐리아 밴스 · 오전 03:42 진자 궤적에서 피살체 발견',
+    speaker_forensic: '법의학적 관찰',
+    interlocutor_active: '상호작용 중',
+    modal_cabinet_title: '생각의 방 · THOUGHT CABINET',
+    modal_inventory_title: '외투 주머니 & 증거물 가방',
+    modal_clues_title: '사건 조서 · 증거 연역 매트릭스',
+    modal_dice_title: '기술 판정',
+    modal_language_title: '자막 및 인터페이스 언어 선택',
+    modal_victory_title: '사건 종결',
+    modal_gameover_title: '수사 파탄: 파멸',
+    dice_tally: '2D6 굴림 + 보정치:',
+    dice_rolling: '주사위 굴리는 중...',
+    dice_passed: '판정 성공!',
+    dice_failed: '판정 실패!',
+    dice_proceed: '결과 수용 및 진행',
+    btn_restart: '새로운 수사 개시',
+    btn_retry: '수사 재시도',
+    btn_use: '사용',
+    btn_inspect: '조사',
+    btn_read: '열독',
+    badge_passive: '지속 효과',
+    badge_uses: '회 남음',
+    toast_item_acquired: '증거물 획득:',
+    toast_item_used: '아이템 사용:',
+    toast_clue_discovered: '결정적 단서 발견:',
+    toast_thought_unlocked: '새로운 발상 해금:',
+    toast_thought_internalized: '발상 내면화 완료:',
+    toast_xp_gained: '경험치 획득:',
+    toast_level_up: '레벨 업! 기술 포인트 획득',
+    toast_damage_health: '부상! 체력 감소',
+    toast_damage_morale: '충격! 사기 저하'
+  },
+  es: {
+    game_title: 'A E N I G M A',
+    case_badge: 'CASO #04: LA RELOJERA SILENCIOSA',
+    loader_quote: '“El reloj nunca se detiene. Solo la carne en su interior olvida cómo latir.”',
+    loader_telemetry: 'Iniciando telemetría neuronal...',
+    loader_enter: 'ENTRAR EN LA MENTE',
+    creator_title: 'EXPEDIENTE DE INVESTIGADOR',
+    creator_subtitle: 'CREACIÓN DE PERSONAJE',
+    gender_female: '♀ FEMENINO',
+    gender_male: '♂ MASCULINO',
+    randomize_dossier: '🎲 EXPEDIENTE ALEATORIO',
+    precinct_label: 'División de Homicidios Precinto 4 · Distrito Oriental 7',
+    name_label: 'NOMBRE COMPLETO DEL DETECTIVE',
+    alias_label: 'ALIAS / TÍTULO PSICOLÓGICO',
+    facets_title: 'FACETAS DE LA PSIQUE',
+    points_available: 'Puntos Disponibles',
+    intellect_name: 'INTELECTO',
+    intellect_desc: 'Lógica, Enciclopedia, Retórica, Conceptualización. Deducción fría y análisis racional.',
+    psyche_name: 'PSIQUE',
+    psyche_desc: 'Esoterismo, Empatía, Autoridad, Sugestión. Corazonadas sobrenaturales y peso emocional.',
+    physique_name: 'FÍSICO',
+    physique_desc: 'Aguante, Umbral de Dolor, Electroquímica. Adrenalina, instinto visceral y supervivencia.',
+    motorics_name: 'MOTRICIDAD',
+    motorics_desc: 'Percepción, Coordinación Ojo-Mano, Interfaz, Savoir Faire. Sentidos agudos y micro-pistas.',
+    signature_title: 'HABILIDAD DISTINTIVA (+2 BONO Y VOZ INTRUSIVA)',
+    vices_title: 'VICIOS PERSONALES Y GRIETAS PSÍQUICAS',
+    start_inquiry: 'COMENZAR LA INDAGATORIA',
+    endurance_label: 'AGUANTE',
+    morale_label: 'MORAL',
+    hp_pip: 'HP',
+    sp_pip: 'SP',
+    day_prefix: 'DÍA',
+    nav_cabinet: '🧠 GABINETE DE IDEAS',
+    nav_clues: '📌 EXPEDIENTE DE PISTAS',
+    nav_inventory: '💼 INVENTARIO',
+    nav_audio: 'AUDIO',
+    nav_language: 'IDIOMA',
+    scene_location: 'Torre del Reloj de Santa Irene · Distrito 7',
+    scene_timestamp: 'Maestra Horóloga Aurelia Vance · Cuerpo hallado a las 03:42 AM a medio toque',
+    speaker_forensic: 'Observación Forense',
+    interlocutor_active: 'INTERACCIÓN ACTIVA',
+    modal_cabinet_title: 'GABINETE DE IDEAS · THOUGHT CABINET',
+    modal_inventory_title: 'ABRIGO DE DETECTIVE Y BOLSA DE PRUEBAS',
+    modal_clues_title: 'EXPEDIENTE DEL CASO · MATRIZ DE DEDUCCIÓN',
+    modal_dice_title: 'TIRADA DE HABILIDAD',
+    modal_language_title: 'SELECCIONAR IDIOMA DE SUBTÍTULOS E INTERFAZ',
+    modal_victory_title: 'CASO CONCLUIDO',
+    modal_gameover_title: 'INVESTIGACIÓN TERMINADA: COLAPSO',
+    dice_tally: 'TIRADA 2D6 + MODIFICADORES:',
+    dice_rolling: 'RODANDO DADOS...',
+    dice_passed: '¡TIRADA SUPERADA!',
+    dice_failed: '¡TIRADA FALLIDA!',
+    dice_proceed: 'CONTINUAR CON EL RESULTADO',
+    btn_restart: 'INICIAR NUEVA PESQUISA',
+    btn_retry: 'REINTENTAR INVESTIGACIÓN',
+    btn_use: 'USAR',
+    btn_inspect: 'INSPECCIONAR',
+    btn_read: 'LEER',
+    badge_passive: 'PASIVO',
+    badge_uses: 'usos restantes',
+    toast_item_acquired: 'OBJETO OBTENIDO:',
+    toast_item_used: 'OBJETO USADO:',
+    toast_clue_discovered: 'PISTA CRUCIAL DESCUBIERTA:',
+    toast_thought_unlocked: 'NUEVA IDEA DESBLOQUEADA:',
+    toast_thought_internalized: 'IDEA INTERIORIZADA:',
+    toast_xp_gained: 'EXPERIENCIA OBTENIDA:',
+    toast_level_up: '¡SUBIDA DE NIVEL! PUNTO DE HABILIDAD',
+    toast_damage_health: '¡HERIDO! AGUANTE REDUCIDO',
+    toast_damage_morale: '¡IMPACTO! MORAL COMPROMETIDA'
+  },
+  fr: {
+    game_title: 'A E N I G M A',
+    case_badge: 'DOSSIER #04: L\'HORLOGÈRE SILENCIEUSE',
+    loader_quote: '« L\'horloge ne s\'arrête jamais. Seule la chair en son sein oublie comment battre. »',
+    loader_telemetry: 'Initialisation de la télémétrie neurale...',
+    loader_enter: 'PÉNÉTRER L\'ESPRIT',
+    creator_title: 'DOSSIER D\'ENQUÊTEUR',
+    creator_subtitle: 'CRÉATION DE PERSONNAGE',
+    gender_female: '♀ FEMME',
+    gender_male: '♂ HOMME',
+    randomize_dossier: '🎲 DOSSIER ALÉATOIRE',
+    precinct_label: 'Division des Homicides · 4e District Est 7',
+    name_label: 'NOM COMPLET DU DÉTECTIVE',
+    alias_label: 'ALIAS / TITRE PSYCHOLOGIQUE',
+    facets_title: 'FACETTES DE LA PSYCHÉ',
+    points_available: 'Points Disponibles',
+    intellect_name: 'INTELLECT',
+    intellect_desc: 'Logique, Encyclopédie, Rhétorique, Conceptualisation. Froide déduction et analyse rationnelle.',
+    psyche_name: 'PSYCHÉ',
+    psyche_desc: 'Ésotérisme, Empathie, Autorité, Suggestion. Intuitions surnaturelles et gravité émotionnelle.',
+    physique_name: 'PHYSIQUE',
+    physique_desc: 'Endurance, Seuil de Douleur, Électrochimie. Adrénaline, instinct viscéral et survie.',
+    motorics_name: 'MOTRICITÉ',
+    motorics_desc: 'Perception, Coordination Main-Œil, Interfaçage, Savoir-Faire. Sens affûtés et micro-indices.',
+    signature_title: 'COMPÉTENCE SIGNATURE (+2 BONUS & VOIX INTRUSIVE)',
+    vices_title: 'VICES PERSONNELS & FAILLES PSYCHIQUES',
+    start_inquiry: 'OUVRIR L\'ENQUÊTE',
+    endurance_label: 'ENDURANCE',
+    morale_label: 'MORAL',
+    hp_pip: 'PV',
+    sp_pip: 'PM',
+    day_prefix: 'JOUR',
+    nav_cabinet: '🧠 CABINET DE RÉFLEXION',
+    nav_clues: '📌 REGISTRE D\'INDICES',
+    nav_inventory: '💼 INVENTAIRE',
+    nav_audio: 'AUDIO',
+    nav_language: 'LANGUE',
+    scene_location: 'Tour de l\'Horloge Sainte-Irène · 7e District',
+    scene_timestamp: 'Maîtresse Horlogère Aurelia Vance · Corps découvert à 03h42 au milieu du carillon',
+    speaker_forensic: 'Constatations Médico-Légales',
+    interlocutor_active: 'INTERACTION EN COURS',
+    modal_cabinet_title: 'CABINET DE RÉFLEXION · THOUGHT CABINET',
+    modal_inventory_title: 'MANTEAU DE DÉTECTIVE & SACHET DE PREUVES',
+    modal_clues_title: 'DOSSIER D\'AFFAIRE · MATRICE DE DÉDUCTION',
+    modal_dice_title: 'TEST DE COMPÉTENCE',
+    modal_language_title: 'CHOISIR LA LANGUE DES SOUS-TITRES & INTERFACE',
+    modal_victory_title: 'AFFAIRE CLÔTURÉE',
+    modal_gameover_title: 'ENQUÊTE INTERROMPUE: EFFONDREMENT',
+    dice_tally: 'LANCER 2D6 + MODIFICATEURS:',
+    dice_rolling: 'LANCER EN COURS...',
+    dice_passed: 'TEST RÉUSSI !',
+    dice_failed: 'TEST ÉCHOUÉ !',
+    dice_proceed: 'ACCEPTER LE RÉSULTAT',
+    btn_restart: 'OUVRIR UNE NOUVELLE ENQUÊTE',
+    btn_retry: 'RECOMMENCER L\'ENQUÊTE',
+    btn_use: 'UTILISER',
+    btn_inspect: 'INSPECTER',
+    btn_read: 'LIRE',
+    badge_passive: 'PASSIF',
+    badge_uses: 'utilisations restantes',
+    toast_item_acquired: 'OBJET REÇU:',
+    toast_item_used: 'OBJET CONSOMMÉ:',
+    toast_clue_discovered: 'INDICE MAJEUR IDENTIFIÉ:',
+    toast_thought_unlocked: 'NOUVELLE PENSÉE ÉVEILLÉE:',
+    toast_thought_internalized: 'PENSÉE INTERNALISÉE:',
+    toast_xp_gained: 'EXPÉRIENCE ENGRANGÉE:',
+    toast_level_up: 'MONTÉE DE NIVEAU ! POINT DE COMPÉTENCE',
+    toast_damage_health: 'BLESSURE ! ENDURANCE DIMINUÉE',
+    toast_damage_morale: 'CHOC MENTAL ! MORAL COMPROMIS'
+  },
+  de: {
+    game_title: 'A E N I G M A',
+    case_badge: 'FALL #04: DIE STUMME UHRMACHERIN',
+    loader_quote: '„Die Uhr hält niemals an. Nur das Fleisch in ihrem Inneren vergisst das Schlagen.“',
+    loader_telemetry: 'Neuraltelemetrie wird initialisiert...',
+    loader_enter: 'DEN GEIST BETRETEN',
+    creator_title: 'ERMITTLER-DOSSIER',
+    creator_subtitle: 'CHARAKTERERSTELLUNG',
+    gender_female: '♀ WEIBLICH',
+    gender_male: '♂ MÄNNLICH',
+    randomize_dossier: '🎲 DOSSIER ZUFÄLLIG WÄHLEN',
+    precinct_label: 'Mordkommission Revier 4 · Östlicher Distrikt 7',
+    name_label: 'VOLLSTÄNDIGER NAME',
+    alias_label: 'BEINAME / PSYCHOLOGISCHER TITEL',
+    facets_title: 'FACETTEN DER PSYCHE',
+    points_available: 'Verfügbare Punkte',
+    intellect_name: 'INTELLEKT',
+    intellect_desc: 'Logik, Enzyklopädie, Rhetorik, Konzeptualisierung. Kühle Deduktion und rationale Analyse.',
+    psyche_name: 'PSYCHE',
+    psyche_desc: 'Esoterik, Empathie, Autorität, Suggestion. Übernatürliche Ahnungen und emotionale Schwere.',
+    physique_name: 'PHYSIS',
+    physique_desc: 'Ausdauer, Schmerzgrenze, Elektrochemie. Adrenalin, Urinstinkt und Überlebenswille.',
+    motorics_name: 'MOTORIK',
+    motorics_desc: 'Wahrnehmung, Hand-Auge-Koordination, Mechanik, Savoir-Faire. Schärfe der Sinne und Mikrohinweise.',
+    signature_title: 'SIGNATURFÄHIGKEIT (+2 BONUS & INNERE STIMME)',
+    vices_title: 'PERSÖNLICHE LASTER & PSYCHISCHE RISSE',
+    start_inquiry: 'ERMITTLUNG AUFNEHMEN',
+    endurance_label: 'AUSDAUER',
+    morale_label: 'MORAL',
+    hp_pip: 'HP',
+    sp_pip: 'MP',
+    day_prefix: 'TAG',
+    nav_cabinet: '🧠 GEDANKENKABINETT',
+    nav_clues: '📌 BEWEISDOSSIER',
+    nav_inventory: '💼 INVENTAR',
+    nav_audio: 'AUDIO',
+    nav_language: 'SPRACHE',
+    scene_location: 'Sankt-Irene-Uhrturm · Distrikt 7',
+    scene_timestamp: 'Meister-Horologin Aurelia Vance · Leichnam um 03:42 Uhr im Glockenschlag aufgefunden',
+    speaker_forensic: 'Forensische Beobachtung',
+    interlocutor_active: 'AKTIVE INTERAKTION',
+    modal_cabinet_title: 'GEDANKENKABINETT · THOUGHT CABINET',
+    modal_inventory_title: 'ERMITTLERMANTEL & ASSERVATENBEUTEL',
+    modal_clues_title: 'FALLAKTE · INDIZIEN-DEDUKTIONSMATRIX',
+    modal_dice_title: 'FÄHIGKEITSPROBE',
+    modal_language_title: 'UNTERTITEL & BENUTZEROBERFLÄCHE WÄHLEN',
+    modal_victory_title: 'FALL ABGESCHLOSSEN',
+    modal_gameover_title: 'ERMITTLUNG GESCHEITERT: ZUSAMMENBRUCH',
+    dice_tally: '2D6 WURF + MODIFIKATOREN:',
+    dice_rolling: 'WÜRFEL ROLLEN...',
+    dice_passed: 'PROBE BESTANDEN!',
+    dice_failed: 'PROBE MISSLUNGEN!',
+    dice_proceed: 'MIT ERGEBNIS FORTFAHREN',
+    btn_restart: 'NEUE ERMITTLUNG BEGINNEN',
+    btn_retry: 'FALL NEU AUFROLLEN',
+    btn_use: 'NUTZEN',
+    btn_inspect: 'UNTERSUCHEN',
+    btn_read: 'LESEN',
+    badge_passive: 'PASSIV',
+    badge_uses: 'Nutzungen übrig',
+    toast_item_acquired: 'GEGENSTAND GEFUNDEN:',
+    toast_item_used: 'GEGENSTAND GENUTZT:',
+    toast_clue_discovered: 'ENTSCHEIDENDER HINWEIS:',
+    toast_thought_unlocked: 'NEUER GEDANKE ENTHÜLLT:',
+    toast_thought_internalized: 'GEDANKE VERINNERLICHT:',
+    toast_xp_gained: 'ERFAHRUNG GEWONNEN:',
+    toast_level_up: 'STUFENAUFSTIEG! FÄHIGKEITSPUNKT',
+    toast_damage_health: 'VERLETZT! AUSDAUER GESUNKEN',
+    toast_damage_morale: 'ERSCHÜTTERT! MORAL GESCHWÄCHT'
+  },
+  ru: {
+    game_title: 'А Э Н И Г М А',
+    case_badge: 'ДЕЛО #04: БЕЗМОЛВНЫЙ ЧАСОВЩИК',
+    loader_quote: '«Часы никогда не останавливаются. Лишь плоть внутри них забывает, как биться».',
+    loader_telemetry: 'Инициализация нейротелеметрии...',
+    loader_enter: 'ВОЙТИ В СОЗНАНИЕ',
+    creator_title: 'ДОСЬЕ СЛЕДОВАТЕЛЯ',
+    creator_subtitle: 'СОЗДАНИЕ ПЕРСОНАЖА',
+    gender_female: '♀ ЖЕНЩИНА',
+    gender_male: '♂ МУЖЧИНА',
+    randomize_dossier: '🎲 СЛУЧАЙНОЕ ДОСЬЕ',
+    precinct_label: 'Убойный отдел 4-го участка · Восточный сектор 7',
+    name_label: 'ПОЛНОЕ ИМЯ ДЕТЕКТИВА',
+    alias_label: 'ПСЕВДОНИМ / ПСИХОЛОГИЧЕСКИЙ ТИТУЛ',
+    facets_title: 'ГРАНИ ПСИХИКИ',
+    points_available: 'Доступно очков',
+    intellect_name: 'ИНТЕЛЛЕКТ',
+    intellect_desc: 'Логика, Энциклопедия, Риторика, Концептуализация. Холодная дедукция и рациональный анализ.',
+    psyche_name: 'ПСИХИКА',
+    psyche_desc: 'Эзотерика, Эмпатия, Авторитет, Внушение. Сверхъестественные предчувствия и эмоциональный вес.',
+    physique_name: 'ФИЗИОЛОГИЯ',
+    physique_desc: 'Стойкость, Болевой порог, Электрохимия. Адреналин, нутряное чутье и выживание.',
+    motorics_name: 'МОТОРИКА',
+    motorics_desc: 'Восприятие, Координация, Взаимодействие, Сноровка. Острые чувства и микро-улики.',
+    signature_title: 'КОРОННЫЙ НАВЫК (+2 БОНУС И ВНУТРЕННИЙ ГОЛОС)',
+    vices_title: 'ЛИЧНЫЕ ПОРОКИ И ПСИХИЧЕСКИЕ НАДЛОМЫ',
+    start_inquiry: 'НАЧАТЬ РАССЛЕДОВАНИЕ',
+    endurance_label: 'СТОЙКОСТЬ',
+    morale_label: 'БОЕВОЙ ДУХ',
+    hp_pip: 'ЗДР',
+    sp_pip: 'ДУХ',
+    day_prefix: 'ДЕНЬ',
+    nav_cabinet: '🧠 КАБИНЕТ МЫСЛЕЙ',
+    nav_clues: '📌 ДОСЬЕ УЛИК',
+    nav_inventory: '💼 ИНВЕНТАРЬ',
+    nav_audio: 'ЗВУК',
+    nav_language: 'ЯЗЫК',
+    scene_location: 'Часовая башня Святой Ирины · Сектор 7',
+    scene_timestamp: 'Мастер-часовщик Аурелия Вэнс · Тело обнаружено в 03:42 посреди боя курантов',
+    speaker_forensic: 'Судебно-медицинский осмотр',
+    interlocutor_active: 'АКТИВНЫЙ ДИАЛОГ',
+    modal_cabinet_title: 'КАБИНЕТ МЫСЛЕЙ · THOUGHT CABINET',
+    modal_inventory_title: 'ПАЛЬТО ДЕТЕКТИВА И МЕШОК С ВЕЩДОКАМИ',
+    modal_clues_title: 'МАТРИЦА ДЕДУКЦИИ И УЛИК',
+    modal_dice_title: 'ПРОВЕРКА НАВЫКА',
+    modal_language_title: 'ВЫБОР ЯЗЫКА СУБТИТРОВ И ИНТЕРФЕЙСА',
+    modal_victory_title: 'ДЕЛО РАСКРЫТО',
+    modal_gameover_title: 'РАССЛЕДОВАНИЕ ПРОВАЛЕНО: ГИБЕЛЬ',
+    dice_tally: 'БРОСОК 2D6 + МОДИФИКАТОРЫ:',
+    dice_rolling: 'БРОСОК КОСТЕЙ...',
+    dice_passed: 'ПРОВЕРКА УСПЕШНА!',
+    dice_failed: 'ПРОВЕРКА ПРОВАЛЕНА!',
+    dice_proceed: 'ПРИНЯТЬ РЕЗУЛЬТАТ',
+    btn_restart: 'НАЧАТЬ НОВОЕ ДЕЛО',
+    btn_retry: 'ПОВТОРИТЬ РАССЛЕДОВАНИЕ',
+    btn_use: 'ПРИМЕНИТЬ',
+    btn_inspect: 'ОСМОТРЕТЬ',
+    btn_read: 'ПРОЧЕСТЬ',
+    badge_passive: 'ПАССИВНО',
+    badge_uses: 'исп. осталось',
+    toast_item_acquired: 'ПОЛУЧЕН ПРЕДМЕТ:',
+    toast_item_used: 'ИСПОЛЬЗОВАН ПРЕДМЕТ:',
+    toast_clue_discovered: 'НАЙДЕНА КЛЮЧЕВАЯ УЛИКА:',
+    toast_thought_unlocked: 'ОТКРЫТА НОВАЯ МЫСЛЬ:',
+    toast_thought_internalized: 'МЫСЛЬ УСВОЕНА:',
+    toast_xp_gained: 'ПОЛУЧЕН ОПЫТ:',
+    toast_level_up: 'НОВЫЙ УРОВЕНЬ! ПОЛУЧЕНО ОЧКО НАВЫКА',
+    toast_damage_health: 'РАНЕНИЕ! СТОЙКОСТЬ СНИЖЕНА',
+    toast_damage_morale: 'ШОК! БОЕВОЙ ДУХ ПОДОРВАН'
+  },
+  it: {
+    game_title: 'A E N I G M A',
+    case_badge: 'CASO #04: L\'OROLOGIAIA SILENZIOSA',
+    loader_quote: '“L\'orologio non si ferma mai. È solo la carne al suo interno che dimentica come battere.”',
+    loader_telemetry: 'Inizializzazione telemetria neurale...',
+    loader_enter: 'ENTRA NELLA MENTE',
+    creator_title: 'DOSSIER DELL\'INVESTIGATORE',
+    creator_subtitle: 'CREAZIONE PERSONAGGIO',
+    gender_female: '♀ DONNA',
+    gender_male: '♂ UOMO',
+    randomize_dossier: '🎲 DOSSIER CASUALE',
+    precinct_label: 'Sezione Omicidi Distretto 4 · Settore Orientale 7',
+    name_label: 'NOME COMPLETO DETECTIVE',
+    alias_label: 'ALIAS / TITOLO PSICOLOGICO',
+    facets_title: 'FACETTE DELLA PSICHE',
+    points_available: 'Punti Disponibili',
+    intellect_name: 'INTELLETTO',
+    intellect_desc: 'Logica, Enciclopedia, Retorica, Concettualizzazione. Fredda deduzione e analisi razionale.',
+    psyche_name: 'PSICHE',
+    psyche_desc: 'Esoterismo, Empatia, Autorità, Suggestione. Intuizioni sovrannaturali e gravità emotiva.',
+    physique_name: 'FISICO',
+    physique_desc: 'Tempra, Soglia del Dolore, Elettrochimica. Adrenalina, istinto viscerale e sopravvivenza.',
+    motorics_name: 'MOTORICA',
+    motorics_desc: 'Percezione, Coordinazione Occhio-Mano, Interfaccia, Savoir-Faire. Sensi acuti e micro-indizi.',
+    signature_title: 'ABILITÀ DISTINTIVA (+2 BONUS E VOCE INTERIORE)',
+    vices_title: 'VIZI PERSONALI E CREPE PSICHICHE',
+    start_inquiry: 'AVVIA L\'INDAGINE',
+    endurance_label: 'TEMPRA',
+    morale_label: 'MORALE',
+    hp_pip: 'PV',
+    sp_pip: 'PM',
+    day_prefix: 'GIORNO',
+    nav_cabinet: '🧠 GABINETTO DEI PENSIERI',
+    nav_clues: '📌 FASCICOLO PROVE',
+    nav_inventory: '💼 INVENTARIO',
+    nav_audio: 'AUDIO',
+    nav_language: 'LINGUA',
+    scene_location: 'Torre dell\'Orologio di Sant\'Irene · Distretto 7',
+    scene_timestamp: 'Maestra Orologiaia Aurelia Vance · Corpo rinvenuto alle 03:42 durante i rintocchi',
+    speaker_forensic: 'Rilievi Medico-Legali',
+    interlocutor_active: 'INTERAZIONE ATTIVA',
+    modal_cabinet_title: 'GABINETTO DEI PENSIERI · THOUGHT CABINET',
+    modal_inventory_title: 'CAPPOTTO DA DETECTIVE E SACCA PROVE',
+    modal_clues_title: 'DOSSIER DEL CASO · MATRICE DI DEDUZIONE',
+    modal_dice_title: 'PROVA DI ABILITÀ',
+    modal_language_title: 'SELEZIONA LINGUA SOTTOTITOLI E INTERFACCIA',
+    modal_victory_title: 'CASO CHIUSO',
+    modal_gameover_title: 'INDAGINE INTERROTTA: COLLASSO',
+    dice_tally: 'LANCIO 2D6 + MODIFICATORI:',
+    dice_rolling: 'LANCIO IN CORSO...',
+    dice_passed: 'PROVA SUPERATA!',
+    dice_failed: 'PROVA FALLITA!',
+    dice_proceed: 'PROCEDI CON IL RISULTATO',
+    btn_restart: 'INIZIA NUOVA INDAGINE',
+    btn_retry: 'RIPROVA INDAGINE',
+    btn_use: 'USA',
+    btn_inspect: 'ESAMINA',
+    btn_read: 'LEGGI',
+    badge_passive: 'PASSIVO',
+    badge_uses: 'usi rimasti',
+    toast_item_acquired: 'OGGETTO OTTENUTO:',
+    toast_item_used: 'OGGETTO CONSUMATO:',
+    toast_clue_discovered: 'INDIZIO CRUCIALE SVELATO:',
+    toast_thought_unlocked: 'NUOVO PENSIERO AFFIORATO:',
+    toast_thought_internalized: 'PENSIERO INTERIORIZZATO:',
+    toast_xp_gained: 'ESPERIENZA ACQUISITA:',
+    toast_level_up: 'LIVELLO SUPERIORE! PUNTO ABILITÀ',
+    toast_damage_health: 'FERITO! TEMPRA RIDOTTA',
+    toast_damage_morale: 'SCIOCCATO! MORALE COMPROMESSO'
+  },
+  pt: {
+    game_title: 'A E N I G M A',
+    case_badge: 'CASO #04: A RELOJOEIRA SILENCIOSA',
+    loader_quote: '“O relógio nunca para. Apenas a carne em seu interior esquece como bater.”',
+    loader_telemetry: 'Inicializando telemetria neural...',
+    loader_enter: 'ENTRAR NA MENTE',
+    creator_title: 'DOSSIÊ DO INVESTIGADOR',
+    creator_subtitle: 'CRIAÇÃO DE PERSONAGEM',
+    gender_female: '♀ FEMININO',
+    gender_male: '♂ MASCULINO',
+    randomize_dossier: '🎲 DOSSIÊ ALEATÓRIO',
+    precinct_label: 'Divisão de Homicídios Distrito 4 · Setor Leste 7',
+    name_label: 'NOME COMPLETO DO DETETIVE',
+    alias_label: 'ALCUNHA / TÍTULO PSICOLÓGICO',
+    facets_title: 'FACETAS DA PSIQUE',
+    points_available: 'Pontos Disponíveis',
+    intellect_name: 'INTELECTO',
+    intellect_desc: 'Lógica, Enciclopédia, Retórica, Conceitualização. Dedução fria e análise racional.',
+    psyche_name: 'PSIQUE',
+    psyche_desc: 'Esoterismo, Empatia, Autoridade, Sugestão. Intuições sobrenaturais e peso emocional.',
+    physique_name: 'FÍSICO',
+    physique_desc: 'Resistência, Limiar de Dor, Eletroquímica. Adrenalina, instinto visceral e sobrevivência.',
+    motorics_name: 'MOTRICIDADE',
+    motorics_desc: 'Percepção, Coordenação Olho-Mão, Interface, Savoir-Faire. Sentidos afiados e micro-pistas.',
+    signature_title: 'HABILIDADE ASSINATURA (+2 BÔNUS E VOZ INTRUSIVA)',
+    vices_title: 'VÍCIOS PESSOAIS E FRATURAS PSÍQUICAS',
+    start_inquiry: 'INICIAR INVESTIGAÇÃO',
+    endurance_label: 'RESISTÊNCIA',
+    morale_label: 'MORAL',
+    hp_pip: 'PV',
+    sp_pip: 'PM',
+    day_prefix: 'DIA',
+    nav_cabinet: '🧠 GABINETE DE PENSAMENTOS',
+    nav_clues: '📌 DOSSIÊ DE PISTAS',
+    nav_inventory: '💼 INVENTÁRIO',
+    nav_audio: 'ÁUDIO',
+    nav_language: 'IDIOMA',
+    scene_location: 'Torre do Relógio de Santa Irene · Distrito 7',
+    scene_timestamp: 'Mestra Horóloga Aurelia Vance · Corpo encontrado às 03:42 durante o badalar do sino',
+    speaker_forensic: 'Observação Forense',
+    interlocutor_active: 'INTERAÇÃO ATIVA',
+    modal_cabinet_title: 'GABINETE DE PENSAMENTOS · THOUGHT CABINET',
+    modal_inventory_title: 'CASACO DO DETETIVE E SACO DE EVIDÊNCIAS',
+    modal_clues_title: 'DOSSIÊ DO CASO · MATRIZ DE DEDUÇÃO',
+    modal_dice_title: 'TESTE DE HABILIDADE',
+    modal_language_title: 'SELECIONAR IDIOMA DAS LEGENDAS E INTERFACE',
+    modal_victory_title: 'CASO CONCLUÍDO',
+    modal_gameover_title: 'INVESTIGAÇÃO ENCERRADA: COLAPSO',
+    dice_tally: 'ROLANDO 2D6 + MODIFICADORES:',
+    dice_rolling: 'ROLANDO DADOS...',
+    dice_passed: 'TESTE BEM-SUCEDIDO!',
+    dice_failed: 'TESTE FALHOU!',
+    dice_proceed: 'AVANÇAR COM O RESULTADO',
+    btn_restart: 'INICIAR NOVA INVESTIGAÇÃO',
+    btn_retry: 'RECOMEÇAR INVESTIGAÇÃO',
+    btn_use: 'USAR',
+    btn_inspect: 'INSPECIONAR',
+    btn_read: 'LER',
+    badge_passive: 'PASSIVO',
+    badge_uses: 'usos restantes',
+    toast_item_acquired: 'ITEM ADQUIRIDO:',
+    toast_item_used: 'ITEM UTILIZADO:',
+    toast_clue_discovered: 'PISTA CRUCIAL ENCONTRADA:',
+    toast_thought_unlocked: 'NOVO PENSAMENTO DESPERTO:',
+    toast_thought_internalized: 'PENSAMENTO INTERNALIZADO:',
+    toast_xp_gained: 'EXPERIÊNCIA ADQUIRIDA:',
+    toast_level_up: 'SUBIU DE NÍVEL! PONTO DE HABILIDADE',
+    toast_damage_health: 'FERIDO! RESISTÊNCIA REDUZIDA',
+    toast_damage_morale: 'ABALADO! MORAL COMPROMETIDO'
+  },
+  ar: {
+    game_title: 'إ ي ن ي ج م ا',
+    case_badge: 'القضية #04: صانعة الساعات الصامتة',
+    loader_quote: '«عقارب الساعة لا تتوقف أبدًا. وحده الجسد بين تروسها ينسى كيف ينبض.»',
+    loader_telemetry: 'تهيئة القياس العصبي عن بُعد...',
+    loader_enter: 'ادخل إلى أعماق العقل',
+    creator_title: 'ملف المحقق',
+    creator_subtitle: 'إنشاء الشخصية',
+    gender_female: '♀ أنثى',
+    gender_male: '♂ ذكر',
+    randomize_dossier: '🎲 توليد ملف عشوائي',
+    precinct_label: 'قسم الجرائم بالدائرة 4 · القطاع الشرقي 7',
+    name_label: 'الاسم الكامل للمحقق',
+    alias_label: 'اللقب / المسمى النفسي',
+    facets_title: 'أبعاد النفس البشرية',
+    points_available: 'النقاط المتاحة',
+    intellect_name: 'العقل والذكاء',
+    intellect_desc: 'المنطق، الموسوعة، البلاغة، المفاهيم. استنتاج بارد وتحليل عقلاني صارم.',
+    psyche_name: 'النفس والروح',
+    psyche_desc: 'الباطنية، التعاطف، الهيبة والسلطة، الإيحاء. حدس غيبي وثقل وجداني.',
+    physique_name: 'البنية الجسدية',
+    physique_desc: 'قوة التحمل، عتبة الألم، الكيمياء العضوية. الأدرينالين وغريزة البقاء الفطرية.',
+    motorics_name: 'المهارات الحركية',
+    motorics_desc: 'الإدراك الحسي، التناسق، التفاعل الميكانيكي، الحنكة. حواس ثاقبة وقراءة الآثار الدقيقة.',
+    signature_title: 'المهارة المميزة (+2 نقاط وصوت باطني عميق)',
+    vices_title: 'الرذائل الشخصية والشروخ النفسية',
+    start_inquiry: 'بدء التحقيق الجنائي',
+    endurance_label: 'التحمل الجسدي',
+    morale_label: 'المعنويات',
+    hp_pip: 'صحة',
+    sp_pip: 'روح',
+    day_prefix: 'اليوم',
+    nav_cabinet: '🧠 خزانة الأفكار',
+    nav_clues: '📌 ملف الأدلة',
+    nav_inventory: '💼 الحقيبة',
+    nav_audio: 'الصوت',
+    nav_language: 'اللغة',
+    scene_location: 'برج ساعات القديسة إيرين · القطاع 7',
+    scene_timestamp: 'كبيرة صانعي الساعات أوريليا فانس · عُثر على الجثمان الساعة 03:42 فجرًا بين دقات البندول',
+    speaker_forensic: 'معاينة الطب الشرعي',
+    interlocutor_active: 'تفاعل نشط',
+    modal_cabinet_title: 'خزانة الأفكار · THOUGHT CABINET',
+    modal_inventory_title: 'معطف المحقق وحقيبة الأحراز',
+    modal_clues_title: 'ملف القضية · مصفوفة الاستنتاج الجنائي',
+    modal_dice_title: 'اختبار المهارة والفرصة',
+    modal_language_title: 'اختر لغة الترجمة وواجهة المستخدم',
+    modal_victory_title: 'إغلاق القضية بنجاح',
+    modal_gameover_title: 'فشل التحقيق: انهيار مأساوي',
+    dice_tally: 'رمي النرد 2D6 + المكافآت:',
+    dice_rolling: 'تدوير النرد...',
+    dice_passed: 'نجح الاختبار!',
+    dice_failed: 'فشل الاختبار!',
+    dice_proceed: 'متابعة النتيجة',
+    btn_restart: 'فتح تحقيق جديد',
+    btn_retry: 'إعادة المحاولة',
+    btn_use: 'استخدام',
+    btn_inspect: 'فحص دقيق',
+    btn_read: 'قراءة',
+    badge_passive: 'تأثير دائم',
+    badge_uses: 'استخدامات متبقية',
+    toast_item_acquired: 'تم تحريز أداة:',
+    toast_item_used: 'تم استخدام:',
+    toast_clue_discovered: 'كشف دليل حاسم:',
+    toast_thought_unlocked: 'بزغت فكرة جديدة:',
+    toast_thought_internalized: 'تم استيعاب الفكرة:',
+    toast_xp_gained: 'اكتساب خبرة:',
+    toast_level_up: 'ترقية المستوى! نقطة مهارة جديدة',
+    toast_damage_health: 'إصابة جسدية! تراجع التحمل',
+    toast_damage_morale: 'صدمة نفسية! تراجع المعنويات'
+  }
+};
+
+// Item, Clue, Thought, and POI Localizations for 12 Languages
+const ITEMS_I18N = {
+  detective_badge: {
+    name: {
+      id: 'Lencana Kusam Distrik 4',
+      en: 'Tarnished Precinct 4 Badge',
+      ja: '変色した第4分署の警察バッジ',
+      zh: '褪色的第四警区警徽',
+      ko: '변색된 제4관할서 배지',
+      es: 'Placa Deslustrada del Precinto 4',
+      fr: 'Insigne Terni du 4e District',
+      de: 'Verblasste Dienstmarke von Revier 4',
+      ru: 'Потускневший жетон 4-го участка',
+      it: 'Distintivo Sbiadito del Distretto 4',
+      pt: 'Distintivo Desgastado do Distrito 4',
+      ar: 'شارة الدائرة 4 الباهتة'
+    },
+    description: {
+      id: 'Lencana perak dengan lambang keadilan yang tergores. Mengibaskannya di depan saksi memberikan +2 Otoritas.',
+      en: 'Bent silver badge with imperial scales scratched off. Flashing it commands obedience (+2 Authority bonus).',
+      ja: '天秤の紋章が削り取られた銀のバッジ。相手に見せつけることで威信+2を得る。',
+      zh: '磨损的银质警徽。向嫌疑人出示可施加心理威慑（获得+2权威加成）。',
+      ko: '천칭 문양이 긁혀나간 은제 배지. 상대에게 과시하여 권위 +2 보너스를 얻습니다.',
+      es: 'Placa de plata doblada con la balanza rayada. Mostrarla impone obediencia (+2 Autoridad).',
+      fr: 'Insigne d\'argent courbé. Le brandir impose l\'autorité (+2 Autorité).',
+      de: 'Verbeulte Silbermarke. Ihr Vorzeigen verschafft Respekt (+2 Autorität).',
+      ru: 'Погнутый серебряный жетон. Демонстрация внушает уважение (+2 к Авторитету).',
+      it: 'Distintivo d\'argento piegato. Mostrarlo incute timore (+2 Autorità).',
+      pt: 'Distintivo de prata amassado. Exibi-lo impõe respeito (+2 Autoridade).',
+      ar: 'شارة فضية ملتوية. إبرازها يفرض الهيبة وسلطة التحقيق (+2 سلطة).'
+    }
+  },
+  astra_cigarettes: {
+    name: {
+      id: 'Sebungkus Rokok Astra Merah',
+      en: 'Pack of Astra Red Filterless',
+      ja: 'アストラ・レッド（両切り煙草）',
+      zh: '阿斯特拉无嘴红烟',
+      ko: '아스트라 레드 필터리스 담배',
+      es: 'Paquete de Astra Rojo sin Filtro',
+      fr: 'Paquet d\'Astra Rouge sans Filtre',
+      de: 'Schachtel Astra Rot ohne Filter',
+      ru: 'Пачка крепких сигарет «Астра Красная»',
+      it: 'Pacchetto di Astra Rosse senza Filtro',
+      pt: 'Maço de Astra Vermelho sem Filtro',
+      ar: 'علبة سجائر أسترا الحمراء بلا فلتر'
+    },
+    description: {
+      id: 'Tembakau belerang murah dari dermaga selatan. Menghisapnya memulihkan +2 Kewarasan, namun mengurangi -1 Daya Tahan.',
+      en: 'Cheap sulfur-cured tobacco from the docks. Inhaling restores +2 Morale, but costs -1 Endurance.',
+      ja: '安価な硫黄燻製タバコ。吸い込むと精神力+2回復するが、耐久値-1を消耗する。',
+      zh: '码头廉价硫熏烟草。深吸一口可恢复+2理智，但损耗-1体能。',
+      ko: '싸구려 유황 훈제 담배. 흡연 시 사기 +2 회복, 체력 -1 소모.',
+      es: 'Tabaco curado con azufre barato de los muelles. Fumar restaura +2 Moral, pero cuesta -1 Aguante.',
+      fr: 'Tabac bon marché des docks. Fumer restaure +2 Moral, mais coûte -1 Endurance.',
+      de: 'Billiger schwefelgetränkter Hafentabak. Rauchen stellt +2 Moral her, kostet -1 Ausdauer.',
+      ru: 'Дешевый ядреный табак из доков. Восстанавливает +2 Духа, но отнимает -1 Стойкости.',
+      it: 'Tabacco zolfato economico dei moli. Fumarlo ripristina +2 Morale, ma costa -1 Tempra.',
+      pt: 'Tabaco barato do cais. Fumar restaura +2 Moral, mas custa -1 Resistência.',
+      ar: 'تبغ رخيص معالج بالكبريت. تدخينها يستعيد +2 معنويات لكن يكلف -1 من التحمل الجسدي.'
+    }
+  },
+  medicinal_flask: {
+    name: {
+      id: 'Labu Tinktur Laudanum Medis',
+      en: 'Medicinal Laudanum Tincture',
+      ja: '医療用アヘンチンキ瓶',
+      zh: '医用阿片酊药剂瓶',
+      ko: '의료용 라우다넘 팅크병',
+      es: 'Frasco de Tintura de Láudano Medicinal',
+      fr: 'Flacon de Teinture de Laudanum Médicinal',
+      de: 'Medizinische Laudanum-Tinktur',
+      ru: 'Флакон медицинской настойки опия (Лауданум)',
+      it: 'Fiala di Tintura di Laudano Medicinale',
+      pt: 'Frasco de Tintura de Láudano Medicinal',
+      ar: 'قارورة صبغة اللودانوم الطبية المخدرة'
+    },
+    description: {
+      id: 'Cairan kental berwarna amber. Meminumnya memulihkan +2 Daya Tahan & +1 Esoterika, meredakan trauma fisik seketika.',
+      en: 'Amber sedative fluid. Drinking restores +2 Health and boosts +1 Esoterica, numbing visceral agony.',
+      ja: '琥珀色の鎮痛薬液。服用すると耐久力+2回復、秘教+1、激痛を即座に麻痺させる。',
+      zh: '琥珀色镇痛酊剂。饮用恢复+2体能并提升+1秘教，瞬间麻痹剧痛。',
+      ko: '호박색 진통 약제. 복용 시 체력 +2 회복 및 비전 +1, 육체적 격통 완화.',
+      es: 'Líquido sedante ambarino. Beber restaura +2 Salud y otorga +1 Esoterismo, aliviando el dolor.',
+      fr: 'Liquide sédatif ambré. Boire restaure +2 Santé et confère +1 Ésotérisme.',
+      de: 'Bernsteinfarbene Tinktur. Stellt +2 Ausdauer her und verleiht +1 Esoterik, betäubt Qualen.',
+      ru: 'Янтарный седативный раствор. Восстанавливает +2 Здоровья и дает +1 к Эзотерике, глуша боль.',
+      it: 'Liquido sedativo ambrato. Bere ripristina +2 Salute e conferisce +1 Esoterismo.',
+      pt: 'Líquido sedativo âmbar. Beber restaura +2 Saúde e concede +1 Esoterismo.',
+      ar: 'سائل مسكن كهرماني. شربه يستعيد +2 صحة ويمنح +1 باطنية، مخدرًا الألم الفظيع.'
+    }
+  },
+  broken_pocketwatch: {
+    name: {
+      id: 'Jam Saku Horologis yang Retak',
+      en: 'Cracked Horologist Pocket Watch',
+      ja: 'ひび割れた時計師の懐中時計',
+      zh: '破裂的宗师怀表',
+      ko: '균열된 시계 장인의 회중시계',
+      es: 'Reloj de Bolsillo Roto de la Horóloga',
+      fr: 'Montre à Gousset Fendue de l\'Horlogère',
+      de: 'Gesprungene Taschenuhr der Uhrmacherin',
+      ru: 'Разбитые карманные часы мастера',
+      it: 'Orologio da Taschino Incrinato dell\'Orologiaia',
+      pt: 'Relógio de Bolso Quebrado da Horóloga',
+      ar: 'ساعة جيب صانعة الساعات المتصدعة'
+    },
+    description: {
+      id: 'Mati tepat pada 03:42. Memeriksa mekanisme engsel gandanya mengungkap ukiran sandi rahasia: "7 - 3 - 12".',
+      en: 'Frozen precisely at 03:42. Inspecting the bezel mechanism reveals the engraved safe cipher: "7 - 3 - 12".',
+      ja: '03:42で針が停止。外枠の歯車機構を調べると、金庫の暗号「7 - 3 - 12」が刻まれている。',
+      zh: '精准停在03:42。拆解内嵌齿轮可发现镌刻的秘密保险箱密码：“7 - 3 - 12”。',
+      ko: '정확히 03:42에 멈춤. 톱니를 점검하면 금고 비밀번호 "7 - 3 - 12"가 각인되어 있습니다.',
+      es: 'Detenido a las 03:42. Inspeccionar el mecanismo revela la clave grabada de la caja fuerte: "7 - 3 - 12".',
+      fr: 'Figée à 03h42. Examiner le boîtier révèle le chiffre gravé du coffre-fort: « 7 - 3 - 12 ».',
+      de: 'Präzise um 03:42 stehengeblieben. Die Untersuchung offenbart die eingravierte Kombination: „7 - 3 - 12“.',
+      ru: 'Застыли ровно в 03:42. Осмотр механизма открывает выгравированный шифр сейфа: «7 - 3 - 12».',
+      it: 'Fermo alle 03:42. Esaminando la ghiera si scopre la combinazione incisa: "7 - 3 - 12".',
+      pt: 'Travado às 03:42. Inspecionar as engrenagens revela o código gravado do cofre: "7 - 3 - 12".',
+      ar: 'توقفت بدقة عند 03:42. فحص تروسها يكشف شفرة الخزنة المنقوشة: «7 - 3 - 12».'
+    }
+  },
+  magnifying_loupe: {
+    name: {
+      id: 'Kaca Pembesar Monokel Presisi',
+      en: 'Precision Horologist Loupe',
+      ja: '精密時計師用ルーペ',
+      zh: '钟表匠精密目镜',
+      ko: '정밀 시계공 루페',
+      es: 'Lupa Monocular de Precisión',
+      fr: 'Loupe de Précision d\'Horloger',
+      de: 'Präzisions-Uhrmacherlupe',
+      ru: 'Прецизионная часовая лупа-монокль',
+      it: 'Lente d\'Ingrandimento di Precisione',
+      pt: 'Lupa Monocular de Precisão',
+      ar: 'عدسة فحص الساعات الدقيقة'
+    },
+    description: {
+      id: 'Lensa akromatik kuningan. Menggunakannya memberikan +2 Persepsi & mengungkap luka tusuk mikroskopis di leher korban.',
+      en: 'Achromatic brass loupe. Equipping grants +2 Perception and reveals microscopic puncture wounds on the victim\'s neck.',
+      ja: '色消し真鍮製ルーペ。使用すると知覚+2、被害者の首筋にある微小な注射針痕を発見できる。',
+      zh: '消色差黄铜目镜。装备获得+2感知，并能洞察受害者颈部极其细微的毒针孔。',
+      ko: '황동제 색지움 루페. 장착 시 지각 +2 부여 및 피해자 목덜미의 미세한 독침 바늘구멍 발견 가능.',
+      es: 'Lupa acromática de latón. Otorga +2 Percepción y revela punciones microscópicas en el cuello de la víctima.',
+      fr: 'Loupe achromatique en laiton. Confère +2 Perception et révèle des piqûres microscopiques sur le cou de la victime.',
+      de: 'Messinglupe. Gewährt +2 Wahrnehmung und offenbart mikroskopische Einstichstellen am Hals des Opfers.',
+      ru: 'Ахроматическая латунная лупа. Дает +2 к Восприятию и позволяет различить микроскопический укол на шее жертвы.',
+      it: 'Lente acromatica in ottone. Conferisce +2 Percezione e rivela fori di spillo microscopici sul collo della vittima.',
+      pt: 'Lupa acromática de latão. Concede +2 Percepção e revela picadas microscópicas no pescoço da vítima.',
+      ar: 'عدسة نحاسية دقيقة. استخدامها يمنح +2 إدراك ويكشف ثقوب وخز مجهرية على رقبة الضحية.'
+    }
+  },
+  perpetuum_ledger: {
+    name: {
+      id: 'Buku Besar Rahasia Perpetuum',
+      en: 'The Perpetuum Cartel Ledger',
+      ja: '永久機関カルテルの秘密台帳',
+      zh: '永动机密会秘密账簿',
+      ko: '영구기관 카르텔의 비밀 원장',
+      es: 'Libro Mayor del Cartel Perpetuum',
+      fr: 'Grand Livre Secret du Cartel Perpetuum',
+      de: 'Geheimbuch des Perpetuum-Kartells',
+      ru: 'Секретный гроссбух картеля «Перпетуум»',
+      it: 'Mastro Segreto del Cartello Perpetuum',
+      pt: 'Livro-Razão Secreto do Cartel Perpetuum',
+      ar: 'دفتر حسابات كارتل بيربيتوم السري'
+    },
+    description: {
+      id: 'Ditemukan di brankas tersembunyi. Membacanya mengungkap suap jutaan guilder dari Sindikat ke rekening Vivienne Vance (+50 XP).',
+      en: 'Found in the floorboard safe. Reading deciphers illicit payoffs from the Syndicate to Madame Vance\'s account (+50 XP).',
+      ja: '隠し金庫から発見。読了するとシンジケートからヴィヴィアンへの巨額賄賂が判明（+50 XP）。',
+      zh: '在暗格保险箱中起获。研读可破译联合阵线向薇薇安账户汇款的巨额贿赂记录（获得+50经验）。',
+      ko: '마루 밑 비밀 금고에서 발견. 열독 시 신디케이트가 비비안 밴스에게 건넨 거액의 뇌물 내역 해독 (+50 XP).',
+      es: 'Hallado en la caja oculta. Leerlo descifra sobornos ilícitos del Sindicato a Madame Vance (+50 XP).',
+      fr: 'Trouvé dans le coffre du plancher. Le lire déchiffre les pots-de-vin du Syndicat versés à Vivienne (+50 XP).',
+      de: 'Im Bodentresor gefunden. Das Lesen entschlüsselt Schmiergelder des Syndikats an Madame Vance (+50 XP).',
+      ru: 'Найден в тайнике под полом. Прочтение раскрывает подкуп мадам Вэнс Синдикатом на огромные суммы (+50 опыта).',
+      it: 'Trovato nella cassaforte segreta. Leggerlo svela le tangenti versate dal Sindacato a Madame Vance (+50 XP).',
+      pt: 'Encontrado no cofre sob o piso. Lê-lo decifra propinas do Sindicato pagas a Madame Vance (+50 XP).',
+      ar: 'عُثر عليه بالخزنة الأرضية. قراءته تفك شفرة رشاوى طائلة حُوّلت من النقابة لحساب فيفيان فانس (+50 خبرة).'
+    }
+  },
+  poison_chess_queen: {
+    name: {
+      id: 'Bidak Ratu Catur Gading Beracun',
+      en: 'The Poisoned Ivory Queen',
+      ja: '毒針が仕込まれた象牙のクイーン',
+      zh: '藏有毒针的象牙黑后棋子',
+      ko: '독침이 장치된 상아 흑색 퀸 기물',
+      es: 'Reina de Ajedrez Envenenada',
+      fr: 'Reine d\'Échecs en Ivoire Empoisonnée',
+      de: 'Vergiftete Elfenbein-Schachdame',
+      ru: 'Отравленный ферзь из слоновой кости',
+      it: 'Regina di Scacchi Avvelenata',
+      pt: 'Rainha de Xadrez Envenenada',
+      ar: 'قطعة وزير الشطرنج العاجية المسمومة'
+    },
+    description: {
+      id: 'Tergenggam erat di tangan korban. Membongkar dasarnya mengungkap jarum berpegas dengan residu asam prusat mematikan.',
+      en: 'Clenched in Aurelia\'s corpse. Unscrewing the hollow base reveals a spring-loaded needle with dried prussic poison.',
+      ja: '被害者が握りしめていた物。底を回すと、青酸毒の結晶が付着したスプリング式極細針が飛び出す。',
+      zh: '死者手中紧攥之物。拧开中空底座，赫然露出一枚带有干燥氢氰酸剧毒残留的弹簧暗针。',
+      ko: '시신의 손에 쥐여 있던 기물. 밑바닥을 돌리면 건조된 청산 독극물이 묻은 스프링 독침이 노출됩니다.',
+      es: 'Apretada en la mano del cadáver. Desenroscar la base revela una aguja con residuos de cianuro letal.',
+      fr: 'Serrée dans la main de la victime. Dévisser la base creuse révèle une aiguille à ressort souillée de cyanure.',
+      de: 'Umklammert in der Hand der Toten. Das Aufschrauben enthüllt eine Federnadel mit Blausäurerückständen.',
+      ru: 'Была зажата в руке жертвы. Отвинтив основание, вы обнажаете пружинную иглу со следами цианистого яда.',
+      it: 'Stretta nella mano della vittima. Svitando la base cava si rivela un ago a molla con residui di cianuro.',
+      pt: 'Apertada na mão do cadáver. Desenroscar a base revela uma agulha com resíduos de cianeto mortal.',
+      ar: 'كانت الضحية تقبض عليها بإحكام. فك قاعدتها المجوفة يكشف عن إبرة نابضة ملوثة ببلورات سم السيانيد القاتل.'
+    }
+  }
+};
+
+// Points of Interest (POIs) Translations
+const POI_I18N = {
+  poi_pendulum: {
+    title: {
+      id: 'Pendulum Raksasa & Beban Penyeimbang',
+      en: 'The Great Pendulum & Counterweight',
+      ja: '大振り子と鋳鉄カウンターウェイト',
+      zh: '巨型钟摆与铸铁配重块',
+      ko: '거대 진자와 주철 평형추',
+      es: 'El Gran Péndulo y Contrapeso',
+      fr: 'Le Grand Balancier et Contrepoids',
+      de: 'Das Große Pendel und Gegengewicht',
+      ru: 'Исполинский маятник и противовес',
+      it: 'Il Grande Pendolo e Contrappeso',
+      pt: 'O Grande Pêndulo e Contrapeso',
+      ar: 'البندول الضخم وثقل الموازنة الحديدي'
+    },
+    description: {
+      id: 'Pendulum kuningan raksasa berayun di kegelapan menara, menggantung tepat di atas jurang roda gigi tempat jenazah Aurelia Vance tertancap.',
+      en: 'The colossal brass pendulum hanging in the gloom, swinging like a gilded blade above the gear abyss where Aurelia Vance was impaled.',
+      ja: '薄暗がりの中に吊るされた巨大な真鍮製振り子。オレリア・ヴァンスの遺体が貫かれた歯車の深淵の上で揺れている。',
+      zh: '悬垂于阴暗高处的青铜巨型钟摆，如同一把悬在深渊之上的断头巨刃，受害者正被贯穿在下方的铸铁配重臂上。',
+      ko: '어둠 속에 매달린 거대한 황동 진자. 오렐리아 밴스의 시신이 꿰뚫린 톱니바퀴 심연 위로 번뜩입니다.',
+      es: 'El colosal péndulo de latón colgando en la penumbra, oscilando sobre el abismo de engranajes donde yacía ensartada Aurelia Vance.',
+      fr: 'Le colossal balancier de laiton suspendu dans la pénombre, oscillant au-dessus des engrenages où repose le corps d\'Aurelia Vance.',
+      de: 'Das kolossale Messingpendel im Düsteren, schwingend über dem Zahnradabgrund, wo Aurelia Vance aufgespießt wurde.',
+      ru: 'Колоссальный латунный маятник в полумраке, качающийся над бездной шестерен, где насажено тело Аурелии Вэнс.',
+      it: 'Il colossale pendolo d\'ottone sospeso nel buio, oscillante sopra l\'abisso di ingranaggi dove giace trapassata Aurelia Vance.',
+      pt: 'O colossal pêndulo de latão na escuridão, oscilando sobre o abismo de engrenagens onde jaz empalada Aurelia Vance.',
+      ar: 'البندول النحاسي العملاق المعلق في الظلام، يتأرجح كنصل قاطع فوق هاوية التروس حيث طُعنت أوريليا فانس.'
+    }
+  },
+  poi_pocketwatch: {
+    title: {
+      id: 'Jam Saku Alkimia & Garis Kapur Jenazah',
+      en: 'The Alchemical Pocket Watch & Chalk Outline',
+      ja: '錬金術的懐中時計とチョークの遺体輪郭',
+      zh: '炼金怀表与血迹白垩轮廓',
+      ko: '연금술 회중시계와 혈흔 백묵 선',
+      es: 'El Reloj Alquímico y Contorno de Tiza',
+      fr: 'La Montre Alchimique et Tracé à la Craie',
+      de: 'Die Alchemistische Taschenuhr und Kreidelinie',
+      ru: 'Алхимические карманные часы и меловой контур',
+      it: 'L\'Orologio Alchemico e Sagoma di Gesso',
+      pt: 'O Relógio Alquímico e Contorno de Giz',
+      ar: 'ساعة الجيب الخيميائية ورسم الطباشير'
+    },
+    description: {
+      id: 'Tergeletak di lantai kayu berlumuran darah di dekat tas kerja korban yang berserakan di tengah hembusan angin dingin.',
+      en: 'Lying on the blood-soaked boards next to the victim\'s scattered belongings and dropped briefcase in the drafty rain.',
+      ja: '血染めの床板に落ちた遺留品。冷たい風雨が吹き込む中、散乱した書類鞄の横に転がっている。',
+      zh: '静卧在浸透血渍的木地板上，旁边散落着死者的随身公文包与风雨侵袭的演算手稿。',
+      ko: '피로 물든 바닥에 뒹구는 유품. 찬 바람과 비가 들이치는 가운데 흩어진 가방 곁에 놓여 있습니다.',
+      es: 'Tirado sobre las tablas ensangrentadas junto al maletín caído y las pertenencias dispersas de la víctima.',
+      fr: 'Gisant sur les planches ensanglantées près des effets éparpillés et de la mallette abandonnée de la victime.',
+      de: 'Liegt auf den blutgetränkten Dielen neben der verstreuten Aktentasche der Ermordeten.',
+      ru: 'Лежат на залитых кровью досках рядом с рассыпанными вещами и портфелем жертвы под каплями дождя.',
+      it: 'Giacente sulle assi insanguinate accanto alla valigetta rovesciata e agli effetti personali della vittima.',
+      pt: 'Caído sobre as tábuas ensanguentadas ao lado da pasta revirada e dos pertences da vítima.',
+      ar: 'ملقاة على الألواح الخشبية المخضبة بالدماء بجوار حقيبة الضحية المتناثرة تحت زخات المطر العاصف.'
+    }
+  },
+  poi_balcony: {
+    title: {
+      id: 'Wajah Jam Kaca & Terpaan Hujan Malam',
+      en: 'The Luminous Clock Face & Rain Vista',
+      ja: '大時計のステンドグラス文字盤と雨夜の眺望',
+      zh: '透光巨钟表盘与雨夜鸟瞰',
+      ko: '투광 시계 문자판과 비바람 전경',
+      es: 'La Esfera Luminosa y Vista Lluviosa',
+      fr: 'Le Cadran Lumineux et Vue Pluvieuse',
+      de: 'Das Leuchtende Zifferblatt und Regenpanorama',
+      ru: 'Светящийся циферблат и вид на дождливый город',
+      it: 'Il Quadrante Luminoso e la Pioggia Notturna',
+      pt: 'O Mostrador Iluminado e Vista Chuvosa',
+      ar: 'وجه الساعة الزجاجي المضيء ومشهد المطر'
+    },
+    description: {
+      id: 'Kaca patri jam raksasa yang bercahaya redup. Hujan deras menghantam angka-angka Romawi tinggi di atas atap Distrik 7.',
+      en: 'The monumental round stained-glass clock, rain beating violently against the Roman numerals high above the city.',
+      ja: '巨大なステンドグラス時計の文字盤。第7区の街並みを見下ろすローマ数字に冷たい雨が激しく叩きつけている。',
+      zh: '巍峨的巨大彩色玻璃钟盘，暴风雨正疯狂击打着镶嵌在城市上空的古老罗马数字。',
+      ko: '거대한 원형 스테인드글라스 시계판. 제7구역 상공에서 로마 숫자를 때리는 거친 비바람이 내다보입니다.',
+      es: 'El monumental reloj de vidriera redonda, con la lluvia golpeando los números romanos sobre los tejados del Distrito 7.',
+      fr: 'L\'immense horloge en vitrail rond, où la pluie s\'abat contre les chiffres romains dominant le 7e District.',
+      de: 'Das monumentale runde Buntglaszifferblatt, an dessen römische Ziffern der Regen hoch über Distrikt 7 prallt.',
+      ru: 'Монументальный витражный циферблат. Капли дождя яростно хлещут по римским цифрам высоко над крышами Сектора 7.',
+      it: 'Il monumentale orologio di vetro istoriato, con la pioggia battente sui numeri romani che dominano la città.',
+      pt: 'O monumental relógio de vitral redondo, com a chuva fustigando os números romanos no alto do Distrito 7.',
+      ar: 'قرص الساعة الزجاجي التذكاري الضخم، تصفعه أمطار الليل الغزيرة فوق الأرقام الرومانية المطلة على القطاع 7.'
+    }
+  },
+  poi_graves: {
+    title: {
+      id: 'Inspektur Graves (Mitra Sektor 4)',
+      en: 'Inspector Graves (Precinct 4 Partner)',
+      ja: 'グレイヴス警部（第4分署相棒）',
+      zh: '格雷夫斯警探（第四警区分署搭档）',
+      ko: '그레이브스 형사 (제4관할서 파트너)',
+      es: 'Inspector Graves (Compañero del Precinto 4)',
+      fr: 'Inspecteur Graves (Partenaire du 4e District)',
+      de: 'Inspektor Graves (Partner aus Revier 4)',
+      ru: 'Инспектор Грейвс (Напарник из 4-го участка)',
+      it: 'Ispettore Graves (Partner del Distretto 4)',
+      pt: 'Inspetor Graves (Parceiro do Distrito 4)',
+      ar: 'المفتش غريفز (شريك التحقيق بالدائرة 4)'
+    },
+    description: {
+      id: 'Rekan seniormu berlutut memegang senter, mencatat bukti forensik dengan gelisah sambil menggerutu di tengah dinginnya malam.',
+      en: 'Your cynical partner kneeling with a flashlight, taking forensic notes and grumbling in the freezing drizzle.',
+      ja: '懐中電灯を手に膝をつく相棒刑事。冷たい雨の中で愚痴をこぼしながら現場の検分メモを取っている。',
+      zh: '你的资深搭档正手持手电筒蹲在死者旁记录现场，在刺骨寒雨中烦躁地吐着烟圈。',
+      ko: '손전등을 들고 웅크린 파트너 형사. 차가운 빗속에서 불평하며 현장 메모를 작성하고 있습니다.',
+      es: 'Tu compañero arrodillado con una linterna, tomando notas forenses y refunfuñando bajo la lluvia gélida.',
+      fr: 'Votre coéquipier agenouillé avec une torche, consignant les indices tout en pestant contre la pluie glaciale.',
+      de: 'Ihr mürrischer Partner kniet mit der Taschenlampe nieder und kritzelt Notizen im eisigen Nieselregen.',
+      ru: 'Ваш напарник с фонарем осматривает пол, делая пометки в протоколе и раздраженно ворча под дождем.',
+      it: 'Il tuo collega inginocchiato con una torcia, annotando rilievi e borbottando sotto la pioggia sferzante.',
+      pt: 'Seu parceiro ajoelhado com uma lanterna, anotando observações e resmungando na garoa congelante.',
+      ar: 'شريكك المخضرم جاثٍ بمصباحه اليدوي، يدون ملاحظات المعاينة ويتذمر تحت قطرات البرد القارس.'
+    }
+  },
+  poi_madame: {
+    title: {
+      id: 'Nyonya Vivienne Vance (Janda Berkerudung Hitam)',
+      en: 'Madame Vivienne Vance (The Shadowed Widow)',
+      ja: 'ヴィヴィアン・ヴァンス夫人（喪服の未亡人）',
+      zh: '薇薇安·梵斯夫人（黑纱下的未亡人）',
+      ko: '비비안 밴스 부인 (검은 면사의 미망인)',
+      es: 'Madame Vivienne Vance (La Viuda Sombría)',
+      fr: 'Madame Vivienne Vance (La Veuve Voilée)',
+      de: 'Madame Vivienne Vance (Die Verhüllte Witwe)',
+      ru: 'Мадам Вивьен Вэнс (Овдовевшая за черной вуалью)',
+      it: 'Madame Vivienne Vance (La Vedova Velata)',
+      pt: 'Madame Vivienne Vance (A Viúva Enlutada)',
+      ar: 'السيدة فيفيان فانس (الأرملة ذات الوشاح الأسود)'
+    },
+    description: {
+      id: 'Berdiri mematung di dekat lentera anjungan atas. Kerudung sutra hitamnya berkibar pelan diterpa angin menara.',
+      en: 'Standing motionless by the upper lantern gantry, her dark mourning veil fluttering gently in the draft.',
+      ja: '上層のランタン通路に佇む未亡人。冷たい風に黒い喪服のベールが微かに揺れている。',
+      zh: '伫立在上层铁梯走廊的幽光中，黑色的丝质丧服面纱在回旋的寒风中静静飘动。',
+      ko: '상층 등불 난간 곁에 미동 없이 선 여인. 검은 상복 면사가 차가운 바람에 흩날립니다.',
+      es: 'Inmóvil junto a la galería de la linterna superior, su velo de luto ondeando suavemente en la corriente.',
+      fr: 'Debout, immobile près de la rambarde de la lanterne, son voile de deuil noir flottant au vent glacial.',
+      de: 'Reglos an der oberen Laternenbrücke stehend, ihr dunkler Trauerschleier weht im kalten Zugluftstrom.',
+      ru: 'Неподвижно стоит на верхней галерее фонаря; ее темная траурная вуаль слегка колышется от сквозняка.',
+      it: 'Ferma immobile accanto alla ringhiera superiore, con il velo nero da lutto che ondeggia nel vento.',
+      pt: 'De pé, imóvel junto à galeria superior, seu véu negro de luto ondulando suavemente no vento.',
+      ar: 'تقف بلا حراك عند منصة الفانوس العلوية، ووشاح حدادها الأسود يرفرف بهدوء مع تيارات الهواء الباردة.'
+    }
+  },
+  poi_floorboard: {
+    title: {
+      id: 'Brankas Rahasia di Balik Papan Lantai',
+      en: 'Concealed Floorboard Safe',
+      ja: '床下に隠された秘密金庫',
+      zh: '地板暗格下的机械保险箱',
+      ko: '바닥 판자 아래 숨겨진 비밀 금고',
+      es: 'Caja Fuerte Oculta bajo el Suelo',
+      fr: 'Coffre Secret sous le Plancher',
+      de: 'Verborgenes Bodenschließfach',
+      ru: 'Потайной сейф под половицами',
+      it: 'Cassaforte Nascosta sotto il Pavimento',
+      pt: 'Cofre Oculto sob o Assoalho',
+      ar: 'خزنة سرية مطمورة تحت ألواح الأرضية'
+    },
+    description: {
+      id: 'Papan lantai yang sedikit longgar di balik kain pelumas mesin. Kunci kombinasi tiga putaran terpasang kuat.',
+      en: 'A loose plank hidden beneath machine grease rags. Secured with a heavy alchemical three-tumbler dial.',
+      ja: '油まみれのウエスに隠された緩んだ床板。三連ダイヤル式の重厚な錬金術ロックで施錠されている。',
+      zh: '遮掩在油污抹布下的一处松动木板，暗格内嵌有一口坚固的三位炼金转盘保险箱。',
+      ko: '기계 기름걸레 아래 숨겨진 헐거운 바닥 판자. 3중 회전식 연금술 다이얼 자물쇠로 굳게 잠겨 있습니다.',
+      es: 'Una tabla suelta oculta bajo trapos con grasa. Protegida por un dial alquímico de tres combinaciones.',
+      fr: 'Une latte de plancher dissimulée sous des chiffons gras. Verrouillée par un cadran alchimique à trois crans.',
+      de: 'Eine lose Diele unter öligen Putzlappen. Gesichert mit einem massiven alchemistischen Dreiradschloss.',
+      ru: 'Шаткая половица под замасленным тряпьем. Заперта тяжелым трехдисковым алхимическим замком.',
+      it: 'Un\'asse traballante coperta da stracci unti. Chiusa da una pesante combinazione alchemica a tre ghiere.',
+      pt: 'Uma tábua solta oculta sob panos engraxados. Protegida por um pesado disco alquímico de três cilindros.',
+      ar: 'لوح خشبي متخلخل تحت خرق شحم الماكينات، موصد بخزنة ثقيلة ذات قرص خيميائي ثلاثي التروس.'
+    }
+  ,
+  poi_gantry_lantern: {
+    title: {
+      en: "Upper Gantry & Alchemical Lantern",
+      id: "Anjungan Atas & Lentera Alkimia",
+      zh: "提灯上层悬空回廊与炼金探灯",
+      ja: "上層キャットウォークと錬金ランタン",
+      ko: "상층 통로와 연금술 등불",
+      es: "Pasarela Superior y Linterna Alquímica",
+      fr: "Passerelle Supérieure et Lanterne Alchimique",
+      de: "Oberer Laufsteg und Alchemielaterne",
+      ru: "Верхние мостки и алхимический фонарь",
+      it: "Passerella Superiore e Lanterna Alchemica",
+      pt: "Passarela Superior e Lanterna Alquímica",
+      ar: "الممر العلوي وفانوس الكيمياء"
+    },
+    description: {
+      en: "A narrow iron grating over the gear abyss. Broken glass and alchemical soot mark where a clandestine visitor waited.",
+      id: "Kisi besi sempit di atas jurang roda gigi. Pecahan kaca dan jelaga alkimia menandai tempat kurir rahasia mengintai.",
+      zh: "悬空于齿轮深渊上方的狭窄铁栅回廊。碎玻璃与炼金煤烟残留在此，暴露出曾有秘密访客在暗中窥伺。",
+      ja: "歯車の深淵に架かる細い鉄格子通路。割れたガラスと錬金術の煤が、何者かが潜んでいた痕跡を物語る。",
+      ko: "톱니바퀴 심연 위에 놓인 좁은 철제 격자 통로. 깨진 유리와 연금술 그을음이 밀사의 잠복 흔적을 보여줍니다.",
+      es: "Una estrecha rejilla de hierro sobre el abismo de engranajes. Restos de vidrio y hollín alquímico marcan una visita secreta.",
+      fr: "Une étroite grille de fer au-dessus des engrenages. Du verre brisé et de la suie alchimique trahissent un intrus.",
+      de: "Ein schmaler Eisensteg über den Zahnrädern. Glasscherben und Ruß beweisen einen heimlichen Besucher.",
+      ru: "Узкая железная решетка над пропастью шестерен. Осколки стекла и сажа выдают присутствие тайного гостя.",
+      it: "Una stretta grata di ferro sull'abisso di ingranaggi. Vetri rotti e fuliggine alchemica indicano una presenza segreta.",
+      pt: "Uma estreita grade de ferro sobre o abismo de engrenagens. Cacos de vidro e fuligem revelam uma visita clandestina.",
+      ar: "ممر حديدي ضيق فوق هاوية التروس. زجاج محطم وسخام كيميائي يشيران إلى ترصد زائر سري قبل الحادث."
+    }
+  },
+  poi_clock_chime_bell: {
+    title: {
+      en: "Colossal Bronze Bell & Chime Gearing",
+      id: "Lonceng Perunggu Raksasa & Gigi Dentang",
+      zh: "圣艾琳青铜大钟与共振撞锤齿轮",
+      ja: "聖アイリーンの巨鐘と鐘打撃歯車",
+      ko: "성 아이린 청동 거대 종과 타종 기어",
+      es: "Campana Monumental y Engranajes del Carrillón",
+      fr: "Cloche Colossale et Engrenages de Sonnerie",
+      de: "Kolossale Bronzeglocke und Schlagwerk",
+      ru: "Исполинский бронзовый колокол и бойный механизм",
+      it: "Campana Monumentale e Meccanismo del Rintocco",
+      pt: "Sino Colossal de Bronze e Engrenagens do Carrilhão",
+      ar: "الجرس البرونزي الضخم وتروس دق الساعات"
+    },
+    description: {
+      en: "The eight-ton bell that tolls for District 7. A fine steel wire is wrapped through the clapper linkage down into the pendulum escapement.",
+      id: "Lonceng delapan ton yang berdentang bagi Distrik 7. Kawat baja tipis terlilit dari pemukul lonceng menuju mekanisme pendulum.",
+      zh: "重达八吨的圣艾琳主钟。一根极细的高张力钢丝从钟锤连杆悄然延伸至下方的钟摆脱扣装置上！",
+      ja: "第7区に時を告げる8トンの大鐘。打鐘レバーから振り子の脱進機へと細い鋼鉄ワイヤーが巧みに結ばれている。",
+      ko: "제7구역에 시각을 알리는 8톤 청동 종. 종 치는 추의 연결부에서 진자 탈착부까지 정교한 강철 와이어가 이어져 있습니다.",
+      es: "La campana de ocho toneladas que dobla para el Distrito 7. Un fino cable de acero conecta el badajo al péndulo.",
+      fr: "La cloche de huit tonnes qui sonne pour le District 7. Un fil d'acier fin relie le battant au balancier.",
+      de: "Die Acht-Tonnen-Glocke des Distrikts 7. Ein dünner Stahldraht verbindet den Klöppel mit dem Pendelwerk.",
+      ru: "Восьмитонный колокол 7-го района. Тонкий стальной тросик тянется от языка колокола к спусковому механизму маятника.",
+      it: "La campana da otto tonnellate del Distretto 7. Un sottile cavo d'acciaio collega il battaglio allo scappamento.",
+      pt: "O sino de oito toneladas que toca pelo Distrito 7. Um fino fio de aço liga o badalo ao escape do pêndulo.",
+      ar: "الجرس الضخم البالغ وزنه ثمانية أطنان. سلك فولاذي رفيع يربط لسان الجرس بآلية فك قفل البندول بدقة ميكانيكية."
+    }
+  }
+  }
+};
+
+const GAMEOVER_I18N = {
+  physical: {
+    title: {
+      id: 'KERUNTUHAN FISIK & SERANGAN JANTUNG',
+      en: 'PHYSICAL COLLAPSE & CARDIAC ARREST',
+      ja: '肉体的崩壊と心臓麻痺',
+      zh: '肉体崩溃与急性心搏骤停',
+      ko: '육체적 붕괴 및 심장마비',
+      es: 'COLAPSO FÍSICO Y PARO CARDÍACO',
+      fr: 'EFFONDREMENT PHYSIQUE ET ARRÊT CARDIAQUE',
+      de: 'PHYSISCHER ZUSAMMENBRUCH UND HERZSTILLSTAND',
+      ru: 'ФИЗИЧЕСКИЙ КОЛЛАПС И ОСТАНОВКА СЕРДЦА',
+      it: 'COLLASSO FISICO E ARRESTO CARDIACO',
+      pt: 'COLAPSO FÍSICO E PARADA CARDÍACA',
+      ar: 'انهيار جسدي وتوقف عضلة القلب'
+    },
+    description: {
+      id: 'Jantungmu yang lelah akhirnya menyerah. Vena di pelipismu berdenyut perih saat lantai menara jam yang dingin menyambut wajahmu. Roda gigi raksasa di atas terus berputar tanpa belas kasihan. Penyelidikan ini terkubur bersamamu.',
+      en: 'Your strained heart finally gives out. Cold rain spatters against your face as your body collapses onto the clocktower floorboards. The brass gears churn unfeelingly overhead. The inquiry dies with you.',
+      ja: '酷使された心臓がついに停止する。時計塔の冷たい床板に崩れ落ちるあなたの顔を冷雨が叩く。頭上で巨大な真鍮の歯車が無慈悲に回り続ける中、事件の真相はあなたと共に闇へと葬られた。',
+      zh: '重压之下的衰竭心脏彻底停止跳动。冰冷的寒雨拍打在你的脸颊上，身躯沉重地倒在钟楼湿滑的木板上。头顶上巨大的青铜齿轮依旧冷酷轰鸣，这桩惊天悬案随你一同长眠。',
+      ko: '한계에 달했던 심장이 결국 멎어버립니다. 차가운 빗물이 얼굴을 때리는 가운데 당신의 몸은 시계탑 바닥으로 붕괴합니다. 머리 위의 황동 톱니바퀴는 무자비하게 돌아가고, 진실은 당신과 함께 매장됩니다.',
+      es: 'Tu corazón agotado finalmente se rinde. La lluvia fría golpea tu rostro mientras tu cuerpo colapsa sobre las tablas. Los engranajes de latón siguen girando sin piedad. La investigación muere contigo.',
+      fr: 'Votre cœur à bout de souffle finit par céder. La pluie glaciale cingle votre visage tandis que votre corps s\'effondre sur le plancher. Les engrenages continuent de tourner, indifférents. L\'enquête meurt avec vous.',
+      de: 'Ihr überlastetes Herz gibt endgültig auf. Kaltes Regenwasser klatscht auf Ihr Gesicht, als Sie auf die Dielen stürzen. Die Messingräder mahlen gefühllos weiter. Die Ermittlung stirbt mit Ihnen.',
+      ru: 'Истерзанное сердце замирает. Холодные капли дождя хлещут по лицу, когда вы падаете на дощатый пол башни. Латунные шестерни безучастно продолжают ход. Дело похоронено вместе с вами.',
+      it: 'Il tuo cuore affaticato infine cede. La pioggia gelida sferza il tuo viso mentre crolli sulle assi della torre. Gli ingranaggi continuano a girare incuranti. L\'indagine sprofonda con te.',
+      pt: 'Seu coração exausto finalmente cede. A chuva fria fustiga seu rosto enquanto seu corpo colapsa no assoalho da torre. As engrenagens continuam girando implacáveis. A investigação morre com você.',
+      ar: 'قلبك المنهك يستسلم في النهاية. تصفع قطرات المطر وجهك وأنت تهوي على ألواح برج الساعة الباردة. التروس النحاسية العملاقة تدور بلا رحمة فوقك، وتدفن الحقيقة معك إلى الأبد.'
+    }
+  },
+  psychological: {
+    title: {
+      id: 'KEGILAAN TOTAL & AMNESIA KEJIWAAN',
+      en: 'EXISTENTIAL PSYCHOSIS & HYSTERIA',
+      ja: '実存的恐慌と完全なる精神崩壊',
+      zh: '存在主义狂乱与彻底的精神崩溃',
+      ko: '실존적 광기와 정신적 붕괴',
+      es: 'PSICOSIS EXISTENCIAL Y COLAPSO MENTAL',
+      fr: 'PSYCHOSE EXISTENTIELLE ET EFFONDREMENT',
+      de: 'EXISTENZIELLE PSYCHOSE UND ZUSAMMENBRUCH',
+      ru: 'ЭКЗИСТЕНЦИАЛЬНЫЙ ПСИХОЗ И ПОМЕШАТЕЛЬСТВО',
+      it: 'PSICOSI ESISTENZIALE E CROLLO MENTALE',
+      pt: 'PSICOSE EXISTENCIAL E COLAPSO MENTAL',
+      ar: 'ذهان وجودي حاد وانهيار نفسي تام'
+    },
+    description: {
+      id: 'Suara-suara di kepalamu menjerit serentak, menenggelamkan sisa logikamu dalam keputusasaan yang pekat. Kamu melempar lencanamu ke dalam jurang mesin dan tertawa lepas dalam hujan. Kamu bukan lagi seorang detektif.',
+      en: 'The chorus of intrusive inner voices shrieks in deafening unison, drowning your last shred of reason in delirium. You fling your badge into the churn of gears and wander aimlessly into the rain.',
+      ja: '脳内の内なる声が一斉に悲鳴を上げ、理性の最後の一片を狂気の渦へと沈める。あなたは警察バッジを歯車の狭間へと投げ捨て、冷たい雨の中へと高笑いしながら彷徨い去った。',
+      zh: '潜意识深处的无数臆语尖叫轰鸣，将你仅存的一丝理性彻底淹没在可悲的谵妄中。你狂笑着将警徽掷入轰鸣的齿轮裂隙，漫无目的地遁入风雨之中。',
+      ko: '내면의 목소리들이 일제히 귀청이 찢어지도록 비명을 지르며, 마지막 남은 이성의 끈을 광기의 심연으로 밀어 넣습니다. 당신은 경찰 배지를 톱니바퀴 틈새로 던져버리고 빗속으로 실성한 듯 사라집니다.',
+      es: 'El coro de voces interiores grita al unísono, ahogando tu último ápice de razón en el delirio. Arrojas tu placa a los engranajes y te alejas riendo bajo la lluvia.',
+      fr: 'Le chœur de vos voix intérieures hurle à l\'unisson, noyant votre dernier souffle de raison dans le délire. Vous jetez votre insigne dans les rouages et vous perdez sous la pluie.',
+      de: 'Der Chor Ihrer inneren Stimmen kreischt ohrenbetäubend auf und ertränkt jeden Rest von Vernunft im Delirium. Sie schleudern Ihre Marke ins Getriebe und taumeln lachend in den Regen.',
+      ru: 'Хор внутренних голосов взрывается оглушительным визгом, топя последние крупицы разума в безумии. Вы швыряете свой жетон в шестерни и бесцельно уходите в дождь.',
+      it: 'Il coro di voci interiori esplode in un urlo assordante, annegando l\'ultimo barlume di ragione nel delirio. Getti il distintivo tra gli ingranaggi e svanisci ridendo nella pioggia.',
+      pt: 'O coro de vozes interiores berra em uníssono, afogando sua última réstia de sanidade no delírio. Você atira seu distintivo nas engrenagens e caminha sem rumo na chuva.',
+      ar: 'تتعالى أصواتك الباطنية في صرخة مدوية تصم الآذان، مغرقةً آخر ذرة من عقلك في دوامة الهذيان. تقذف شارتك بين تروس الماكينات وتمضي ضاحكًا بهستيريا تحت وطأة المطر.'
+    }
+  },
+  arrest: {
+    title: {
+      id: 'PENANGKAPAN & PEMECATAN MEMALUKAN',
+      en: 'DISGRACED ARREST & IMMEDIATE DISMISSAL',
+      ja: '不名誉な逮捕と即時罷免',
+      zh: '当场逮捕与革职查办',
+      ko: '불명예 체포 및 즉각 파면',
+      es: 'ARRESTO VERGONZOSO Y DESTITUCIÓN INMEDIATA',
+      fr: 'ARRESTATION DÉSHONORANTE ET DESTITUTION',
+      de: 'SCHMÄHLICHE VERHAFTUNG UND SUSPENDIERUNG',
+      ru: 'ПОЗОРНЫЙ АРЕСТ И НЕМЕДЛЕННОЕ УВОЛЬНЕНИЕ',
+      it: 'ARRESTO IGNOMINIOSO E RIMOZIONE IMMEDIATA',
+      pt: 'PRISÃO DESONROSA E DEMISSÃO IMEDIATA',
+      ar: 'اعتقال مخزٍ وعزل فوري من الخدمة'
+    },
+    description: {
+      id: 'Menuduh tanpa bukti fisik adalah bunuh diri bagi seorang perwira hukum. Inspektur Graves menodongkan pistol dinasnya dan memborgolmu di depan Madame Vance. Kariermu berakhir dalam aib.',
+      en: 'Accusing a high-profile citizen without material proof was career suicide. Inspector Graves draws his revolver, snaps cold manacles around your wrists, and marches you down in handcuffs.',
+      ja: '物証なきまま有力者を告発したのは致命的な過ちだった。グレイヴス警部は拳銃を抜き、未亡人の前であなたを手錠で拘束した。あなたの刑事としての経歴は汚名と共に終わった。',
+      zh: '在缺乏确凿物证的情况下鲁莽指控显赫市民无异于自取灭亡。格雷夫斯警探拔出警用左轮手枪，当众将你铐上带走，你的探长生涯在耻辱中彻底断送。',
+      ko: '물증 없는 섣부른 추궁은 치명적인 자멸이었습니다. 그레이브스 형사는 권총을 겨누며 비비안 부인 앞에서 당신에게 수갑을 채웠고, 당신의 수사관 경력은 치욕 속에 끝장났습니다.',
+      es: 'Acusar a una ciudadana influyente sin pruebas fue un suicidio profesional. El inspector Graves saca su revólver y te pone las esposas en el acto.',
+      fr: 'Accuser sans preuve matérielle était un suicide professionnel. L\'inspecteur Graves braque son revolver et vous passe les fers sur-le-champ.',
+      de: 'Ohne handfeste Beweise anzuklagen war fataler Leichtsinn. Inspektor Graves zieht die Waffe, legt Ihnen Handschellen an und führt Sie in Schande ab.',
+      ru: 'Обвинение без улик оказалось фатальным. Инспектор Грейвс взводит курок револьвера и защелкивает на ваших запястьях наручники. Ваша карьера растоптана.',
+      it: 'Accusare senza prove è stato un suicidio professionale. L\'ispettore Graves estrae il revolver e ti stringe le manette ai polsi seduta stante.',
+      pt: 'Acusar sem provas materiais foi um suicídio profissional. O inspetor Graves saca o revólver e coloca algemas em você na mesma hora.',
+      ar: 'توجيه الاتهام دون أدلة ملموسة كان انتحارًا مهنيًا صريحًا. سحب المفتش غريفز مسدسه وكبل معصميك بالأصفاد مقتادًا إياك في خزي وعار.'
+    }
+  }
+};
+
+// Clues Translations
+const CLUES_I18N = (typeof CLUES_I18N_FULL !== 'undefined') ? CLUES_I18N_FULL : {};
+
+// Dialogue Nodes Localizations
+const DIALOGUE_I18N = (typeof DIALOGUE_I18N_FULL !== 'undefined') ? DIALOGUE_I18N_FULL : {};
+
+// Helper to get fully localized dialogue node
+function getLocalizedDialogueNode(nodeId, lang = 'en', baseNode) {
+  if (!baseNode) return null;
+  const currentLang = UI_TRANSLATIONS[lang] ? lang : 'en';
+
+  const node = {
+    ...baseNode,
+    voices: baseNode.voices ? baseNode.voices.map(v => ({ ...v })) : [],
+    options: baseNode.options ? baseNode.options.map(o => ({ ...o })) : []
+  };
+
+  const nodeTrans = DIALOGUE_I18N[nodeId];
+  if (nodeTrans) {
+    if (nodeTrans.speaker) {
+      node.speaker = nodeTrans.speaker[currentLang] || nodeTrans.speaker['en'] || nodeTrans.speaker['id'] || baseNode.speaker;
+    }
+    if (nodeTrans.text) {
+      node.text = nodeTrans.text[currentLang] || nodeTrans.text['en'] || nodeTrans.text['id'] || baseNode.text;
+    }
+    if (nodeTrans.voices && Array.isArray(nodeTrans.voices)) {
+      nodeTrans.voices.forEach((vTrans, idx) => {
+        if (node.voices[idx]) {
+          if (vTrans.voice) node.voices[idx].voice = vTrans.voice[currentLang] || vTrans.voice['en'] || vTrans.voice['id'] || node.voices[idx].voice;
+          if (vTrans.badge) node.voices[idx].badge = vTrans.badge[currentLang] || vTrans.badge['en'] || vTrans.badge['id'] || node.voices[idx].badge;
+          if (vTrans.text) node.voices[idx].text = vTrans.text[currentLang] || vTrans.text['en'] || vTrans.text['id'] || node.voices[idx].text;
+        }
+      });
+    }
+    if (nodeTrans.options && Array.isArray(nodeTrans.options)) {
+      node.options.forEach((opt, idx) => {
+        let oTrans = null;
+        if (opt.id) {
+          oTrans = nodeTrans.options.find(o => o && o.id === opt.id);
+        }
+        if (!oTrans) {
+          oTrans = nodeTrans.options[idx];
+        }
+        if (oTrans) {
+          const transText = oTrans[currentLang] || oTrans['en'] || oTrans['id'];
+          if (transText) {
+            opt.text = transText;
+          }
+        }
+      });
+    }
+  }
+
+  return node;
+}
+
+function tClue(clueId, field = 'title', lang = 'en') {
+  const clue = CLUES_I18N[clueId];
+  if (!clue) return null;
+  const currentLang = clue[field] && clue[field][lang] ? lang : 'en';
+  return clue[field][currentLang] || clue[field]['en'] || clue[field]['id'] || '';
+}
+
+function tGameOver(type, field = 'title', lang = 'en') {
+  const g = GAMEOVER_I18N[type] || GAMEOVER_I18N['physical'];
+  const currentLang = g[field] && g[field][lang] ? lang : 'en';
+  return g[field][currentLang] || g[field]['en'] || g[field]['id'] || '';
+}
+
+// Translation lookup helper
+function t(key, lang = 'en') {
+  const currentLang = UI_TRANSLATIONS[lang] ? lang : 'en';
+  if (UI_TRANSLATIONS[currentLang] && UI_TRANSLATIONS[currentLang][key]) {
+    return UI_TRANSLATIONS[currentLang][key];
+  }
+  if (UI_TRANSLATIONS['en'] && UI_TRANSLATIONS['en'][key]) {
+    return UI_TRANSLATIONS['en'][key];
+  }
+  if (UI_TRANSLATIONS['id'] && UI_TRANSLATIONS['id'][key]) {
+    return UI_TRANSLATIONS['id'][key];
+  }
+  return key;
+}
+
+function tItem(itemId, field = 'name', lang = 'en') {
+  const item = ITEMS_I18N[itemId];
+  if (!item) return null;
+  const currentLang = item[field] && item[field][lang] ? lang : 'en';
+  return item[field][currentLang] || item[field]['en'] || item[field]['id'] || '';
+}
+
+function tPoi(poiId, field = 'title', lang = 'en') {
+  const poi = (typeof NEW_POIS_I18N !== 'undefined' && NEW_POIS_I18N[poiId]) || POI_I18N[poiId];
+  if (!poi) return null;
+  const currentLang = poi[field] && poi[field][lang] ? lang : 'en';
+  return poi[field][currentLang] || poi[field]['en'] || poi[field]['id'] || '';
+}
+
+
+// --- END: i18n.js ---
 
 // --- BEGIN: thoughts.js ---
 // Aenigma - Thought Cabinet Database ("Lemari Pikiran")
@@ -425,11 +5568,31 @@ const CASE_DATA = {
       id: 'poi_floorboard',
       title: "Concealed Floorboard Safe",
       icon: '🗝️',
-      x: 36,
-      y: 80,
+      x: 38,
+      y: 73,
       image: 'assets/poi_safe.jpg',
       description: "A loose plank under discarded grease rags and bullet casings. Faint scratches mark the brass rivets.",
       initialNode: 'examine_safe_start'
+    },
+    {
+      id: 'poi_gantry_lantern',
+      title: "Upper Gantry & Alchemical Lantern",
+      icon: '🏮',
+      x: 26,
+      y: 18,
+      image: 'assets/poi_balcony.jpg',
+      description: "A narrow iron grating over the gear abyss. Broken glass and alchemical soot mark where a clandestine visitor waited.",
+      initialNode: 'examine_gantry_lantern'
+    },
+    {
+      id: 'poi_clock_chime_bell',
+      title: "Colossal Bronze Bell & Chime Gearing",
+      icon: '🔔',
+      x: 84,
+      y: 16,
+      image: 'assets/poi_pendulum.jpg',
+      description: "The eight-ton bell that tolls for District 7. A fine steel wire is wrapped through the clapper linkage down into the pendulum escapement.",
+      initialNode: 'examine_chime_bell'
     }
   ],
 
@@ -450,10 +5613,13 @@ const CASE_DATA = {
       ],
       options: [
         {
+          id: 'graves_opt_preliminary',
           text: '"What is your preliminary assessment, Graves?"',
           nextNode: 'graves_assessment'
         },
         {
+          id: 'graves_opt_rhetoric',
+          condition: (state) => !state.hasClue('clue_syndicate_bounty'),
           text: '[RHETORIC - Medium 10] "You seem in an awful hurry to file this report, Graves. Who called you first?"',
           check: {
             checkId: 'graves_rhetoric_press',
@@ -465,10 +5631,20 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'graves_opt_conspiracy',
+          condition: (state) => state.hasClue('clue_syndicate_bounty') && !state.hasClue('clue_perpetuum_ledger'),
+          text: '"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is."',
+          nextNode: 'graves_ledger_hunt'
+        },
+        {
+          id: 'graves_opt_cigarette',
+          once: true,
+          condition: (state) => !state.hasItem('item_cigarettes'),
           text: '"I need a cigarette before my synapses completely disconnect."',
           nextNode: 'graves_cigarette'
         },
         {
+          id: 'graves_opt_leave',
           text: '[Leave dialogue]',
           action: 'close_dialogue'
         }
@@ -493,7 +5669,7 @@ const CASE_DATA = {
           nextNode: 'graves_debate_wound'
         },
         {
-          text: '"Who was the last person to see him alive?"',
+          text: '"Who was the last person to see her alive?"',
           nextNode: 'graves_last_seen'
         },
         {
@@ -512,7 +5688,7 @@ const CASE_DATA = {
           voice: 'Elysia',
           color: 'var(--color-psyche)',
           badge: 'ELYSIA [Psyche]',
-          text: "Greed radiates off him like heat from a kiln. But he didn't kill Vance—he arrived too late and found him already cold."
+          text: "Greed radiates off him like heat from a kiln. But he didn't kill Vance—he arrived too late and found her already cold."
         }
       ],
       action: (state) => {
@@ -574,7 +5750,7 @@ const CASE_DATA = {
     graves_debate_wound: {
       speaker: 'Inspector Graves',
       avatar: '🕵️',
-      text: "Graves scowls, waving his lantern over the corpse. 'Maybe he fell from the upper gantry! Look, Detective, until you show me a second set of footprints or a weapon with someone else's fingerprints, the Captain wants this stamped as accidental death.'",
+      text: "Graves scowls, waving his lantern over the corpse. 'Maybe she fell from the upper gantry! Look, Detective, until you show me a second set of footprints or a weapon with someone else's fingerprints, the Captain wants this stamped as accidental death.'",
       options: [
         {
           text: '"I will find the evidence. Just stay out of my way."',
@@ -628,6 +5804,8 @@ const CASE_DATA = {
       ],
       options: [
         {
+          id: 'pendulum_opt_pry_hand',
+          condition: (state) => !state.hasClue('clue_poison_needle'),
           text: '[PERCEPTION - Challenging 12] Pry open her frozen right hand to see what she clenched before dying.',
           check: {
             checkId: 'check_pry_hand',
@@ -639,6 +5817,8 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'pendulum_opt_esoterica',
+          condition: (state) => !state.hasClue('clue_meridian_seal'),
           text: '[ESOTERICA - Medium 10] Study the strange geometric incision carved into her collarbone.',
           check: {
             checkId: 'check_esoterica_rune',
@@ -650,8 +5830,31 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'pendulum_opt_gears',
+          once: true,
+          text: '[DANGEROUS] Reach deep into the churning escapement gears to look for dropped evidence.',
+          nextNode: 'pendulum_gear_crush'
+        },
+        {
+          id: 'pendulum_opt_stepback',
           text: '[Step back from the corpse]',
           action: 'close_dialogue'
+        }
+      ]
+    },
+
+    pendulum_gear_crush: {
+      speaker: 'Mechanical Horror',
+      avatar: '⚙️',
+      text: "The massive bronze teeth of the main escapement catch your trenchcoat sleeve! The unstoppable torque drags your arm into the bevel gears before you tear yourself free with a sickening crunch (-2 Health, -1 Morale)!",
+      action: (state) => {
+        state.damageHealth(2);
+        state.damageMorale(1);
+      },
+      options: [
+        {
+          text: '"Aaaargh! The clockwork nearly swallowed my arm!"',
+          nextNode: 'examine_pendulum_start'
         }
       ]
     },
@@ -697,18 +5900,19 @@ const CASE_DATA = {
     },
 
     pendulum_pry_fail: {
-      speaker: 'Forensic Attempt',
+      speaker: 'Forensic Failure',
       avatar: '⏳',
-      text: "The cadaveric spasm is like cast iron. As you force her fingers, the brittle bone snaps, and whatever was inside falls through the floor grating into the dark oil tank below. You hear a dull splash.",
+      text: "The cadaveric spasm is like cast iron. As you force her fingers, a concealed needle pricks your index finger, burning your flesh with neurotoxin (-2 Health, -1 Morale)!",
       voices: [
         {
           voice: 'Carnal',
           color: 'var(--color-physique)',
           badge: 'CARNAL [Physique]',
-          text: "Clumsy. Your hands are shaking from alcohol withdrawal. You lost the physical item, but you caught a glimpse: it looked like an ivory figurine."
+          text: "Clumsy! Your alcohol-trembled fingers slipped onto the needle. The venom spreads like liquid fire through your veins."
         }
       ],
       action: (state) => {
+        state.damageHealth(2);
         state.damageMorale(1);
       },
       options: [
@@ -765,6 +5969,8 @@ const CASE_DATA = {
       ],
       options: [
         {
+          id: 'watch_opt_interfacing',
+          condition: (state) => !state.hasClue('clue_watch_code'),
           text: '[INTERFACING - Medium 11] Pop open the back casing with your thumbnail to examine the inner movement.',
           check: {
             checkId: 'check_watch_open',
@@ -776,6 +5982,9 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'watch_opt_take',
+          once: true,
+          condition: (state) => !state.hasItem('broken_pocketwatch'),
           text: '[Put the watch in evidence bag]',
           action: (state) => {
             state.addItem({
@@ -790,6 +5999,7 @@ const CASE_DATA = {
           nextNode: 'examine_watch_done'
         },
         {
+          id: 'watch_opt_stepback',
           text: '[Step back]',
           action: 'close_dialogue'
         }
@@ -857,6 +6067,8 @@ const CASE_DATA = {
       ],
       options: [
         {
+          id: 'balcony_opt_perception',
+          condition: (state) => !state.hasClue('clue_velvet_cyanide'),
           text: '[PERCEPTION - Easy 8] Search the wet flagstones for trace evidence.',
           check: {
             checkId: 'check_balcony_search',
@@ -868,6 +6080,8 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'balcony_opt_fog',
+          once: true,
           text: 'Look over the railing into the fog.',
           action: (state) => {
             state.unlockThought('metaphysics_of_rain');
@@ -875,6 +6089,7 @@ const CASE_DATA = {
           nextNode: 'balcony_fog_reflection'
         },
         {
+          id: 'balcony_opt_return',
           text: '[Return inside]',
           action: 'close_dialogue'
         }
@@ -939,11 +6154,14 @@ const CASE_DATA = {
       text: "Under three layers of clock-oil soaked pine lies a heavy steel strongbox with three concentric brass rotary dials. It looks reinforced with lead lining.",
       options: [
         {
+          id: 'safe_opt_code',
           text: '[If combination known (7-3-12)] Enter the code found inside Aurelia\'s watch.',
-          condition: (state) => state.clues.some(c => c.id === 'clue_watch_code'),
+          condition: (state) => state.hasClue('clue_watch_code') && !state.hasClue('clue_perpetuum_ledger'),
           nextNode: 'safe_open_code'
         },
         {
+          id: 'safe_opt_logic',
+          condition: (state) => !state.hasClue('clue_perpetuum_ledger'),
           text: '[LOGIC - Hard 13] Attempt to deduce the tumbler alignment by acoustic vibration.',
           check: {
             checkId: 'check_safe_logic',
@@ -955,7 +6173,30 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'safe_opt_brute',
+          condition: (state) => !state.hasClue('clue_perpetuum_ledger'),
+          text: '[BRUTE FORCE - Dangerous] Try to pry open the heavy iron lid with a crowbar.',
+          nextNode: 'safe_brute_trap'
+        },
+        {
+          id: 'safe_opt_leave',
           text: '[Leave safe untouched]',
+          action: 'close_dialogue'
+        }
+      ]
+    },
+
+    safe_brute_trap: {
+      speaker: 'Lethal Counter-Measure',
+      avatar: '💥',
+      text: "As your iron crowbar forces the seam, a hidden spring-loaded razor-clamp snaps shut across your forearms with bone-splintering force! High-pressure sulfur fumes burst into your face (-2 Health, -1 Morale)!",
+      action: (state) => {
+        state.damageHealth(2);
+        state.damageMorale(1);
+      },
+      options: [
+        {
+          text: '"Aaargh! The safe was rigged with a lethal booby trap!"',
           action: 'close_dialogue'
         }
       ]
@@ -998,11 +6239,12 @@ const CASE_DATA = {
     },
 
     safe_logic_fail: {
-      speaker: 'Lockpick Attempt',
+      speaker: 'Lockpick Disaster',
       avatar: '🗝️',
-      text: "The internal tumblers jam with a harsh screech. An internal anti-tamper glass vial cracks, releasing a foul sulfur gas that burns your nostrils.",
+      text: "The internal tumblers jam with a harsh screech. An internal anti-tamper glass vial cracks, releasing foul sulfur gas and a spring trap snaps on your hands (-2 Health, -1 Morale)!",
       action: (state) => {
-        state.damageHealth(1);
+        state.damageHealth(2);
+        state.damageMorale(1);
       },
       options: [
         {
@@ -1027,10 +6269,14 @@ const CASE_DATA = {
       ],
       options: [
         {
+          id: 'madame_opt_alibi',
+          once: true,
           text: '"Where were you at 03:42 AM when the tower clock stopped?"',
           nextNode: 'madame_alibi'
         },
         {
+          id: 'madame_opt_empathy',
+          condition: (state) => !state.hasClue('clue_madame_motive'),
           text: '[EMPATHY - Medium 10] "You did not love her, did you, Madame?"',
           check: {
             checkId: 'check_madame_empathy',
@@ -1042,8 +6288,9 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'madame_opt_confession_red',
+          condition: (state) => (state.hasClue('clue_velvet_cyanide') || state.hasClue('clue_poison_needle')) && !state.flags.case_solved,
           text: '[RED CHECK] [AUTHORITY - Challenging 13] "Enough theatrics, Vivienne. We found the poisoned chess queen and the torn velvet from your coat on the balcony. You murdered her."',
-          condition: (state) => state.clues.some(c => c.id === 'clue_velvet_cyanide') || state.clues.some(c => c.id === 'clue_poison_needle'),
           check: {
             checkId: 'check_madame_confession_red',
             type: 'red',
@@ -1054,7 +6301,29 @@ const CASE_DATA = {
           }
         },
         {
+          id: 'madame_opt_rash_accusation',
+          condition: (state) => !state.flags.case_solved,
+          text: '[RASH ACCUSATION - Dangerous] "I don\'t need evidence, Vivienne! You killed Aurelia and I am arresting you right now!"',
+          nextNode: 'madame_premature_arrest_fail'
+        },
+        {
+          id: 'madame_opt_stepaway',
           text: '[Step away]',
+          action: 'close_dialogue'
+        }
+      ]
+    },
+
+    madame_premature_arrest_fail: {
+      speaker: 'Catastrophic Blunder',
+      avatar: '🚨',
+      text: "Inspector Graves steps in front of you, drawing his service revolver. 'That is enough, Detective! You have no proof, you reek of alcohol, and you are terrorizing a citizen under police protection. Hand over your badge. You are under arrest for extortion and gross misconduct!'",
+      action: (state) => {
+        state.triggerGameOver('arrest', 'Disgraced Arrest & Dismissal', 'You made a reckless accusation without proof. Inspector Graves arrested you on the spot.');
+      },
+      options: [
+        {
+          text: '[Yield to the handcuffs]',
           action: 'close_dialogue'
         }
       ]
@@ -1136,12 +6405,19 @@ const CASE_DATA = {
       ],
       options: [
         {
+          id: 'confession_opt_arrest',
           text: '[DELIVER FINAL JUDGMENT: Arrest Madame Vance for murder]',
           nextNode: 'ending_arrest'
         },
         {
+          id: 'confession_opt_coverup',
           text: '[DELIVER FINAL JUDGMENT: Hide the Perpetuum Ledger and file it as an accidental death]',
           nextNode: 'ending_coverup'
+        },
+        {
+          id: 'confession_opt_syndicate_bust',
+          text: '[DELIVER REVOLUTIONARY JUDGMENT: Hand the Perpetuum Ledger to the Worker\'s Union press and expose the Syndicate!]',
+          nextNode: 'ending_syndicate_bust'
         }
       ]
     },
@@ -1174,6 +6450,81 @@ const CASE_DATA = {
       ]
     },
 
+    
+    examine_gantry_lantern: {
+      speaker: 'Alchemical Lantern Catwalk',
+      avatar: '🏮',
+      text: "A cold draft rushes through the high iron grating. Shards of amber chemical glass crunch beneath your boot. Etched into a broken neck piece is the Grand Syndicate's mercury serpent seal.",
+      voices: [
+        {
+          voice: 'Ratio',
+          color: 'var(--color-intellect)',
+          badge: 'RATIO [Intellect]',
+          text: "This confirms a clandestine drop hours before the death. The Syndicate delivered the chemical precursors directly to this tower."
+        }
+      ],
+      action: (state) => {
+        state.addClue({
+          id: 'clue_shattered_reagents',
+          title: 'Shattered Reagents & Syndicate Crest',
+          desc: 'Discovered on the lantern catwalk. Chemical glass vials bearing the Grand Syndicate mercury seal, confirming delivery hours before death.'
+        });
+        state.gainXp(25);
+      },
+      options: [
+        {
+          id: 'lantern_opt_back',
+          text: '[Step back down to the main floor]',
+          action: 'close_dialogue'
+        }
+      ]
+    },
+
+    examine_chime_bell: {
+      speaker: 'Colossal Bell & Acoustic Escapement',
+      avatar: '🔔',
+      text: "You look up into the cavernous rim of the eight-ton bronze bell. Tied to the heavy iron clapper is a taut piano wire running through tiny brass pulleys down to the pendulum latch.",
+      voices: [
+        {
+          voice: 'Reflex',
+          color: 'var(--color-motorics)',
+          badge: 'REFLEX [Motorics]',
+          text: "Ingenious acoustics. When the clock struck 03:42, the vibration and swing of the clapper yanked the tripwire, releasing the fatal counterweight automatically."
+        }
+      ],
+      action: (state) => {
+        state.addClue({
+          id: 'clue_acoustic_tripwire',
+          title: 'Acoustic Resonance Tripwire Mechanism',
+          desc: 'Fastened inside the Saint Irene bronze bell. It explains how the pendulum was mechanically tripped precisely on the 42nd minute stroke.'
+        });
+        state.gainXp(25);
+      },
+      options: [
+        {
+          id: 'chime_opt_back',
+          text: '[Step down from the bell housing]',
+          action: 'close_dialogue'
+        }
+      ]
+    },
+
+    ending_syndicate_bust: {
+      speaker: 'The Revolutionary Firebrand',
+      avatar: '🔥',
+      text: "You refuse Graves's bribes and Vivienne's fatalism. At dawn, you hand the Perpetuum Ledger and the Syndicate bribery slips directly to the clandestine printing press of the District 7 Worker's Union. By midday, 50,000 gazettes hit the cobblestones. The corrupt precinct captain is ousted, the cartel's factories are paralyzed by general strike, and the truth of Aurelia Vance becomes an indelible spark of liberation.",
+      action: (state) => {
+        state.flags.case_solved = true;
+        state.flags.ending_type = 'syndicate_bust';
+      },
+      options: [
+        {
+          text: '[CASE CONCLUDED: View Final Case Dossier]',
+          action: 'trigger_victory'
+        }
+      ]
+    },
+
     ending_coverup: {
       speaker: 'Case Concluded: The Sovereign Bureaucrat',
       avatar: '🌫️',
@@ -1194,10 +6545,12 @@ const CASE_DATA = {
 // Aenigma Central Game State & Reactive Store
 
 const STORAGE_KEY = 'aenigma_detective_save_v1';
+const LANG_STORAGE_KEY = 'aenigma_language_preference';
 
 class GameState {
   constructor() {
     this.listeners = [];
+    this.currentLanguage = localStorage.getItem(LANG_STORAGE_KEY) || 'en';
     this.reset();
   }
 
@@ -1259,9 +6612,11 @@ class GameState {
         id: 'detective_badge',
         name: 'Tarnished Precinct 4 Badge',
         type: 'tool',
-        description: 'Bent silver badge with the imperial scales scratched off. Still commands obedience in desperate alleys.',
+        description: 'Bent silver badge with the imperial scales scratched off. Flashing it commands obedience in desperate alleys.',
         icon: '🛡️',
-        bonus: { authority: 1 }
+        bonus: { authority: 1 },
+        isUsable: true,
+        useLabel: 'flash'
       },
       {
         id: 'astra_cigarettes',
@@ -1270,7 +6625,20 @@ class GameState {
         description: 'Cheap, pungent sulfur-cured tobacco from the southern docks. Calms the frayed nerves of an insomniac.',
         icon: '🚬',
         uses: 3,
-        effect: { morale: +1, endurance: -1 }
+        effect: { morale: 2, health: -1 },
+        isUsable: true,
+        useLabel: 'smoke'
+      },
+      {
+        id: 'medicinal_flask',
+        name: 'Medicinal Laudanum Tincture',
+        type: 'consumable',
+        description: 'Dark amber sedative liquid. Numbs severe physical trauma and sharpens occult perception.',
+        icon: '🧪',
+        uses: 2,
+        effect: { health: 2, morale: 0 },
+        isUsable: true,
+        useLabel: 'drink'
       },
       {
         id: 'magnifying_loupe',
@@ -1278,7 +6646,9 @@ class GameState {
         type: 'tool',
         description: 'Brass loupe with triple-ground achromatic lens. Exposes micro-scratches and hidden alchemical hallmarks.',
         icon: '🔍',
-        bonus: { perception: 1, interfacing: 1 }
+        bonus: { perception: 2, interfacing: 1 },
+        isUsable: true,
+        useLabel: 'equip'
       }
     ];
 
@@ -1301,11 +6671,43 @@ class GameState {
       scene_examined_ledger: false,
       graves_interrogated: false,
       madame_interrogated: false,
-      case_solved: false
+      case_solved: false,
+      badge_flashed: false,
+      corpse_micro_examined: false
     };
 
     this.resolvedChecks = {}; // checkId: { status: 'passed'|'failed', timestamp }
+    this.visitedChoices = {}; // choiceKey: timestamp
     this.dialogueHistory = [];
+  }
+
+  markChoiceVisited(key) {
+    if (!key) return;
+    this.visitedChoices[key] = Date.now();
+    this.save();
+    this.notify('choice_visited', key);
+  }
+
+  isChoiceVisited(key) {
+    if (!key) return false;
+    return !!this.visitedChoices[key];
+  }
+
+  getProgressPercentage() {
+    const cluesCount = this.clues ? this.clues.length : 0;
+    const thoughtsDone = (this.thoughtCabinet && Array.isArray(this.thoughtCabinet.internalized)) ? this.thoughtCabinet.internalized.length : 0;
+    const checksPassed = Object.values(this.resolvedChecks || {}).filter(c => c && c.status === 'passed').length;
+    const choicesCount = Object.keys(this.visitedChoices || {}).length;
+
+    // Progress scale 0-100%
+    const score = (cluesCount * 7) + (checksPassed * 4) + (thoughtsDone * 4) + Math.round(choicesCount * 0.8);
+    return Math.min(100, Math.max(5, Math.round(score)));
+  }
+
+  setLanguage(lang) {
+    this.currentLanguage = lang;
+    localStorage.setItem(LANG_STORAGE_KEY, lang);
+    this.notify('language_changed', lang);
   }
 
   // Subscribe to changes
@@ -1336,37 +6738,70 @@ class GameState {
     this.notify('time_advanced', this.time);
   }
 
-  // Damage & Healing
+  // Damage & Healing with dynamic horror heartbeat
   damageHealth(amount = 1) {
     this.detective.health = Math.max(0, this.detective.health - amount);
-    this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth });
+    this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth, delta: -amount });
+    this.checkSurvivalState();
     if (this.detective.health <= 0) {
-      this.notify('game_over', { reason: 'Cardiac Arrest / Physical Collapse' });
+      this.triggerGameOver('physical', 'Cardiac Arrest / Physical Collapse');
     }
   }
 
   healHealth(amount = 1) {
     this.detective.health = Math.min(this.detective.maxHealth, this.detective.health + amount);
-    this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth });
+    this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth, delta: amount });
+    this.checkSurvivalState();
   }
 
   damageMorale(amount = 1) {
     this.detective.morale = Math.max(0, this.detective.morale - amount);
-    this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale });
+    this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale, delta: -amount });
+    this.checkSurvivalState();
     if (this.detective.morale <= 0) {
-      this.notify('game_over', { reason: 'Complete Existential Despair & Resignation' });
+      this.triggerGameOver('psychological', 'Existential Psychosis & Breakdown');
     }
   }
 
   healMorale(amount = 1) {
     this.detective.morale = Math.min(this.detective.maxMorale, this.detective.morale + amount);
-    this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale });
+    this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale, delta: amount });
+    this.checkSurvivalState();
+  }
+
+  checkSurvivalState() {
+    const isCritical = this.detective.health <= 2 || this.detective.morale <= 2;
+    if (typeof audio !== 'undefined' && audio && audio.setHeartbeatActive) {
+      audio.setHeartbeatActive(isCritical);
+    }
+    if (document.body) {
+      if (isCritical) {
+        document.body.classList.add('in-danger');
+      } else {
+        document.body.classList.remove('in-danger');
+      }
+    }
+  }
+
+  triggerGameOver(type = 'physical', reason = 'Fatal Failure', customDescription = null) {
+    if (typeof audio !== 'undefined' && audio && audio.setHeartbeatActive) {
+      audio.setHeartbeatActive(false);
+    }
+    this.notify('game_over', {
+      type,
+      reason,
+      description: customDescription
+    });
   }
 
   // Get total effective skill including signature, equipment & internalized thoughts
   getSkillTotal(skillName) {
     let base = this.detective.skills[skillName] || 1;
     if (this.detective.signatureSkill === skillName) {
+      base += 2;
+    }
+    // Temporary buffs
+    if (skillName === 'authority' && this.flags.badge_flashed) {
       base += 2;
     }
     // Inventory equipment bonuses
@@ -1399,6 +6834,10 @@ class GameState {
   // Inventory actions
   addItem(item) {
     if (!this.inventory.find(i => i.id === item.id)) {
+      // Ensure usability flags
+      if (['astra_cigarettes', 'medicinal_flask', 'broken_pocketwatch', 'magnifying_loupe', 'perpetuum_ledger', 'poison_chess_queen', 'detective_badge'].includes(item.id)) {
+        item.isUsable = true;
+      }
       this.inventory.push(item);
       this.notify('item_added', item);
     }
@@ -1408,14 +6847,104 @@ class GameState {
     const item = this.inventory.find(i => i.id === itemId);
     if (!item) return;
 
-    if (item.type === 'consumable') {
-      if (item.effect.health) this.healHealth(item.effect.health);
-      if (item.effect.morale) this.healMorale(item.effect.morale);
+    if (itemId === 'astra_cigarettes') {
+      // Light cigarette: +2 Morale, -1 Health
+      if (typeof audio !== 'undefined' && audio.playCigaretteSmoke) audio.playCigaretteSmoke();
+      this.healMorale(2);
+      this.damageHealth(1);
       item.uses = (item.uses || 1) - 1;
       if (item.uses <= 0) {
         this.inventory = this.inventory.filter(i => i.id !== itemId);
       }
-      this.notify('item_used', item);
+      this.notify('item_used', {
+        item,
+        msgId: 'smoke_puff',
+        desc: 'Asap belerang meredakan kepanikan saraf (+2 Kewarasan, -1 Daya Tahan).'
+      });
+      this.unlockThought('nicotine_shroud');
+
+    } else if (itemId === 'medicinal_flask') {
+      // Drink laudanum: +2 Health, numbs trauma
+      if (typeof audio !== 'undefined' && audio.playMedicineDrink) audio.playMedicineDrink();
+      this.healHealth(2);
+      this.detective.skills.esoterica = (this.detective.skills.esoterica || 3) + 1;
+      item.uses = (item.uses || 1) - 1;
+      if (item.uses <= 0) {
+        this.inventory = this.inventory.filter(i => i.id !== itemId);
+      }
+      this.notify('item_used', {
+        item,
+        msgId: 'laudanum_drink',
+        desc: 'Tinktur laudanum menumpulkan rasa sakit fisik (+2 Daya Tahan, +1 Esoterika).'
+      });
+
+    } else if (itemId === 'broken_pocketwatch') {
+      // Inspect watch movement: reveals safe cipher "7-3-12"
+      if (typeof audio !== 'undefined' && audio.playWatchInspect) audio.playWatchInspect();
+      this.addClue({
+        id: 'clue_watch_code',
+        title: 'Floorboard Safe Combination (7-3-12)',
+        desc: 'The victim inscribed the safe code inside her watch balance cock, linking it to Madame Vivienne Vance.'
+      });
+      this.notify('item_used', {
+        item,
+        msgId: 'watch_gears',
+        desc: 'Mekanisme jam terbuka! Ukiran sandi brankas terungkap: "7 - 3 - 12".'
+      });
+
+    } else if (itemId === 'magnifying_loupe') {
+      // Equip loupe: boosts perception and inspects victim's neck
+      if (typeof audio !== 'undefined' && audio.playUiClick) audio.playUiClick();
+      this.flags.corpse_micro_examined = true;
+      this.addClue({
+        id: 'clue_needle_puncture',
+        title: 'Microscopic Cyanide Puncture',
+        desc: 'Precision magnification reveals a tiny blue puncture wound on Aurelia\'s neck, confirming lethal injection before the fall.'
+      });
+      this.notify('item_used', {
+        item,
+        msgId: 'loupe_equipped',
+        desc: 'Lensa presisi terpasang! Terungkap luka tusuk jarum mikroskopis beracun di leher korban.'
+      });
+
+    } else if (itemId === 'perpetuum_ledger') {
+      // Read ledger: reveals Syndicate payoffs
+      if (typeof audio !== 'undefined' && audio.playBookRead) audio.playBookRead();
+      this.addClue({
+        id: 'clue_syndicate_bribe',
+        title: 'Syndicate Payoff Ledger',
+        desc: 'Records prove Vivienne Vance accepted 50,000 guilders to deliver Aurelia\'s delay-detonation blueprints.'
+      });
+      this.gainXP(50);
+      this.notify('item_used', {
+        item,
+        msgId: 'ledger_read',
+        desc: 'Buku besar terbaca! Catatan suap rahasia Sindikat kepada Vivienne terungkap (+50 XP).'
+      });
+
+    } else if (itemId === 'poison_chess_queen') {
+      // Unscrew hollow queen: reveals spring needle
+      if (typeof audio !== 'undefined' && audio.playWatchInspect) audio.playWatchInspect();
+      this.addClue({
+        id: 'clue_poison_mechanism',
+        title: 'Spring-Loaded Needle Mechanism',
+        desc: 'The ivory queen conceals a pressurized needle chamber loaded with fatal prussic acid.'
+      });
+      this.notify('item_used', {
+        item,
+        msgId: 'queen_unscrewed',
+        desc: 'Dasar ratu catur terbuka! Jarum pegas mematikan berisi racun asam prusat terungkap.'
+      });
+
+    } else if (itemId === 'detective_badge') {
+      // Flash badge: +2 Authority bonus
+      if (typeof audio !== 'undefined' && audio.playUiClick) audio.playUiClick();
+      this.flags.badge_flashed = true;
+      this.notify('item_used', {
+        item,
+        msgId: 'badge_flashed',
+        desc: 'Lencana dikilaskan! Wibawa detektif meningkat (+2 Otoritas pada percakapan).'
+      });
     }
   }
 
@@ -1428,24 +6957,48 @@ class GameState {
     }
   }
 
+  hasClue(clueId) {
+    if (!this.clues) return false;
+    return this.clues.some(c => c && c.id === clueId);
+  }
+
+  hasItem(itemId) {
+    if (!this.inventory) return false;
+    return this.inventory.some(i => i && i.id === itemId);
+  }
+
+  gainXp(amount = 20) {
+    return this.gainXP(amount);
+  }
+
   // Thought Cabinet Methods
-  unlockThought(thought) {
+  unlockThought(thoughtKey) {
+    let thought = null;
+    if (typeof thoughtKey === 'string') {
+      if (typeof THOUGHTS_CATALOG !== 'undefined') {
+        thought = THOUGHTS_CATALOG.find(t => t.id === thoughtKey);
+      }
+    } else {
+      thought = thoughtKey;
+    }
+    if (!thought) return;
+
     const alreadyKnown = this.thoughtCabinet.known.find(t => t.id === thought.id);
     const isCooking = this.thoughtCabinet.internalizing.find(t => t.id === thought.id);
     const isDone = this.thoughtCabinet.internalized.find(t => t.id === thought.id);
 
     if (!alreadyKnown && !isCooking && !isDone) {
-      this.thoughtCabinet.known.push(thought);
+      this.thoughtCabinet.known.push({ ...thought });
       this.notify('thought_unlocked', thought);
     }
   }
 
   startInternalizing(thoughtId) {
     if (this.thoughtCabinet.internalizing.length >= this.thoughtCabinet.maxSlots) {
-      return { success: false, reason: 'All thought slots occupied in your fractured mind.' };
+      return { success: false, reason: 'Semua slot pikiran dalam benakmu sudah terisi penuh.' };
     }
     const idx = this.thoughtCabinet.known.findIndex(t => t.id === thoughtId);
-    if (idx === -1) return { success: false, reason: 'Thought not discovered yet.' };
+    if (idx === -1) return { success: false, reason: 'Pikiran belum ditemukan.' };
 
     const thought = this.thoughtCabinet.known.splice(idx, 1)[0];
     thought.progress = 0;
@@ -1480,7 +7033,9 @@ class GameState {
         clues: this.clues,
         thoughtCabinet: this.thoughtCabinet,
         flags: this.flags,
-        resolvedChecks: this.resolvedChecks
+        resolvedChecks: this.resolvedChecks,
+        visitedChoices: this.visitedChoices,
+        currentLanguage: this.currentLanguage
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       this.notify('saved');
@@ -1503,6 +7058,8 @@ class GameState {
       this.thoughtCabinet = data.thoughtCabinet;
       this.flags = data.flags;
       this.resolvedChecks = data.resolvedChecks || {};
+      this.visitedChoices = data.visitedChoices || {};
+      if (data.currentLanguage) this.currentLanguage = data.currentLanguage;
       this.notify('loaded');
       return true;
     } catch (e) {
@@ -1639,13 +7196,16 @@ class DiceEngine {
 class UIController {
   constructor(state) {
     this.state = state;
+    this.caseData = CASE_DATA;
     this.diceEngine = new DiceEngine(state);
     this.currentNodeId = null;
     this.currentInterlocutor = 'Forensic Observation';
     this.activePoi = null;
 
     this.initElements();
+    this.initLanguageSelector();
     this.bindEvents();
+    this.applyLanguage(this.state.currentLanguage);
   }
 
   initElements() {
@@ -1660,6 +7220,8 @@ class UIController {
     this.cluesModal = document.getElementById('clues-modal');
     this.diceModal = document.getElementById('dice-modal');
     this.victoryModal = document.getElementById('victory-modal');
+    this.languageModal = document.getElementById('language-modal');
+    this.gameoverModal = document.getElementById('gameover-modal');
 
     // Header meters & stats
     this.detNameEl = document.getElementById('hud-detective-name');
@@ -1682,6 +7244,211 @@ class UIController {
     this.toastContainer = document.getElementById('notification-toast-container');
   }
 
+  initLanguageSelector() {
+    // Nav & stage language trigger buttons
+    document.getElementById('nav-btn-language')?.addEventListener('click', () => {
+      this.openLanguageModal();
+    });
+    document.getElementById('loader-lang-btn')?.addEventListener('click', () => {
+      this.openLanguageModal();
+    });
+    document.getElementById('creator-lang-btn')?.addEventListener('click', () => {
+      this.openLanguageModal();
+    });
+
+    // Game over restart button
+    document.getElementById('btn-retry-inquiry')?.addEventListener('click', () => {
+      this.closeModal(this.gameoverModal);
+      this.state.reset();
+      this.activePoi = null;
+      this.currentNodeId = null;
+      this.applyLanguage(this.state.currentLanguage);
+      this.renderSceneMarkers();
+      this.dialogueFeed.innerHTML = '';
+      this.dialogueChoices.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:12px;">${t('scene_location', this.state.currentLanguage)}</div>`;
+    });
+  }
+
+  openLanguageModal() {
+    this.openModal(this.languageModal);
+    this.renderLanguageList();
+  }
+
+  renderLanguageList() {
+    const grid = document.getElementById('language-options-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    SUPPORTED_LANGUAGES.forEach(langObj => {
+      const card = document.createElement('div');
+      card.className = `lang-card ${this.state.currentLanguage === langObj.code ? 'active' : ''}`;
+      card.innerHTML = `
+        <span class="lang-flag">${langObj.flag}</span>
+        <div class="lang-names">
+          <span class="lang-native">${langObj.native}</span>
+          <span class="lang-code">${langObj.name} · [${langObj.code.toUpperCase()}]</span>
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        audio.playRadioTune();
+        this.state.setLanguage(langObj.code);
+        this.applyLanguage(langObj.code);
+        this.closeModal(this.languageModal);
+        this.showToast(`🌐 ${t('modal_language_title', langObj.code)}: ${langObj.native}`);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  applyLanguage(lang) {
+    const currentLang = UI_TRANSLATIONS[lang] ? lang : 'en';
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = (currentLang === 'ar') ? 'rtl' : 'ltr';
+
+    // Update active language labels in buttons
+    const langObj = SUPPORTED_LANGUAGES.find(l => l.code === currentLang) || SUPPORTED_LANGUAGES[0];
+    const langLabel = document.getElementById('current-lang-label');
+    if (langLabel) {
+      langLabel.textContent = `${t('nav_language', currentLang).toUpperCase()}: ${langObj.native.toUpperCase()}`;
+    }
+    document.querySelectorAll('.stage-lang-btn .lang-label').forEach(el => {
+      el.textContent = langObj.native;
+    });
+
+    // Update Stage 1 texts
+    const quoteEl = document.getElementById('loader-quote-text');
+    if (quoteEl) quoteEl.textContent = t('loader_quote', currentLang);
+    const telemetryEl = document.getElementById('loader-telemetry-text');
+    if (telemetryEl) telemetryEl.textContent = t('loader_telemetry', currentLang);
+    const enterBtn = document.getElementById('loader-enter-btn');
+    if (enterBtn) enterBtn.textContent = t('loader_enter', currentLang);
+
+    // Update Stage 2 Character Creator texts
+    const creatorTitle = document.querySelector('.creator-section-title span:first-child');
+    if (creatorTitle) creatorTitle.textContent = t('creator_title', currentLang);
+    const creatorSub = document.querySelector('.creator-section-title span:last-child');
+    if (creatorSub) creatorSub.textContent = t('creator_subtitle', currentLang);
+    const btnFemale = document.getElementById('btn-gender-female');
+    if (btnFemale) btnFemale.textContent = t('gender_female', currentLang);
+    const btnMale = document.getElementById('btn-gender-male');
+    if (btnMale) btnMale.textContent = t('gender_male', currentLang);
+    const btnRand = document.getElementById('btn-randomize-identity');
+    if (btnRand) btnRand.textContent = t('randomize_dossier', currentLang);
+    const startInquiryBtn = document.getElementById('creator-start-btn');
+    if (startInquiryBtn) startInquiryBtn.textContent = t('start_inquiry', currentLang);
+
+    // Update Header HUD
+    const caseBadge = document.querySelector('.case-badge');
+    if (caseBadge) caseBadge.textContent = t('case_badge', currentLang);
+
+    const tabCabinetText = document.getElementById('tab-cabinet-text');
+    if (tabCabinetText) tabCabinetText.textContent = t('nav_cabinet', currentLang);
+    const tabCluesText = document.getElementById('tab-clues-text');
+    if (tabCluesText) tabCluesText.textContent = t('nav_clues', currentLang);
+    const tabInvText = document.getElementById('tab-inv-text');
+    if (tabInvText) tabInvText.textContent = t('nav_inventory', currentLang);
+
+    const healthLabel = document.querySelector('.meter-label-row.health span:first-child');
+    if (healthLabel) healthLabel.textContent = t('endurance_label', currentLang);
+    const moraleLabel = document.querySelector('.meter-label-row.morale span:first-child');
+    if (moraleLabel) moraleLabel.textContent = t('morale_label', currentLang);
+
+    // Update Progress Title & Meter
+    const progressTitle = document.getElementById('hud-progress-title');
+    if (progressTitle) {
+      progressTitle.textContent = PROGRESS_LABELS ? (PROGRESS_LABELS[currentLang] || 'PROGRESS') : 'PROGRESS';
+    }
+    this.updateProgressMeter();
+
+    // Update Scene Overlay
+    const sceneLoc = document.querySelector('.scene-location-title');
+    if (sceneLoc) sceneLoc.textContent = t('scene_location', currentLang);
+    const sceneTime = document.querySelector('.scene-time-stamp');
+    if (sceneTime) sceneTime.textContent = t('scene_timestamp', currentLang);
+    const hudToggleTitle = document.querySelector('.hud-toggle-title');
+    if (hudToggleTitle) hudToggleTitle.textContent = DISTRICT_LABELS ? (DISTRICT_LABELS[currentLang] || 'DISTRICT 7') : 'DISTRICT 7';
+
+    // Update Modals Titles
+    const cabTitle = document.querySelector('#cabinet-modal .modal-title');
+    if (cabTitle) cabTitle.textContent = t('modal_cabinet_title', currentLang);
+    const invTitle = document.querySelector('#inventory-modal .modal-title');
+    if (invTitle) invTitle.textContent = t('modal_inventory_title', currentLang);
+    const clueTitle = document.querySelector('#clues-modal .modal-title');
+    if (clueTitle) clueTitle.textContent = t('modal_clues_title', currentLang);
+    const langModalTitle = document.getElementById('language-modal-title');
+    if (langModalTitle) langModalTitle.textContent = t('modal_language_title', currentLang);
+    const vicTitle = document.querySelector('#victory-modal .modal-title');
+    if (vicTitle) vicTitle.textContent = t('modal_victory_title', currentLang);
+    const restartBtn = document.getElementById('btn-restart-inquiry');
+    if (restartBtn) restartBtn.textContent = t('btn_restart', currentLang);
+
+    // Refresh dynamic scene markers & tooltips
+    this.renderSceneMarkers();
+
+    // Refresh active inspection banner if open
+    if (this.activePoi) {
+      const bannerTitle = document.querySelector('.evidence-poi-title');
+      if (bannerTitle) bannerTitle.textContent = tPoi(this.activePoi, 'title', currentLang);
+      const bannerDesc = document.querySelector('.evidence-poi-desc');
+      if (bannerDesc) bannerDesc.textContent = tPoi(this.activePoi, 'description', currentLang);
+    }
+
+    // Refresh active dialogue node if currently interacting
+    if (this.currentNodeId) {
+      this.retranslateCurrentDialogue();
+    }
+
+    // Refresh open modals
+    if (this.inventoryModal && this.inventoryModal.classList.contains('open')) {
+      this.renderInventory();
+    }
+    if (this.cluesModal && this.cluesModal.classList.contains('open')) {
+      this.renderClues();
+    }
+    if (this.cabinetModal && this.cabinetModal.classList.contains('open')) {
+      this.renderCabinet();
+    }
+  }
+
+  retranslateCurrentDialogue() {
+    if (!this.currentNodeId) return;
+    const baseNode = this.caseData.dialogueNodes[this.currentNodeId];
+    if (!baseNode) return;
+
+    const node = getLocalizedDialogueNode(this.currentNodeId, this.state.currentLanguage, baseNode);
+
+    // Update speaker label
+    if (this.interlocutorNameEl) {
+      this.interlocutorNameEl.textContent = node.speaker || t('speaker_forensic', this.state.currentLanguage);
+    }
+
+    // Update last dialogue entry in feed
+    const entries = this.dialogueFeed.querySelectorAll('.dialogue-entry');
+    if (entries.length > 0) {
+      const lastEntry = entries[entries.length - 1];
+      const speakerLabel = lastEntry.querySelector('.speaker-label');
+      if (speakerLabel) speakerLabel.textContent = node.speaker || 'Narrative';
+      const prose = lastEntry.querySelector('.speaker-prose');
+      if (prose) prose.textContent = node.text;
+
+      // Update inner voices
+      const voiceBlocks = lastEntry.querySelectorAll('.inner-voice-block');
+      if (node.voices && node.voices.length > 0) {
+        node.voices.forEach((v, idx) => {
+          if (voiceBlocks[idx]) {
+            const badge = voiceBlocks[idx].querySelector('.voice-badge');
+            if (badge) badge.textContent = v.badge;
+            const voiceProse = voiceBlocks[idx].querySelector('.voice-prose');
+            if (voiceProse) voiceProse.textContent = `"${v.text}"`;
+          }
+        });
+      }
+    }
+
+    // Re-render dialogue choices
+    this.renderChoices(node.options);
+  }
+
   bindEvents() {
     // Close modal buttons
     document.querySelectorAll('.modal-close-btn').forEach(btn => {
@@ -1698,39 +7465,156 @@ class UIController {
       });
     });
 
-    // Tab buttons
+    // Tab buttons with tactile paper audio
     document.getElementById('nav-btn-cabinet')?.addEventListener('click', () => {
+      audio.playTabSwitch();
       this.openCabinetModal();
     });
     document.getElementById('nav-btn-inventory')?.addEventListener('click', () => {
+      audio.playTabSwitch();
       this.openInventoryModal();
     });
     document.getElementById('nav-btn-clues')?.addEventListener('click', () => {
+      audio.playTabSwitch();
       this.openCluesModal();
     });
     document.getElementById('nav-btn-audio')?.addEventListener('click', (e) => {
       const isMuted = audio.toggleMute();
       e.currentTarget.classList.toggle('muted', isMuted);
-      e.currentTarget.querySelector('.btn-label').textContent = isMuted ? 'UNMUTE AUDIO' : 'AUDIO: ON';
+      const label = document.getElementById('audio-btn-label');
+      if (label) {
+        label.textContent = isMuted ? 'AUDIO: OFF' : 'AUDIO: ON';
+      }
+    });
+
+    // Collapsible, Transparent & Dismissible Bottom-Left Scene HUD Toggle
+    const toggleSceneHudBtn = document.getElementById('btn-toggle-scene-hud');
+    const dismissSceneHudBtn = document.getElementById('btn-dismiss-scene-hud');
+    const restoreSceneHudBtn = document.getElementById('btn-restore-scene-hud');
+    const sceneHud = document.getElementById('scene-overlay-hud');
+
+    if (toggleSceneHudBtn && sceneHud) {
+      toggleSceneHudBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sceneHud.classList.toggle('minimized');
+        audio.playHudToggle();
+      });
+      sceneHud.addEventListener('click', (e) => {
+        if (e.target.closest('#btn-dismiss-scene-hud')) return;
+        if (sceneHud.classList.contains('minimized')) {
+          sceneHud.classList.remove('minimized');
+          audio.playHudToggle();
+        }
+      });
+    }
+
+    if (dismissSceneHudBtn && sceneHud && restoreSceneHudBtn) {
+      dismissSceneHudBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sceneHud.classList.add('dismissed');
+        restoreSceneHudBtn.classList.remove('hidden');
+        audio.playHudToggle();
+      });
+
+      restoreSceneHudBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sceneHud.classList.remove('dismissed');
+        sceneHud.classList.remove('minimized');
+        restoreSceneHudBtn.classList.add('hidden');
+        audio.playHudToggle();
+      });
+    }
+
+    // Scene Toolbar Controls: Show/Hide POI Indicators & Sonar Radar Ping
+    const toggleMarkersBtn = document.getElementById('btn-toggle-poi-markers');
+    const radarPingBtn = document.getElementById('btn-toggle-radar-ping');
+    const sceneViewport = document.getElementById('scene-viewport');
+
+    if (toggleMarkersBtn && sceneViewport) {
+      toggleMarkersBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = sceneViewport.classList.toggle('markers-hidden');
+        toggleMarkersBtn.classList.toggle('active', isHidden);
+        const label = document.getElementById('toggle-markers-label');
+        if (label) {
+          label.textContent = isHidden ? 'HIDDEN' : 'MARKERS';
+        }
+        audio.playPoiClick();
+      });
+    }
+
+    if (radarPingBtn) {
+      radarPingBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        audio.playPoiHover();
+        document.querySelectorAll('.poi-pulse-radar').forEach(p => {
+          p.style.animation = 'none';
+          void p.offsetWidth;
+          p.style.animation = 'radarPing 1.2s ease-out';
+        });
+      });
+    }
+
+    // Keyboard Hotkeys: 'M' for Markers toggle, 'Space' for Radar Ping
+    document.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.key === 'm' || e.key === 'M') {
+        toggleMarkersBtn?.click();
+      }
+    });
+
+    // Global subtle audio hover feedback on buttons, choices & interactive nodes
+    document.addEventListener('mouseover', (e) => {
+      const target = e.target.closest('.hud-btn, .action-btn-large, .choice-btn, .lang-card, .vice-card, .sig-skill-btn, .thought-node, .stepper-btn, .scene-hud-toggle-btn, .scene-ctrl-chip');
+      if (target) {
+        audio.playUiHover();
+      }
     });
 
     // State change listeners
     this.state.subscribe((event, payload) => {
+      if (event === 'language_changed') {
+        this.applyLanguage(payload);
+      }
       this.updateHUD();
+      const lang = this.state.currentLanguage;
       if (event === 'clue_added') {
-        this.showToast(`🔍 CLUE DISCOVERED: ${payload.title}`);
-        audio.playDiscovery();
+        const title = tClue(payload.id, 'title', lang) || payload.title;
+        this.showToast(`🔍 ${t('toast_clue_discovered', lang)} ${title}`);
+        audio.playDossierStamp();
+        setTimeout(() => audio.playDiscovery(), 120);
       } else if (event === 'thought_unlocked') {
-        this.showToast(`💡 NEW THOUGHT UNLOCKED: "${payload.name}" in Thought Cabinet`);
+        this.showToast(`💡 ${t('toast_thought_unlocked', lang)} "${payload.name}"`);
         audio.playDiscovery();
       } else if (event === 'thought_internalized') {
-        this.showToast(`✨ THOUGHT INTERNALIZED: "${payload.name}"`);
-        audio.playSuccess();
+        this.showToast(`✨ ${t('toast_thought_internalized', lang)} "${payload.name}"`);
+        audio.playThoughtInternalize();
       } else if (event === 'item_added') {
-        this.showToast(`📦 ITEM ACQUIRED: ${payload.name}`);
+        const name = tItem(payload.id, 'name', lang) || payload.name;
+        this.showToast(`📦 ${t('toast_item_acquired', lang)} ${name}`);
         audio.playDiscovery();
+      } else if (event === 'item_used') {
+        const name = tItem(payload.item.id, 'name', lang) || payload.item.name;
+        this.showToast(`✨ ${t('toast_item_used', lang)} ${name}\n${payload.desc || ''}`);
+        this.renderInventory();
+      } else if (event === 'health_changed') {
+        if (payload.delta < 0) {
+          audio.playDamageHit();
+          this.showToast(`🩸 ${t('toast_damage_health', lang)} (${payload.delta} HP)`);
+        }
+        if (payload.current <= 1) {
+          audio.playHeartbeatThump();
+        }
+      } else if (event === 'morale_changed') {
+        if (payload.delta < 0) {
+          audio.playMoraleDrain();
+          this.showToast(`🧠 ${t('toast_damage_morale', lang)} (${payload.delta} SP)`);
+        }
+        if (payload.current <= 1) {
+          audio.playHeartbeatThump();
+        }
       } else if (event === 'game_over') {
-        alert(`GAME OVER: ${payload.reason}`);
+        this.showGameOver(payload);
       }
     });
   }
@@ -1738,189 +7622,225 @@ class UIController {
   showToast(message) {
     const toast = document.createElement('div');
     toast.className = 'toast-msg';
-    toast.innerHTML = `<span>${message}</span>`;
+    toast.innerHTML = `<span>${message.replace(/\n/g, '<br>')}</span>`;
     this.toastContainer.appendChild(toast);
     setTimeout(() => {
       toast.style.transition = 'opacity 0.5s';
       toast.style.opacity = '0';
       setTimeout(() => toast.remove(), 500);
-    }, 4000);
+    }, 4500);
   }
 
   openModal(modal) {
+    if (!modal) return;
     audio.playUiClick();
     modal.classList.add('open');
   }
 
   closeModal(modal) {
+    if (!modal) return;
     audio.playUiClick();
     modal.classList.remove('open');
   }
 
   updateHUD() {
-    const det = this.state.detective;
-    if (this.detNameEl) this.detNameEl.textContent = det.name;
-    if (this.detAliasEl) this.detAliasEl.textContent = det.alias;
+    if (!this.detNameEl) return;
+    this.detNameEl.textContent = this.state.detective.name;
+    this.detAliasEl.textContent = this.state.detective.alias;
 
-    const avatarImg = document.getElementById('hud-avatar-img');
-    if (avatarImg && det.portrait) {
-      avatarImg.src = det.portrait;
+    // Render Health Pips
+    this.healthPipsContainer.innerHTML = '';
+    for (let i = 0; i < this.state.detective.maxHealth; i++) {
+      const pip = document.createElement('div');
+      pip.className = `segment-pip health ${i < this.state.detective.health ? 'active' : ''}`;
+      this.healthPipsContainer.appendChild(pip);
     }
 
-    // Time
-    if (this.hudTimeEl) {
-      const h = String(this.state.time.hour).padStart(2, '0');
-      const m = String(this.state.time.minute).padStart(2, '0');
-      this.hudTimeEl.textContent = `DAY ${this.state.time.day} · ${h}:${m}`;
+    // Render Morale Pips
+    this.moralePipsContainer.innerHTML = '';
+    for (let i = 0; i < this.state.detective.maxMorale; i++) {
+      const pip = document.createElement('div');
+      pip.className = `segment-pip morale ${i < this.state.detective.morale ? 'active' : ''}`;
+      this.moralePipsContainer.appendChild(pip);
     }
 
-    // Health Pips
-    if (this.healthPipsContainer) {
-      this.healthPipsContainer.innerHTML = '';
-      for (let i = 0; i < det.maxHealth; i++) {
-        const pip = document.createElement('div');
-        pip.className = `segment-pip health ${i < det.health ? 'active' : ''}`;
-        this.healthPipsContainer.appendChild(pip);
-      }
-    }
+    // Time display
+    const h = String(this.state.time.hour).padStart(2, '0');
+    const m = String(this.state.time.minute).padStart(2, '0');
+    const dayLabel = t('day_prefix', this.state.currentLanguage);
+    this.hudTimeEl.textContent = `${dayLabel} ${this.state.time.day} · ${h}:${m}`;
 
-    // Morale Pips
-    if (this.moralePipsContainer) {
-      this.moralePipsContainer.innerHTML = '';
-      for (let i = 0; i < det.maxMorale; i++) {
-        const pip = document.createElement('div');
-        pip.className = `segment-pip morale ${i < det.morale ? 'active' : ''}`;
-        this.moralePipsContainer.appendChild(pip);
-      }
-    }
+    // Counters
+    const cabBadge = document.getElementById('cabinet-count-badge');
+    if (cabBadge) cabBadge.textContent = this.state.thoughtCabinet.internalized.length;
 
-    // Tab badges
-    const cluesBadge = document.getElementById('clues-count-badge');
-    if (cluesBadge) cluesBadge.textContent = this.state.clues.length;
-
-    const cabinetBadge = document.getElementById('cabinet-count-badge');
-    if (cabinetBadge) cabinetBadge.textContent = this.state.thoughtCabinet.internalized.length;
+    const clueBadge = document.getElementById('clues-count-badge');
+    if (clueBadge) clueBadge.textContent = this.state.clues.length;
 
     const invBadge = document.getElementById('inv-count-badge');
     if (invBadge) invBadge.textContent = this.state.inventory.length;
+
+    // Refresh Investigation Progress Meter
+    this.updateProgressMeter();
   }
 
-  // Render Scene POI markers
-  renderScene() {
+  updateProgressMeter() {
+    const pct = this.state.getProgressPercentage();
+    const fillEl = document.getElementById('hud-progress-fill');
+    const valEl = document.getElementById('hud-progress-val');
+    const titleEl = document.getElementById('hud-progress-title');
+    if (fillEl) fillEl.style.width = `${pct}%`;
+    if (valEl) valEl.textContent = `${pct}%`;
+    if (titleEl) {
+      titleEl.textContent = PROGRESS_LABELS ? (PROGRESS_LABELS[this.state.currentLanguage] || 'PROGRESS') : 'PROGRESS';
+    }
+  }
+
+  renderSceneMarkers() {
     this.sceneCanvas.innerHTML = '';
-    CASE_DATA.pointsOfInterest.forEach(poi => {
+    const hasActive = !!this.activePoi;
+    this.sceneCanvas.classList.toggle('has-active-poi', hasActive);
+
+    this.caseData.pointsOfInterest.forEach(poi => {
       const marker = document.createElement('div');
-      marker.className = `poi-marker ${this.activePoi?.id === poi.id ? 'active' : ''}`;
-      marker.dataset.poiId = poi.id;
+      
+      // Calculate smart tooltip collision avoidance
+      let placementClass = '';
+      if (poi.y < 35) placementClass += ' tooltip-below';
+      if (poi.x > 72) placementClass += ' tooltip-right';
+      else if (poi.x < 28) placementClass += ' tooltip-left';
+
+      marker.className = `poi-marker ${this.activePoi === poi.id ? 'active' : ''}${placementClass}`;
       marker.style.left = `${poi.x}%`;
       marker.style.top = `${poi.y}%`;
+      marker.dataset.poiId = poi.id;
+
+      const localizedTitle = tPoi(poi.id, 'title', this.state.currentLanguage) || poi.title;
+      const inspectText = t('btn_inspect', this.state.currentLanguage) || 'INVESTIGATE';
 
       marker.innerHTML = `
         <div class="poi-pulse-radar"></div>
         <div class="poi-pin-circle">${poi.icon}</div>
         <div class="poi-tooltip-card">
-          <span class="poi-tooltip-title">${poi.title}</span>
-          <span class="poi-tooltip-hint">${poi.description}</span>
+          <div class="poi-tooltip-title">${localizedTitle}</div>
+          <div class="poi-tooltip-hint">[ ${inspectText} ]</div>
         </div>
       `;
 
+      marker.addEventListener('mouseenter', () => {
+        audio.playPoiHover();
+      });
+
       marker.addEventListener('click', (e) => {
         e.stopPropagation();
-        audio.playUiClick();
-        this.selectPoi(poi);
+        this.inspectPointOfInterest(poi);
       });
 
       this.sceneCanvas.appendChild(marker);
     });
   }
 
-  selectPoi(poi) {
-    // Prevent duplicate text spamming if already examining this POI at its root narrative
-    if (this.activePoi?.id === poi.id && this.currentNodeId === poi.initialNode) {
-      if (this.dialogueFeed) {
-        this.dialogueFeed.scrollTop = 0;
-      }
+  inspectPointOfInterest(poi) {
+    // If clicking same active POI, do not duplicate
+    if (this.activePoi === poi.id && this.currentNodeId === poi.initialNode) {
       return;
     }
 
-    this.activePoi = poi;
-
-    // Highlight the active POI marker
+    this.activePoi = poi.id;
+    this.sceneCanvas.classList.add('has-active-poi');
     document.querySelectorAll('.poi-marker').forEach(m => {
       m.classList.toggle('active', m.dataset.poiId === poi.id);
     });
 
-    // Start fresh dialogue for this POI to avoid piling up duplicate old texts
-    this.startDialogue(poi.initialNode, poi.title, poi, true);
-  }
+    audio.playPoiClick();
+    audio.playFootsteps();
 
-  // Dialogue Engine
-  startDialogue(nodeId, interlocutorName, poi = null, isNewSession = false) {
-    if (interlocutorName) {
-      this.currentInterlocutor = interlocutorName;
-      if (this.interlocutorNameEl) this.interlocutorNameEl.textContent = interlocutorName;
+    // Contextual atmospheric sound based on inspected artifact
+    if (poi.id === 'poi_pendulum' || poi.id === 'poi_pocketwatch') {
+      setTimeout(() => audio.playClockworkChime(), 200);
+    } else if (poi.id === 'poi_floorboard') {
+      setTimeout(() => audio.playChalkScratch(), 250);
+    } else if (poi.id === 'poi_clock_chime_bell') {
+      setTimeout(() => audio.playCathedralBell(), 200);
+    } else if (poi.id === 'poi_balcony') {
+      setTimeout(() => audio.playThunderCrack(), 300);
     }
 
-    if (!poi && this.activePoi) {
-      poi = this.activePoi;
-    } else if (poi) {
-      this.activePoi = poi;
-      document.querySelectorAll('.poi-marker').forEach(m => {
-        m.classList.toggle('active', m.dataset.poiId === poi.id);
-      });
-    }
+    this.state.advanceTime(10);
 
-    // When starting a new POI inspection, clear previous feed and show matching forensic visual banner
-    if (isNewSession) {
-      this.dialogueFeed.innerHTML = '';
+    const localizedTitle = tPoi(poi.id, 'title', this.state.currentLanguage) || poi.title;
+    const localizedDesc = tPoi(poi.id, 'description', this.state.currentLanguage) || poi.description;
 
-      if (poi && poi.image) {
+    // Insert Evidence Banner with matching artwork
+    if (poi.image) {
+      const existingBanner = this.dialogueFeed.querySelector(`.inspection-evidence-banner[data-poi-id="${poi.id}"]`);
+      if (!existingBanner) {
         const banner = document.createElement('div');
         banner.className = 'inspection-evidence-banner';
+        banner.dataset.poiId = poi.id;
         banner.innerHTML = `
-          <div class="evidence-image-frame">
-            <img src="${poi.image}" alt="${poi.title}" class="evidence-img">
-            <div class="evidence-scanline"></div>
-            <span class="evidence-zoom-tag">🔍 FORENSIC VISUAL</span>
+          <div class="evidence-poi-photo-wrap">
+            <img src="${poi.image}" alt="${localizedTitle}" class="evidence-poi-photo">
           </div>
-          <div class="evidence-meta-block">
-            <div class="evidence-poi-badge"><span class="badge-icon">${poi.icon}</span> FORENSIC INSPECTION</div>
-            <div class="evidence-poi-title">${poi.title}</div>
-            <div class="evidence-poi-desc">${poi.description}</div>
+          <div class="evidence-poi-details">
+            <div class="evidence-poi-header">
+              <span class="evidence-poi-icon">${poi.icon || '🔍'}</span>
+              <span class="evidence-poi-title">${localizedTitle}</span>
+            </div>
+            <div class="evidence-poi-desc">${localizedDesc}</div>
           </div>
         `;
         this.dialogueFeed.appendChild(banner);
       }
     }
 
-    this.renderDialogueNode(nodeId);
+    this.renderDialogueNode(poi.initialNode);
+  }
+
+  renderScene() {
+    this.renderSceneMarkers();
+  }
+
+  startDialogue(nodeId, speakerTitle, poi) {
+    if (poi) {
+      this.inspectPointOfInterest(poi);
+    } else if (nodeId) {
+      this.renderDialogueNode(nodeId);
+    }
   }
 
   renderDialogueNode(nodeId) {
-    const node = CASE_DATA.dialogueNodes[nodeId];
-    if (!node) {
-      console.warn(`Node ${nodeId} not found`);
-      return;
-    }
-
     this.currentNodeId = nodeId;
-    this.state.advanceTime(10);
+    const baseNode = this.caseData.dialogueNodes[nodeId];
+    if (!baseNode) return;
 
-    // Execute state action if present
-    if (typeof node.action === 'function') {
-      node.action(this.state);
+    // Get fully localized node
+    const node = getLocalizedDialogueNode(nodeId, this.state.currentLanguage, baseNode);
+
+    // Execute node action if defined
+    if (baseNode.action) {
+      baseNode.action(this.state);
     }
 
-    // Sound effect on typewriter prose
-    audio.playTypewriter();
+    // Update Speaker Bar
+    this.currentInterlocutor = node.speaker || t('speaker_forensic', this.state.currentLanguage);
+    if (this.interlocutorNameEl) {
+      this.interlocutorNameEl.textContent = this.currentInterlocutor;
+    }
 
-    // Create Entry block in feed
+    audio.playTypewriter();
+    if (node.voices && node.voices.length > 0) {
+      audio.playInnerVoice();
+    }
+
+    // Create Entry in Feed
     const entry = document.createElement('div');
     entry.className = 'dialogue-entry';
     entry.innerHTML = `
       <div class="speaker-title-row">
         <span class="speaker-avatar">${node.avatar || '👤'}</span>
         <span class="speaker-label">${node.speaker || 'Narrative'}</span>
+        <span class="speaker-equalizer"><span></span><span></span><span></span><span></span></span>
       </div>
       <div class="speaker-prose">${node.text}</div>
     `;
@@ -1940,11 +7860,8 @@ class UIController {
     }
 
     this.dialogueFeed.appendChild(entry);
-
-    // Render dialogue choice buttons
     this.renderChoices(node.options);
 
-    // Scroll after layout recalculation so bottom content is never cut off
     requestAnimationFrame(() => {
       this.dialogueFeed.scrollTop = this.dialogueFeed.scrollHeight;
     });
@@ -1952,59 +7869,80 @@ class UIController {
 
   renderChoices(options) {
     this.dialogueChoices.innerHTML = '';
-    if (!options || options.length === 0) {
+    const renderCloseBtn = () => {
       const closeBtn = document.createElement('button');
       closeBtn.className = 'choice-btn';
-      closeBtn.innerHTML = `<span class="choice-num">[1]</span> <span>[End conversation]</span>`;
+      closeBtn.innerHTML = `<span class="choice-num">[1]</span> <span>[${t('speaker_forensic', this.state.currentLanguage)}]</span>`;
       closeBtn.addEventListener('click', () => {
         this.currentNodeId = null;
         this.activePoi = null;
         document.querySelectorAll('.poi-marker').forEach(m => m.classList.remove('active'));
-        this.dialogueChoices.innerHTML = '<div style="color:var(--text-muted);font-style:italic;padding:12px;">Select an inspection marker on the crime scene to investigate.</div>';
+        this.dialogueChoices.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:12px;">${t('scene_location', this.state.currentLanguage)}</div>`;
       });
       this.dialogueChoices.appendChild(closeBtn);
+    };
+
+    if (!options || options.length === 0) {
+      renderCloseBtn();
       return;
     }
 
-    options.forEach((opt, idx) => {
-      // Check conditional visibility
+    let choiceCounter = 1;
+    options.forEach((opt) => {
+      const choiceKey = opt.id || (opt.check ? opt.check.checkId : (opt.nextNode || (typeof opt.action === 'string' ? opt.action : null)));
+
       if (opt.condition && !opt.condition(this.state)) {
         return;
       }
+      if (opt.once && choiceKey && this.state.isChoiceVisited(choiceKey)) {
+        return;
+      }
 
+      const isVisited = !!(choiceKey && this.state.isChoiceVisited(choiceKey));
       const btn = document.createElement('button');
       btn.className = 'choice-btn';
+      if (isVisited) {
+        btn.classList.add('visited');
+      }
+
+      const currentNum = choiceCounter++;
+      const visitedPrefix = isVisited ? '<span class="visited-check">✓ </span>' : '';
 
       if (opt.check) {
-        // Skill Check Button
         const check = opt.check;
         const skillBonus = this.state.getSkillTotal(check.skill);
         const prob = this.diceEngine.calculateSuccessProbability(skillBonus, check.difficulty);
 
         btn.classList.add(check.type === 'red' ? 'red-check' : 'white-check');
         btn.innerHTML = `
-          <span class="choice-num">[${idx + 1}]</span>
-          <span>${opt.text}</span>
+          <span class="choice-num">[${currentNum}]</span>
+          <span>${visitedPrefix}${opt.text}</span>
           <span class="check-prob-pill">${prob}%</span>
         `;
 
         btn.addEventListener('click', () => {
+          if (choiceKey) this.state.markChoiceVisited(choiceKey);
+          if (typeof opt.action === 'function') opt.action(this.state);
+          this.updateProgressMeter();
           this.executeSkillCheck(opt, check);
         });
       } else {
-        // Standard Dialogue Option
         btn.innerHTML = `
-          <span class="choice-num">[${idx + 1}]</span>
-          <span>${opt.text}</span>
+          <span class="choice-num">[${currentNum}]</span>
+          <span>${visitedPrefix}${opt.text}</span>
         `;
 
         btn.addEventListener('click', () => {
           audio.playUiClick();
+          if (choiceKey) this.state.markChoiceVisited(choiceKey);
+          if (typeof opt.action === 'function') opt.action(this.state);
+          this.updateProgressMeter();
+
           if (opt.action === 'close_dialogue') {
             this.currentNodeId = null;
             this.activePoi = null;
             document.querySelectorAll('.poi-marker').forEach(m => m.classList.remove('active'));
-            this.dialogueChoices.innerHTML = '<div style="color:var(--text-muted);font-style:italic;padding:12px;">Select an inspection marker on the crime scene to investigate.</div>';
+            this.dialogueChoices.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:12px;">${t('scene_location', this.state.currentLanguage)}</div>`;
           } else if (opt.action === 'trigger_victory') {
             this.showVictoryScreen();
           } else if (opt.nextNode) {
@@ -2015,6 +7953,10 @@ class UIController {
 
       this.dialogueChoices.appendChild(btn);
     });
+
+    if (this.dialogueChoices.children.length === 0) {
+      renderCloseBtn();
+    }
   }
 
   // 3D Skill Check Roll Execution
@@ -2028,18 +7970,19 @@ class UIController {
     const outcomeEl = document.getElementById('dice-outcome-text');
     const proceedBtn = document.getElementById('dice-proceed-btn');
 
-    checkHeader.textContent = `${checkConfig.skill.toUpperCase()} CHECK (VS ${checkConfig.difficulty})`;
+    const skillLabel = tSkill(checkConfig.skill, this.state.currentLanguage);
+    checkHeader.textContent = `${skillLabel} (DC ${checkConfig.difficulty})`;
     d1El.classList.add('rolling');
     d2El.classList.add('rolling');
-    outcomeEl.textContent = 'ROLLING D20 IN YOUR MIND...';
+    outcomeEl.textContent = t('dice_rolling', this.state.currentLanguage);
     outcomeEl.className = 'outcome-announcement';
     scoreVal.textContent = '?';
     proceedBtn.style.display = 'none';
 
-    // Execute check calculation
+    audio.playDiceRoll();
+
     const result = this.diceEngine.rollCheck(checkConfig);
 
-    // Roll animation delay
     setTimeout(() => {
       d1El.classList.remove('rolling');
       d2El.classList.remove('rolling');
@@ -2050,19 +7993,24 @@ class UIController {
       scoreVal.textContent = `${result.diceSum} + ${result.totalBonus} = ${result.totalScore}`;
 
       if (result.isCriticalSuccess) {
-        outcomeEl.textContent = 'CRITICAL SUCCESS (EPIPHANY)';
+        outcomeEl.textContent = `★ ${t('dice_passed', this.state.currentLanguage)} (EPIPHANY)`;
         outcomeEl.className = 'outcome-announcement critical';
+        audio.playSuccess();
       } else if (result.isCriticalFailure) {
-        outcomeEl.textContent = 'CRITICAL FAILURE (SNAKE EYES)';
+        outcomeEl.textContent = `☠ ${t('dice_failed', this.state.currentLanguage)} (SNAKE EYES)`;
         outcomeEl.className = 'outcome-announcement failed';
+        audio.playFailure();
       } else if (result.passed) {
-        outcomeEl.textContent = 'CHECK PASSED';
+        outcomeEl.textContent = t('dice_passed', this.state.currentLanguage);
         outcomeEl.className = 'outcome-announcement passed';
+        audio.playSuccess();
       } else {
-        outcomeEl.textContent = 'CHECK FAILED';
+        outcomeEl.textContent = t('dice_failed', this.state.currentLanguage);
         outcomeEl.className = 'outcome-announcement failed';
+        audio.playFailure();
       }
 
+      proceedBtn.textContent = t('dice_proceed', this.state.currentLanguage);
       proceedBtn.style.display = 'block';
       proceedBtn.onclick = () => {
         this.closeModal(this.diceModal);
@@ -2076,7 +8024,6 @@ class UIController {
 
   renderDiePips(dieElement, number) {
     dieElement.innerHTML = '';
-    // Positions for 3x3 grid
     const patterns = {
       1: [4],
       2: [0, 8],
@@ -2085,12 +8032,11 @@ class UIController {
       5: [0, 2, 4, 6, 8],
       6: [0, 2, 3, 5, 6, 8]
     };
-    const activeIndices = patterns[number] || [];
+
+    const pips = patterns[number] || [4];
     for (let i = 0; i < 9; i++) {
       const pip = document.createElement('div');
-      if (activeIndices.includes(i)) {
-        pip.className = 'die-pip';
-      }
+      pip.className = `pip ${pips.includes(i) ? 'visible' : ''}`;
       dieElement.appendChild(pip);
     }
   }
@@ -2103,54 +8049,63 @@ class UIController {
 
   renderCabinet() {
     this.thoughtNodesContainer.innerHTML = '';
-    const allThoughts = THOUGHTS_CATALOG;
-
-    allThoughts.forEach(thought => {
-      const isKnown = this.state.thoughtCabinet.known.some(t => t.id === thought.id);
+    THOUGHTS_CATALOG.forEach(thought => {
+      const isInternalized = this.state.thoughtCabinet.internalized.some(t => t.id === thought.id);
       const isCooking = this.state.thoughtCabinet.internalizing.find(t => t.id === thought.id);
-      const isDone = this.state.thoughtCabinet.internalized.find(t => t.id === thought.id);
+      const isKnown = this.state.thoughtCabinet.known.some(t => t.id === thought.id);
 
-      const node = document.createElement('div');
-      node.className = 'thought-slot-node';
-
-      let statusText = 'Undiscovered';
-      if (isDone) {
-        node.classList.add('internalized');
-        statusText = 'Internalized';
+      let statusClass = 'locked';
+      let icon = '🔒';
+      if (isInternalized) {
+        statusClass = 'internalized';
+        icon = '✨';
       } else if (isCooking) {
-        node.classList.add('internalizing');
-        statusText = `${isCooking.progress}/${isCooking.requiredTicks} Ticks`;
+        statusClass = 'internalizing';
+        icon = '⏳';
       } else if (isKnown) {
-        statusText = 'Available';
+        statusClass = 'unlocked';
+        icon = '💡';
       }
 
-      node.innerHTML = `
-        <div class="thought-icon-emblem">${isDone ? '🌟' : (isCooking ? '⏳' : (isKnown ? '💡' : '❓'))}</div>
-        <div class="thought-node-name">${isKnown || isCooking || isDone ? thought.name : 'Unknown Idea'}</div>
-        <div class="thought-status-pill">${statusText}</div>
+      const nodeCard = document.createElement('div');
+      nodeCard.className = `thought-node-card ${statusClass}`;
+      nodeCard.innerHTML = `
+        <span class="node-icon">${icon}</span>
+        <div class="node-info">
+          <div class="node-title">${thought.name}</div>
+          <span class="node-category">${thought.category}</span>
+        </div>
       `;
 
-      node.addEventListener('click', () => {
-        document.querySelectorAll('.thought-slot-node').forEach(n => n.classList.remove('active-selected'));
-        node.classList.add('active-selected');
-        this.inspectThought(thought, isKnown, isCooking, isDone);
+      nodeCard.addEventListener('click', () => {
+        audio.playThoughtNode();
+        this.inspectThought(thought, { isInternalized, isCooking, isKnown });
       });
 
-      this.thoughtNodesContainer.appendChild(node);
+      this.thoughtNodesContainer.appendChild(nodeCard);
     });
 
-    // Inspect first available thought
-    if (allThoughts[0]) {
-      this.inspectThought(allThoughts[0]);
-    }
+    // Default inspect first known or internalized
+    const firstKnown = THOUGHTS_CATALOG.find(t =>
+      this.state.thoughtCabinet.known.some(k => k.id === t.id) ||
+      this.state.thoughtCabinet.internalized.some(k => k.id === t.id)
+    ) || THOUGHTS_CATALOG[0];
+
+    this.inspectThought(firstKnown, {
+      isInternalized: this.state.thoughtCabinet.internalized.some(t => t.id === firstKnown.id),
+      isCooking: this.state.thoughtCabinet.internalizing.find(t => t.id === firstKnown.id),
+      isKnown: this.state.thoughtCabinet.known.some(t => t.id === firstKnown.id)
+    });
   }
 
-  inspectThought(thought, isKnown, isCooking, isDone) {
+  inspectThought(thought, status) {
+    const { isInternalized, isCooking, isKnown } = status;
+
     let actionBtnHtml = '';
-    if (isDone) {
-      actionBtnHtml = `<div style="color:var(--gold-accent);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">✨ PERMANENTLY INTERNALIZED IN SYNAPSES</div>`;
+    if (isInternalized) {
+      actionBtnHtml = `<div style="color:var(--gold-accent);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">✨ PERMANENT BREAKTHROUGH ACTIVE</div>`;
     } else if (isCooking) {
-      actionBtnHtml = `<div style="color:var(--color-psyche);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">⏳ Internalizing... (${isCooking.progress}/${thought.requiredTicks} case moments passed)</div>`;
+      actionBtnHtml = `<div style="color:var(--color-psyche);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">⏳ Internalizing... (${isCooking.progress}/${thought.requiredTicks} case moments)</div>`;
     } else if (isKnown) {
       actionBtnHtml = `<button class="internalize-action-btn" id="btn-start-internalize">INTERNALIZE THIS THOUGHT</button>`;
     } else {
@@ -2190,7 +8145,7 @@ class UIController {
     }
   }
 
-  // Inventory Modal
+  // Inventory Modal with genuine usable consequences
   openInventoryModal() {
     this.openModal(this.inventoryModal);
     this.renderInventory();
@@ -2198,6 +8153,8 @@ class UIController {
 
   renderInventory() {
     this.inventoryContainer.innerHTML = '';
+    const lang = this.state.currentLanguage;
+
     this.state.inventory.forEach(item => {
       const card = document.createElement('div');
       card.className = 'inv-card';
@@ -2207,23 +8164,36 @@ class UIController {
         bonusText = Object.entries(item.bonus).map(([k, v]) => `+${v} ${k.toUpperCase()}`).join(', ');
       }
 
+      const itemName = tItem(item.id, 'name', lang) || item.name;
+      const itemDesc = tItem(item.id, 'description', lang) || item.description;
+
+      let actionLabel = t('btn_use', lang);
+      if (item.id === 'perpetuum_ledger') actionLabel = t('btn_read', lang);
+      else if (item.id === 'broken_pocketwatch' || item.id === 'poison_chess_queen') actionLabel = t('btn_inspect', lang);
+
       card.innerHTML = `
         <div class="inv-header">
           <span class="inv-icon">${item.icon}</span>
           <div>
-            <div class="inv-name">${item.name}</div>
+            <div class="inv-name">${itemName}</div>
             <span class="inv-type-pill">${item.type}</span>
           </div>
         </div>
-        <div class="inv-description">${item.description}</div>
+        <div class="inv-description">${itemDesc}</div>
         ${bonusText ? `<div class="inv-bonus-text">Buff: ${bonusText}</div>` : ''}
-        ${item.type === 'consumable' ? `<button class="inv-use-btn" data-id="${item.id}">USE (${item.uses || 1})</button>` : ''}
+        <div class="inv-action-row">
+          ${item.isUsable ? `
+            <button class="inv-use-btn" data-id="${item.id}">
+              ${actionLabel} ${item.uses ? `(${item.uses} ${t('badge_uses', lang)})` : ''}
+            </button>
+          ` : `
+            <span class="inv-passive-badge">${t('badge_passive', lang)}</span>
+          `}
+        </div>
       `;
 
       card.querySelector('.inv-use-btn')?.addEventListener('click', () => {
         this.state.useItem(item.id);
-        audio.playUiClick();
-        this.renderInventory();
       });
 
       this.inventoryContainer.appendChild(card);
@@ -2233,36 +8203,76 @@ class UIController {
   // Clues Modal
   openCluesModal() {
     this.openModal(this.cluesModal);
+    this.renderClues();
+  }
+
+  renderClues() {
     this.cluesContainer.innerHTML = '';
+    const lang = this.state.currentLanguage;
     if (this.state.clues.length === 0) {
-      this.cluesContainer.innerHTML = '<div style="color:var(--text-muted);font-style:italic;padding:16px;">No decisive clues uncovered yet. Examine the crime scene thoroughly.</div>';
+      this.cluesContainer.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:16px;">${t('scene_location', lang)}</div>`;
       return;
     }
 
     this.state.clues.forEach(clue => {
       const card = document.createElement('div');
       card.className = 'clue-card';
+      const clueTitle = tClue(clue.id, 'title', lang) || clue.title;
+      const clueDesc = tClue(clue.id, 'desc', lang) || clue.desc;
+
       card.innerHTML = `
-        <div class="clue-title-line">📌 ${clue.title}</div>
-        <div class="clue-detail-text">${clue.desc}</div>
+        <div class="clue-title-line">📌 ${clueTitle}</div>
+        <div class="clue-detail-text">${clueDesc}</div>
       `;
       this.cluesContainer.appendChild(card);
     });
   }
 
+  // Atmospheric Game Over Horror Modal
+  showGameOver(payload) {
+    this.openModal(this.gameoverModal);
+    if (typeof audio !== 'undefined' && audio.playGameOver) {
+      audio.playGameOver();
+    }
+    const lang = this.state.currentLanguage;
+    const type = payload.type || 'physical';
+
+    const iconEl = document.getElementById('gameover-status-icon');
+    const titleEl = document.getElementById('gameover-title-text');
+    const reasonEl = document.getElementById('gameover-reason-text');
+    const proseEl = document.getElementById('gameover-prose-text');
+    const retryBtn = document.getElementById('btn-retry-inquiry');
+
+    if (type === 'physical') {
+      iconEl.textContent = '💀';
+    } else if (type === 'psychological') {
+      iconEl.textContent = '🧠';
+    } else if (type === 'arrest') {
+      iconEl.textContent = '🚨';
+    } else {
+      iconEl.textContent = '⏱️';
+    }
+
+    titleEl.textContent = tGameOver(type, 'title', lang);
+    reasonEl.textContent = payload.reason || tGameOver(type, 'title', lang);
+    proseEl.textContent = payload.description || tGameOver(type, 'description', lang);
+    retryBtn.textContent = t('btn_retry', lang);
+  }
+
   // Victory / Case Closed Modal
   showVictoryScreen() {
     this.openModal(this.victoryModal);
-    audio.playSuccess();
+    audio.playVictoryChime();
     const sum = document.getElementById('victory-summary-text');
+    const lang = this.state.currentLanguage;
     if (sum) {
       sum.innerHTML = `
-        <strong>CASE FILE: THE SILENT WATCHMAKER OF SAINT IRENE</strong><br><br>
+        <strong>${t('case_badge', lang)}</strong><br><br>
         Lead Investigator: <em>${this.state.detective.name}</em> ("${this.state.detective.alias}")<br>
         Signature Facet: <em>${this.state.detective.signatureSkill.toUpperCase()}</em><br>
         Clues Uncovered: <em>${this.state.clues.length} pieces of evidence</em><br>
         Thoughts Internalized: <em>${this.state.thoughtCabinet.internalized.length}</em><br><br>
-        You have solved one of the darkest conspiracies in District 7. The rain continues to pour over the city, but tonight, justice—or something resembling it—has been wrought.
+        ${t('ending_coverup', lang) || 'The inquiry is closed. Justice has been wrought in Saint Irene.'}
       `;
     }
   }
@@ -2552,6 +8562,15 @@ function bootGame() {
         const initialPoi = (window.CASE_DATA || CASE_DATA)?.pointsOfInterest?.find(p => p.id === 'poi_pendulum');
         ui.startDialogue('examine_pendulum_start', 'Crime Scene: Pendulum Chamber', initialPoi);
         ui.showToast(`Case File Opened: Aurelia Vance · Welcome to District 7, Detective ${finalName}`);
+
+        // Briefly show scene overlay HUD for orientation on entry, then smoothly minimize to corner chip
+        const sceneHud = document.getElementById('scene-overlay-hud');
+        if (sceneHud) {
+          sceneHud.classList.remove('minimized');
+          setTimeout(() => {
+            if (sceneHud) sceneHud.classList.add('minimized');
+          }, 4500);
+        }
       }, 500);
     });
 
@@ -2598,6 +8617,18 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootGame);
 } else {
   bootGame();
+}
+
+// Global debug and test exposures
+if (typeof window !== 'undefined') {
+  window.aenigma = { state, CASE_DATA, getLocalizedDialogueNode, t, tClue, tPoi, tItem, tSkill, audio };
+  window.state = state;
+  window.CASE_DATA = CASE_DATA;
+  window.getLocalizedDialogueNode = getLocalizedDialogueNode;
+  window.t = t;
+  window.tClue = tClue;
+  window.tPoi = tPoi;
+  window.tSkill = tSkill;
 }
 
 

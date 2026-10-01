@@ -283,6 +283,15 @@ function bootGame() {
         const initialPoi = (window.CASE_DATA || CASE_DATA)?.pointsOfInterest?.find(p => p.id === 'poi_pendulum');
         ui.startDialogue('examine_pendulum_start', 'Crime Scene: Pendulum Chamber', initialPoi);
         ui.showToast(`Case File Opened: Aurelia Vance · Welcome to District 7, Detective ${finalName}`);
+
+        // Briefly show scene overlay HUD for orientation on entry, then smoothly minimize to corner chip
+        const sceneHud = document.getElementById('scene-overlay-hud');
+        if (sceneHud) {
+          sceneHud.classList.remove('minimized');
+          setTimeout(() => {
+            if (sceneHud) sceneHud.classList.add('minimized');
+          }, 4500);
+        }
       }, 500);
     });
 
@@ -329,5 +338,17 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', bootGame);
 } else {
   bootGame();
+}
+
+// Global debug and test exposures
+if (typeof window !== 'undefined') {
+  window.aenigma = { state, CASE_DATA, getLocalizedDialogueNode, t, tClue, tPoi, tItem, tSkill, audio };
+  window.state = state;
+  window.CASE_DATA = CASE_DATA;
+  window.getLocalizedDialogueNode = getLocalizedDialogueNode;
+  window.t = t;
+  window.tClue = tClue;
+  window.tPoi = tPoi;
+  window.tSkill = tSkill;
 }
 

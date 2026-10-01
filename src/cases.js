@@ -62,11 +62,31 @@ export const CASE_DATA = {
       id: 'poi_floorboard',
       title: "Concealed Floorboard Safe",
       icon: '🗝️',
-      x: 36,
-      y: 80,
+      x: 38,
+      y: 73,
       image: 'assets/poi_safe.jpg',
       description: "A loose plank under discarded grease rags and bullet casings. Faint scratches mark the brass rivets.",
       initialNode: 'examine_safe_start'
+    },
+    {
+      id: 'poi_gantry_lantern',
+      title: "Upper Gantry & Alchemical Lantern",
+      icon: '🏮',
+      x: 26,
+      y: 18,
+      image: 'assets/poi_balcony.jpg',
+      description: "A narrow iron grating over the gear abyss. Broken glass and alchemical soot mark where a clandestine visitor waited.",
+      initialNode: 'examine_gantry_lantern'
+    },
+    {
+      id: 'poi_clock_chime_bell',
+      title: "Colossal Bronze Bell & Chime Gearing",
+      icon: '🔔',
+      x: 84,
+      y: 16,
+      image: 'assets/poi_pendulum.jpg',
+      description: "The eight-ton bell that tolls for District 7. A fine steel wire is wrapped through the clapper linkage down into the pendulum escapement.",
+      initialNode: 'examine_chime_bell'
     }
   ],
 
@@ -87,10 +107,13 @@ export const CASE_DATA = {
       ],
       options: [
         {
+          id: 'graves_opt_preliminary',
           text: '"What is your preliminary assessment, Graves?"',
           nextNode: 'graves_assessment'
         },
         {
+          id: 'graves_opt_rhetoric',
+          condition: (state) => !state.hasClue('clue_syndicate_bounty'),
           text: '[RHETORIC - Medium 10] "You seem in an awful hurry to file this report, Graves. Who called you first?"',
           check: {
             checkId: 'graves_rhetoric_press',
@@ -102,10 +125,20 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'graves_opt_conspiracy',
+          condition: (state) => state.hasClue('clue_syndicate_bounty') && !state.hasClue('clue_perpetuum_ledger'),
+          text: '"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is."',
+          nextNode: 'graves_ledger_hunt'
+        },
+        {
+          id: 'graves_opt_cigarette',
+          once: true,
+          condition: (state) => !state.hasItem('item_cigarettes'),
           text: '"I need a cigarette before my synapses completely disconnect."',
           nextNode: 'graves_cigarette'
         },
         {
+          id: 'graves_opt_leave',
           text: '[Leave dialogue]',
           action: 'close_dialogue'
         }
@@ -265,6 +298,8 @@ export const CASE_DATA = {
       ],
       options: [
         {
+          id: 'pendulum_opt_pry_hand',
+          condition: (state) => !state.hasClue('clue_poison_needle'),
           text: '[PERCEPTION - Challenging 12] Pry open her frozen right hand to see what she clenched before dying.',
           check: {
             checkId: 'check_pry_hand',
@@ -276,6 +311,8 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'pendulum_opt_esoterica',
+          condition: (state) => !state.hasClue('clue_meridian_seal'),
           text: '[ESOTERICA - Medium 10] Study the strange geometric incision carved into her collarbone.',
           check: {
             checkId: 'check_esoterica_rune',
@@ -287,10 +324,13 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'pendulum_opt_gears',
+          once: true,
           text: '[DANGEROUS] Reach deep into the churning escapement gears to look for dropped evidence.',
           nextNode: 'pendulum_gear_crush'
         },
         {
+          id: 'pendulum_opt_stepback',
           text: '[Step back from the corpse]',
           action: 'close_dialogue'
         }
@@ -423,6 +463,8 @@ export const CASE_DATA = {
       ],
       options: [
         {
+          id: 'watch_opt_interfacing',
+          condition: (state) => !state.hasClue('clue_watch_code'),
           text: '[INTERFACING - Medium 11] Pop open the back casing with your thumbnail to examine the inner movement.',
           check: {
             checkId: 'check_watch_open',
@@ -434,6 +476,9 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'watch_opt_take',
+          once: true,
+          condition: (state) => !state.hasItem('broken_pocketwatch'),
           text: '[Put the watch in evidence bag]',
           action: (state) => {
             state.addItem({
@@ -448,6 +493,7 @@ export const CASE_DATA = {
           nextNode: 'examine_watch_done'
         },
         {
+          id: 'watch_opt_stepback',
           text: '[Step back]',
           action: 'close_dialogue'
         }
@@ -515,6 +561,8 @@ export const CASE_DATA = {
       ],
       options: [
         {
+          id: 'balcony_opt_perception',
+          condition: (state) => !state.hasClue('clue_velvet_cyanide'),
           text: '[PERCEPTION - Easy 8] Search the wet flagstones for trace evidence.',
           check: {
             checkId: 'check_balcony_search',
@@ -526,6 +574,8 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'balcony_opt_fog',
+          once: true,
           text: 'Look over the railing into the fog.',
           action: (state) => {
             state.unlockThought('metaphysics_of_rain');
@@ -533,6 +583,7 @@ export const CASE_DATA = {
           nextNode: 'balcony_fog_reflection'
         },
         {
+          id: 'balcony_opt_return',
           text: '[Return inside]',
           action: 'close_dialogue'
         }
@@ -597,11 +648,14 @@ export const CASE_DATA = {
       text: "Under three layers of clock-oil soaked pine lies a heavy steel strongbox with three concentric brass rotary dials. It looks reinforced with lead lining.",
       options: [
         {
+          id: 'safe_opt_code',
           text: '[If combination known (7-3-12)] Enter the code found inside Aurelia\'s watch.',
-          condition: (state) => state.clues.some(c => c.id === 'clue_watch_code'),
+          condition: (state) => state.hasClue('clue_watch_code') && !state.hasClue('clue_perpetuum_ledger'),
           nextNode: 'safe_open_code'
         },
         {
+          id: 'safe_opt_logic',
+          condition: (state) => !state.hasClue('clue_perpetuum_ledger'),
           text: '[LOGIC - Hard 13] Attempt to deduce the tumbler alignment by acoustic vibration.',
           check: {
             checkId: 'check_safe_logic',
@@ -613,10 +667,13 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'safe_opt_brute',
+          condition: (state) => !state.hasClue('clue_perpetuum_ledger'),
           text: '[BRUTE FORCE - Dangerous] Try to pry open the heavy iron lid with a crowbar.',
           nextNode: 'safe_brute_trap'
         },
         {
+          id: 'safe_opt_leave',
           text: '[Leave safe untouched]',
           action: 'close_dialogue'
         }
@@ -706,10 +763,14 @@ export const CASE_DATA = {
       ],
       options: [
         {
+          id: 'madame_opt_alibi',
+          once: true,
           text: '"Where were you at 03:42 AM when the tower clock stopped?"',
           nextNode: 'madame_alibi'
         },
         {
+          id: 'madame_opt_empathy',
+          condition: (state) => !state.hasClue('clue_madame_motive'),
           text: '[EMPATHY - Medium 10] "You did not love her, did you, Madame?"',
           check: {
             checkId: 'check_madame_empathy',
@@ -721,8 +782,9 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'madame_opt_confession_red',
+          condition: (state) => (state.hasClue('clue_velvet_cyanide') || state.hasClue('clue_poison_needle')) && !state.flags.case_solved,
           text: '[RED CHECK] [AUTHORITY - Challenging 13] "Enough theatrics, Vivienne. We found the poisoned chess queen and the torn velvet from your coat on the balcony. You murdered her."',
-          condition: (state) => state.clues.some(c => c.id === 'clue_velvet_cyanide') || state.clues.some(c => c.id === 'clue_poison_needle'),
           check: {
             checkId: 'check_madame_confession_red',
             type: 'red',
@@ -733,10 +795,13 @@ export const CASE_DATA = {
           }
         },
         {
+          id: 'madame_opt_rash_accusation',
+          condition: (state) => !state.flags.case_solved,
           text: '[RASH ACCUSATION - Dangerous] "I don\'t need evidence, Vivienne! You killed Aurelia and I am arresting you right now!"',
           nextNode: 'madame_premature_arrest_fail'
         },
         {
+          id: 'madame_opt_stepaway',
           text: '[Step away]',
           action: 'close_dialogue'
         }
@@ -834,12 +899,19 @@ export const CASE_DATA = {
       ],
       options: [
         {
+          id: 'confession_opt_arrest',
           text: '[DELIVER FINAL JUDGMENT: Arrest Madame Vance for murder]',
           nextNode: 'ending_arrest'
         },
         {
+          id: 'confession_opt_coverup',
           text: '[DELIVER FINAL JUDGMENT: Hide the Perpetuum Ledger and file it as an accidental death]',
           nextNode: 'ending_coverup'
+        },
+        {
+          id: 'confession_opt_syndicate_bust',
+          text: '[DELIVER REVOLUTIONARY JUDGMENT: Hand the Perpetuum Ledger to the Worker\'s Union press and expose the Syndicate!]',
+          nextNode: 'ending_syndicate_bust'
         }
       ]
     },
@@ -867,6 +939,81 @@ export const CASE_DATA = {
       options: [
         {
           text: '[CASE CLOSED: View Case Summary Dossier]',
+          action: 'trigger_victory'
+        }
+      ]
+    },
+
+    
+    examine_gantry_lantern: {
+      speaker: 'Alchemical Lantern Catwalk',
+      avatar: '🏮',
+      text: "A cold draft rushes through the high iron grating. Shards of amber chemical glass crunch beneath your boot. Etched into a broken neck piece is the Grand Syndicate's mercury serpent seal.",
+      voices: [
+        {
+          voice: 'Ratio',
+          color: 'var(--color-intellect)',
+          badge: 'RATIO [Intellect]',
+          text: "This confirms a clandestine drop hours before the death. The Syndicate delivered the chemical precursors directly to this tower."
+        }
+      ],
+      action: (state) => {
+        state.addClue({
+          id: 'clue_shattered_reagents',
+          title: 'Shattered Reagents & Syndicate Crest',
+          desc: 'Discovered on the lantern catwalk. Chemical glass vials bearing the Grand Syndicate mercury seal, confirming delivery hours before death.'
+        });
+        state.gainXp(25);
+      },
+      options: [
+        {
+          id: 'lantern_opt_back',
+          text: '[Step back down to the main floor]',
+          action: 'close_dialogue'
+        }
+      ]
+    },
+
+    examine_chime_bell: {
+      speaker: 'Colossal Bell & Acoustic Escapement',
+      avatar: '🔔',
+      text: "You look up into the cavernous rim of the eight-ton bronze bell. Tied to the heavy iron clapper is a taut piano wire running through tiny brass pulleys down to the pendulum latch.",
+      voices: [
+        {
+          voice: 'Reflex',
+          color: 'var(--color-motorics)',
+          badge: 'REFLEX [Motorics]',
+          text: "Ingenious acoustics. When the clock struck 03:42, the vibration and swing of the clapper yanked the tripwire, releasing the fatal counterweight automatically."
+        }
+      ],
+      action: (state) => {
+        state.addClue({
+          id: 'clue_acoustic_tripwire',
+          title: 'Acoustic Resonance Tripwire Mechanism',
+          desc: 'Fastened inside the Saint Irene bronze bell. It explains how the pendulum was mechanically tripped precisely on the 42nd minute stroke.'
+        });
+        state.gainXp(25);
+      },
+      options: [
+        {
+          id: 'chime_opt_back',
+          text: '[Step down from the bell housing]',
+          action: 'close_dialogue'
+        }
+      ]
+    },
+
+    ending_syndicate_bust: {
+      speaker: 'The Revolutionary Firebrand',
+      avatar: '🔥',
+      text: "You refuse Graves's bribes and Vivienne's fatalism. At dawn, you hand the Perpetuum Ledger and the Syndicate bribery slips directly to the clandestine printing press of the District 7 Worker's Union. By midday, 50,000 gazettes hit the cobblestones. The corrupt precinct captain is ousted, the cartel's factories are paralyzed by general strike, and the truth of Aurelia Vance becomes an indelible spark of liberation.",
+      action: (state) => {
+        state.flags.case_solved = true;
+        state.flags.ending_type = 'syndicate_bust';
+      },
+      options: [
+        {
+          text: '[CASE CONCLUDED: View Final Case Dossier]',
           action: 'trigger_victory'
         }
       ]

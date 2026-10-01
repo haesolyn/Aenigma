@@ -47,12 +47,14 @@
 }
 
 /* Interactive Points of Interest (POIs) */
+/* Interactive Points of Interest (POIs) */
 .poi-marker {
   position: absolute;
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 25;
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  user-select: none;
 }
 
 .poi-marker:hover {
@@ -64,34 +66,39 @@
   z-index: 40;
 }
 
-.poi-marker.active .poi-pin-circle {
+.poi-marker.active .poi-pin-circle,
+.poi-marker.active .poi-icon-box {
   border-color: #fff;
   background: rgba(30, 24, 15, 0.98);
   box-shadow: 0 0 20px var(--gold-accent), 0 0 8px #fff;
   transform: scale(1.12);
 }
 
-.poi-marker.active .poi-pulse-radar {
+.poi-marker.active .poi-pulse-radar,
+.poi-marker.active .poi-sonar-pulse {
   border-color: #fff;
   animation-duration: 1.2s;
 }
 
-.poi-pin-circle {
+.poi-pin-circle,
+.poi-icon-box {
   width: 44px;
   height: 44px;
-  background: rgba(18, 21, 30, 0.92);
+  background: rgba(14, 17, 24, 0.92);
   border: 2px solid var(--gold-accent);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4), 0 4px 12px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.4), 0 4px 14px rgba(0, 0, 0, 0.85);
   position: relative;
   transition: all 0.25s ease;
+  pointer-events: auto;
 }
 
-.poi-pulse-radar {
+.poi-pulse-radar,
+.poi-sonar-pulse {
   position: absolute;
   top: -8px;
   left: -8px;
@@ -108,12 +115,13 @@
   100% { transform: scale(1.6); opacity: 0; }
 }
 
-.poi-tooltip-card {
+.poi-tooltip-card,
+.poi-label-tooltip {
   position: absolute;
   bottom: 52px;
   left: 50%;
   transform: translateX(-50%) translateY(6px);
-  background: rgba(14, 16, 23, 0.96);
+  background: rgba(10, 13, 20, 0.96);
   border: 1px solid var(--border-bright);
   border-radius: 4px;
   padding: 8px 12px;
@@ -124,17 +132,47 @@
   word-wrap: break-word;
   pointer-events: none;
   opacity: 0;
-  transition: all 0.2s ease;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9);
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.95);
   display: flex;
   flex-direction: column;
   gap: 3px;
   z-index: 100;
 }
 
-.poi-marker:hover .poi-tooltip-card {
+.poi-marker:hover .poi-tooltip-card,
+.poi-marker:hover .poi-label-tooltip {
   opacity: 1;
+  visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Smart Tooltip Positions (Never go off-screen or cover other markers) */
+.poi-marker.tooltip-below .poi-tooltip-card {
+  bottom: auto;
+  top: 52px;
+  transform: translateX(-50%) translateY(-6px);
+}
+.poi-marker.tooltip-below:hover .poi-tooltip-card {
+  transform: translateX(-50%) translateY(0);
+}
+
+.poi-marker.tooltip-left .poi-tooltip-card {
+  left: 0;
+  transform: translateX(0) translateY(6px);
+}
+.poi-marker.tooltip-left:hover .poi-tooltip-card {
+  transform: translateX(0) translateY(0);
+}
+
+.poi-marker.tooltip-right .poi-tooltip-card {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(6px);
+}
+.poi-marker.tooltip-right:hover .poi-tooltip-card {
+  transform: translateX(0) translateY(0);
 }
 
 .poi-tooltip-title {
@@ -151,34 +189,256 @@
   color: var(--text-secondary);
 }
 
-/* Scene Quick Status Overlay HUD */
+/* Scene Viewport Controls Floating Toolbar (Show/Hide Markers & Sonar Ping) */
+.scene-viewport-controls {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 30;
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.scene-ctrl-chip {
+  background: rgba(8, 11, 18, 0.65);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 20px;
+  padding: 5px 12px;
+  color: var(--gold-accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.scene-ctrl-chip:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: #fff;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+}
+
+.scene-ctrl-chip.active {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: var(--gold-accent);
+  color: #fff;
+}
+
+/* Markers Hidden State */
+.scene-viewport.markers-hidden #scene-markers-layer {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#scene-markers-layer {
+  transition: opacity 0.3s ease;
+}
+
+/* Auto-Dim Inactive Markers When A POI is Active (Zero Visual Clutter) */
+#scene-markers-layer.has-active-poi .poi-marker:not(.active) {
+  opacity: 0.32;
+  transform: translate(-50%, -50%) scale(0.85);
+  filter: grayscale(0.5);
+  transition: all 0.3s ease;
+}
+
+#scene-markers-layer.has-active-poi .poi-marker:not(.active):hover {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.15);
+  filter: none;
+  z-index: 50;
+}
+
+/* Scene Quick Status Overlay HUD - Collapsible, Translucent, Dismissible */
 .scene-overlay-hud {
   position: absolute;
   bottom: 16px;
   left: 16px;
-  z-index: 15;
-  background: rgba(10, 12, 17, 0.85);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  padding: 10px 16px;
+  z-index: 20;
+  background: rgba(8, 11, 18, 0.55);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 6px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  max-width: 360px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+  opacity: 0.65;
+}
+
+.scene-overlay-hud:hover,
+.scene-overlay-hud:focus-within {
+  opacity: 1;
+  background: rgba(10, 14, 22, 0.85);
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+.scene-overlay-hud.intro-briefing {
+  opacity: 1;
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35), 0 8px 30px rgba(0,0,0,0.8);
+}
+
+.scene-overlay-hud.minimized {
+  max-width: 190px;
+  padding: 4px 8px;
+  background: rgba(8, 11, 18, 0.45);
+  border-color: rgba(212, 175, 55, 0.2);
+  opacity: 0.55;
+}
+
+.scene-overlay-hud.dismissed {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.95);
+  display: none;
+}
+
+.scene-hud-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   gap: 6px;
-  backdrop-filter: blur(8px);
-  max-width: 380px;
+}
+
+.scene-hud-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--gold-accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background 0.2s, color 0.2s;
+  flex: 1;
+  text-align: left;
+}
+
+.scene-hud-toggle-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: #fff;
+}
+
+.scene-hud-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.scene-hud-close-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.scene-hud-restore-pin {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 20;
+  background: rgba(8, 11, 18, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--gold-accent);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s ease;
+}
+
+.scene-hud-restore-pin:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: #fff;
+  color: #fff;
+  transform: scale(1.15);
+}
+
+.scene-hud-restore-pin.hidden {
+  display: none;
+}
+
+.hud-toggle-pin {
+  font-size: 0.85rem;
+}
+
+.hud-toggle-title {
+  flex: 1;
+  font-weight: 700;
+}
+
+.hud-toggle-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+  color: var(--text-muted);
+}
+
+.scene-overlay-hud.minimized .hud-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.scene-hud-body {
+  overflow: hidden;
+  max-height: 120px;
+  opacity: 1;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.25s ease;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scene-overlay-hud.minimized .scene-hud-body {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  pointer-events: none;
 }
 
 .scene-location-title {
   font-family: var(--font-heading);
-  font-size: 1rem;
-  letter-spacing: 1.5px;
+  font-size: 0.92rem;
+  letter-spacing: 1.2px;
   color: #fff;
 }
 
 .scene-time-stamp {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--gold-burnished);
+  line-height: 1.35;
 }
 
 /* --------------------------------------------------------------------------

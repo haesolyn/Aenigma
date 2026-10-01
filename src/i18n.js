@@ -1,13 +1,14 @@
+import { DIALOGUE_I18N_FULL, CLUES_I18N_FULL, NEW_POIS_I18N } from './dialogue_i18n.js';
 // Aenigma Multi-Language Localization System (12 Native Languages)
 // Supported: id (Indonesian), en (English), ja (Japanese), zh (Chinese Simplified),
 // ko (Korean), es (Spanish), fr (French), de (German), ru (Russian),
 // it (Italian), pt (Portuguese), ar (Arabic)
 
 export const SUPPORTED_LANGUAGES = [
-  { code: 'id', name: 'Bahasa Indonesia', native: 'Bahasa Indonesia', flag: '🇮🇩', dir: 'ltr' },
   { code: 'en', name: 'English', native: 'English', flag: '🇬🇧', dir: 'ltr' },
-  { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵', dir: 'ltr' },
+  { code: 'id', name: 'Bahasa Indonesia', native: 'Bahasa Indonesia', flag: '🇮🇩', dir: 'ltr' },
   { code: 'zh', name: 'Chinese', native: '简体中文', flag: '🇨🇳', dir: 'ltr' },
+  { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵', dir: 'ltr' },
   { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', dir: 'ltr' },
   { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', dir: 'ltr' },
   { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', dir: 'ltr' },
@@ -15,8 +16,64 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺', dir: 'ltr' },
   { code: 'it', name: 'Italian', native: 'Italiano', flag: '🇮🇹', dir: 'ltr' },
   { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹', dir: 'ltr' },
-  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', dir: 'rtl' }
+  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', dir: 'rtl' },
 ];
+
+export const PROGRESS_LABELS = {
+  en: 'PROGRESS',
+  id: 'PROGRES',
+  zh: '破案进度',
+  ja: '捜査進捗',
+  ko: '수사 진행',
+  es: 'PROGRESO',
+  fr: 'PROGRESSION',
+  de: 'FORTSCHRITT',
+  ru: 'ПРОГРЕСС',
+  it: 'PROGRESSO',
+  pt: 'PROGRESSO',
+  ar: 'تقدم القضية'
+};
+
+export const SKILL_NAMES_I18N = {
+  logic: { en: 'Logic', id: 'Logika', zh: '逻辑', ja: '論理', ko: '논리', es: 'Lógica', fr: 'Logique', de: 'Logik', ru: 'Логика', it: 'Logica', pt: 'Lógica', ar: 'المنطق' },
+  encyclopedia: { en: 'Encyclopedia', id: 'Ensiklopedia', zh: '百科', ja: '百科事典', ko: '백과사전', es: 'Enciclopedia', fr: 'Encyclopédie', de: 'Enzyklopädie', ru: 'Энциклопедия', it: 'Enciclopedia', pt: 'Enciclopédia', ar: 'الموسوعة' },
+  rhetoric: { en: 'Rhetoric', id: 'Retorika', zh: '修辞', ja: '修辞学', ko: '수사학', es: 'Retórica', fr: 'Rhétorique', de: 'Rhetorik', ru: 'Риторика', it: 'Retorica', pt: 'Retórica', ar: 'البلاغة' },
+  conceptualization: { en: 'Conceptualization', id: 'Konseptualisasi', zh: '概念化', ja: '概念化', ko: '개념화', es: 'Conceptualización', fr: 'Conceptualisation', de: 'Konzeptualisierung', ru: 'Концептуализация', it: 'Concettualizzazione', pt: 'Conceptualização', ar: 'المفاهيم' },
+  empathy: { en: 'Empathy', id: 'Empati', zh: '共情', ja: '共感', ko: '공감', es: 'Empatía', fr: 'Empathie', de: 'Empathie', ru: 'Эмпатия', it: 'Empatia', pt: 'Empatia', ar: 'التعاطف' },
+  esoterica: { en: 'Esoterica', id: 'Esoterika', zh: '秘教', ja: '秘教', ko: '비전', es: 'Esotérica', fr: 'Ésotérisme', de: 'Esoterik', ru: 'Эзотерика', it: 'Esoterismo', pt: 'Esoterismo', ar: 'الباطنية' },
+  authority: { en: 'Authority', id: 'Otoritas', zh: '威信', ja: '威信', ko: '권위', es: 'Autoridad', fr: 'Autorité', de: 'Autorität', ru: 'Авторитет', it: 'Autorità', pt: 'Autoridade', ar: 'السلطة' },
+  suggestion: { en: 'Suggestion', id: 'Sugesti', zh: '暗示', ja: '暗示', ko: '암시', es: 'Sugestión', fr: 'Suggestion', de: 'Suggestion', ru: 'Внушение', it: 'Suggestione', pt: 'Sugestão', ar: 'الإيحاء' },
+  endurance: { en: 'Endurance', id: 'Daya Tahan', zh: '耐力', ja: '耐久力', ko: '인내력', es: 'Resistencia', fr: 'Endurance', de: 'Ausdauer', ru: 'Стойкость', it: 'Resistenza', pt: 'Resistência', ar: 'التحمل' },
+  painThreshold: { en: 'Pain Threshold', id: 'Ambang Rasa Sakit', zh: '疼痛阈值', ja: '痛覚閾値', ko: '통증 역치', es: 'Umbral de Dolor', fr: 'Seuil de Douleur', de: 'Schmerzgrenze', ru: 'Болевой порог', it: 'Soglia del Dolore', pt: 'Limiar de Dor', ar: 'عتبة الألم' },
+  electrochemistry: { en: 'Electrochemistry', id: 'Elektrokimia', zh: '生化反应', ja: '生化学', ko: '생체화학', es: 'Electroquímica', fr: 'Électrochimie', de: 'Elektrochemie', ru: 'Электрохимия', it: 'Elettrochimica', pt: 'Eletroquímica', ar: 'الكيمياء الحيوية' },
+  physicalInstrument: { en: 'Physical Instrument', id: 'Kekuatan Fisik', zh: '肉体器械', ja: '身体能力', ko: '신체적 도구', es: 'Instrumento Físico', fr: 'Instrument Physique', de: 'Körperkraft', ru: 'Физический инструмент', it: 'Strumento Fisico', pt: 'Instrumento Físico', ar: 'الأداة البدنية' },
+  perception: { en: 'Perception', id: 'Persepsi', zh: '知觉', ja: '知覚', ko: '지각', es: 'Percepción', fr: 'Perception', de: 'Wahrnehmung', ru: 'Внимательность', it: 'Percezione', pt: 'Percepção', ar: 'الإدراك' },
+  handEyeCoord: { en: 'Hand-Eye Coord', id: 'Koordinasi Tangan-Mata', zh: '手眼协调', ja: '手眼協調', ko: '협응력', es: 'Coord. Ojo-Mano', fr: 'Coord. Œil-Main', de: 'Hand-Auge-Koord.', ru: 'Координация', it: 'Coord. Occhio-Mano', pt: 'Coord. Mão-Olho', ar: 'التناسق الحركي' },
+  savoirFaire: { en: 'Savoir Faire', id: 'Savoir Faire', zh: '处世之道', ja: '処世術', ko: '기민성', es: 'Savoir Faire', fr: 'Savoir-Faire', de: 'Savoir Faire', ru: 'Самообладание', it: 'Savoir-Faire', pt: 'Savoir-Faire', ar: 'الكياسة' },
+  interfacing: { en: 'Interfacing', id: 'Penyelarasan Mesin', zh: '机构连动', ja: '機構連動', ko: '기계 조율', es: 'Conexión Mecánica', fr: 'Interfaçage', de: 'Mechanik', ru: 'Взаимодействие', it: 'Interazione', pt: 'Interação', ar: 'التعامل الميكانيكي' }
+};
+
+export function tSkill(skillKey, lang = 'en') {
+  if (SKILL_NAMES_I18N[skillKey]) {
+    return SKILL_NAMES_I18N[skillKey][lang] || SKILL_NAMES_I18N[skillKey]['en'] || skillKey.toUpperCase();
+  }
+  return skillKey.toUpperCase();
+}
+
+export const DISTRICT_LABELS = {
+  en: 'DISTRICT 7',
+  id: 'SEKTOR 7',
+  zh: '第七区',
+  ja: '第7管区',
+  ko: '제7구역',
+  es: 'DISTRITO 7',
+  fr: 'SECTEUR 7',
+  de: 'SEKTOR 7',
+  ru: 'СЕКТОР 7',
+  it: 'DISTRETTO 7',
+  pt: 'DISTRITO 7',
+  ar: 'المنطقة 7'
+};
 
 export const UI_TRANSLATIONS = {
   id: {
@@ -1256,6 +1313,67 @@ export const POI_I18N = {
       pt: 'Uma tábua solta oculta sob panos engraxados. Protegida por um pesado disco alquímico de três cilindros.',
       ar: 'لوح خشبي متخلخل تحت خرق شحم الماكينات، موصد بخزنة ثقيلة ذات قرص خيميائي ثلاثي التروس.'
     }
+  ,
+  poi_gantry_lantern: {
+    title: {
+      en: "Upper Gantry & Alchemical Lantern",
+      id: "Anjungan Atas & Lentera Alkimia",
+      zh: "提灯上层悬空回廊与炼金探灯",
+      ja: "上層キャットウォークと錬金ランタン",
+      ko: "상층 통로와 연금술 등불",
+      es: "Pasarela Superior y Linterna Alquímica",
+      fr: "Passerelle Supérieure et Lanterne Alchimique",
+      de: "Oberer Laufsteg und Alchemielaterne",
+      ru: "Верхние мостки и алхимический фонарь",
+      it: "Passerella Superiore e Lanterna Alchemica",
+      pt: "Passarela Superior e Lanterna Alquímica",
+      ar: "الممر العلوي وفانوس الكيمياء"
+    },
+    description: {
+      en: "A narrow iron grating over the gear abyss. Broken glass and alchemical soot mark where a clandestine visitor waited.",
+      id: "Kisi besi sempit di atas jurang roda gigi. Pecahan kaca dan jelaga alkimia menandai tempat kurir rahasia mengintai.",
+      zh: "悬空于齿轮深渊上方的狭窄铁栅回廊。碎玻璃与炼金煤烟残留在此，暴露出曾有秘密访客在暗中窥伺。",
+      ja: "歯車の深淵に架かる細い鉄格子通路。割れたガラスと錬金術の煤が、何者かが潜んでいた痕跡を物語る。",
+      ko: "톱니바퀴 심연 위에 놓인 좁은 철제 격자 통로. 깨진 유리와 연금술 그을음이 밀사의 잠복 흔적을 보여줍니다.",
+      es: "Una estrecha rejilla de hierro sobre el abismo de engranajes. Restos de vidrio y hollín alquímico marcan una visita secreta.",
+      fr: "Une étroite grille de fer au-dessus des engrenages. Du verre brisé et de la suie alchimique trahissent un intrus.",
+      de: "Ein schmaler Eisensteg über den Zahnrädern. Glasscherben und Ruß beweisen einen heimlichen Besucher.",
+      ru: "Узкая железная решетка над пропастью шестерен. Осколки стекла и сажа выдают присутствие тайного гостя.",
+      it: "Una stretta grata di ferro sull'abisso di ingranaggi. Vetri rotti e fuliggine alchemica indicano una presenza segreta.",
+      pt: "Uma estreita grade de ferro sobre o abismo de engrenagens. Cacos de vidro e fuligem revelam uma visita clandestina.",
+      ar: "ممر حديدي ضيق فوق هاوية التروس. زجاج محطم وسخام كيميائي يشيران إلى ترصد زائر سري قبل الحادث."
+    }
+  },
+  poi_clock_chime_bell: {
+    title: {
+      en: "Colossal Bronze Bell & Chime Gearing",
+      id: "Lonceng Perunggu Raksasa & Gigi Dentang",
+      zh: "圣艾琳青铜大钟与共振撞锤齿轮",
+      ja: "聖アイリーンの巨鐘と鐘打撃歯車",
+      ko: "성 아이린 청동 거대 종과 타종 기어",
+      es: "Campana Monumental y Engranajes del Carrillón",
+      fr: "Cloche Colossale et Engrenages de Sonnerie",
+      de: "Kolossale Bronzeglocke und Schlagwerk",
+      ru: "Исполинский бронзовый колокол и бойный механизм",
+      it: "Campana Monumentale e Meccanismo del Rintocco",
+      pt: "Sino Colossal de Bronze e Engrenagens do Carrilhão",
+      ar: "الجرس البرونزي الضخم وتروس دق الساعات"
+    },
+    description: {
+      en: "The eight-ton bell that tolls for District 7. A fine steel wire is wrapped through the clapper linkage down into the pendulum escapement.",
+      id: "Lonceng delapan ton yang berdentang bagi Distrik 7. Kawat baja tipis terlilit dari pemukul lonceng menuju mekanisme pendulum.",
+      zh: "重达八吨的圣艾琳主钟。一根极细的高张力钢丝从钟锤连杆悄然延伸至下方的钟摆脱扣装置上！",
+      ja: "第7区に時を告げる8トンの大鐘。打鐘レバーから振り子の脱進機へと細い鋼鉄ワイヤーが巧みに結ばれている。",
+      ko: "제7구역에 시각을 알리는 8톤 청동 종. 종 치는 추의 연결부에서 진자 탈착부까지 정교한 강철 와이어가 이어져 있습니다.",
+      es: "La campana de ocho toneladas que dobla para el Distrito 7. Un fino cable de acero conecta el badajo al péndulo.",
+      fr: "La cloche de huit tonnes qui sonne pour le District 7. Un fil d'acier fin relie le battant au balancier.",
+      de: "Die Acht-Tonnen-Glocke des Distrikts 7. Ein dünner Stahldraht verbindet den Klöppel mit dem Pendelwerk.",
+      ru: "Восьмитонный колокол 7-го района. Тонкий стальной тросик тянется от языка колокола к спусковому механизму маятника.",
+      it: "La campana da otto tonnellate del Distretto 7. Un sottile cavo d'acciaio collega il battaglio allo scappamento.",
+      pt: "O sino de oito toneladas que toca pelo Distrito 7. Um fino fio de aço liga o badalo ao escape do pêndulo.",
+      ar: "الجرس الضخم البالغ وزنه ثمانية أطنان. سلك فولاذي رفيع يربط لسان الجرس بآلية فك قفل البندول بدقة ميكانيكية."
+    }
+  }
   }
 };
 
@@ -1353,553 +1471,15 @@ export const GAMEOVER_I18N = {
 };
 
 // Clues Translations
-export const CLUES_I18N = {
-  clue_syndicate_bounty: {
-    title: {
-      id: 'Hadiah Sayembara Sindikat Jam',
-      en: 'The Grand Syndicate Ledger Bounty'
-    },
-    desc: {
-      id: 'Inspektur Graves disuap oleh Sindikat untuk mengamankan buku besar alkimia rahasia yang dicuri Vance.',
-      en: 'Inspector Graves was paid off by the Syndicate to retrieve an alchemical prototype ledger stolen by Vance.'
-    }
-  },
-  clue_poison_needle: {
-    title: {
-      id: 'Bidak Ratu Catur Beracun',
-      en: 'The Poisoned Queen'
-    },
-    desc: {
-      id: 'Aurelia Vance dilumpuhkan dengan jarum berongga beracun di dalam bidak catur sebelum digantung di pendulum.',
-      en: 'Aurelia Vance was paralyzed by a hollow needle concealed in a chess piece before being hung on the pendulum.'
-    }
-  },
-  clue_meridian_seal: {
-    title: {
-      id: 'Segel Meridian Pucat',
-      en: 'The Pale Meridian Seal'
-    },
-    desc: {
-      id: 'Korban merupakan anggota sekte horologis rahasia yang terobsesi membalikkan aliran waktu.',
-      en: 'The victim was initiated into an occult horological order attempting to reverse time.'
-    }
-  },
-  clue_watch_code: {
-    title: {
-      id: 'Kombinasi Brankas Lantai (7-3-12)',
-      en: 'Floorboard Safe Combination (7-3-12)'
-    },
-    desc: {
-      id: 'Korban mengukir kode kombinasi brankas rahasia di dalam jam sakunya, menghubungkannya ke Vivienne Vance.',
-      en: 'The victim inscribed the safe code inside her watch balance cock, linking it to Madame Vivienne Vance.'
-    }
-  },
-  clue_velvet_cyanide: {
-    title: {
-      id: 'Sobekan Beludru Biru & Ampul Sianida',
-      en: 'Torn Blue Velvet & Cyanide Vial'
-    },
-    desc: {
-      id: 'Ditemukan di balkon hujan. Cocok secara fisik dengan mantel beludru Nyonya Vivienne Vance.',
-      en: 'Found on the rain balcony. A direct physical match to Madame Vivienne Vance.'
-    }
-  },
-  clue_perpetuum_ledger: {
-    title: {
-      id: 'Buku Besar Perpetuum',
-      en: 'The Perpetuum Ledger'
-    },
-    desc: {
-      id: 'Bukti definitif bahwa Vance dibungkam agar tidak membongkar konspirasi pembakaran kota oleh Sindikat.',
-      en: 'The definitive proof that Vance was silenced to prevent her from exposing the Grand Syndicate arson conspiracy.'
-    }
-  },
-  clue_madame_motive: {
-    title: {
-      id: 'Motif Vivienne: Dendam & Pengabaian',
-      en: 'Vivienne\'s Motive: Vengeance & Neglect'
-    },
-    desc: {
-      id: 'Aurelia menelantarkan putri mereka yang sekarat demi menyelesaikan mesin pesanan Sindikat.',
-      en: 'Aurelia neglected their dying daughter to finish her machine for the Syndicate.'
-    }
-  },
-  clue_confession_full: {
-    title: {
-      id: 'KEBENARAN PENUH: Perjanjian Kematian Bersama',
-      en: 'THE FULL TRUTH: A Mutual Murder-Martyrdom'
-    },
-    desc: {
-      id: 'Vivienne meracuni Aurelia atas persetujuannya agar rancangan bom penunda waktu tidak jatuh ke tangan Sindikat.',
-      en: 'Vivienne poisoned Aurelia with her consent to prevent the Syndicate from seizing her time-delay incendiary blueprints.'
-    }
-  },
-  clue_needle_puncture: {
-    title: {
-      id: 'Luka Suntikan Mikroskopis di Leher Korban',
-      en: 'Microscopic Cyanide Puncture'
-    },
-    desc: {
-      id: 'Lensa presisi membuktikan racun disuntikkan ke leher Aurelia sebelum tubuhnya dipindahkan ke pendulum.',
-      en: 'Precision magnification reveals a tiny blue puncture wound on Aurelia\'s neck, confirming lethal injection before the fall.'
-    }
-  },
-  clue_syndicate_bribe: {
-    title: {
-      id: 'Catatan Suap Sindikat ke Vivienne Vance',
-      en: 'Syndicate Payoff Ledger'
-    },
-    desc: {
-      id: 'Catatan membuktikan Vivienne menerima 50.000 guilder untuk menyerahkan rancangan Aurelia kepada kartel.',
-      en: 'Records prove Vivienne Vance accepted 50,000 guilders to deliver Aurelia\'s delay-detonation blueprints.'
-    }
-  },
-  clue_poison_mechanism: {
-    title: {
-      id: 'Mekanisme Jarum Pegas Ratu Gading',
-      en: 'Spring-Loaded Needle Mechanism'
-    },
-    desc: {
-      id: 'Ratu catur gading menyembunyikan jarum bertekanan pegas yang diisi asam prusat mematikan.',
-      en: 'The ivory queen conceals a pressurized needle chamber loaded with fatal prussic acid.'
-    }
-  }
-};
+export const CLUES_I18N = (typeof CLUES_I18N_FULL !== 'undefined') ? CLUES_I18N_FULL : {};
 
 // Dialogue Nodes Localizations
-export const DIALOGUE_I18N = {
-  graves_dialogue_start: {
-    speaker: {
-      id: 'Inspektur Graves',
-      en: 'Inspector Graves',
-      ja: 'グレイヴス警部',
-      zh: '格雷夫斯警探',
-      ko: '그레이브스 형사',
-      es: 'Inspector Graves',
-      fr: 'Inspecteur Graves',
-      de: 'Inspektor Graves',
-      ru: 'Инспектор Грейвс',
-      it: 'Ispettore Graves',
-      pt: 'Inspetor Graves',
-      ar: 'المفتش غريفز'
-    },
-    text: {
-      id: 'Kamu akhirnya berhasil menyeret dirimu menaiki enam lantai tangga, Detektif. Baumu seperti tidur di saluran pembuangan Whirling Gull. Lihat kekacauan ini. Hakim kota sudah berteriak histeris di telepon.',
-      en: 'You finally dragged yourself up six flights of stairs, Detective. You reek like you slept in an open sewer behind the Whirling Gull. Take a look at this mess. The city magistrate is already screaming on the wire.'
-    },
-    voices: [
-      {
-        voice: { id: 'Rasio', en: 'Ratio' },
-        badge: { id: 'RASIO [Intelek]', en: 'RATIO [Intellect]' },
-        text: {
-          id: 'Perhatikan kerah bajunya. Ada abu tembakau kering di lapelnya, tapi matanya terus melirik ke arah sang janda. Dia gelisah. Dia ingin kasus ini ditutup sebagai kecelakaan sebelum fajar.',
-          en: 'Look at his collar. There\'s dried tobacco ash on his lapel, but his eyes are darting toward the widow. He\'s nervous. He wants this closed as an accident before dawn.'
-        }
-      }
-    ],
-    options: [
-      { id: '"Bagaimana penilaian awalmu, Graves?"', en: '"What is your preliminary assessment, Graves?"' },
-      { id: '[RETORIKA - Sedang 10] "Terburu-buru sekali kamu menutup laporan ini, Graves. Siapa yang menghubungimu duluan?"', en: '[RHETORIC - Medium 10] "You seem in an awful hurry to file this report, Graves. Who called you first?"' },
-      { id: '"Aku butuh sebatang rokok sebelum sinapsis sarafku benar-benar putus."', en: '"I need a cigarette before my synapses completely disconnect."' },
-      { id: '[Tinggalkan percakapan]', en: '[Leave dialogue]' }
-    ]
-  },
-
-  graves_assessment: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: 'Aurelia tua sedang mengotak-atik roda escapement pukul tiga pagi. Dia terpeleset minyak pelumas mesin, meraih pendulum untuk menahan diri, dan beban penyeimbang menembus tulang rusuknya. Mengerikan, tapi murni kecelakaan kerja. Kasus ditutup, kita bisa pulang dan mengeringkan sepatu kita.',
-      en: 'Old Aurelia was up here tinkering with the escapement at three in the morning. She slipped on machine grease, grabbed the pendulum to catch herself, and the counterweight drove through her ribs. Gruesome, but an industrial accident. Case closed, we go home and dry our boots.'
-    },
-    voices: [
-      {
-        voice: { id: 'Insting Karnal', en: 'Carnal' },
-        badge: { id: 'KARNAL [Fisik]', en: 'CARNAL [Physique]' },
-        text: {
-          id: 'Bohong. Seseorang yang terpeleset ke depan tidak akan tertusuk dari belakang belikat dengan tangan terlipat rapi. Seseorang menahannya saat lengan besi raksasa itu menghujam ke bawah.',
-          en: 'Lies. A woman who slips forward doesn\'t land impaled through the back of her shoulder blades with her hands neatly folded. Someone held her down while the heavy iron arm descended.'
-        }
-      }
-    ],
-    options: [
-      { id: '"Kecelakaan? Lihat sudut masuk lukanya. Secara biomekanik itu mustahil."', en: '"Accident? Look at the wound entry angle. That is biomechanically impossible."' },
-      { id: '"Siapa orang terakhir yang melihatnya hidup?"', en: '"Who was the last person to see him alive?"' },
-      { id: '[Kembali ke penyelidikan utama]', en: '[Return to main inquiry]' }
-    ]
-  },
-
-  graves_rhetoric_win: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: 'Graves tersentak, rahangnya mengetat di sekitar batang korek api. "Kecilkan suaramu! Kurir dari Sindikat Agung datang ke flatku pukul 02:00. Katanya Vance mencuri prototipe buku besar alkimia. Jika kita mengamankannya, ada hadiah sepuluh ribu guilder untuk kita berdua."',
-      en: 'Graves flinches, his jaw tightening around the matchstick. "Lower your damn voice! A courier from the Grand Syndicate arrived at my flat at 02:00. He said Vance had stolen a prototype clockwork ledger. If we recover that ledger, there is a ten-thousand guilder bounty for both of us."'
-    },
-    options: [
-      { id: '"Jadi ini bukan soal kecelakaan. Di mana buku besar itu sekarang?"', en: '"So this was never about an accident. Where is the ledger now?"' },
-      { id: '[Kembali]', en: '[Return]' }
-    ]
-  },
-
-  graves_rhetoric_fail: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: 'Graves tertawa getir sambil batuk. "Jangan sok jadi detektif agung di depanku, sobat. Nomor lencanamu saja kamu lupa setelah mabuk semalam. Periksa mayat itu atau biarkan aku yang bekerja."',
-      en: 'Graves laughs harshly, coughing into his fist. "Don\'t play grand interrogator with me, partner. You don\'t even remember your own badge number after last night\'s binge. Check the body or let me do my job."'
-    },
-    options: [
-      { id: '"Baiklah. Biarkan aku memeriksa jenazahnya."', en: '"Fine. Let me inspect the corpse."' }
-    ]
-  },
-
-  graves_cigarette: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: 'Graves melemparkan kotak kardus kusut. "Astra Merah. Ambil satu. Kamu terlihat seperti mayat hidup yang berjalan."',
-      en: 'Graves tosses you a wrinkled cardboard box. "Astra Red. Take one. You look like a walking cadaver."'
-    },
-    options: [
-      { id: '[Hembuskan asap ke dalam kegelapan menara dan kembali]', en: '[Blow smoke into the gloom and return]' }
-    ]
-  },
-
-  graves_debate_wound: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: 'Graves merengut sambil melambaikan lenteranya. "Mungkin dia jatuh dari lantai atas! Dengar Detektif, sampai kamu bisa menunjukkan jejak kaki kedua atau senjata dengan sidik jari orang lain, Kapten ingin kasus ini dicap sebagai kecelakaan."',
-      en: 'Graves scowls, waving his lantern over the corpse. "Maybe he fell from the upper gantry! Look, Detective, until you show me a second set of footprints or a weapon with someone else\'s fingerprints, the Captain wants this stamped as accidental death."'
-    },
-    options: [
-      { id: '"Aku akan temukan buktinya. Menyingkirlah dari jalanku."', en: '"I will find the evidence. Just stay out of my way."' }
-    ]
-  },
-
-  graves_last_seen: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: '"Sang janda. Nyonya Vivienne. Dia mengaku membawakan teh peppermint untuk Aurelia tengah malam tadi, lalu turun ke kapel untuk doa malam. Alibi yang sangat rapi jika kamu tanya pendapatku."',
-      en: '"The widow. Madame Vivienne. She claims she brought him peppermint tea at midnight, then went down to the parish rectory for all-night vigil prayers. Convenient alibi, if you ask me."'
-    },
-    options: [
-      { id: '"Aku harus bicara langsung dengan Nyonya Vance."', en: '"I should speak with Madame Vance directly."' }
-    ]
-  },
-
-  graves_ledger_hunt: {
-    speaker: { id: 'Inspektur Graves', en: 'Inspector Graves' },
-    text: {
-      id: '"Kalau aku tahu di mana tempatnya, aku tidak akan kedinginan sampai ke tulang di menara ini! Vance punya brankas tersembunyi di bawah lantai ruang escapement. Tapi kuncinya kombinasi tiga putaran alkimia."',
-      en: '"If I knew where it was, I wouldn\'t be freezing my kidneys off in this tower! Vance had a hidden floorboard safe somewhere beneath the secondary escapement. But the lock is an alchemical three-tumbler dial."'
-    },
-    options: [
-      { id: '"Aku akan periksa papan lantainya."', en: '"I\'ll inspect the floorboards."' }
-    ]
-  },
-
-  examine_pendulum_start: {
-    speaker: { id: 'Pengamatan Forensik & Monolog Batin', en: 'Internal Monologue & Forensic Observation' },
-    text: {
-      id: 'Jenazah Aurelia Vance terpaku bagai serangga pada beban kuningan pendulum. Blus linennya mengeras oleh darah yang mengering. Anehnya, genangan darah beku tidak berada persis di bawahnya—melainkan membentuk jejak seretan hitam enam langkah ke arah jendela.',
-      en: 'The body of Aurelia Vance is pinned like an insect against the brass counterweight. Her linen blouse is stiff with dried crimson. Strangely, the pool of coagulated blood is not directly underneath her—it forms a dark smear six paces toward the window.'
-    },
-    voices: [
-      {
-        voice: { id: 'Rasio', en: 'Ratio' },
-        badge: { id: 'RASIO [Intelek]', en: 'RATIO [Intellect]' },
-        text: {
-          id: 'Deduksi hipostasis: Korban tidak mati di sini. Dia dibunuh di dekat jendela, kehabisan darah, lalu diseret dan dipasang ke mekanisme jam agar penghentian pendulum tampak seperti kecelakaan.',
-          en: 'Hypostasis deduction: She did not die here on the pendulum. She was killed at the window sill, bled out, and her body was dragged and mounted onto the clock mechanism to make the stoppage seem like an accidental disaster.'
-        }
-      }
-    ],
-    options: [
-      { id: '[PERSEPSI - Sulit 12] Buka paksa tangan kanannya yang membeku untuk melihat apa yang digenggamnya sebelum mati.', en: '[PERCEPTION - Challenging 12] Pry open her frozen right hand to see what she clenched before dying.' },
-      { id: '[ESOTERIKA - Sedang 10] Teliti ukiran geometris aneh yang tergores di tulang selangkanya.', en: '[ESOTERICA - Medium 10] Study the strange geometric incision carved into her collarbone.' },
-      { id: '[Mundur dari jenazah]', en: '[Step back from the corpse]' }
-    ]
-  },
-
-  pendulum_pry_win: {
-    speaker: { id: 'Temuan Forensik Krusial', en: 'Forensic Discovery' },
-    text: {
-      id: 'Dengan bunyi kertak dari urat yang kaku, jemarinya terbuka. Di dalam telapak tangannya terdapat sebuah bidak catur gading hitam: Ratu Hitam dengan jarum perak terpasang di dasarnya. Ujung jarum berlumur residu ungu berbau manis yang mematikan.',
-      en: 'With a sharp snap of dried tendons, her fingers yield. Resting inside her palm is a carved ivory chess piece: a Black Queen with a silver needle embedded in its base. The needle tip is stained with a bitter, sweet-smelling violet residue.'
-    },
-    options: [
-      { id: '"Pembunuhnya tidak memakai kekerasan fisik. Mereka menggunakan trik sulap beracun."', en: '"The killer didn\'t use brute force. They used a parlor trick."' },
-      { id: '[Tutup]', en: '[Close]' }
-    ]
-  },
-
-  pendulum_pry_fail: {
-    speaker: { id: 'Kegagalan Otopsi', en: 'Forensic Attempt' },
-    text: {
-      id: 'Spasme mayat sangat kaku. Saat kamu memaksa membuka jemarinya, jarum beracun yang tersembunyi menyengat jarimu! Kamu tersentak kesakitan saat racun membakar kulitmu (-2 Daya Tahan, -1 Kewarasan).',
-      en: 'The cadaveric spasm is like cast iron. As you force her fingers, a concealed needle pricks your index finger, burning your flesh with neurotoxin (-2 Health, -1 Morale)!'
-    },
-    options: [
-      { id: '"Sialan! Tangan terkutuk ini dipasangi perangkap!"', en: '"Damn my trembling hands..."' }
-    ]
-  },
-
-  pendulum_esoterica_win: {
-    speaker: { id: 'Deduksi Okultisme Horologis', en: 'Occult Deduction' },
-    text: {
-      id: 'Di balik kerahnya yang berlumuran darah terdapat segel alkimia: lingkaran yang dibelah oleh tiga bulan sabit bersilangan. Simbol "Ordo Meridian Pucat"—perkumpulan rahasia para pembuat jam yang percaya aliran waktu dapat dibalikkan melalui resonansi mekanik.',
-      en: 'Beneath the blood-crusted collar lies an alchemical mark: a circle quartered by three intersecting crescents. The seal of "The Order of the Pale Meridian"—a secret cabal of horologists who believed time itself could be reversed through mechanical resonance.'
-    },
-    options: [
-      { id: '"Dia sedang merakit mesin yang dapat memutar balik waktu."', en: '"She was trying to build a machine that could un-live hours."' }
-    ]
-  },
-
-  pendulum_esoterica_fail: {
-    speaker: { id: 'Deduksi Buntu', en: 'Occult Deduction' },
-    text: {
-      id: 'Goresan itu tampak seperti luka acak akibat pecahan pegas jam. Kamu tidak bisa memahami geometrinya; kepalamu hanya berdenyut nyeri.',
-      en: 'The scratches look like random surgical cuts or lacerations from broken clock springs. You cannot make sense of the geometry; it just produces a throbbing headache in your temples.'
-    },
-    options: [
-      { id: '[Kedipkan mata dan berpaling]', en: '[Blink and look away]' }
-    ]
-  },
-
-  examine_watch_start: {
-    speaker: { id: 'Jam Saku Alkimia', en: 'The Alchemical Watch' },
-    text: {
-      id: 'Jam saku emas tergeletak di lantai. Kaca kristalnya retak membentuk pola sarang laba-laba, mati tepat pada pukul 03:42. Suara detak samar terdengar dari dalam, meski jarumnya membeku tanpa gerak.',
-      en: 'The gold pocket watch lies on the catwalk. The crystal face is spiderwebbed with cracks, frozen at 03:42. A faint ticking sound emanates from within, even though the hands are motionless.'
-    },
-    options: [
-      { id: '[PENYELARASAN - Sedang 11] Buka penutup belakangnya untuk memeriksa mekanisme di dalamnya.', en: '[INTERFACING - Medium 11] Pop open the back casing with your thumbnail to examine the inner movement.' },
-      { id: '[Masukkan jam ke dalam kantong bukti]', en: '[Put the watch in evidence bag]' },
-      { id: '[Mundur]', en: '[Step back]' }
-    ]
-  },
-
-  watch_open_win: {
-    speaker: { id: 'Rahasia Mekanik Terbuka', en: 'Mechanical Revelations' },
-    text: {
-      id: 'Pelat belakang terbuka dengan dentang kuningan yang merdu. Di dalam, terukir sandi rahasia: "V.V. - 7-3-12 - KUNCI BRANKAS HOROLOGIS". Di bawah roda keseimbangan terdapat potret miniatur Nyonya Vivienne Vance dari tiga puluh tahun lalu.',
-      en: 'The back plate clicks open with a sweet brass resonance. Inside, engraved into the gold balance cock, is a cipher code: "V.V. - 7-3-12 - SHE HAS THE CIPHER KEY". Underneath the balance spring is a miniature portrait of Madame Vivienne Vance, taken thirty years ago when she was an actress in the Grand Opera.'
-    },
-    options: [
-      { id: '"Kombinasi brankas rahasia: 7-3-12. Dan Aurelia tahu pasangannya akan datang mencarinya."', en: '"The combination to her secret safe: 7-3-12. And Vance knew her partner was coming for her."' }
-    ]
-  },
-
-  watch_open_fail: {
-    speaker: { id: 'Kesalahan Mekanik', en: 'Mechanical Mistake' },
-    text: {
-      id: 'Kukumu tergelincir pada engsel yang berminyak. Pegas rambut melesat bagai ular kuningan yang marah dan menyayat jarimu (-1 Daya Tahan)!',
-      en: 'Your thumbnail slips on the oiled bevel, snapping the delicate hinge. The hairspring flies out like a coiled brass viper and cuts your hand (-1 Health)!'
-    },
-    options: [
-      { id: '"Aduh! Pegasnya menyayat tanganku."', en: '"Ouch! The spring cut my finger."' }
-    ]
-  },
-
-  examine_watch_done: {
-    speaker: { id: 'Inventaris Diperbarui', en: 'Inventory Update' },
-    text: {
-      id: 'Kamu membungkus jam saku dengan saputangan sutra dan menyimpannya di saku mantel detektifmu.',
-      en: 'You wrap the pocket watch in a clean silk handkerchief and slip it into your trenchcoat pocket.'
-    },
-    options: [
-      { id: '[Lanjutkan penyelidikan]', en: '[Continue investigation]' }
-    ]
-  },
-
-  examine_balcony_start: {
-    speaker: { id: 'Tepi Menara Saint Irene', en: 'The Precipice of Saint Irene' },
-    text: {
-      id: 'Angin dingin melolong melalui lengkungan batu menara. Di bawah terbentang kegelapan Distrik 7—lampu-lampu gas berkelap-kelip seperti bintang yang meredup di atas tongkang kanal. Hujan deras menerpa wajahmu.',
-      en: 'Cold wind howls through the stone archway. Below lies the murky chasm of District 7—gas lamps flickering like dying stars across the canal barges. Rain spatters against your face.'
-    },
-    options: [
-      { id: '[PERSEPSI - Mudah 8] Cari jejak bukti di atas ubin batu yang basah.', en: '[PERCEPTION - Easy 8] Search the wet flagstones for trace evidence.' },
-      { id: 'Tatap kabut malam di atas kota.', en: 'Look over the railing into the fog.' },
-      { id: '[Kembali ke dalam]', en: '[Return inside]' }
-    ]
-  },
-
-  balcony_search_win: {
-    speaker: { id: 'Bukti Jejak Terungkap', en: 'Trace Evidence Found' },
-    text: {
-      id: 'Tersangkut pada patung gargoyle besi tempa adalah sobekan beludru biru tua. Warnanya identik dengan kerah mantel berkabung milik Nyonya Vance. Di sebelahnya, tergeletak ampul kaca kosong bertuliskan "Tinktur Somnus & Sianida".',
-      en: 'Snagged on the wrought-iron gargoyle is a torn shred of midnight-blue velvet. It matches the high collar of Madame Vance\'s mourning coat. Next to it, an empty glass ampoule labeled "Tincture of Somnus & Cyanide".'
-    },
-    options: [
-      { id: '"Bukti tak terbantahkan. Vivienne berada di balkon ini tepat setelah Aurelia tewas."', en: '"The smoking gun. She was here on the balcony right after Vance died."' }
-    ]
-  },
-
-  balcony_search_fail: {
-    speaker: { id: 'Jejak Terhapus', en: 'Diluted Traces' },
-    text: {
-      id: 'Hujan deras telah menghapus hampir semua jejak kaki. Kamu hanya menemukan noda lumpur dan genangan jelaga mesin.',
-      en: 'The driving downpour has washed away almost all footsteps. You only find muddy smears and puddles of soot.'
-    },
-    options: [
-      { id: '[Melangkah kembali ke dalam]', en: '[Step back inside]' }
-    ]
-  },
-
-  balcony_fog_reflection: {
-    speaker: { id: 'Renungan Suasana Hujan', en: 'Atmospheric Reverie' },
-    text: {
-      id: 'Kamu menatap kegelapan kota di bawah hujan. Kamu membuka pikiran baru: "Metafisika Hujan Dingin". Kamu bisa menginternalisasikannya di Lemari Pikiran.',
-      en: 'You stare down at the sprawling darkness of Malkuth-on-Thames. You have unlocked a new avenue of introspection: "Metaphysics of Cold Rain". You can internalize this thought in your Thought Cabinet.'
-    },
-    options: [
-      { id: '[Kembali ke ruang roda gigi]', en: '[Return to the gear room]' }
-    ]
-  },
-
-  examine_safe_start: {
-    speaker: { id: 'Kompartemen Rahasia Bawah Lantai', en: 'The Secret Floorboard Compartment' },
-    text: {
-      id: 'Di bawah tiga lapis papan pinus berlumur minyak terdapat kotak baja berat dengan tiga dial putar konsentris kuningan. Brankas ini dirancang dengan mekanisme anti-bongkar yang berbahaya.',
-      en: 'Under three layers of clock-oil soaked pine lies a heavy steel strongbox with three concentric brass rotary dials. It looks reinforced with lead lining.'
-    },
-    options: [
-      { id: '[Gunakan Kode Sandi (7-3-12)] Masukkan kombinasi yang ditemukan dari jam saku Aurelia.', en: '[If combination known (7-3-12)] Enter the code found inside Aurelia\'s watch.' },
-      { id: '[LOGIKA - Sulit 13] Coba deduksikan susunan silinder brankas melalui getaran akustik.', en: '[LOGIC - Hard 13] Attempt to deduce the tumbler alignment by acoustic vibration.' },
-      { id: '[PAKSA BUKA - Berbahaya] Coba congkel engsel brankas dengan linggis baja.', en: '[BRUTE FORCE - Dangerous] Try to pry open the heavy lid with brute force.' },
-      { id: '[Biarkan brankas]', en: '[Leave safe untouched]' }
-    ]
-  },
-
-  safe_open_code: {
-    speaker: { id: 'Brankas Berhasil Dibuka', en: 'Safe Opened' },
-    text: {
-      id: 'Grendel baja berat bergeser mundur dengan bunyi dentam yang dalam. Di dalam ceruk berlapis beludru terbaring "Buku Besar Rahasia Perpetuum"—dijilid dengan kulit kambing hitam dan roda gigi kuningan pada punggungnya, memuat transaksi rahasia Sindikat dan cetak biru alkimia!',
-      en: 'The heavy bolts retract with a deep, echoing clunk. Inside the velvet-lined recess lies the legendary "Perpetuum Ledger"—bound in black goatskin with brass cogwheels embedded in the spine, containing alchemical blueprints and secret syndicate accounts!'
-    },
-    options: [
-      { id: '"Aurelia tahu Vivienne akan meracuninya... dan dia membiarkannya terjadi."', en: '"Vance knew Vivienne was going to poison her... and she let her do it."' }
-    ]
-  },
-
-  safe_logic_fail: {
-    speaker: { id: 'Perangkap Brankas Meledak!', en: 'Lockpick Attempt' },
-    text: {
-      id: 'Silinder internal macet dengan derit memekakkan telinga. Ampul kaca anti-pencuri pecah, menyemburkan gas belerang beracun dan penjepit baja menghantam jarimu (-2 Daya Tahan, -1 Kewarasan)!',
-      en: 'The internal tumblers jam with a harsh screech. An internal anti-tamper glass vial cracks, releasing foul sulfur gas and a spring trap snaps on your hands (-2 Health, -1 Morale)!'
-    },
-    options: [
-      { id: '"Sialan! Perangkap brankas terkutuk!"', en: '"Damn anti-tamper traps!"' }
-    ]
-  },
-
-  madame_dialogue_start: {
-    speaker: { id: 'Nyonya Vivienne Vance', en: 'Madame Vivienne Vance' },
-    text: {
-      id: 'Nyonya Vance berbalik perlahan. Wajahnya sepucat marmer, dibingkai ikal rambut hitam basah dan kerudung sutra berkabung. "Apakah kamu sang penyelidik? Kamu tampak... berantakan, Detektif. Apakah kamu datang untuk mengungkap kematian Aurelia, atau sekadar menonton kehancuran kami?"',
-      en: 'Madame Vance turns slowly. Her face is pale as alabaster, framed by wet raven curls and a black silk veil. "Are you the investigator? You look... unraveled, Detective. Did you come here to solve Aurelia\'s death, or merely to gawk at our ruin?"'
-    },
-    options: [
-      { id: '"Di mana kamu berada pukul 03:42 saat jam menara berhenti?"', en: '"Where were you at 03:42 AM when the tower clock stopped?"' },
-      { id: '[EMPATI - Sedang 10] "Kamu tidak mencintainya, bukan, Nyonya?"', en: '[EMPATHY - Medium 10] "You did not love her, did you, Madame?"' },
-      { id: '[UJI MERAH] [OTORITAS - Menantang 13] "Cukup sandiwaranya, Vivienne. Kami menemukan ratu catur beracun dan sobekan mantelmu di balkon. Kamu membunuhnya."', en: '[RED CHECK] [AUTHORITY - Challenging 13] "Enough theatrics, Vivienne. We found the poisoned chess queen and the torn velvet from your coat on the balcony. You murdered her."' },
-      { id: '[TUDUHAN GEGABAH - Berbahaya] "Aku tidak butuh bukti, Vivienne! Kamu yang membunuhnya dan aku akan menangkapmu sekarang juga!"', en: '[RASH ACCUSATION - Dangerous] "I don\'t need evidence, Vivienne! You killed Aurelia and I am arresting you right now!"' },
-      { id: '[Mundur sejenak]', en: '[Step away]' }
-    ]
-  },
-
-  madame_alibi: {
-    speaker: { id: 'Nyonya Vivienne Vance', en: 'Madame Vivienne Vance' },
-    text: {
-      id: '"Sudah kukatakan pada rekanmu Inspektur Graves: aku berada di bawah di kapel Saint Irene, menyalakan lilin untuk jiwa-jiwa korban wabah. Romo gereja bisa bersaksi—meski dia tertidur di bilik pengakuan dosanya."',
-      en: '"I told your companion Inspector Graves: I was downstairs in the Saint Irene chapel, lighting candles for the departed souls of the epidemic. The priest can attest to my presence—though he was asleep in his confessional booth."'
-    },
-    options: [
-      { id: '"Alibi yang nyaman. Disaksikan seorang pendeta yang tertidur."', en: '"Convenient. An alibi witnessed by a sleeping priest."' }
-    ]
-  },
-
-  madame_empathy_win: {
-    speaker: { id: 'Nyonya Vivienne Vance', en: 'Madame Vivienne Vance' },
-    text: {
-      id: 'Matanya membesar sesaat, dan topeng porselennya runtuh. "Cinta? Aurelia tidak mencintai manusia, Detektif. Dia mencintai pegas, roda gigi, dan kuningan dingin. Selama tiga puluh tahun aku hanyalah pendulum rumah tangga di lorongnya. Saat putri kami meninggal karena penyakit paru-paru, dia malah di lantai atas merakit kronometer alkimia untuk dijual ke bankir asing."',
-      en: 'Her eyes widen slightly, and for a split second the porcelain mask drops. "Love? Aurelia did not love human beings, Detective. She loved springs, escapements, and cold brass gears. For thirty years I was just a domestic pendulum swinging in her hallway. While our daughter died of consumption, she was upstairs building an alchemical chronometer to sell to foreign bankers."'
-    },
-    options: [
-      { id: '"Jadi kamu memutuskan untuk menghentikan jam hidupnya untuk selamanya."', en: '"So you decided to stop her clock once and for all."' }
-    ]
-  },
-
-  madame_empathy_fail: {
-    speaker: { id: 'Nyonya Vivienne Vance', en: 'Madame Vivienne Vance' },
-    text: {
-      id: '"Betapa menjijikkan. Kamu tersandung masuk ke sini dengan bau alkohol murahan, dan berani mempertanyakan tiga puluh tahun kebersamaan kami? Inspektur Graves, singkirkan makhluk ini dari hadapanku!"',
-      en: '"How vulgar. You stumble in here, smelling of gin and cheap tobacco, and dare question thirty years together? Inspector Graves, remove this animal from my presence!"'
-    },
-    options: [
-      { id: '"Jaga lidahmu, Nyonya. Aku belum selesai."', en: '"Hold your tongue, Madame. I am not finished."' }
-    ]
-  },
-
-  madame_confession_win: {
-    speaker: { id: 'Runtuhnya Kebohongan', en: 'The Breaking of the Ice' },
-    text: {
-      id: 'Nyonya Vance terhuyung ke belakang menabrak lengkungan batu. Air mata membelah bedak tebal di pipinya. "Ya! Ya, aku memberinya ratu catur beracun itu! Tapi tahukah kamu apa yang dilakukannya saat aku menekan jarum ke telapak tangannya? Dia tersenyum. Dia berterima kasih padaku. Dia berkata: *Pendulumnya sudah disetel, Vivienne. Terima kasih telah membebaskanku.* Dia ingin mati! Dia mengorbankan dirinya agar Sindikat tidak pernah mendapatkan mesin perang itu!"',
-      en: 'Madame Vance staggers backward against the stone arch. Tears cut through the powdered chalk on her cheeks. "Yes! Yes, I gave her the poisoned queen! But do you know what she did when I pressed the needle into her palm? She smiled. She thanked me. She looked into my eyes and said, *The pendulum is already set, Vivienne. Thank you for freeing me from the winding.* She wanted to die! She rigged the clock so the Syndicate would never get their war machine!"'
-    },
-    options: [
-      { id: '[BERIKAN PUTUSAN HUKUM: Tangkap Nyonya Vance atas pembunuhan]', en: '[DELIVER FINAL JUDGMENT: Arrest Madame Vance for murder]' },
-      { id: '[BERIKAN PUTUSAN MORAL: Sembunyikan Buku Besar dan catat ini sebagai kecelakaan]', en: '[DELIVER FINAL JUDGMENT: Hide the Perpetuum Ledger and file it as an accidental death]' }
-    ]
-  },
-
-  madame_confession_fail: {
-    speaker: { id: 'Bantahan Dingin', en: 'Unshakable Defiance' },
-    text: {
-      id: '"Apakah kamu sudah gila?" Suaranya membeku bagai es. "Merekayasa tuduhan terhadap pasangan yang berduka di depan perwira polisi lainnya? Graves, tangkap orang mabuk ini sebelum dia menodai jasad Aurelia lebih jauh!" Graves melangkah maju dengan tangan di gagang pistolnya (-2 Kewarasan).',
-      en: '"Are you insane?" Her voice turns to ice. "Fabricating evidence against a grieving partner in front of another police officer? Graves, arrest this incompetent maniac before this creature desecrates Aurelia\'s remains any further!" Graves steps between you with his hand on his revolver (-2 Morale).'
-    },
-    options: [
-      { id: '"Ini belum berakhir, Vivienne."', en: '"This isn\'t over, Vivienne."' }
-    ]
-  },
-
-  madame_premature_arrest_fail: {
-    speaker: { id: 'Tindakan Gegabah yang Fatal', en: 'Catastrophic Blunder' },
-    text: {
-      id: 'Inspektur Graves mencengkeram bahumu dan mengokang pistol dinasnya. "Cukup, Detektif! Kamu menuduh warga tanpa selembar pun bukti fisik sambil berbau alkohol. Serahkan lencana dan senjatamu. Kamu ditangkap atas pemerasan dan pelanggaran berat!"',
-      en: 'Inspector Graves grabs your shoulder and cocks his service revolver. "That is enough, Detective! You have no proof, you reek of alcohol, and you are terrorizing a grieving citizen under police protection. Hand over your badge. You are under arrest for extortion and gross misconduct!"'
-    },
-    options: [
-      { id: '[Pasrah pada borgol baja]', en: '[Yield to the handcuffs]' }
-    ]
-  },
-
-  ending_arrest: {
-    speaker: { id: 'Kasus Ditutup: Keadilan Hukum yang Kaku', en: 'Case Concluded: The Letter of the Law' },
-    text: {
-      id: 'Kamu mengunci borgol baja dingin di pergelangan tangan Vivienne Vance. Inspektur Graves menatap takjub dan penuh hormat saat kamu menyerahkan bidak ratu gading beracun. Hukum telah ditegakkan. Besok surat kabar akan memuji kepiawaian Distrik 4. Namun saat kamu menuruni tangga ke dalam hujan, kamu bertanya-tanya apakah keadilan benar-benar telah terwujud bagi seorang wanita yang jiwanya telah mati tiga puluh tahun lalu.',
-      en: 'You snap the cold steel manacles around Vivienne Vance\'s wrists. Inspector Graves stares in awe and grudging respect as you hand him the poisoned ivory queen. The law has been served. Tomorrow the newspapers will proclaim the brilliance of Precinct 4. But as you walk down into the rain, you wonder if justice was truly done to a woman whose soul died thirty years ago.'
-    },
-    options: [
-      { id: '[KASUS SELESAI: Lihat Ringkasan Akhir Dossier]', en: '[CASE CLOSED: View Case Summary Dossier]' }
-    ]
-  },
-
-  ending_coverup: {
-    speaker: { id: 'Kasus Ditutup: Sang Penentu Keadilan Moral', en: 'Case Concluded: The Sovereign Bureaucrat' },
-    text: {
-      id: 'Kamu menyelipkan Buku Besar Perpetuum dan ampul racun ke dalam saku mantel dalammu. Kamu menatap mata Graves dan berkata: "Minyak mesin pada titian. Aurelia terpeleset murni kecelakaan. Stempel berkasnya." Vivienne menatapmu dari balik kerudungnya dengan air mata kelegaan yang tak terkatakan. Kamu melangkah keluar menyambut fajar Distrik 7, bukan sebagai budak hukum tertulis, melainkan sebagai penentu belas kasih.',
-      en: 'You slide the Perpetuum Ledger into your inner coat pocket and slip the cyanide ampoule into your pocket. You look Graves in the eye and say, "Industrial grease on the catwalk. Aurelia slipped. Stamp the papers." Vivienne looks at you through her veil with tears of disbelief. You walk out into the dawn of District 7, not as an officer of the law, but as an architect of mercy.'
-    },
-    options: [
-      { id: '[KASUS SELESAI: Lihat Ringkasan Akhir Dossier]', en: '[CASE CLOSED: View Case Summary Dossier]' }
-    ]
-  }
-};
+export const DIALOGUE_I18N = (typeof DIALOGUE_I18N_FULL !== 'undefined') ? DIALOGUE_I18N_FULL : {};
 
 // Helper to get fully localized dialogue node
-export function getLocalizedDialogueNode(nodeId, lang = 'id', baseNode) {
+export function getLocalizedDialogueNode(nodeId, lang = 'en', baseNode) {
   if (!baseNode) return null;
-  const currentLang = UI_TRANSLATIONS[lang] ? lang : 'id';
+  const currentLang = UI_TRANSLATIONS[lang] ? lang : 'en';
 
   const node = {
     ...baseNode,
@@ -1910,26 +1490,33 @@ export function getLocalizedDialogueNode(nodeId, lang = 'id', baseNode) {
   const nodeTrans = DIALOGUE_I18N[nodeId];
   if (nodeTrans) {
     if (nodeTrans.speaker) {
-      node.speaker = nodeTrans.speaker[currentLang] || nodeTrans.speaker['en'] || baseNode.speaker;
+      node.speaker = nodeTrans.speaker[currentLang] || nodeTrans.speaker['en'] || nodeTrans.speaker['id'] || baseNode.speaker;
     }
     if (nodeTrans.text) {
-      node.text = nodeTrans.text[currentLang] || nodeTrans.text['en'] || baseNode.text;
+      node.text = nodeTrans.text[currentLang] || nodeTrans.text['en'] || nodeTrans.text['id'] || baseNode.text;
     }
     if (nodeTrans.voices && Array.isArray(nodeTrans.voices)) {
       nodeTrans.voices.forEach((vTrans, idx) => {
         if (node.voices[idx]) {
-          if (vTrans.voice) node.voices[idx].voice = vTrans.voice[currentLang] || vTrans.voice['en'] || node.voices[idx].voice;
-          if (vTrans.badge) node.voices[idx].badge = vTrans.badge[currentLang] || vTrans.badge['en'] || node.voices[idx].badge;
-          if (vTrans.text) node.voices[idx].text = vTrans.text[currentLang] || vTrans.text['en'] || node.voices[idx].text;
+          if (vTrans.voice) node.voices[idx].voice = vTrans.voice[currentLang] || vTrans.voice['en'] || vTrans.voice['id'] || node.voices[idx].voice;
+          if (vTrans.badge) node.voices[idx].badge = vTrans.badge[currentLang] || vTrans.badge['en'] || vTrans.badge['id'] || node.voices[idx].badge;
+          if (vTrans.text) node.voices[idx].text = vTrans.text[currentLang] || vTrans.text['en'] || vTrans.text['id'] || node.voices[idx].text;
         }
       });
     }
     if (nodeTrans.options && Array.isArray(nodeTrans.options)) {
-      nodeTrans.options.forEach((oTrans, idx) => {
-        if (node.options[idx]) {
-          const transText = oTrans[currentLang] || oTrans['en'];
+      node.options.forEach((opt, idx) => {
+        let oTrans = null;
+        if (opt.id) {
+          oTrans = nodeTrans.options.find(o => o && o.id === opt.id);
+        }
+        if (!oTrans) {
+          oTrans = nodeTrans.options[idx];
+        }
+        if (oTrans) {
+          const transText = oTrans[currentLang] || oTrans['en'] || oTrans['id'];
           if (transText) {
-            node.options[idx].text = transText;
+            opt.text = transText;
           }
         }
       });
@@ -1939,42 +1526,45 @@ export function getLocalizedDialogueNode(nodeId, lang = 'id', baseNode) {
   return node;
 }
 
-export function tClue(clueId, field = 'title', lang = 'id') {
+export function tClue(clueId, field = 'title', lang = 'en') {
   const clue = CLUES_I18N[clueId];
   if (!clue) return null;
-  const currentLang = clue[field] && clue[field][lang] ? lang : 'id';
-  return clue[field][currentLang] || clue[field]['en'] || '';
+  const currentLang = clue[field] && clue[field][lang] ? lang : 'en';
+  return clue[field][currentLang] || clue[field]['en'] || clue[field]['id'] || '';
 }
 
-export function tGameOver(type, field = 'title', lang = 'id') {
+export function tGameOver(type, field = 'title', lang = 'en') {
   const g = GAMEOVER_I18N[type] || GAMEOVER_I18N['physical'];
-  const currentLang = g[field] && g[field][lang] ? lang : 'id';
-  return g[field][currentLang] || g[field]['en'] || '';
+  const currentLang = g[field] && g[field][lang] ? lang : 'en';
+  return g[field][currentLang] || g[field]['en'] || g[field]['id'] || '';
 }
 
 // Translation lookup helper
-export function t(key, lang = 'id') {
-  const currentLang = UI_TRANSLATIONS[lang] ? lang : 'id';
+export function t(key, lang = 'en') {
+  const currentLang = UI_TRANSLATIONS[lang] ? lang : 'en';
   if (UI_TRANSLATIONS[currentLang] && UI_TRANSLATIONS[currentLang][key]) {
     return UI_TRANSLATIONS[currentLang][key];
   }
   if (UI_TRANSLATIONS['en'] && UI_TRANSLATIONS['en'][key]) {
     return UI_TRANSLATIONS['en'][key];
   }
+  if (UI_TRANSLATIONS['id'] && UI_TRANSLATIONS['id'][key]) {
+    return UI_TRANSLATIONS['id'][key];
+  }
   return key;
 }
 
-export function tItem(itemId, field = 'name', lang = 'id') {
+export function tItem(itemId, field = 'name', lang = 'en') {
   const item = ITEMS_I18N[itemId];
   if (!item) return null;
-  const currentLang = item[field] && item[field][lang] ? lang : 'id';
-  return item[field][currentLang] || item[field]['en'] || '';
+  const currentLang = item[field] && item[field][lang] ? lang : 'en';
+  return item[field][currentLang] || item[field]['en'] || item[field]['id'] || '';
 }
 
-export function tPoi(poiId, field = 'title', lang = 'id') {
-  const poi = POI_I18N[poiId];
+export function tPoi(poiId, field = 'title', lang = 'en') {
+  const poi = (typeof NEW_POIS_I18N !== 'undefined' && NEW_POIS_I18N[poiId]) || POI_I18N[poiId];
   if (!poi) return null;
-  const currentLang = poi[field] && poi[field][lang] ? lang : 'id';
-  return poi[field][currentLang] || poi[field]['en'] || '';
+  const currentLang = poi[field] && poi[field][lang] ? lang : 'en';
+  return poi[field][currentLang] || poi[field]['en'] || poi[field]['id'] || '';
 }
 

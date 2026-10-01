@@ -6,7 +6,7 @@ const LANG_STORAGE_KEY = 'aenigma_language_preference';
 export class GameState {
   constructor() {
     this.listeners = [];
-    this.currentLanguage = localStorage.getItem(LANG_STORAGE_KEY) || 'id';
+    this.currentLanguage = localStorage.getItem(LANG_STORAGE_KEY) || 'en';
     this.reset();
   }
 
@@ -133,7 +133,31 @@ export class GameState {
     };
 
     this.resolvedChecks = {}; // checkId: { status: 'passed'|'failed', timestamp }
+    this.visitedChoices = {}; // choiceKey: timestamp
     this.dialogueHistory = [];
+  }
+
+  markChoiceVisited(key) {
+    if (!key) return;
+    this.visitedChoices[key] = Date.now();
+    this.save();
+    this.notify('choice_visited', key);
+  }
+
+  isChoiceVisited(key) {
+    if (!key) return false;
+    return !!this.visitedChoices[key];
+  }
+
+  getProgressPercentage() {
+    const cluesCount = this.clues ? this.clues.length : 0;
+    const thoughtsDone = (this.thoughtCabinet && Array.isArray(this.thoughtCabinet.internalized)) ? this.thoughtCabinet.internalized.length : 0;
+    const checksPassed = Object.values(this.resolvedChecks || {}).filter(c => c && c.status === 'passed').length;
+    const choicesCount = Object.keys(this.visitedChoices || {}).length;
+
+    // Progress scale 0-100%
+    const score = (cluesCount * 7) + (checksPassed * 4) + (thoughtsDone * 4) + Math.round(choicesCount * 0.8);
+    return Math.min(100, Math.max(5, Math.round(score)));
   }
 
   setLanguage(lang) {
@@ -389,6 +413,20 @@ export class GameState {
     }
   }
 
+  hasClue(clueId) {
+    if (!this.clues) return false;
+    return this.clues.some(c => c && c.id === clueId);
+  }
+
+  hasItem(itemId) {
+    if (!this.inventory) return false;
+    return this.inventory.some(i => i && i.id === itemId);
+  }
+
+  gainXp(amount = 20) {
+    return this.gainXP(amount);
+  }
+
   // Thought Cabinet Methods
   unlockThought(thoughtKey) {
     let thought = null;
@@ -452,6 +490,7 @@ export class GameState {
         thoughtCabinet: this.thoughtCabinet,
         flags: this.flags,
         resolvedChecks: this.resolvedChecks,
+        visitedChoices: this.visitedChoices,
         currentLanguage: this.currentLanguage
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -475,6 +514,7 @@ export class GameState {
       this.thoughtCabinet = data.thoughtCabinet;
       this.flags = data.flags;
       this.resolvedChecks = data.resolvedChecks || {};
+      this.visitedChoices = data.visitedChoices || {};
       if (data.currentLanguage) this.currentLanguage = data.currentLanguage;
       this.notify('loaded');
       return true;

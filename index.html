@@ -27,7 +27,7 @@
        ======================================================================== -->
   <section id="loading-stage" class="fullscreen-stage">
     <button id="loader-lang-btn" class="hud-btn stage-lang-btn" style="position: absolute; top: 20px; right: 20px; z-index: 50;">
-      🌐 <span class="lang-label">BAHASA</span>
+      🌐 <span class="lang-label">ENGLISH</span>
     </button>
     <div class="loader-content">
       <h1 class="title-ornament">A E N I G M A</h1>
@@ -75,7 +75,7 @@
        ======================================================================== -->
   <section id="creator-stage" class="fullscreen-stage hidden">
     <button id="creator-lang-btn" class="hud-btn stage-lang-btn" style="position: absolute; top: 20px; right: 20px; z-index: 50;">
-      🌐 <span class="lang-label">BAHASA</span>
+      🌐 <span class="lang-label">ENGLISH</span>
     </button>
     <div class="creator-container">
       
@@ -281,24 +281,35 @@
         <div id="hud-time-display" class="hud-btn" style="cursor: default;">
           DAY 1 · 04:20
         </div>
+
+        <!-- Investigation Progress Bar -->
+        <div class="hud-progress-container" id="hud-progress-container" title="Case Progression">
+          <div class="hud-progress-info">
+            <span class="hud-progress-title" id="hud-progress-title">PROGRESS</span>
+            <span class="hud-progress-val" id="hud-progress-val">5%</span>
+          </div>
+          <div class="hud-progress-track">
+            <div class="hud-progress-fill" id="hud-progress-fill" style="width: 5%;"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Navigation Tab Buttons -->
       <nav class="nav-tab-group">
         <button id="nav-btn-cabinet" class="hud-btn">
-          <span id="tab-cabinet-text">🧠 LEMARI PIKIRAN</span> <span id="cabinet-count-badge" class="badge-counter">0</span>
+          <span id="tab-cabinet-text">🧠 THOUGHT CABINET</span> <span id="cabinet-count-badge" class="badge-counter">0</span>
         </button>
         <button id="nav-btn-clues" class="hud-btn">
-          <span id="tab-clues-text">📌 DOSSIER BUKTI</span> <span id="clues-count-badge" class="badge-counter">0</span>
+          <span id="tab-clues-text">📌 CASE DOSSIER</span> <span id="clues-count-badge" class="badge-counter">0</span>
         </button>
         <button id="nav-btn-inventory" class="hud-btn">
-          <span id="tab-inv-text">💼 INVENTARIS</span> <span id="inv-count-badge" class="badge-counter">3</span>
+          <span id="tab-inv-text">💼 INVENTORY</span> <span id="inv-count-badge" class="badge-counter">3</span>
         </button>
         <button id="nav-btn-audio" class="hud-btn">
-          🔊 <span class="btn-label" id="audio-btn-label">AUDIO: AKTIF</span>
+          🔊 <span class="btn-label" id="audio-btn-label">AUDIO: ON</span>
         </button>
         <button id="nav-btn-language" class="hud-btn">
-          🌐 <span id="current-lang-label">BAHASA: INDONESIA</span>
+          🌐 <span id="current-lang-label">LANGUAGE: ENGLISH</span>
         </button>
       </nav>
     </header>
@@ -311,14 +322,39 @@
         <img src="assets/clocktower.jpg" alt="Clocktower Crime Scene" class="scene-background-art">
         <div class="rain-canvas-overlay"></div>
         
-        <!-- Interactive POI Radar Markers -->
+        <!-- Interactive POI Radar Markers Layer -->
         <div id="scene-markers-layer"></div>
 
-        <!-- Crime Scene Overlay HUD -->
-        <div class="scene-overlay-hud">
-          <div class="scene-location-title">Saint Irene Clocktower · District 7</div>
-          <div class="scene-time-stamp">Mistress Aurelia Vance · Body discovered at 03:42 AM mid-stroke</div>
+        <!-- Scene Controls Floating Toolbar (Show/Hide Markers & Sonar Ping) -->
+        <div class="scene-viewport-controls">
+          <button id="btn-toggle-poi-markers" class="scene-ctrl-chip" title="Toggle POI Indicators (M / Click)">
+            <span class="ctrl-icon">👁️</span> <span class="ctrl-text" id="toggle-markers-label">MARKERS</span>
+          </button>
+          <button id="btn-toggle-radar-ping" class="scene-ctrl-chip" title="Sonar Radar Pulse (Space)">
+            <span class="ctrl-icon">📡</span> <span class="ctrl-text" id="radar-ping-label">RADAR</span>
+          </button>
         </div>
+
+        <!-- Crime Scene Overlay HUD (Collapsible, Translucent & Dismissible) -->
+        <div class="scene-overlay-hud" id="scene-overlay-hud">
+          <div class="scene-hud-header-row">
+            <button id="btn-toggle-scene-hud" class="scene-hud-toggle-btn" title="Toggle Case Location Info">
+              <span class="hud-toggle-pin">📍</span>
+              <span class="hud-toggle-title">DISTRICT 7</span>
+              <span class="hud-toggle-arrow">▲</span>
+            </button>
+            <button id="btn-dismiss-scene-hud" class="scene-hud-close-btn" title="Dismiss / Hide Location Info">✕</button>
+          </div>
+          <div class="scene-hud-body" id="scene-hud-body">
+            <div class="scene-location-title">Saint Irene Clocktower · District 7</div>
+            <div class="scene-time-stamp">Mistress Aurelia Vance · Body discovered at 03:42 AM mid-stroke</div>
+          </div>
+        </div>
+
+        <!-- Minimalist Corner Restore Pin (Shown only if HUD is completely dismissed) -->
+        <button id="btn-restore-scene-hud" class="scene-hud-restore-pin hidden" title="Show Case Location Info">
+          📍
+        </button>
       </section>
 
       <!-- Right Column: Disco Elysium Vertical Dialogue Stream -->
@@ -433,6 +469,7 @@
         <button id="btn-restart-inquiry" class="action-btn-large ready">BEGIN A NEW INQUIRY</button>
       </div>
     </div>
+  </div>
   <!-- ========================================================================
        MODAL 6: MULTI-LANGUAGE SELECTOR (12 NATIVE LANGUAGES)
        ======================================================================== -->

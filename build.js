@@ -11,6 +11,7 @@ if (!fs.existsSync(distDir)) {
 
 const fileOrder = [
   'audio.js',
+  'dialogue_i18n.js',
   'i18n.js',
   'thoughts.js',
   'cases.js',

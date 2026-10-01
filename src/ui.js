@@ -1,6 +1,6 @@
 // Aenigma Master UI Controller & Interaction Engine
 import { audio } from './audio.js';
-import { SUPPORTED_LANGUAGES, t, tItem, tPoi, tClue, tGameOver, getLocalizedDialogueNode } from './i18n.js';
+import { SUPPORTED_LANGUAGES, PROGRESS_LABELS, DISTRICT_LABELS, t, tItem, tPoi, tClue, tSkill, tGameOver, getLocalizedDialogueNode } from './i18n.js';
 import { THOUGHTS_CATALOG } from './thoughts.js';
 import { CASE_DATA } from './cases.js';
 import { DiceEngine } from './dice.js';
@@ -102,7 +102,7 @@ export class UIController {
         </div>
       `;
       card.addEventListener('click', () => {
-        audio.playUiClick();
+        audio.playRadioTune();
         this.state.setLanguage(langObj.code);
         this.applyLanguage(langObj.code);
         this.closeModal(this.languageModal);
@@ -113,7 +113,7 @@ export class UIController {
   }
 
   applyLanguage(lang) {
-    const currentLang = UI_TRANSLATIONS[lang] ? lang : 'id';
+    const currentLang = UI_TRANSLATIONS[lang] ? lang : 'en';
     document.documentElement.lang = currentLang;
     document.documentElement.dir = (currentLang === 'ar') ? 'rtl' : 'ltr';
 
@@ -165,11 +165,20 @@ export class UIController {
     const moraleLabel = document.querySelector('.meter-label-row.morale span:first-child');
     if (moraleLabel) moraleLabel.textContent = t('morale_label', currentLang);
 
+    // Update Progress Title & Meter
+    const progressTitle = document.getElementById('hud-progress-title');
+    if (progressTitle) {
+      progressTitle.textContent = PROGRESS_LABELS ? (PROGRESS_LABELS[currentLang] || 'PROGRESS') : 'PROGRESS';
+    }
+    this.updateProgressMeter();
+
     // Update Scene Overlay
     const sceneLoc = document.querySelector('.scene-location-title');
     if (sceneLoc) sceneLoc.textContent = t('scene_location', currentLang);
     const sceneTime = document.querySelector('.scene-time-stamp');
     if (sceneTime) sceneTime.textContent = t('scene_timestamp', currentLang);
+    const hudToggleTitle = document.querySelector('.hud-toggle-title');
+    if (hudToggleTitle) hudToggleTitle.textContent = DISTRICT_LABELS ? (DISTRICT_LABELS[currentLang] || 'DISTRICT 7') : 'DISTRICT 7';
 
     // Update Modals Titles
     const cabTitle = document.querySelector('#cabinet-modal .modal-title');
@@ -268,14 +277,17 @@ export class UIController {
       });
     });
 
-    // Tab buttons
+    // Tab buttons with tactile paper audio
     document.getElementById('nav-btn-cabinet')?.addEventListener('click', () => {
+      audio.playTabSwitch();
       this.openCabinetModal();
     });
     document.getElementById('nav-btn-inventory')?.addEventListener('click', () => {
+      audio.playTabSwitch();
       this.openInventoryModal();
     });
     document.getElementById('nav-btn-clues')?.addEventListener('click', () => {
+      audio.playTabSwitch();
       this.openCluesModal();
     });
     document.getElementById('nav-btn-audio')?.addEventListener('click', (e) => {
@@ -287,20 +299,108 @@ export class UIController {
       }
     });
 
+    // Collapsible, Transparent & Dismissible Bottom-Left Scene HUD Toggle
+    const toggleSceneHudBtn = document.getElementById('btn-toggle-scene-hud');
+    const dismissSceneHudBtn = document.getElementById('btn-dismiss-scene-hud');
+    const restoreSceneHudBtn = document.getElementById('btn-restore-scene-hud');
+    const sceneHud = document.getElementById('scene-overlay-hud');
+
+    if (toggleSceneHudBtn && sceneHud) {
+      toggleSceneHudBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sceneHud.classList.toggle('minimized');
+        audio.playHudToggle();
+      });
+      sceneHud.addEventListener('click', (e) => {
+        if (e.target.closest('#btn-dismiss-scene-hud')) return;
+        if (sceneHud.classList.contains('minimized')) {
+          sceneHud.classList.remove('minimized');
+          audio.playHudToggle();
+        }
+      });
+    }
+
+    if (dismissSceneHudBtn && sceneHud && restoreSceneHudBtn) {
+      dismissSceneHudBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sceneHud.classList.add('dismissed');
+        restoreSceneHudBtn.classList.remove('hidden');
+        audio.playHudToggle();
+      });
+
+      restoreSceneHudBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sceneHud.classList.remove('dismissed');
+        sceneHud.classList.remove('minimized');
+        restoreSceneHudBtn.classList.add('hidden');
+        audio.playHudToggle();
+      });
+    }
+
+    // Scene Toolbar Controls: Show/Hide POI Indicators & Sonar Radar Ping
+    const toggleMarkersBtn = document.getElementById('btn-toggle-poi-markers');
+    const radarPingBtn = document.getElementById('btn-toggle-radar-ping');
+    const sceneViewport = document.getElementById('scene-viewport');
+
+    if (toggleMarkersBtn && sceneViewport) {
+      toggleMarkersBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = sceneViewport.classList.toggle('markers-hidden');
+        toggleMarkersBtn.classList.toggle('active', isHidden);
+        const label = document.getElementById('toggle-markers-label');
+        if (label) {
+          label.textContent = isHidden ? 'HIDDEN' : 'MARKERS';
+        }
+        audio.playPoiClick();
+      });
+    }
+
+    if (radarPingBtn) {
+      radarPingBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        audio.playPoiHover();
+        document.querySelectorAll('.poi-pulse-radar').forEach(p => {
+          p.style.animation = 'none';
+          void p.offsetWidth;
+          p.style.animation = 'radarPing 1.2s ease-out';
+        });
+      });
+    }
+
+    // Keyboard Hotkeys: 'M' for Markers toggle, 'Space' for Radar Ping
+    document.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.key === 'm' || e.key === 'M') {
+        toggleMarkersBtn?.click();
+      }
+    });
+
+    // Global subtle audio hover feedback on buttons, choices & interactive nodes
+    document.addEventListener('mouseover', (e) => {
+      const target = e.target.closest('.hud-btn, .action-btn-large, .choice-btn, .lang-card, .vice-card, .sig-skill-btn, .thought-node, .stepper-btn, .scene-hud-toggle-btn, .scene-ctrl-chip');
+      if (target) {
+        audio.playUiHover();
+      }
+    });
+
     // State change listeners
     this.state.subscribe((event, payload) => {
+      if (event === 'language_changed') {
+        this.applyLanguage(payload);
+      }
       this.updateHUD();
       const lang = this.state.currentLanguage;
       if (event === 'clue_added') {
         const title = tClue(payload.id, 'title', lang) || payload.title;
         this.showToast(`🔍 ${t('toast_clue_discovered', lang)} ${title}`);
-        audio.playDiscovery();
+        audio.playDossierStamp();
+        setTimeout(() => audio.playDiscovery(), 120);
       } else if (event === 'thought_unlocked') {
         this.showToast(`💡 ${t('toast_thought_unlocked', lang)} "${payload.name}"`);
         audio.playDiscovery();
       } else if (event === 'thought_internalized') {
         this.showToast(`✨ ${t('toast_thought_internalized', lang)} "${payload.name}"`);
-        audio.playSuccess();
+        audio.playThoughtInternalize();
       } else if (event === 'item_added') {
         const name = tItem(payload.id, 'name', lang) || payload.name;
         this.showToast(`📦 ${t('toast_item_acquired', lang)} ${name}`);
@@ -309,10 +409,22 @@ export class UIController {
         const name = tItem(payload.item.id, 'name', lang) || payload.item.name;
         this.showToast(`✨ ${t('toast_item_used', lang)} ${name}\n${payload.desc || ''}`);
         this.renderInventory();
-      } else if (event === 'health_changed' && payload.delta < 0) {
-        this.showToast(`🩸 ${t('toast_damage_health', lang)} (${payload.delta} HP)`);
-      } else if (event === 'morale_changed' && payload.delta < 0) {
-        this.showToast(`🧠 ${t('toast_damage_morale', lang)} (${payload.delta} SP)`);
+      } else if (event === 'health_changed') {
+        if (payload.delta < 0) {
+          audio.playDamageHit();
+          this.showToast(`🩸 ${t('toast_damage_health', lang)} (${payload.delta} HP)`);
+        }
+        if (payload.current <= 1) {
+          audio.playHeartbeatThump();
+        }
+      } else if (event === 'morale_changed') {
+        if (payload.delta < 0) {
+          audio.playMoraleDrain();
+          this.showToast(`🧠 ${t('toast_damage_morale', lang)} (${payload.delta} SP)`);
+        }
+        if (payload.current <= 1) {
+          audio.playHeartbeatThump();
+        }
       } else if (event === 'game_over') {
         this.showGameOver(payload);
       }
@@ -379,24 +491,57 @@ export class UIController {
 
     const invBadge = document.getElementById('inv-count-badge');
     if (invBadge) invBadge.textContent = this.state.inventory.length;
+
+    // Refresh Investigation Progress Meter
+    this.updateProgressMeter();
+  }
+
+  updateProgressMeter() {
+    const pct = this.state.getProgressPercentage();
+    const fillEl = document.getElementById('hud-progress-fill');
+    const valEl = document.getElementById('hud-progress-val');
+    const titleEl = document.getElementById('hud-progress-title');
+    if (fillEl) fillEl.style.width = `${pct}%`;
+    if (valEl) valEl.textContent = `${pct}%`;
+    if (titleEl) {
+      titleEl.textContent = PROGRESS_LABELS ? (PROGRESS_LABELS[this.state.currentLanguage] || 'PROGRESS') : 'PROGRESS';
+    }
   }
 
   renderSceneMarkers() {
     this.sceneCanvas.innerHTML = '';
+    const hasActive = !!this.activePoi;
+    this.sceneCanvas.classList.toggle('has-active-poi', hasActive);
+
     this.caseData.pointsOfInterest.forEach(poi => {
       const marker = document.createElement('div');
-      marker.className = `poi-marker ${this.activePoi === poi.id ? 'active' : ''}`;
+      
+      // Calculate smart tooltip collision avoidance
+      let placementClass = '';
+      if (poi.y < 35) placementClass += ' tooltip-below';
+      if (poi.x > 72) placementClass += ' tooltip-right';
+      else if (poi.x < 28) placementClass += ' tooltip-left';
+
+      marker.className = `poi-marker ${this.activePoi === poi.id ? 'active' : ''}${placementClass}`;
       marker.style.left = `${poi.x}%`;
       marker.style.top = `${poi.y}%`;
       marker.dataset.poiId = poi.id;
 
       const localizedTitle = tPoi(poi.id, 'title', this.state.currentLanguage) || poi.title;
+      const inspectText = t('btn_inspect', this.state.currentLanguage) || 'INVESTIGATE';
 
       marker.innerHTML = `
-        <div class="poi-sonar-pulse"></div>
-        <div class="poi-icon-box">${poi.icon}</div>
-        <div class="poi-label-tooltip">${localizedTitle}</div>
+        <div class="poi-pulse-radar"></div>
+        <div class="poi-pin-circle">${poi.icon}</div>
+        <div class="poi-tooltip-card">
+          <div class="poi-tooltip-title">${localizedTitle}</div>
+          <div class="poi-tooltip-hint">[ ${inspectText} ]</div>
+        </div>
       `;
+
+      marker.addEventListener('mouseenter', () => {
+        audio.playPoiHover();
+      });
 
       marker.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -414,11 +559,25 @@ export class UIController {
     }
 
     this.activePoi = poi.id;
+    this.sceneCanvas.classList.add('has-active-poi');
     document.querySelectorAll('.poi-marker').forEach(m => {
       m.classList.toggle('active', m.dataset.poiId === poi.id);
     });
 
-    audio.playUiClick();
+    audio.playPoiClick();
+    audio.playFootsteps();
+
+    // Contextual atmospheric sound based on inspected artifact
+    if (poi.id === 'poi_pendulum' || poi.id === 'poi_pocketwatch') {
+      setTimeout(() => audio.playClockworkChime(), 200);
+    } else if (poi.id === 'poi_floorboard') {
+      setTimeout(() => audio.playChalkScratch(), 250);
+    } else if (poi.id === 'poi_clock_chime_bell') {
+      setTimeout(() => audio.playCathedralBell(), 200);
+    } else if (poi.id === 'poi_balcony') {
+      setTimeout(() => audio.playThunderCrack(), 300);
+    }
+
     this.state.advanceTime(10);
 
     const localizedTitle = tPoi(poi.id, 'title', this.state.currentLanguage) || poi.title;
@@ -482,6 +641,9 @@ export class UIController {
     }
 
     audio.playTypewriter();
+    if (node.voices && node.voices.length > 0) {
+      audio.playInnerVoice();
+    }
 
     // Create Entry in Feed
     const entry = document.createElement('div');
@@ -490,6 +652,7 @@ export class UIController {
       <div class="speaker-title-row">
         <span class="speaker-avatar">${node.avatar || '👤'}</span>
         <span class="speaker-label">${node.speaker || 'Narrative'}</span>
+        <span class="speaker-equalizer"><span></span><span></span><span></span><span></span></span>
       </div>
       <div class="speaker-prose">${node.text}</div>
     `;
@@ -518,7 +681,7 @@ export class UIController {
 
   renderChoices(options) {
     this.dialogueChoices.innerHTML = '';
-    if (!options || options.length === 0) {
+    const renderCloseBtn = () => {
       const closeBtn = document.createElement('button');
       closeBtn.className = 'choice-btn';
       closeBtn.innerHTML = `<span class="choice-num">[1]</span> <span>[${t('speaker_forensic', this.state.currentLanguage)}]</span>`;
@@ -529,16 +692,33 @@ export class UIController {
         this.dialogueChoices.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:12px;">${t('scene_location', this.state.currentLanguage)}</div>`;
       });
       this.dialogueChoices.appendChild(closeBtn);
+    };
+
+    if (!options || options.length === 0) {
+      renderCloseBtn();
       return;
     }
 
-    options.forEach((opt, idx) => {
+    let choiceCounter = 1;
+    options.forEach((opt) => {
+      const choiceKey = opt.id || (opt.check ? opt.check.checkId : (opt.nextNode || (typeof opt.action === 'string' ? opt.action : null)));
+
       if (opt.condition && !opt.condition(this.state)) {
         return;
       }
+      if (opt.once && choiceKey && this.state.isChoiceVisited(choiceKey)) {
+        return;
+      }
 
+      const isVisited = !!(choiceKey && this.state.isChoiceVisited(choiceKey));
       const btn = document.createElement('button');
       btn.className = 'choice-btn';
+      if (isVisited) {
+        btn.classList.add('visited');
+      }
+
+      const currentNum = choiceCounter++;
+      const visitedPrefix = isVisited ? '<span class="visited-check">✓ </span>' : '';
 
       if (opt.check) {
         const check = opt.check;
@@ -547,22 +727,29 @@ export class UIController {
 
         btn.classList.add(check.type === 'red' ? 'red-check' : 'white-check');
         btn.innerHTML = `
-          <span class="choice-num">[${idx + 1}]</span>
-          <span>${opt.text}</span>
+          <span class="choice-num">[${currentNum}]</span>
+          <span>${visitedPrefix}${opt.text}</span>
           <span class="check-prob-pill">${prob}%</span>
         `;
 
         btn.addEventListener('click', () => {
+          if (choiceKey) this.state.markChoiceVisited(choiceKey);
+          if (typeof opt.action === 'function') opt.action(this.state);
+          this.updateProgressMeter();
           this.executeSkillCheck(opt, check);
         });
       } else {
         btn.innerHTML = `
-          <span class="choice-num">[${idx + 1}]</span>
-          <span>${opt.text}</span>
+          <span class="choice-num">[${currentNum}]</span>
+          <span>${visitedPrefix}${opt.text}</span>
         `;
 
         btn.addEventListener('click', () => {
           audio.playUiClick();
+          if (choiceKey) this.state.markChoiceVisited(choiceKey);
+          if (typeof opt.action === 'function') opt.action(this.state);
+          this.updateProgressMeter();
+
           if (opt.action === 'close_dialogue') {
             this.currentNodeId = null;
             this.activePoi = null;
@@ -578,6 +765,10 @@ export class UIController {
 
       this.dialogueChoices.appendChild(btn);
     });
+
+    if (this.dialogueChoices.children.length === 0) {
+      renderCloseBtn();
+    }
   }
 
   // 3D Skill Check Roll Execution
@@ -591,7 +782,7 @@ export class UIController {
     const outcomeEl = document.getElementById('dice-outcome-text');
     const proceedBtn = document.getElementById('dice-proceed-btn');
 
-    const skillLabel = t(checkConfig.skill + '_name', this.state.currentLanguage) || checkConfig.skill.toUpperCase();
+    const skillLabel = tSkill(checkConfig.skill, this.state.currentLanguage);
     checkHeader.textContent = `${skillLabel} (DC ${checkConfig.difficulty})`;
     d1El.classList.add('rolling');
     d2El.classList.add('rolling');
@@ -699,6 +890,7 @@ export class UIController {
       `;
 
       nodeCard.addEventListener('click', () => {
+        audio.playThoughtNode();
         this.inspectThought(thought, { isInternalized, isCooking, isKnown });
       });
 
@@ -882,7 +1074,7 @@ export class UIController {
   // Victory / Case Closed Modal
   showVictoryScreen() {
     this.openModal(this.victoryModal);
-    audio.playSuccess();
+    audio.playVictoryChime();
     const sum = document.getElementById('victory-summary-text');
     const lang = this.state.currentLanguage;
     if (sum) {
