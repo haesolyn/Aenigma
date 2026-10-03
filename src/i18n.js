@@ -2584,3 +2584,47 @@ export const DOSSIER_I18N = {
     footer: '3급 기밀 · 전담 조사관 외 열람 엄금'
   }
 };
+
+
+export const LOADER_DECRYPT_I18N = {
+  en: {
+    decrypting_telemetry: "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]",
+    badge_decrypted: "◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈",
+    access_granted: "[ACCESS GRANTED: WELCOME DETECTIVE]",
+    dispatching_dossier: "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]",
+    sector_badge: "SEC.04",
+    nexus_title: "Connecting Nexus"
+  },
+  id: {
+    decrypting_telemetry: "[MENDEKRIPSI ARSIP BERKAS SEKTOR 7...]",
+    badge_decrypted: "◈ BERKAS KASUS SEKTOR 7 TERDEKRIPSI ◈",
+    access_granted: "[AKSES DIIZINKAN: SELAMAT DATANG DETEKTIF]",
+    dispatching_dossier: "[MENGIRIM BERKAS KASUS #D4-04 KE MEJA PENYELIDIKAN...]",
+    sector_badge: "SEK.04",
+    nexus_title: "Penghubung Nexus"
+  },
+  ja: {
+    decrypting_telemetry: "[第7セクター事件記録を解読中...]",
+    badge_decrypted: "◈ 第7セクター事件記録 解読完了 ◈",
+    access_granted: "[アクセス承認: 捜査官、ようこそ]",
+    dispatching_dossier: "[事件 #D4-04 捜査書類を送出中...]",
+    sector_badge: "第4区",
+    nexus_title: "結合ネクサス"
+  },
+  zh: {
+    decrypting_telemetry: "[正在解密第七分区绝密案件档案...]",
+    badge_decrypted: "◈ 第七分区案件档案解密完成 ◈",
+    access_granted: "[准入许可通过：欢迎，调查督察]",
+    dispatching_dossier: "[正在派遣案件 #D4-04 现场调查卷宗...]",
+    sector_badge: "第4区",
+    nexus_title: "枢纽节点"
+  },
+  ko: {
+    decrypting_telemetry: "[제7구역 사건 기록 보관소 해독 중...]",
+    badge_decrypted: "◈ 제7구역 사건 파일 해독 완료 ◈",
+    access_granted: "[접근 인가됨: 환영합니다, 수사관님]",
+    dispatching_dossier: "[사건 #D4-04 수사 서류 책상으로 전달 중...]",
+    sector_badge: "제4구역",
+    nexus_title: "연결 넥서스"
+  }
+};

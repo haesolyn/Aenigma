@@ -26,6 +26,14 @@
        STAGE 1: ANIMATED LOADING SCREEN
        ======================================================================== -->
   <section id="loading-stage" class="fullscreen-stage">
+    <!-- Dark Noir Ambience: Real Generated Street Backdrop + Glitch Silhouette Walkers -->
+    <div class="loader-dark-ambience" id="loader-dark-ambience">
+      <div class="ambience-noir-backdrop"></div>
+      <canvas id="loader-glitch-canvas" class="loader-glitch-canvas"></canvas>
+      <div class="ambience-fog-layer"></div>
+      <div class="ambience-rain-layer"></div>
+      <div class="ambience-vignette-overlay"></div>
+    </div>
     <button id="loader-lang-btn" class="hud-btn stage-lang-btn" style="position: absolute; top: 20px; right: 20px; z-index: 50;">
       🌐 <span class="lang-label">ENGLISH</span>
     </button>
@@ -89,8 +97,19 @@
       </div>
 
       <!-- Main Dossier Folder Paper Body -->
-      <div class="dossier-folder-paper">
-        <div class="dossier-evidence-tape">EVIDENCE · DO NOT TAMPER · CRIME SCENE</div>
+          <div class="dossier-folder-paper">
+        <div class="dossier-evidence-tape" id="dossier-evidence-tape">EVIDENCE · DO NOT TAMPER · CRIME SCENE</div>
+        
+        <!-- Pinned Crime Scene Polaroid of Saint Irene Clocktower -->
+        <div class="dossier-polaroid-pin">
+          <div class="brass-paperclip"></div>
+          <div class="polaroid-photo">
+            <div class="polaroid-img-clock">
+              <span class="polaroid-stamp-ref">SCENE #01</span>
+            </div>
+            <span class="polaroid-caption">SAINT IRENE · PENDULUM CHAMBER</span>
+          </div>
+        </div>
         
         <div class="dossier-paper-header">
           <div class="precinct-badge-mark">⚖️</div>
@@ -124,6 +143,7 @@
         </div>
 
         <!-- The Dramatic Official Red Stamp -->
+        <div class="stamp-ink-splatter" id="stamp-ink-splatter"></div>
         <div class="dossier-rubber-stamp" id="dossier-rubber-stamp">
           <div class="stamp-border">
             <span class="stamp-stars">★ ★ ★</span>
@@ -133,6 +153,9 @@
           </div>
         </div>
 
+        <div class="dossier-caution-tape-strip" id="dossier-caution-tape">
+          <span class="tape-text">⚠️ POLICE CRIME SCENE — DO NOT CROSS — HOMICIDE SQUAD ⚠️</span>
+        </div>
         <div class="dossier-footer-note">
           <span id="dossier-footer-note">CLASSIFIED LEVEL III · EYES OF ASSIGNED INSPECTOR ONLY</span>
         </div>

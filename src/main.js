@@ -3,15 +3,491 @@ import { audio } from './audio.js';
 import { state } from './state.js';
 import { UIController } from './ui.js';
 import { CASE_DATA } from './cases.js';
-import { LOADER_QUOTES_I18N, TELEMETRY_PHASES_I18N, ALIASES_I18N, DOSSIER_I18N, t } from './i18n.js';
+import { LOADER_QUOTES_I18N, TELEMETRY_PHASES_I18N, ALIASES_I18N, DOSSIER_I18N, LOADER_DECRYPT_I18N, t } from './i18n.js';
 
 let hasBooted = false;
+
+
+// ----------------------------------------------------------------------------
+// GLITCH SILHOUETTE WALKERS CANVAS ENGINE
+// ----------------------------------------------------------------------------
+function initGlitchSilhouetteCanvas() {
+  const canvas = document.getElementById('loader-glitch-canvas');
+  if (!canvas) return () => {};
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return () => {};
+
+  let animId = null;
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  const handleResize = () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  };
+  window.addEventListener('resize', handleResize);
+
+  // Atmospheric rain particles on canvas
+  const rainDrops = [];
+  for (let i = 0; i < 40; i++) {
+    rainDrops.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      len: Math.random() * 24 + 16,
+      speed: Math.random() * 8 + 12,
+      opacity: Math.random() * 0.25 + 0.1
+    });
+  }
+
+  // Puddle ripples caused by footsteps on wet cobblestones
+  const ripples = [];
+  function addRipple(x, y) {
+    if (ripples.length < 15) {
+      ripples.push({ x, y, r: 2, maxR: Math.random() * 18 + 14, alpha: 0.45 });
+    }
+  }
+
+  // Watcher cigarette smoke particles
+  const smokeParticles = [];
+
+  // Mysterious figures moving through the rainy dark street
+  const walkers = [
+    {
+      type: 'detective',
+      x: -120,
+      yRate: 0.74,
+      speed: 1.15,
+      direction: 1, // left to right
+      scale: 1.15,
+      cycle: 0,
+      strideFreq: 0.08,
+      glitchTimer: 0,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.94
+    },
+    {
+      type: 'umbrella',
+      x: width + 100,
+      yRate: 0.69,
+      speed: 0.85,
+      direction: -1, // right to left
+      scale: 0.98,
+      cycle: 1.8,
+      strideFreq: 0.07,
+      glitchTimer: 35,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.88
+    },
+    {
+      type: 'agent',
+      x: -300,
+      yRate: 0.64,
+      speed: 0.95,
+      direction: 1, // left to right, background
+      scale: 0.80,
+      cycle: 0.8,
+      strideFreq: 0.09,
+      glitchTimer: 70,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.72
+    },
+    {
+      type: 'watcher',
+      x: width * 0.82,
+      yRate: 0.71,
+      speed: 0,
+      direction: -1,
+      scale: 1.02,
+      cycle: 0,
+      strideFreq: 0,
+      glitchTimer: 110,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.86,
+      emberGlow: 0.6
+    }
+  ];
+
+  function drawSilhouette(w, colorOverride = null) {
+    const groundY = height * w.yRate;
+    const x = w.x;
+    const s = w.scale * Math.max(0.7, Math.min(1.3, height / 850));
+    const dir = w.direction;
+    const cycle = w.cycle;
+
+    ctx.save();
+    ctx.translate(x, groundY);
+    ctx.scale(dir * s, s);
+
+    const leg1Angle = Math.sin(cycle) * 0.48;
+    const leg2Angle = -Math.sin(cycle) * 0.48;
+    const arm1Angle = -Math.sin(cycle) * 0.42;
+    const coatSwing = Math.sin(cycle) * 0.18;
+
+    const baseColor = colorOverride || '#04060b';
+    ctx.fillStyle = baseColor;
+    ctx.strokeStyle = baseColor;
+
+    if (colorOverride) {
+      ctx.shadowColor = colorOverride;
+      ctx.shadowBlur = 12;
+    } else {
+      ctx.shadowColor = 'rgba(100, 160, 240, 0.4)';
+      ctx.shadowBlur = 8;
+    }
+
+    if (w.type === 'detective') {
+      // Legs
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-6, -60);
+      ctx.lineTo(-6 + Math.sin(leg1Angle) * 32, -30);
+      ctx.lineTo(-6 + Math.sin(leg1Angle) * 60, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(6, -60);
+      ctx.lineTo(6 + Math.sin(leg2Angle) * 32, -30);
+      ctx.lineTo(6 + Math.sin(leg2Angle) * 60, 0);
+      ctx.stroke();
+
+      // Long Billowing Trenchcoat
+      ctx.beginPath();
+      ctx.moveTo(-16, -115);
+      ctx.lineTo(16, -115);
+      ctx.lineTo(26 + coatSwing * 14, -58);
+      ctx.lineTo(-24 - coatSwing * 12, -58);
+      ctx.closePath();
+      ctx.fill();
+
+      // Arms
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(10, -110);
+      ctx.lineTo(12 + Math.sin(arm1Angle) * 26, -80);
+      ctx.lineTo(12 + Math.sin(arm1Angle) * 46, -60);
+      ctx.stroke();
+
+      // Head & Fedora
+      ctx.beginPath();
+      ctx.arc(0, -135, 12, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.ellipse(3, -145, 24, 5, -0.08, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.rect(-10, -160, 20, 16);
+      ctx.fill();
+
+    } else if (w.type === 'umbrella') {
+      // Umbrella Figure
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-5, -55);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -26);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 55, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(5, -55);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -26);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 55, 0);
+      ctx.stroke();
+
+      // Coat
+      ctx.beginPath();
+      ctx.moveTo(-14, -110);
+      ctx.lineTo(14, -110);
+      ctx.lineTo(20, -55);
+      ctx.lineTo(-20, -55);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head
+      ctx.beginPath();
+      ctx.arc(0, -125, 11, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Umbrella Shaft & Large Canopy
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(4, -85);
+      ctx.lineTo(8, -148);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(8, -148, 42, Math.PI, 0);
+      ctx.closePath();
+      ctx.fill();
+
+    } else if (w.type === 'agent') {
+      // Undercover Courier / Informant
+      ctx.lineWidth = 11;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-5, -50);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -24);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 52, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(5, -50);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -24);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 52, 0);
+      ctx.stroke();
+
+      // Shorter coat & briefcase
+      ctx.beginPath();
+      ctx.moveTo(-14, -105);
+      ctx.lineTo(14, -105);
+      ctx.lineTo(20 + coatSwing * 8, -62);
+      ctx.lineTo(-18 - coatSwing * 8, -62);
+      ctx.closePath();
+      ctx.fill();
+
+      // Briefcase in trailing hand
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.rect(-24, -68, 14, 11);
+      ctx.fill();
+
+      // Head & Flat Cap
+      ctx.beginPath();
+      ctx.arc(0, -122, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(3, -129, 17, 5, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+    } else if (w.type === 'watcher') {
+      // Watcher leaning in the shadows
+      ctx.lineWidth = 13;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-5, -50);
+      ctx.lineTo(-5, 0);
+      ctx.moveTo(7, -50);
+      ctx.lineTo(10, 0);
+      ctx.stroke();
+
+      // Tall Trenchcoat
+      ctx.beginPath();
+      ctx.moveTo(-15, -112);
+      ctx.lineTo(15, -112);
+      ctx.lineTo(20, -48);
+      ctx.lineTo(-20, -48);
+      ctx.closePath();
+      ctx.fill();
+
+      // High Turned-up Collar
+      ctx.beginPath();
+      ctx.moveTo(-16, -116);
+      ctx.lineTo(-20, -132);
+      ctx.lineTo(-10, -120);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head & Fedora
+      ctx.beginPath();
+      ctx.arc(0, -130, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(0, -138, 20, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.rect(-9, -152, 18, 14);
+      ctx.fill();
+
+      // Cigarette & Glowing Ember
+      if (!colorOverride) {
+        w.emberGlow = (Math.sin(Date.now() * 0.005) + 1) * 0.5;
+        ctx.fillStyle = `rgba(255, 95, 25, ${0.5 + w.emberGlow * 0.5})`;
+        ctx.shadowColor = '#ff4400';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(9, -126, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    ctx.restore();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+
+    // 1. Draw Falling Rain Streaks
+    ctx.lineWidth = 1.2;
+    rainDrops.forEach(drop => {
+      ctx.strokeStyle = `rgba(200, 220, 255, ${drop.opacity})`;
+      ctx.beginPath();
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x - 3, drop.y + drop.len);
+      ctx.stroke();
+
+      drop.y += drop.speed;
+      drop.x -= 1.2;
+      if (drop.y > height) {
+        drop.y = -drop.len;
+        drop.x = Math.random() * width;
+      }
+    });
+
+    // 2. Draw Footstep Cobblestone Ripples
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const rip = ripples[i];
+      rip.r += 0.5;
+      rip.alpha -= 0.015;
+      if (rip.alpha <= 0) {
+        ripples.splice(i, 1);
+        continue;
+      }
+      ctx.save();
+      ctx.strokeStyle = `rgba(130, 180, 240, ${rip.alpha})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(rip.x, rip.y, rip.r * 2.2, rip.r * 0.8, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 3. Draw Watcher Cigarette Smoke
+    if (Math.random() < 0.25) {
+      const watcher = walkers.find(w => w.type === 'watcher');
+      if (watcher) {
+        const groundY = height * watcher.yRate;
+        smokeParticles.push({
+          x: watcher.x - 8,
+          y: groundY - 128 * watcher.scale,
+          vx: (Math.random() - 0.7) * 0.6,
+          vy: -Math.random() * 0.8 - 0.5,
+          alpha: 0.35,
+          size: Math.random() * 3 + 2
+        });
+      }
+    }
+
+    for (let i = smokeParticles.length - 1; i >= 0; i--) {
+      const sp = smokeParticles[i];
+      sp.x += sp.vx;
+      sp.y += sp.vy;
+      sp.alpha -= 0.005;
+      sp.size += 0.08;
+      if (sp.alpha <= 0) {
+        smokeParticles.splice(i, 1);
+        continue;
+      }
+      ctx.save();
+      ctx.fillStyle = `rgba(180, 200, 220, ${sp.alpha})`;
+      ctx.beginPath();
+      ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 4. Update and Draw Silhouettes
+    walkers.forEach(w => {
+      if (w.speed > 0) {
+        const prevCycle = w.cycle;
+        w.x += w.speed * w.direction;
+        w.cycle += w.strideFreq;
+
+        // Detect footstep contact to trigger puddle ripple
+        if ((Math.sin(prevCycle) < 0 && Math.sin(w.cycle) >= 0) ||
+            (Math.sin(prevCycle) > 0 && Math.sin(w.cycle) <= 0)) {
+          addRipple(w.x, height * w.yRate);
+        }
+
+        // Loop walkers across screen
+        if (w.direction === 1 && w.x > width + 160) {
+          w.x = -150;
+        } else if (w.direction === -1 && w.x < -160) {
+          w.x = width + 150;
+        }
+      }
+
+      // Glitch timing: frequent, dramatic digital interference
+      w.glitchTimer++;
+      if (!w.glitching && Math.random() < 0.025 && w.glitchTimer > 35) {
+        w.glitching = true;
+        w.glitchDuration = Math.floor(Math.random() * 6) + 4; // 4-9 frames
+        w.glitchTimer = 0;
+        w.glitchShift = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 16 + 10);
+      }
+
+      ctx.save();
+      ctx.filter = `blur(${w.type === 'umbrella' ? 2 : 1}px)`;
+      ctx.globalAlpha = w.opacity;
+
+      // When glitching: True Vibrant Chromatic Aberration & Digital Slicing
+      if (w.glitching) {
+        // Cyan / Electric Blue Chromatic Ghost
+        ctx.save();
+        ctx.translate(w.glitchShift * 0.8, 0);
+        drawSilhouette(w, 'rgba(0, 245, 255, 0.7)');
+        ctx.restore();
+
+        // Magenta / Crimson Chromatic Ghost
+        ctx.save();
+        ctx.translate(-w.glitchShift * 0.8, 0);
+        drawSilhouette(w, 'rgba(255, 30, 90, 0.7)');
+        ctx.restore();
+
+        // Horizontal Glitch Scanline Bars cutting across
+        const groundY = height * w.yRate;
+        const barY1 = groundY - Math.random() * 120;
+        const barY2 = groundY - Math.random() * 120;
+        ctx.fillStyle = 'rgba(0, 245, 255, 0.6)';
+        ctx.fillRect(w.x - 40, barY1, 80 + Math.random() * 40, Math.random() * 3 + 1);
+        ctx.fillStyle = 'rgba(255, 30, 90, 0.6)';
+        ctx.fillRect(w.x - 40, barY2, 80 + Math.random() * 40, Math.random() * 3 + 1);
+      }
+
+      // Main Deep Shadow Silhouette
+      drawSilhouette(w);
+      ctx.restore();
+
+      if (w.glitching) {
+        w.glitchDuration--;
+        if (w.glitchDuration <= 0) {
+          w.glitching = false;
+        }
+      }
+    });
+
+    animId = requestAnimationFrame(render);
+  }
+
+  animId = requestAnimationFrame(render);
+
+  return function stop() {
+    if (animId) cancelAnimationFrame(animId);
+    window.removeEventListener('resize', handleResize);
+  };
+}
 
 function bootGame() {
   if (hasBooted) return;
   hasBooted = true;
 
   const ui = new UIController(state);
+
+  // Initialize animated glitch silhouette walkers
+  const stopGlitchCanvas = initGlitchSilhouetteCanvas();
+
+  // Immediately apply active language to entire loading screen
+  ui.applyLanguage(state.currentLanguage);
 
   // --------------------------------------------------------------------------
   // 1. ANIMATED LOADING SCREEN CONTROLLER
@@ -162,10 +638,19 @@ function bootGame() {
     let scrambleTicks = 0;
     const maxTicks = 16; // ~400ms at 25ms per tick
 
+    const dec = (typeof LOADER_DECRYPT_I18N !== 'undefined' && (LOADER_DECRYPT_I18N[state.currentLanguage] || LOADER_DECRYPT_I18N['en'])) || {
+      decrypting_telemetry: "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]",
+      badge_decrypted: "◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈",
+      access_granted: "[ACCESS GRANTED: WELCOME DETECTIVE]",
+      dispatching_dossier: "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]",
+      sector_badge: "SEC.04",
+      nexus_title: "Connecting Nexus"
+    };
+
     if (titleEl) {
       titleEl.classList.add('decrypting');
       if (telemetryText) {
-        telemetryText.textContent = "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]";
+        telemetryText.textContent = dec.decrypting_telemetry;
         telemetryText.style.color = "#4df0ff";
       }
 
@@ -184,18 +669,18 @@ function bootGame() {
           titleEl.textContent = scrambled;
         } else {
           clearInterval(scrambleInterval);
-          // Decryption completed! Lock in "aenigmArchive"
+          // Decryption completed! Lock in "aenigmArchive" with localized badge and nexus title
           titleEl.classList.remove('decrypting');
           titleEl.classList.add('decrypted');
           titleEl.innerHTML = `
             <div class="brand-decrypted-wrapper">
-              <span class="brand-stem">${targetStem}</span><span class="brand-junction" title="Connecting Nexus">${targetPivot}</span><span class="brand-suffix">${targetSuffix}</span>
+              <span class="brand-stem">${targetStem}</span><span class="brand-junction" title="${dec.nexus_title}">${targetPivot}</span><span class="brand-suffix">${targetSuffix}</span>
             </div>
-            <div class="archive-decrypt-badge">◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈</div>
+            <div class="archive-decrypt-badge">${dec.badge_decrypted}</div>
           `;
           
           if (telemetryText) {
-            telemetryText.textContent = "[ACCESS GRANTED: WELCOME DETECTIVE]";
+            telemetryText.textContent = dec.access_granted;
             telemetryText.style.color = "#d4af37";
           }
 
@@ -205,47 +690,60 @@ function bootGame() {
           // Longer hold for aenigmArchive: 2200ms with telemetry progression
           setTimeout(() => {
             if (telemetryText) {
-              telemetryText.textContent = "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]";
+              telemetryText.textContent = dec.dispatching_dossier;
             }
           }, 1100);
 
           setTimeout(() => {
+            if (audio.stopLoadingScreenAmbience) audio.stopLoadingScreenAmbience();
             loadingStage.classList.add('loader-stage-warp');
 
-            // Launch Cinematic Noir Detective Case Dossier Transition
+            // Launch High-Octane Noir Detective Case Dossier Transition
             const caseTransition = document.getElementById('detective-case-transition');
             const rubberStamp = document.getElementById('dossier-rubber-stamp');
+            const stampSplatter = document.getElementById('stamp-ink-splatter');
+            const cautionTape = document.getElementById('dossier-caution-tape');
 
             if (caseTransition) {
+              if (stopGlitchCanvas) stopGlitchCanvas();
               updateDossierLanguage(state.currentLanguage);
               caseTransition.classList.remove('hidden');
-              if (audio.playBookRead) audio.playBookRead();
 
-              // Stamp the dossier with official red seal after 600ms
+              // Clean solid desk impact sound
+              if (audio.playDeskSlam) audio.playDeskSlam();
+
+              // 1. Red Rubber Stamp Slams down (at 600ms)
               setTimeout(() => {
-                if (rubberStamp) {
-                  rubberStamp.classList.add('stamped');
-                }
+                if (rubberStamp) rubberStamp.classList.add('stamped');
+                if (stampSplatter) stampSplatter.classList.add('splattered');
                 if (audio.playDossierStamp) audio.playDossierStamp();
 
-                // Hold stamped dossier for 1200ms, then unseal and open case file
+                // 2. Police Caution Tape Unseals (at 1400ms)
                 setTimeout(() => {
-                  caseTransition.classList.add('opening');
-                  if (audio.playWatchInspect) audio.playWatchInspect();
+                  if (cautionTape) cautionTape.classList.add('ripped');
+                  if (audio.playTapeTear) audio.playTapeTear();
 
+                  // 3. Dossier Unseals & Opens into Scene (at 1900ms)
                   setTimeout(() => {
-                    loadingStage.style.display = 'none';
-                    caseTransition.classList.add('hidden');
-                    caseTransition.classList.remove('opening');
-                    if (rubberStamp) rubberStamp.classList.remove('stamped');
+                    caseTransition.classList.add('opening');
+                    if (audio.playCathedralBell) audio.playCathedralBell();
 
-                    if (creatorStage) {
-                      creatorStage.classList.remove('hidden');
-                    }
-                    ui.applyLanguage(state.currentLanguage);
-                    initCharacterCreator();
-                  }, 600);
-                }, 1200);
+                    setTimeout(() => {
+                      loadingStage.style.display = 'none';
+                      caseTransition.classList.add('hidden');
+                      caseTransition.classList.remove('opening');
+                      if (rubberStamp) rubberStamp.classList.remove('stamped');
+                      if (stampSplatter) stampSplatter.classList.remove('splattered');
+                      if (cautionTape) cautionTape.classList.remove('ripped');
+
+                      if (creatorStage) {
+                        creatorStage.classList.remove('hidden');
+                      }
+                      ui.applyLanguage(state.currentLanguage);
+                      initCharacterCreator();
+                    }, 550);
+                  }, 500);
+                }, 800);
               }, 600);
 
             } else {
@@ -276,8 +774,16 @@ function bootGame() {
     }
   }
 
+  // Start gritty noir ambience on first interaction
+  const triggerLoadingAudio = () => {
+    if (audio.startLoadingScreenAmbience) audio.startLoadingScreenAmbience();
+  };
+  loadingStage?.addEventListener('pointerdown', triggerLoadingAudio, { once: true });
+  document.addEventListener('keydown', triggerLoadingAudio, { once: true });
+
   // Allow clicking anywhere on loading stage to complete or enter
   loadingStage?.addEventListener('click', (e) => {
+    triggerLoadingAudio();
     if (!isLoaded) {
       finishLoading();
     } else {
@@ -379,6 +885,24 @@ function bootGame() {
       if (event === 'language_changed') {
         updateCreatorAttributes();
         ui.applyLanguage(state.currentLanguage);
+
+        // Update loader quote immediately to match language
+        const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
+        if (quoteEl && activeQuotes) {
+          quoteEl.textContent = activeQuotes[quoteIdx % activeQuotes.length];
+        }
+
+        // Update telemetry text immediately to match language
+        if (telemetryText) {
+          const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+          if (isLoaded) {
+            const finalPhase = activePhases[activePhases.length - 1];
+            if (finalPhase) telemetryText.textContent = finalPhase.text;
+          } else {
+            const phase = activePhases.find(p => currentProgress <= p.at);
+            if (phase) telemetryText.textContent = phase.text;
+          }
+        }
       }
     });
 

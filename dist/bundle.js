@@ -1010,7 +1010,208 @@ class SoundEngine {
     noise.start(now);
   }
 
-  // Giant Pendulum Escapement Clockwork Tick & Resonance
+
+  // --- OMINOUS & GRITTY LOADING SCREEN AMBIENCE ---
+  startLoadingScreenAmbience() {
+    if (this.isMuted) return;
+    this.ensureContext();
+    if (!this.ctx || this.loadingAmbienceActive) return;
+    this.loadingAmbienceActive = true;
+    const now = this.ctx.currentTime;
+
+    // Master loading ambience gain node
+    this.loadingMasterGain = this.ctx.createGain();
+    this.loadingMasterGain.gain.setValueAtTime(0.001, now);
+    this.loadingMasterGain.gain.exponentialRampToValueAtTime(0.18, now + 1.2);
+    this.loadingMasterGain.connect(this.ctx.destination);
+
+    // 1. Deep Sub-bass Abyssal Drone (44Hz sawtooth + lowpass)
+    this.loadingDroneOsc = this.ctx.createOscillator();
+    this.loadingDroneOsc.type = 'sawtooth';
+    this.loadingDroneOsc.frequency.setValueAtTime(44, now);
+
+    const droneFilter = this.ctx.createBiquadFilter();
+    droneFilter.type = 'lowpass';
+    droneFilter.frequency.setValueAtTime(95, now);
+    droneFilter.Q.setValueAtTime(5.0, now);
+
+    // Subtle pitch modulation (ominous dread wobble)
+    const droneLfo = this.ctx.createOscillator();
+    droneLfo.type = 'sine';
+    droneLfo.frequency.setValueAtTime(0.15, now);
+    const droneLfoGain = this.ctx.createGain();
+    droneLfoGain.gain.setValueAtTime(3.5, now);
+    droneLfo.connect(droneLfoGain);
+    droneLfoGain.connect(this.loadingDroneOsc.frequency);
+    droneLfo.start(now);
+    this.loadingDroneLfo = droneLfo;
+
+    this.loadingDroneOsc.connect(droneFilter);
+    droneFilter.connect(this.loadingMasterGain);
+    this.loadingDroneOsc.start(now);
+
+    // 2. Gritty Analog Tape Hiss & Static Crackle
+    const bufferSize = this.ctx.sampleRate * 2;
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      // Pink/Brown noise filter
+      lastOut = (lastOut + (0.025 * white)) / 1.025;
+      data[i] = lastOut * 3.2;
+      // Add random tape static pops/clicks
+      if (Math.random() < 0.0015) {
+        data[i] += (Math.random() * 2 - 1) * 0.8;
+      }
+    }
+
+    this.loadingNoiseSource = this.ctx.createBufferSource();
+    this.loadingNoiseSource.buffer = noiseBuffer;
+    this.loadingNoiseSource.loop = true;
+
+    const noiseFilter = this.ctx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(1400, now);
+    noiseFilter.Q.setValueAtTime(0.9, now);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.045, now);
+
+    this.loadingNoiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(this.loadingMasterGain);
+    this.loadingNoiseSource.start(now);
+  }
+
+  stopLoadingScreenAmbience() {
+    if (!this.loadingAmbienceActive || !this.ctx) return;
+    this.loadingAmbienceActive = false;
+    const now = this.ctx.currentTime;
+    if (this.loadingMasterGain) {
+      this.loadingMasterGain.gain.setTargetAtTime(0.0001, now, 0.4);
+      setTimeout(() => {
+        try {
+          if (this.loadingDroneOsc) this.loadingDroneOsc.stop();
+          if (this.loadingDroneLfo) this.loadingDroneLfo.stop();
+          if (this.loadingNoiseSource) this.loadingNoiseSource.stop();
+        } catch (e) {}
+      }, 500);
+    }
+  }
+
+  // Heavy Wood Desk Impact with Sub-Bass Punch
+  playDeskSlam() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Sub-drop thud (120Hz -> 30Hz)
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(32, now + 0.28);
+
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+
+    // Heavy wooden slab slap noise
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.12);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(220, now);
+
+    const nGain = this.ctx.createGain();
+    nGain.gain.setValueAtTime(0.22, now);
+    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    noise.connect(filter);
+    filter.connect(nGain);
+    nGain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Rapid Forensic Camera Flashbulbs Burst
+  playCameraFlashBurst() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    [0, 0.14, 0.26].forEach((offset) => {
+      const t = now + offset;
+      // High-pitch capacitor recharge hiss
+      const capOsc = this.ctx.createOscillator();
+      const capGain = this.ctx.createGain();
+      capOsc.type = 'sine';
+      capOsc.frequency.setValueAtTime(1800, t);
+      capOsc.frequency.exponentialRampToValueAtTime(4200, t + 0.08);
+
+      capGain.gain.setValueAtTime(0.06, t);
+      capGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+
+      capOsc.connect(capGain);
+      capGain.connect(this.ctx.destination);
+      capOsc.start(t);
+      capOsc.stop(t + 0.1);
+
+      // Shutter snap click
+      const snapOsc = this.ctx.createOscillator();
+      const snapGain = this.ctx.createGain();
+      snapOsc.type = 'triangle';
+      snapOsc.frequency.setValueAtTime(950, t);
+      snapOsc.frequency.exponentialRampToValueAtTime(80, t + 0.04);
+
+      snapGain.gain.setValueAtTime(0.18, t);
+      snapGain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+
+      snapOsc.connect(snapGain);
+      snapGain.connect(this.ctx.destination);
+      snapOsc.start(t);
+      snapOsc.stop(t + 0.06);
+    });
+  }
+
+  // Police Caution Tape Tearing Sound
+  playTapeTear() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.16);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3200, now);
+    filter.Q.setValueAtTime(2.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.16, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+    // Giant Pendulum Escapement Clockwork Tick & Resonance
   playClockworkChime() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();
@@ -6983,6 +7184,50 @@ const DOSSIER_I18N = {
   }
 };
 
+
+const LOADER_DECRYPT_I18N = {
+  en: {
+    decrypting_telemetry: "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]",
+    badge_decrypted: "◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈",
+    access_granted: "[ACCESS GRANTED: WELCOME DETECTIVE]",
+    dispatching_dossier: "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]",
+    sector_badge: "SEC.04",
+    nexus_title: "Connecting Nexus"
+  },
+  id: {
+    decrypting_telemetry: "[MENDEKRIPSI ARSIP BERKAS SEKTOR 7...]",
+    badge_decrypted: "◈ BERKAS KASUS SEKTOR 7 TERDEKRIPSI ◈",
+    access_granted: "[AKSES DIIZINKAN: SELAMAT DATANG DETEKTIF]",
+    dispatching_dossier: "[MENGIRIM BERKAS KASUS #D4-04 KE MEJA PENYELIDIKAN...]",
+    sector_badge: "SEK.04",
+    nexus_title: "Penghubung Nexus"
+  },
+  ja: {
+    decrypting_telemetry: "[第7セクター事件記録を解読中...]",
+    badge_decrypted: "◈ 第7セクター事件記録 解読完了 ◈",
+    access_granted: "[アクセス承認: 捜査官、ようこそ]",
+    dispatching_dossier: "[事件 #D4-04 捜査書類を送出中...]",
+    sector_badge: "第4区",
+    nexus_title: "結合ネクサス"
+  },
+  zh: {
+    decrypting_telemetry: "[正在解密第七分区绝密案件档案...]",
+    badge_decrypted: "◈ 第七分区案件档案解密完成 ◈",
+    access_granted: "[准入许可通过：欢迎，调查督察]",
+    dispatching_dossier: "[正在派遣案件 #D4-04 现场调查卷宗...]",
+    sector_badge: "第4区",
+    nexus_title: "枢纽节点"
+  },
+  ko: {
+    decrypting_telemetry: "[제7구역 사건 기록 보관소 해독 중...]",
+    badge_decrypted: "◈ 제7구역 사건 파일 해독 완료 ◈",
+    access_granted: "[접근 인가됨: 환영합니다, 수사관님]",
+    dispatching_dossier: "[사건 #D4-04 수사 서류 책상으로 전달 중...]",
+    sector_badge: "제4구역",
+    nexus_title: "연결 넥서스"
+  }
+};
+
 // --- END: i18n.js ---
 
 // --- BEGIN: thoughts.js ---
@@ -8189,9 +8434,17 @@ const LANG_STORAGE_KEY = 'aenigma_language_preference';
 class GameState {
   constructor() {
     this.listeners = [];
-    const savedLang = localStorage.getItem(LANG_STORAGE_KEY);
+    const savedLang = (typeof localStorage !== 'undefined') ? localStorage.getItem(LANG_STORAGE_KEY) : null;
     const validLangs = ['en', 'id', 'zh', 'ja', 'ko'];
-    this.currentLanguage = validLangs.includes(savedLang) ? savedLang : 'en';
+    let defaultLang = 'en';
+    if (typeof navigator !== 'undefined' && navigator.language) {
+      const navLang = navigator.language.toLowerCase();
+      if (navLang.startsWith('id')) defaultLang = 'id';
+      else if (navLang.startsWith('ja')) defaultLang = 'ja';
+      else if (navLang.startsWith('zh')) defaultLang = 'zh';
+      else if (navLang.startsWith('ko')) defaultLang = 'ko';
+    }
+    this.currentLanguage = validLangs.includes(savedLang) ? savedLang : defaultLang;
     this.reset();
   }
 
@@ -8985,13 +9238,27 @@ class UIController {
       el.textContent = langObj.native.toUpperCase();
     });
 
-    // Update Stage 1 texts
+    // Update Stage 1 texts & loading indicators in active language
     const quoteEl = document.getElementById('loader-quote-text');
     if (quoteEl) quoteEl.textContent = t('loader_quote', currentLang);
     const telemetryEl = document.getElementById('loader-telemetry-text');
-    if (telemetryEl) telemetryEl.textContent = t('loader_telemetry', currentLang);
+    if (telemetryEl) {
+      const enterBtn = document.getElementById('loader-enter-btn');
+      if (enterBtn && enterBtn.classList.contains('ready') && typeof TELEMETRY_PHASES_I18N !== 'undefined') {
+        const activePhases = TELEMETRY_PHASES_I18N[currentLang] || TELEMETRY_PHASES_I18N['en'];
+        const finalPhase = activePhases[activePhases.length - 1];
+        if (finalPhase) telemetryEl.textContent = finalPhase.text;
+      } else {
+        telemetryEl.textContent = t('loader_telemetry', currentLang);
+      }
+    }
     const enterBtn = document.getElementById('loader-enter-btn');
     if (enterBtn) enterBtn.textContent = t('loader_enter', currentLang);
+    const sectorBadge = document.querySelector('.loader-sector-badge');
+    if (sectorBadge && typeof LOADER_DECRYPT_I18N !== 'undefined') {
+      const dec = LOADER_DECRYPT_I18N[currentLang] || LOADER_DECRYPT_I18N['en'];
+      if (dec && dec.sector_badge) sectorBadge.textContent = dec.sector_badge;
+    }
 
     // Update Stage 2 Character Creator texts
     const creatorTitle = document.getElementById('creator-dossier-title') || document.querySelector('.creator-section-title span:first-child');
@@ -10419,11 +10686,487 @@ class UIController {
 
 let hasBooted = false;
 
+
+// ----------------------------------------------------------------------------
+// GLITCH SILHOUETTE WALKERS CANVAS ENGINE
+// ----------------------------------------------------------------------------
+function initGlitchSilhouetteCanvas() {
+  const canvas = document.getElementById('loader-glitch-canvas');
+  if (!canvas) return () => {};
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return () => {};
+
+  let animId = null;
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  const handleResize = () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  };
+  window.addEventListener('resize', handleResize);
+
+  // Atmospheric rain particles on canvas
+  const rainDrops = [];
+  for (let i = 0; i < 40; i++) {
+    rainDrops.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      len: Math.random() * 24 + 16,
+      speed: Math.random() * 8 + 12,
+      opacity: Math.random() * 0.25 + 0.1
+    });
+  }
+
+  // Puddle ripples caused by footsteps on wet cobblestones
+  const ripples = [];
+  function addRipple(x, y) {
+    if (ripples.length < 15) {
+      ripples.push({ x, y, r: 2, maxR: Math.random() * 18 + 14, alpha: 0.45 });
+    }
+  }
+
+  // Watcher cigarette smoke particles
+  const smokeParticles = [];
+
+  // Mysterious figures moving through the rainy dark street
+  const walkers = [
+    {
+      type: 'detective',
+      x: -120,
+      yRate: 0.74,
+      speed: 1.15,
+      direction: 1, // left to right
+      scale: 1.15,
+      cycle: 0,
+      strideFreq: 0.08,
+      glitchTimer: 0,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.94
+    },
+    {
+      type: 'umbrella',
+      x: width + 100,
+      yRate: 0.69,
+      speed: 0.85,
+      direction: -1, // right to left
+      scale: 0.98,
+      cycle: 1.8,
+      strideFreq: 0.07,
+      glitchTimer: 35,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.88
+    },
+    {
+      type: 'agent',
+      x: -300,
+      yRate: 0.64,
+      speed: 0.95,
+      direction: 1, // left to right, background
+      scale: 0.80,
+      cycle: 0.8,
+      strideFreq: 0.09,
+      glitchTimer: 70,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.72
+    },
+    {
+      type: 'watcher',
+      x: width * 0.82,
+      yRate: 0.71,
+      speed: 0,
+      direction: -1,
+      scale: 1.02,
+      cycle: 0,
+      strideFreq: 0,
+      glitchTimer: 110,
+      glitching: false,
+      glitchDuration: 0,
+      glitchShift: 0,
+      opacity: 0.86,
+      emberGlow: 0.6
+    }
+  ];
+
+  function drawSilhouette(w, colorOverride = null) {
+    const groundY = height * w.yRate;
+    const x = w.x;
+    const s = w.scale * Math.max(0.7, Math.min(1.3, height / 850));
+    const dir = w.direction;
+    const cycle = w.cycle;
+
+    ctx.save();
+    ctx.translate(x, groundY);
+    ctx.scale(dir * s, s);
+
+    const leg1Angle = Math.sin(cycle) * 0.48;
+    const leg2Angle = -Math.sin(cycle) * 0.48;
+    const arm1Angle = -Math.sin(cycle) * 0.42;
+    const coatSwing = Math.sin(cycle) * 0.18;
+
+    const baseColor = colorOverride || '#04060b';
+    ctx.fillStyle = baseColor;
+    ctx.strokeStyle = baseColor;
+
+    if (colorOverride) {
+      ctx.shadowColor = colorOverride;
+      ctx.shadowBlur = 12;
+    } else {
+      ctx.shadowColor = 'rgba(100, 160, 240, 0.4)';
+      ctx.shadowBlur = 8;
+    }
+
+    if (w.type === 'detective') {
+      // Legs
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-6, -60);
+      ctx.lineTo(-6 + Math.sin(leg1Angle) * 32, -30);
+      ctx.lineTo(-6 + Math.sin(leg1Angle) * 60, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(6, -60);
+      ctx.lineTo(6 + Math.sin(leg2Angle) * 32, -30);
+      ctx.lineTo(6 + Math.sin(leg2Angle) * 60, 0);
+      ctx.stroke();
+
+      // Long Billowing Trenchcoat
+      ctx.beginPath();
+      ctx.moveTo(-16, -115);
+      ctx.lineTo(16, -115);
+      ctx.lineTo(26 + coatSwing * 14, -58);
+      ctx.lineTo(-24 - coatSwing * 12, -58);
+      ctx.closePath();
+      ctx.fill();
+
+      // Arms
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(10, -110);
+      ctx.lineTo(12 + Math.sin(arm1Angle) * 26, -80);
+      ctx.lineTo(12 + Math.sin(arm1Angle) * 46, -60);
+      ctx.stroke();
+
+      // Head & Fedora
+      ctx.beginPath();
+      ctx.arc(0, -135, 12, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.ellipse(3, -145, 24, 5, -0.08, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.rect(-10, -160, 20, 16);
+      ctx.fill();
+
+    } else if (w.type === 'umbrella') {
+      // Umbrella Figure
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-5, -55);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -26);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 55, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(5, -55);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -26);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 55, 0);
+      ctx.stroke();
+
+      // Coat
+      ctx.beginPath();
+      ctx.moveTo(-14, -110);
+      ctx.lineTo(14, -110);
+      ctx.lineTo(20, -55);
+      ctx.lineTo(-20, -55);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head
+      ctx.beginPath();
+      ctx.arc(0, -125, 11, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Umbrella Shaft & Large Canopy
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(4, -85);
+      ctx.lineTo(8, -148);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(8, -148, 42, Math.PI, 0);
+      ctx.closePath();
+      ctx.fill();
+
+    } else if (w.type === 'agent') {
+      // Undercover Courier / Informant
+      ctx.lineWidth = 11;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-5, -50);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -24);
+      ctx.lineTo(-5 + Math.sin(leg1Angle) * 52, 0);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(5, -50);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -24);
+      ctx.lineTo(5 + Math.sin(leg2Angle) * 52, 0);
+      ctx.stroke();
+
+      // Shorter coat & briefcase
+      ctx.beginPath();
+      ctx.moveTo(-14, -105);
+      ctx.lineTo(14, -105);
+      ctx.lineTo(20 + coatSwing * 8, -62);
+      ctx.lineTo(-18 - coatSwing * 8, -62);
+      ctx.closePath();
+      ctx.fill();
+
+      // Briefcase in trailing hand
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.rect(-24, -68, 14, 11);
+      ctx.fill();
+
+      // Head & Flat Cap
+      ctx.beginPath();
+      ctx.arc(0, -122, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(3, -129, 17, 5, 0.1, 0, Math.PI * 2);
+      ctx.fill();
+
+    } else if (w.type === 'watcher') {
+      // Watcher leaning in the shadows
+      ctx.lineWidth = 13;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-5, -50);
+      ctx.lineTo(-5, 0);
+      ctx.moveTo(7, -50);
+      ctx.lineTo(10, 0);
+      ctx.stroke();
+
+      // Tall Trenchcoat
+      ctx.beginPath();
+      ctx.moveTo(-15, -112);
+      ctx.lineTo(15, -112);
+      ctx.lineTo(20, -48);
+      ctx.lineTo(-20, -48);
+      ctx.closePath();
+      ctx.fill();
+
+      // High Turned-up Collar
+      ctx.beginPath();
+      ctx.moveTo(-16, -116);
+      ctx.lineTo(-20, -132);
+      ctx.lineTo(-10, -120);
+      ctx.closePath();
+      ctx.fill();
+
+      // Head & Fedora
+      ctx.beginPath();
+      ctx.arc(0, -130, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(0, -138, 20, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.rect(-9, -152, 18, 14);
+      ctx.fill();
+
+      // Cigarette & Glowing Ember
+      if (!colorOverride) {
+        w.emberGlow = (Math.sin(Date.now() * 0.005) + 1) * 0.5;
+        ctx.fillStyle = `rgba(255, 95, 25, ${0.5 + w.emberGlow * 0.5})`;
+        ctx.shadowColor = '#ff4400';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(9, -126, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    ctx.restore();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+
+    // 1. Draw Falling Rain Streaks
+    ctx.lineWidth = 1.2;
+    rainDrops.forEach(drop => {
+      ctx.strokeStyle = `rgba(200, 220, 255, ${drop.opacity})`;
+      ctx.beginPath();
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x - 3, drop.y + drop.len);
+      ctx.stroke();
+
+      drop.y += drop.speed;
+      drop.x -= 1.2;
+      if (drop.y > height) {
+        drop.y = -drop.len;
+        drop.x = Math.random() * width;
+      }
+    });
+
+    // 2. Draw Footstep Cobblestone Ripples
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const rip = ripples[i];
+      rip.r += 0.5;
+      rip.alpha -= 0.015;
+      if (rip.alpha <= 0) {
+        ripples.splice(i, 1);
+        continue;
+      }
+      ctx.save();
+      ctx.strokeStyle = `rgba(130, 180, 240, ${rip.alpha})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(rip.x, rip.y, rip.r * 2.2, rip.r * 0.8, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 3. Draw Watcher Cigarette Smoke
+    if (Math.random() < 0.25) {
+      const watcher = walkers.find(w => w.type === 'watcher');
+      if (watcher) {
+        const groundY = height * watcher.yRate;
+        smokeParticles.push({
+          x: watcher.x - 8,
+          y: groundY - 128 * watcher.scale,
+          vx: (Math.random() - 0.7) * 0.6,
+          vy: -Math.random() * 0.8 - 0.5,
+          alpha: 0.35,
+          size: Math.random() * 3 + 2
+        });
+      }
+    }
+
+    for (let i = smokeParticles.length - 1; i >= 0; i--) {
+      const sp = smokeParticles[i];
+      sp.x += sp.vx;
+      sp.y += sp.vy;
+      sp.alpha -= 0.005;
+      sp.size += 0.08;
+      if (sp.alpha <= 0) {
+        smokeParticles.splice(i, 1);
+        continue;
+      }
+      ctx.save();
+      ctx.fillStyle = `rgba(180, 200, 220, ${sp.alpha})`;
+      ctx.beginPath();
+      ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 4. Update and Draw Silhouettes
+    walkers.forEach(w => {
+      if (w.speed > 0) {
+        const prevCycle = w.cycle;
+        w.x += w.speed * w.direction;
+        w.cycle += w.strideFreq;
+
+        // Detect footstep contact to trigger puddle ripple
+        if ((Math.sin(prevCycle) < 0 && Math.sin(w.cycle) >= 0) ||
+            (Math.sin(prevCycle) > 0 && Math.sin(w.cycle) <= 0)) {
+          addRipple(w.x, height * w.yRate);
+        }
+
+        // Loop walkers across screen
+        if (w.direction === 1 && w.x > width + 160) {
+          w.x = -150;
+        } else if (w.direction === -1 && w.x < -160) {
+          w.x = width + 150;
+        }
+      }
+
+      // Glitch timing: frequent, dramatic digital interference
+      w.glitchTimer++;
+      if (!w.glitching && Math.random() < 0.025 && w.glitchTimer > 35) {
+        w.glitching = true;
+        w.glitchDuration = Math.floor(Math.random() * 6) + 4; // 4-9 frames
+        w.glitchTimer = 0;
+        w.glitchShift = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 16 + 10);
+      }
+
+      ctx.save();
+      ctx.filter = `blur(${w.type === 'umbrella' ? 2 : 1}px)`;
+      ctx.globalAlpha = w.opacity;
+
+      // When glitching: True Vibrant Chromatic Aberration & Digital Slicing
+      if (w.glitching) {
+        // Cyan / Electric Blue Chromatic Ghost
+        ctx.save();
+        ctx.translate(w.glitchShift * 0.8, 0);
+        drawSilhouette(w, 'rgba(0, 245, 255, 0.7)');
+        ctx.restore();
+
+        // Magenta / Crimson Chromatic Ghost
+        ctx.save();
+        ctx.translate(-w.glitchShift * 0.8, 0);
+        drawSilhouette(w, 'rgba(255, 30, 90, 0.7)');
+        ctx.restore();
+
+        // Horizontal Glitch Scanline Bars cutting across
+        const groundY = height * w.yRate;
+        const barY1 = groundY - Math.random() * 120;
+        const barY2 = groundY - Math.random() * 120;
+        ctx.fillStyle = 'rgba(0, 245, 255, 0.6)';
+        ctx.fillRect(w.x - 40, barY1, 80 + Math.random() * 40, Math.random() * 3 + 1);
+        ctx.fillStyle = 'rgba(255, 30, 90, 0.6)';
+        ctx.fillRect(w.x - 40, barY2, 80 + Math.random() * 40, Math.random() * 3 + 1);
+      }
+
+      // Main Deep Shadow Silhouette
+      drawSilhouette(w);
+      ctx.restore();
+
+      if (w.glitching) {
+        w.glitchDuration--;
+        if (w.glitchDuration <= 0) {
+          w.glitching = false;
+        }
+      }
+    });
+
+    animId = requestAnimationFrame(render);
+  }
+
+  animId = requestAnimationFrame(render);
+
+  return function stop() {
+    if (animId) cancelAnimationFrame(animId);
+    window.removeEventListener('resize', handleResize);
+  };
+}
+
 function bootGame() {
   if (hasBooted) return;
   hasBooted = true;
 
   const ui = new UIController(state);
+
+  // Initialize animated glitch silhouette walkers
+  const stopGlitchCanvas = initGlitchSilhouetteCanvas();
+
+  // Immediately apply active language to entire loading screen
+  ui.applyLanguage(state.currentLanguage);
 
   // --------------------------------------------------------------------------
   // 1. ANIMATED LOADING SCREEN CONTROLLER
@@ -10574,10 +11317,19 @@ function bootGame() {
     let scrambleTicks = 0;
     const maxTicks = 16; // ~400ms at 25ms per tick
 
+    const dec = (typeof LOADER_DECRYPT_I18N !== 'undefined' && (LOADER_DECRYPT_I18N[state.currentLanguage] || LOADER_DECRYPT_I18N['en'])) || {
+      decrypting_telemetry: "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]",
+      badge_decrypted: "◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈",
+      access_granted: "[ACCESS GRANTED: WELCOME DETECTIVE]",
+      dispatching_dossier: "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]",
+      sector_badge: "SEC.04",
+      nexus_title: "Connecting Nexus"
+    };
+
     if (titleEl) {
       titleEl.classList.add('decrypting');
       if (telemetryText) {
-        telemetryText.textContent = "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]";
+        telemetryText.textContent = dec.decrypting_telemetry;
         telemetryText.style.color = "#4df0ff";
       }
 
@@ -10596,18 +11348,18 @@ function bootGame() {
           titleEl.textContent = scrambled;
         } else {
           clearInterval(scrambleInterval);
-          // Decryption completed! Lock in "aenigmArchive"
+          // Decryption completed! Lock in "aenigmArchive" with localized badge and nexus title
           titleEl.classList.remove('decrypting');
           titleEl.classList.add('decrypted');
           titleEl.innerHTML = `
             <div class="brand-decrypted-wrapper">
-              <span class="brand-stem">${targetStem}</span><span class="brand-junction" title="Connecting Nexus">${targetPivot}</span><span class="brand-suffix">${targetSuffix}</span>
+              <span class="brand-stem">${targetStem}</span><span class="brand-junction" title="${dec.nexus_title}">${targetPivot}</span><span class="brand-suffix">${targetSuffix}</span>
             </div>
-            <div class="archive-decrypt-badge">◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈</div>
+            <div class="archive-decrypt-badge">${dec.badge_decrypted}</div>
           `;
           
           if (telemetryText) {
-            telemetryText.textContent = "[ACCESS GRANTED: WELCOME DETECTIVE]";
+            telemetryText.textContent = dec.access_granted;
             telemetryText.style.color = "#d4af37";
           }
 
@@ -10617,47 +11369,60 @@ function bootGame() {
           // Longer hold for aenigmArchive: 2200ms with telemetry progression
           setTimeout(() => {
             if (telemetryText) {
-              telemetryText.textContent = "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]";
+              telemetryText.textContent = dec.dispatching_dossier;
             }
           }, 1100);
 
           setTimeout(() => {
+            if (audio.stopLoadingScreenAmbience) audio.stopLoadingScreenAmbience();
             loadingStage.classList.add('loader-stage-warp');
 
-            // Launch Cinematic Noir Detective Case Dossier Transition
+            // Launch High-Octane Noir Detective Case Dossier Transition
             const caseTransition = document.getElementById('detective-case-transition');
             const rubberStamp = document.getElementById('dossier-rubber-stamp');
+            const stampSplatter = document.getElementById('stamp-ink-splatter');
+            const cautionTape = document.getElementById('dossier-caution-tape');
 
             if (caseTransition) {
+              if (stopGlitchCanvas) stopGlitchCanvas();
               updateDossierLanguage(state.currentLanguage);
               caseTransition.classList.remove('hidden');
-              if (audio.playBookRead) audio.playBookRead();
 
-              // Stamp the dossier with official red seal after 600ms
+              // Clean solid desk impact sound
+              if (audio.playDeskSlam) audio.playDeskSlam();
+
+              // 1. Red Rubber Stamp Slams down (at 600ms)
               setTimeout(() => {
-                if (rubberStamp) {
-                  rubberStamp.classList.add('stamped');
-                }
+                if (rubberStamp) rubberStamp.classList.add('stamped');
+                if (stampSplatter) stampSplatter.classList.add('splattered');
                 if (audio.playDossierStamp) audio.playDossierStamp();
 
-                // Hold stamped dossier for 1200ms, then unseal and open case file
+                // 2. Police Caution Tape Unseals (at 1400ms)
                 setTimeout(() => {
-                  caseTransition.classList.add('opening');
-                  if (audio.playWatchInspect) audio.playWatchInspect();
+                  if (cautionTape) cautionTape.classList.add('ripped');
+                  if (audio.playTapeTear) audio.playTapeTear();
 
+                  // 3. Dossier Unseals & Opens into Scene (at 1900ms)
                   setTimeout(() => {
-                    loadingStage.style.display = 'none';
-                    caseTransition.classList.add('hidden');
-                    caseTransition.classList.remove('opening');
-                    if (rubberStamp) rubberStamp.classList.remove('stamped');
+                    caseTransition.classList.add('opening');
+                    if (audio.playCathedralBell) audio.playCathedralBell();
 
-                    if (creatorStage) {
-                      creatorStage.classList.remove('hidden');
-                    }
-                    ui.applyLanguage(state.currentLanguage);
-                    initCharacterCreator();
-                  }, 600);
-                }, 1200);
+                    setTimeout(() => {
+                      loadingStage.style.display = 'none';
+                      caseTransition.classList.add('hidden');
+                      caseTransition.classList.remove('opening');
+                      if (rubberStamp) rubberStamp.classList.remove('stamped');
+                      if (stampSplatter) stampSplatter.classList.remove('splattered');
+                      if (cautionTape) cautionTape.classList.remove('ripped');
+
+                      if (creatorStage) {
+                        creatorStage.classList.remove('hidden');
+                      }
+                      ui.applyLanguage(state.currentLanguage);
+                      initCharacterCreator();
+                    }, 550);
+                  }, 500);
+                }, 800);
               }, 600);
 
             } else {
@@ -10688,8 +11453,16 @@ function bootGame() {
     }
   }
 
+  // Start gritty noir ambience on first interaction
+  const triggerLoadingAudio = () => {
+    if (audio.startLoadingScreenAmbience) audio.startLoadingScreenAmbience();
+  };
+  loadingStage?.addEventListener('pointerdown', triggerLoadingAudio, { once: true });
+  document.addEventListener('keydown', triggerLoadingAudio, { once: true });
+
   // Allow clicking anywhere on loading stage to complete or enter
   loadingStage?.addEventListener('click', (e) => {
+    triggerLoadingAudio();
     if (!isLoaded) {
       finishLoading();
     } else {
@@ -10791,6 +11564,24 @@ function bootGame() {
       if (event === 'language_changed') {
         updateCreatorAttributes();
         ui.applyLanguage(state.currentLanguage);
+
+        // Update loader quote immediately to match language
+        const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
+        if (quoteEl && activeQuotes) {
+          quoteEl.textContent = activeQuotes[quoteIdx % activeQuotes.length];
+        }
+
+        // Update telemetry text immediately to match language
+        if (telemetryText) {
+          const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+          if (isLoaded) {
+            const finalPhase = activePhases[activePhases.length - 1];
+            if (finalPhase) telemetryText.textContent = finalPhase.text;
+          } else {
+            const phase = activePhases.find(p => currentProgress <= p.at);
+            if (phase) telemetryText.textContent = phase.text;
+          }
+        }
       }
     });
 

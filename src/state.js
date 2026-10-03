@@ -6,9 +6,17 @@ const LANG_STORAGE_KEY = 'aenigma_language_preference';
 export class GameState {
   constructor() {
     this.listeners = [];
-    const savedLang = localStorage.getItem(LANG_STORAGE_KEY);
+    const savedLang = (typeof localStorage !== 'undefined') ? localStorage.getItem(LANG_STORAGE_KEY) : null;
     const validLangs = ['en', 'id', 'zh', 'ja', 'ko'];
-    this.currentLanguage = validLangs.includes(savedLang) ? savedLang : 'en';
+    let defaultLang = 'en';
+    if (typeof navigator !== 'undefined' && navigator.language) {
+      const navLang = navigator.language.toLowerCase();
+      if (navLang.startsWith('id')) defaultLang = 'id';
+      else if (navLang.startsWith('ja')) defaultLang = 'ja';
+      else if (navLang.startsWith('zh')) defaultLang = 'zh';
+      else if (navLang.startsWith('ko')) defaultLang = 'ko';
+    }
+    this.currentLanguage = validLangs.includes(savedLang) ? savedLang : defaultLang;
     this.reset();
   }
 

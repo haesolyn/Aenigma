@@ -1005,7 +1005,208 @@ class SoundEngine {
     noise.start(now);
   }
 
-  // Giant Pendulum Escapement Clockwork Tick & Resonance
+
+  // --- OMINOUS & GRITTY LOADING SCREEN AMBIENCE ---
+  startLoadingScreenAmbience() {
+    if (this.isMuted) return;
+    this.ensureContext();
+    if (!this.ctx || this.loadingAmbienceActive) return;
+    this.loadingAmbienceActive = true;
+    const now = this.ctx.currentTime;
+
+    // Master loading ambience gain node
+    this.loadingMasterGain = this.ctx.createGain();
+    this.loadingMasterGain.gain.setValueAtTime(0.001, now);
+    this.loadingMasterGain.gain.exponentialRampToValueAtTime(0.18, now + 1.2);
+    this.loadingMasterGain.connect(this.ctx.destination);
+
+    // 1. Deep Sub-bass Abyssal Drone (44Hz sawtooth + lowpass)
+    this.loadingDroneOsc = this.ctx.createOscillator();
+    this.loadingDroneOsc.type = 'sawtooth';
+    this.loadingDroneOsc.frequency.setValueAtTime(44, now);
+
+    const droneFilter = this.ctx.createBiquadFilter();
+    droneFilter.type = 'lowpass';
+    droneFilter.frequency.setValueAtTime(95, now);
+    droneFilter.Q.setValueAtTime(5.0, now);
+
+    // Subtle pitch modulation (ominous dread wobble)
+    const droneLfo = this.ctx.createOscillator();
+    droneLfo.type = 'sine';
+    droneLfo.frequency.setValueAtTime(0.15, now);
+    const droneLfoGain = this.ctx.createGain();
+    droneLfoGain.gain.setValueAtTime(3.5, now);
+    droneLfo.connect(droneLfoGain);
+    droneLfoGain.connect(this.loadingDroneOsc.frequency);
+    droneLfo.start(now);
+    this.loadingDroneLfo = droneLfo;
+
+    this.loadingDroneOsc.connect(droneFilter);
+    droneFilter.connect(this.loadingMasterGain);
+    this.loadingDroneOsc.start(now);
+
+    // 2. Gritty Analog Tape Hiss & Static Crackle
+    const bufferSize = this.ctx.sampleRate * 2;
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    let lastOut = 0.0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      // Pink/Brown noise filter
+      lastOut = (lastOut + (0.025 * white)) / 1.025;
+      data[i] = lastOut * 3.2;
+      // Add random tape static pops/clicks
+      if (Math.random() < 0.0015) {
+        data[i] += (Math.random() * 2 - 1) * 0.8;
+      }
+    }
+
+    this.loadingNoiseSource = this.ctx.createBufferSource();
+    this.loadingNoiseSource.buffer = noiseBuffer;
+    this.loadingNoiseSource.loop = true;
+
+    const noiseFilter = this.ctx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(1400, now);
+    noiseFilter.Q.setValueAtTime(0.9, now);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.045, now);
+
+    this.loadingNoiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(this.loadingMasterGain);
+    this.loadingNoiseSource.start(now);
+  }
+
+  stopLoadingScreenAmbience() {
+    if (!this.loadingAmbienceActive || !this.ctx) return;
+    this.loadingAmbienceActive = false;
+    const now = this.ctx.currentTime;
+    if (this.loadingMasterGain) {
+      this.loadingMasterGain.gain.setTargetAtTime(0.0001, now, 0.4);
+      setTimeout(() => {
+        try {
+          if (this.loadingDroneOsc) this.loadingDroneOsc.stop();
+          if (this.loadingDroneLfo) this.loadingDroneLfo.stop();
+          if (this.loadingNoiseSource) this.loadingNoiseSource.stop();
+        } catch (e) {}
+      }, 500);
+    }
+  }
+
+  // Heavy Wood Desk Impact with Sub-Bass Punch
+  playDeskSlam() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    // Sub-drop thud (120Hz -> 30Hz)
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(32, now + 0.28);
+
+    gain.gain.setValueAtTime(0.38, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.35);
+
+    // Heavy wooden slab slap noise
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.12);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(220, now);
+
+    const nGain = this.ctx.createGain();
+    nGain.gain.setValueAtTime(0.22, now);
+    nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    noise.connect(filter);
+    filter.connect(nGain);
+    nGain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+  // Rapid Forensic Camera Flashbulbs Burst
+  playCameraFlashBurst() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    [0, 0.14, 0.26].forEach((offset) => {
+      const t = now + offset;
+      // High-pitch capacitor recharge hiss
+      const capOsc = this.ctx.createOscillator();
+      const capGain = this.ctx.createGain();
+      capOsc.type = 'sine';
+      capOsc.frequency.setValueAtTime(1800, t);
+      capOsc.frequency.exponentialRampToValueAtTime(4200, t + 0.08);
+
+      capGain.gain.setValueAtTime(0.06, t);
+      capGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+
+      capOsc.connect(capGain);
+      capGain.connect(this.ctx.destination);
+      capOsc.start(t);
+      capOsc.stop(t + 0.1);
+
+      // Shutter snap click
+      const snapOsc = this.ctx.createOscillator();
+      const snapGain = this.ctx.createGain();
+      snapOsc.type = 'triangle';
+      snapOsc.frequency.setValueAtTime(950, t);
+      snapOsc.frequency.exponentialRampToValueAtTime(80, t + 0.04);
+
+      snapGain.gain.setValueAtTime(0.18, t);
+      snapGain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+
+      snapOsc.connect(snapGain);
+      snapGain.connect(this.ctx.destination);
+      snapOsc.start(t);
+      snapOsc.stop(t + 0.06);
+    });
+  }
+
+  // Police Caution Tape Tearing Sound
+  playTapeTear() {
+    if (this.isMuted || !this.ctx) return;
+    this.ensureContext();
+    const now = this.ctx.currentTime;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.16);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(3200, now);
+    filter.Q.setValueAtTime(2.5, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.16, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    noise.start(now);
+  }
+
+    // Giant Pendulum Escapement Clockwork Tick & Resonance
   playClockworkChime() {
     if (this.isMuted || !this.ctx) return;
     this.ensureContext();

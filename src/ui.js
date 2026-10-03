@@ -147,13 +147,27 @@ export class UIController {
       el.textContent = langObj.native.toUpperCase();
     });
 
-    // Update Stage 1 texts
+    // Update Stage 1 texts & loading indicators in active language
     const quoteEl = document.getElementById('loader-quote-text');
     if (quoteEl) quoteEl.textContent = t('loader_quote', currentLang);
     const telemetryEl = document.getElementById('loader-telemetry-text');
-    if (telemetryEl) telemetryEl.textContent = t('loader_telemetry', currentLang);
+    if (telemetryEl) {
+      const enterBtn = document.getElementById('loader-enter-btn');
+      if (enterBtn && enterBtn.classList.contains('ready') && typeof TELEMETRY_PHASES_I18N !== 'undefined') {
+        const activePhases = TELEMETRY_PHASES_I18N[currentLang] || TELEMETRY_PHASES_I18N['en'];
+        const finalPhase = activePhases[activePhases.length - 1];
+        if (finalPhase) telemetryEl.textContent = finalPhase.text;
+      } else {
+        telemetryEl.textContent = t('loader_telemetry', currentLang);
+      }
+    }
     const enterBtn = document.getElementById('loader-enter-btn');
     if (enterBtn) enterBtn.textContent = t('loader_enter', currentLang);
+    const sectorBadge = document.querySelector('.loader-sector-badge');
+    if (sectorBadge && typeof LOADER_DECRYPT_I18N !== 'undefined') {
+      const dec = LOADER_DECRYPT_I18N[currentLang] || LOADER_DECRYPT_I18N['en'];
+      if (dec && dec.sector_badge) sectorBadge.textContent = dec.sector_badge;
+    }
 
     // Update Stage 2 Character Creator texts
     const creatorTitle = document.getElementById('creator-dossier-title') || document.querySelector('.creator-section-title span:first-child');

@@ -33,6 +33,8 @@
    LOADING SCREEN: Analog Tape & Fractured Synapses
    -------------------------------------------------------------------------- */
 .loader-content {
+  position: relative;
+  z-index: 10;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -1090,4 +1092,259 @@
   letter-spacing: 1.5px;
   text-align: center;
   font-weight: 700;
+}
+
+
+
+/* ==========================================================================
+   DARK NOIR AMBIENCE: Photorealistic Street Backdrop & Glitch Canvas
+   ========================================================================== */
+.loader-dark-ambience {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Generated 1920s Noir Street at Night */
+.ambience-noir-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #06080c url('assets/loader_noir_bg.jpg') center/cover no-repeat;
+  filter: contrast(1.22) brightness(0.62);
+  animation: noirSlowBreath 22s infinite alternate ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes noirSlowBreath {
+  0% { transform: scale(1); filter: contrast(1.22) brightness(0.60); }
+  100% { transform: scale(1.04); filter: contrast(1.28) brightness(0.68); }
+}
+
+/* HTML5 Glitch Canvas for Moving Silhouette Figures */
+.loader-glitch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Deep atmospheric drifting fog overlay (behind walkers) */
+.ambience-fog-layer {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 140%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 55%, rgba(18, 24, 38, 0.25) 0%, rgba(5, 7, 12, 0.55) 80%);
+  filter: blur(16px);
+  pointer-events: none;
+  z-index: 2;
+  animation: driftFog 28s infinite alternate ease-in-out;
+}
+
+@keyframes driftFog {
+  0% { transform: translateX(-4%); }
+  100% { transform: translateX(4%); }
+}
+
+/* Raining Glass Overlay */
+.ambience-rain-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    105deg,
+    transparent 0,
+    transparent 16px,
+    rgba(255, 255, 255, 0.04) 17px,
+    transparent 18px
+  );
+  animation: rainStreaks 0.4s linear infinite;
+  opacity: 0.6;
+  z-index: 4;
+}
+
+@keyframes rainStreaks {
+  0% { background-position: 0 0; }
+  100% { background-position: -30px 180px; }
+}
+
+/* Analog CRT Vignette and Scanlines Overlay */
+.ambience-vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 140px rgba(0, 0, 0, 0.95);
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   HIGH-OCTANE CINEMATIC TRANSITIONS: Screen Shake, Stamp Splatter & Tear
+   ========================================================================== */
+
+/* Fullscreen Violent Screen Shake */
+body.screen-shake-violent {
+  animation: violentImpactShake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes violentImpactShake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  15% { transform: translate(-6px, 8px) rotate(-1deg); }
+  30% { transform: translate(7px, -6px) rotate(1.2deg); }
+  45% { transform: translate(-5px, 4px) rotate(-0.8deg); }
+  65% { transform: translate(4px, -3px) rotate(0.5deg); }
+  85% { transform: translate(-2px, 1px) rotate(-0.2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Heavy Impact Manila Folder Slam */
+.detective-case-transition.slamming .dossier-folder-container {
+  animation: heavyDeskSlam 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+@keyframes heavyDeskSlam {
+  0% { transform: translateY(-120px) scale(1.18) rotate(-4deg); opacity: 0; }
+  65% { transform: translateY(12px) scale(0.97) rotate(1.5deg); opacity: 1; }
+  82% { transform: translateY(-5px) scale(1.02) rotate(-0.5deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Pinned Crime Scene Polaroid */
+.dossier-polaroid-pin {
+  position: absolute;
+  top: -16px;
+  right: 28px;
+  width: 110px;
+  background: #fff;
+  padding: 6px 6px 12px 6px;
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.65), 0 2px 6px rgba(0,0,0,0.4);
+  transform: rotate(6deg);
+  z-index: 8;
+  border: 1px solid rgba(0,0,0,0.15);
+  animation: polaroidJitter 0.5s ease-out;
+}
+
+.brass-paperclip {
+  position: absolute;
+  top: -10px;
+  left: 38px;
+  width: 12px;
+  height: 24px;
+  border: 3px solid #b5943b;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 9;
+}
+
+.polaroid-img-clock {
+  width: 100%;
+  height: 80px;
+  background: #191b22 url('assets/clocktower_scene.jpg') center/cover no-repeat;
+  border: 1px solid #ddd;
+  position: relative;
+  filter: contrast(1.2) sepia(0.3);
+}
+
+.polaroid-stamp-ref {
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 900;
+  color: #ff3344;
+  background: rgba(0,0,0,0.7);
+  padding: 1px 3px;
+}
+
+.polaroid-caption {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  font-weight: 800;
+  color: #333;
+  margin-top: 5px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Red Rubber Stamp Splatter Shockwave */
+.stamp-ink-splatter {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  width: 280px;
+  height: 120px;
+  transform: translate(-50%, -50%) rotate(-11deg) scale(0.6);
+  border: 6px solid rgba(181, 26, 32, 0.7);
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.stamp-ink-splatter.splattered {
+  animation: splatterBurst 0.6s ease-out forwards;
+}
+
+@keyframes splatterBurst {
+  0% { opacity: 0.9; transform: translate(-50%, -50%) rotate(-11deg) scale(0.9); }
+  50% { opacity: 0.6; transform: translate(-50%, -50%) rotate(-11deg) scale(1.4); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(-11deg) scale(1.8); }
+}
+
+/* Police Caution Crime Scene Tape Strip across folder */
+.dossier-caution-tape-strip {
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-top: 12px;
+  background: #ffcc00;
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  padding: 5px 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border-top: 2px dashed #000;
+  border-bottom: 2px dashed #000;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.dossier-caution-tape-strip.ripped {
+  transform: scaleY(0.1) rotate(-3deg);
+  opacity: 0;
+  filter: blur(4px);
+}
+
+/* Smooth Cinematic Noir Dossier Transition */
+.detective-case-transition.burst-open,
+.detective-case-transition.opening {
+  opacity: 0 !important;
+  transform: scale(1.05) translateY(-10px) !important;
+  filter: blur(6px) !important;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: none !important;
 }
