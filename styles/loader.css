@@ -1118,14 +1118,16 @@
   width: 100%;
   height: 100%;
   background: #06080c url('assets/loader_noir_bg.jpg') center/cover no-repeat;
-  filter: contrast(1.22) brightness(0.62);
+  filter: contrast(1.2) brightness(0.65);
   animation: noirSlowBreath 22s infinite alternate ease-in-out;
   transform-origin: center;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes noirSlowBreath {
-  0% { transform: scale(1); filter: contrast(1.22) brightness(0.60); }
-  100% { transform: scale(1.04); filter: contrast(1.28) brightness(0.68); }
+  0% { transform: scale(1) translateZ(0); }
+  100% { transform: scale(1.03) translateZ(0); }
 }
 
 /* HTML5 Glitch Canvas for Moving Silhouette Figures */
@@ -1137,6 +1139,7 @@
   height: 100%;
   z-index: 3;
   pointer-events: none;
+  transform: translateZ(0);
 }
 
 /* Deep atmospheric drifting fog overlay (behind walkers) */
@@ -1146,16 +1149,17 @@
   left: -20%;
   width: 140%;
   height: 100%;
-  background: radial-gradient(circle at 50% 55%, rgba(18, 24, 38, 0.25) 0%, rgba(5, 7, 12, 0.55) 80%);
-  filter: blur(16px);
+  background: radial-gradient(ellipse 65% 55% at 50% 55%, rgba(18, 24, 38, 0.35) 0%, rgba(10, 14, 22, 0.25) 45%, rgba(4, 6, 10, 0.65) 80%);
   pointer-events: none;
   z-index: 2;
   animation: driftFog 28s infinite alternate ease-in-out;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes driftFog {
-  0% { transform: translateX(-4%); }
-  100% { transform: translateX(4%); }
+  0% { transform: translateX(-3%) translateZ(0); }
+  100% { transform: translateX(3%) translateZ(0); }
 }
 
 /* Raining Glass Overlay */

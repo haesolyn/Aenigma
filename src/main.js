@@ -27,45 +27,22 @@ function initGlitchSilhouetteCanvas() {
   };
   window.addEventListener('resize', handleResize);
 
-  // Atmospheric rain particles on canvas
-  const rainDrops = [];
-  for (let i = 0; i < 40; i++) {
-    rainDrops.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      len: Math.random() * 24 + 16,
-      speed: Math.random() * 8 + 12,
-      opacity: Math.random() * 0.25 + 0.1
-    });
-  }
-
-  // Puddle ripples caused by footsteps on wet cobblestones
-  const ripples = [];
-  function addRipple(x, y) {
-    if (ripples.length < 15) {
-      ripples.push({ x, y, r: 2, maxR: Math.random() * 18 + 14, alpha: 0.45 });
-    }
-  }
-
-  // Watcher cigarette smoke particles
-  const smokeParticles = [];
-
   // Mysterious figures moving through the rainy dark street
   const walkers = [
     {
       type: 'detective',
-      x: -120,
+      x: -100,
       yRate: 0.74,
-      speed: 1.15,
+      speed: 1.2,
       direction: 1, // left to right
-      scale: 1.15,
+      scale: 1.1,
       cycle: 0,
       strideFreq: 0.08,
       glitchTimer: 0,
       glitching: false,
       glitchDuration: 0,
       glitchShift: 0,
-      opacity: 0.94
+      opacity: 0.92
     },
     {
       type: 'umbrella',
@@ -73,29 +50,14 @@ function initGlitchSilhouetteCanvas() {
       yRate: 0.69,
       speed: 0.85,
       direction: -1, // right to left
-      scale: 0.98,
+      scale: 0.95,
       cycle: 1.8,
       strideFreq: 0.07,
-      glitchTimer: 35,
+      glitchTimer: 45,
       glitching: false,
       glitchDuration: 0,
       glitchShift: 0,
       opacity: 0.88
-    },
-    {
-      type: 'agent',
-      x: -300,
-      yRate: 0.64,
-      speed: 0.95,
-      direction: 1, // left to right, background
-      scale: 0.80,
-      cycle: 0.8,
-      strideFreq: 0.09,
-      glitchTimer: 70,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.72
     },
     {
       type: 'watcher',
@@ -103,22 +65,22 @@ function initGlitchSilhouetteCanvas() {
       yRate: 0.71,
       speed: 0,
       direction: -1,
-      scale: 1.02,
+      scale: 1.0,
       cycle: 0,
       strideFreq: 0,
-      glitchTimer: 110,
+      glitchTimer: 120,
       glitching: false,
       glitchDuration: 0,
       glitchShift: 0,
-      opacity: 0.86,
-      emberGlow: 0.6
+      opacity: 0.85,
+      emberGlow: 0.5
     }
   ];
 
-  function drawSilhouette(w, colorOverride = null) {
+  function drawSilhouette(w, colorOverride) {
     const groundY = height * w.yRate;
     const x = w.x;
-    const s = w.scale * Math.max(0.7, Math.min(1.3, height / 850));
+    const s = w.scale * Math.max(0.7, Math.min(1.25, height / 850));
     const dir = w.direction;
     const cycle = w.cycle;
 
@@ -131,17 +93,9 @@ function initGlitchSilhouetteCanvas() {
     const arm1Angle = -Math.sin(cycle) * 0.42;
     const coatSwing = Math.sin(cycle) * 0.18;
 
-    const baseColor = colorOverride || '#04060b';
+    const baseColor = colorOverride || '#05070d';
     ctx.fillStyle = baseColor;
     ctx.strokeStyle = baseColor;
-
-    if (colorOverride) {
-      ctx.shadowColor = colorOverride;
-      ctx.shadowBlur = 12;
-    } else {
-      ctx.shadowColor = 'rgba(100, 160, 240, 0.4)';
-      ctx.shadowBlur = 8;
-    }
 
     if (w.type === 'detective') {
       // Legs
@@ -230,45 +184,6 @@ function initGlitchSilhouetteCanvas() {
       ctx.closePath();
       ctx.fill();
 
-    } else if (w.type === 'agent') {
-      // Undercover Courier / Informant
-      ctx.lineWidth = 11;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-5, -50);
-      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -24);
-      ctx.lineTo(-5 + Math.sin(leg1Angle) * 52, 0);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(5, -50);
-      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -24);
-      ctx.lineTo(5 + Math.sin(leg2Angle) * 52, 0);
-      ctx.stroke();
-
-      // Shorter coat & briefcase
-      ctx.beginPath();
-      ctx.moveTo(-14, -105);
-      ctx.lineTo(14, -105);
-      ctx.lineTo(20 + coatSwing * 8, -62);
-      ctx.lineTo(-18 - coatSwing * 8, -62);
-      ctx.closePath();
-      ctx.fill();
-
-      // Briefcase in trailing hand
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.rect(-24, -68, 14, 11);
-      ctx.fill();
-
-      // Head & Flat Cap
-      ctx.beginPath();
-      ctx.arc(0, -122, 10, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(3, -129, 17, 5, 0.1, 0, Math.PI * 2);
-      ctx.fill();
-
     } else if (w.type === 'watcher') {
       // Watcher leaning in the shadows
       ctx.lineWidth = 13;
@@ -308,16 +223,13 @@ function initGlitchSilhouetteCanvas() {
       ctx.rect(-9, -152, 18, 14);
       ctx.fill();
 
-      // Cigarette & Glowing Ember
+      // Cigarette & Glowing Ember (simple fast arc)
       if (!colorOverride) {
         w.emberGlow = (Math.sin(Date.now() * 0.005) + 1) * 0.5;
         ctx.fillStyle = `rgba(255, 95, 25, ${0.5 + w.emberGlow * 0.5})`;
-        ctx.shadowColor = '#ff4400';
-        ctx.shadowBlur = 10;
         ctx.beginPath();
         ctx.arc(9, -126, 2.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
     }
 
@@ -327,145 +239,63 @@ function initGlitchSilhouetteCanvas() {
   function render() {
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Draw Falling Rain Streaks
-    ctx.lineWidth = 1.2;
-    rainDrops.forEach(drop => {
-      ctx.strokeStyle = `rgba(200, 220, 255, ${drop.opacity})`;
-      ctx.beginPath();
-      ctx.moveTo(drop.x, drop.y);
-      ctx.lineTo(drop.x - 3, drop.y + drop.len);
-      ctx.stroke();
+    for (let i = 0; i < walkers.length; i++) {
+      const w = walkers[i];
 
-      drop.y += drop.speed;
-      drop.x -= 1.2;
-      if (drop.y > height) {
-        drop.y = -drop.len;
-        drop.x = Math.random() * width;
-      }
-    });
-
-    // 2. Draw Footstep Cobblestone Ripples
-    for (let i = ripples.length - 1; i >= 0; i--) {
-      const rip = ripples[i];
-      rip.r += 0.5;
-      rip.alpha -= 0.015;
-      if (rip.alpha <= 0) {
-        ripples.splice(i, 1);
-        continue;
-      }
-      ctx.save();
-      ctx.strokeStyle = `rgba(130, 180, 240, ${rip.alpha})`;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.ellipse(rip.x, rip.y, rip.r * 2.2, rip.r * 0.8, 0, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    // 3. Draw Watcher Cigarette Smoke
-    if (Math.random() < 0.25) {
-      const watcher = walkers.find(w => w.type === 'watcher');
-      if (watcher) {
-        const groundY = height * watcher.yRate;
-        smokeParticles.push({
-          x: watcher.x - 8,
-          y: groundY - 128 * watcher.scale,
-          vx: (Math.random() - 0.7) * 0.6,
-          vy: -Math.random() * 0.8 - 0.5,
-          alpha: 0.35,
-          size: Math.random() * 3 + 2
-        });
-      }
-    }
-
-    for (let i = smokeParticles.length - 1; i >= 0; i--) {
-      const sp = smokeParticles[i];
-      sp.x += sp.vx;
-      sp.y += sp.vy;
-      sp.alpha -= 0.005;
-      sp.size += 0.08;
-      if (sp.alpha <= 0) {
-        smokeParticles.splice(i, 1);
-        continue;
-      }
-      ctx.save();
-      ctx.fillStyle = `rgba(180, 200, 220, ${sp.alpha})`;
-      ctx.beginPath();
-      ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    // 4. Update and Draw Silhouettes
-    walkers.forEach(w => {
       if (w.speed > 0) {
-        const prevCycle = w.cycle;
         w.x += w.speed * w.direction;
         w.cycle += w.strideFreq;
 
-        // Detect footstep contact to trigger puddle ripple
-        if ((Math.sin(prevCycle) < 0 && Math.sin(w.cycle) >= 0) ||
-            (Math.sin(prevCycle) > 0 && Math.sin(w.cycle) <= 0)) {
-          addRipple(w.x, height * w.yRate);
-        }
-
-        // Loop walkers across screen
-        if (w.direction === 1 && w.x > width + 160) {
-          w.x = -150;
-        } else if (w.direction === -1 && w.x < -160) {
-          w.x = width + 150;
+        if (w.direction === 1 && w.x > width + 150) {
+          w.x = -130;
+        } else if (w.direction === -1 && w.x < -150) {
+          w.x = width + 130;
         }
       }
 
-      // Glitch timing: frequent, dramatic digital interference
+      // Glitch timing: triggers cleanly without heavy overhead
       w.glitchTimer++;
-      if (!w.glitching && Math.random() < 0.025 && w.glitchTimer > 35) {
+      if (!w.glitching && Math.random() < 0.02 && w.glitchTimer > 40) {
         w.glitching = true;
-        w.glitchDuration = Math.floor(Math.random() * 6) + 4; // 4-9 frames
+        w.glitchDuration = 5;
         w.glitchTimer = 0;
-        w.glitchShift = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 16 + 10);
+        w.glitchShift = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 12 + 8);
       }
 
-      ctx.save();
-      ctx.filter = `blur(${w.type === 'umbrella' ? 2 : 1}px)`;
       ctx.globalAlpha = w.opacity;
 
-      // When glitching: True Vibrant Chromatic Aberration & Digital Slicing
+      // Chromatic Glitch Aberration: Pure fast vector ghosts
       if (w.glitching) {
-        // Cyan / Electric Blue Chromatic Ghost
+        // Cyan ghost
         ctx.save();
-        ctx.translate(w.glitchShift * 0.8, 0);
-        drawSilhouette(w, 'rgba(0, 245, 255, 0.7)');
+        ctx.translate(w.glitchShift, 0);
+        drawSilhouette(w, 'rgba(0, 235, 255, 0.7)');
         ctx.restore();
 
-        // Magenta / Crimson Chromatic Ghost
+        // Magenta ghost
         ctx.save();
-        ctx.translate(-w.glitchShift * 0.8, 0);
-        drawSilhouette(w, 'rgba(255, 30, 90, 0.7)');
+        ctx.translate(-w.glitchShift, 0);
+        drawSilhouette(w, 'rgba(255, 30, 80, 0.7)');
         ctx.restore();
 
-        // Horizontal Glitch Scanline Bars cutting across
+        // Horizontal digital glitch slices
         const groundY = height * w.yRate;
-        const barY1 = groundY - Math.random() * 120;
-        const barY2 = groundY - Math.random() * 120;
-        ctx.fillStyle = 'rgba(0, 245, 255, 0.6)';
-        ctx.fillRect(w.x - 40, barY1, 80 + Math.random() * 40, Math.random() * 3 + 1);
-        ctx.fillStyle = 'rgba(255, 30, 90, 0.6)';
-        ctx.fillRect(w.x - 40, barY2, 80 + Math.random() * 40, Math.random() * 3 + 1);
-      }
+        ctx.fillStyle = 'rgba(0, 235, 255, 0.8)';
+        ctx.fillRect(w.x - 30, groundY - 60, 60, 2);
+        ctx.fillStyle = 'rgba(255, 30, 80, 0.8)';
+        ctx.fillRect(w.x - 20, groundY - 35, 50, 2);
 
-      // Main Deep Shadow Silhouette
-      drawSilhouette(w);
-      ctx.restore();
-
-      if (w.glitching) {
         w.glitchDuration--;
         if (w.glitchDuration <= 0) {
           w.glitching = false;
         }
       }
-    });
 
+      // Main Dark Noir Silhouette
+      drawSilhouette(w, null);
+    }
+
+    ctx.globalAlpha = 1.0;
     animId = requestAnimationFrame(render);
   }
 
