@@ -6894,6 +6894,95 @@ function tCase(caseId, field, lang = 'en') {
   return c[field][currentLang] || c[field]['en'] || c[field]['id'] || '';
 }
 
+
+const DOSSIER_I18N = {
+  en: {
+    tab: '📁 PRECINCT 4 · SPECIAL INVESTIGATION BRANCH',
+    title: 'SECTOR 7 POLICE COMMISSION · HOMICIDE DIVISION',
+    subtitle: 'FORENSIC INCIDENT DISPATCH & CRIME SCENE CLEARANCE',
+    lbl_code: 'INCIDENT CODE:',
+    lbl_loc: 'LOCATION:',
+    val_loc: 'Saint Irene Clocktower — Upper Clockwork Gallery',
+    lbl_time: 'DISPATCH TIME:',
+    val_time: 'Day 1 · 04:17 AM [Cold Rain & Low Fog]',
+    lbl_victim: 'PRIMARY VICTIM:',
+    val_victim: 'Elia Thorne · Master Guild Horologist',
+    lbl_mandate: 'DIRECTIVE:',
+    val_mandate: 'Establish cause of unnatural death; secure clockwork evidence',
+    stamp_main: 'CRIME SCENE AUTHORIZED',
+    stamp_sub: 'PRECINCT 4 FORENSIC INQUIRY',
+    footer: 'CLASSIFIED LEVEL III · EYES OF ASSIGNED INSPECTOR ONLY'
+  },
+  id: {
+    tab: '📁 PRESIUM 4 · CABANG PENYELIDIKAN KHUSUS',
+    title: 'KOMISI KEPOLISIAN SEKTOR 7 · DIVISI PEMBUNUHAN',
+    subtitle: 'DISPOSISI INSIDEN FORENSIK & IZIN MASUK TKP',
+    lbl_code: 'KODE INSIDEN:',
+    lbl_loc: 'LOKASI TKP:',
+    val_loc: 'Menara Jam Saint Irene — Galeri Jam Atas',
+    lbl_time: 'WAKTU DISPOSISI:',
+    val_time: 'Hari 1 · 04:17 AM [Hujan Dingin & Kabut Tebal]',
+    lbl_victim: 'KORBAN UTAMA:',
+    val_victim: 'Elia Thorne · Ahli Jam Guild Utama',
+    lbl_mandate: 'MANDAT:',
+    val_mandate: 'Selidiki penyebab kematian tak wajar; amankan bukti roda gigi',
+    stamp_main: 'AKSES TKP DIIZINKAN',
+    stamp_sub: 'PENYELIDIKAN RESMI PRESIUM 4',
+    footer: 'RAHASIA TINGKAT III · HANYA UNTUK INSPEKTUR DITUGASKAN'
+  },
+  ja: {
+    tab: '📁 第4分署 · 特別捜査課',
+    title: '第7セクター警察委員会 · 殺人捜査課',
+    subtitle: '法医学現場出動指令 兼 現場突入許可書',
+    lbl_code: '事件番号:',
+    lbl_loc: '現場住所:',
+    val_loc: '聖アイリーン時計塔 — 最上階機械室',
+    lbl_time: '出動時刻:',
+    val_time: '第1日目 · 04:17 AM [冷雨と濃霧]',
+    lbl_victim: '被害者名:',
+    val_victim: 'エリア・ソーン · 時計師ギルド総代',
+    lbl_mandate: '捜査指令:',
+    val_mandate: '不審死の原因究明、および仕掛け歯車の証拠保全',
+    stamp_main: '現場立入捜査許可',
+    stamp_sub: '第4分署鑑識令状執行',
+    footer: '機密区分III · 担当捜査官以外の閲覧を禁ず'
+  },
+  zh: {
+    tab: '📁 第四警区 · 特别调查处',
+    title: '第七分区警察委员会 · 凶杀调查科',
+    subtitle: '法医现场派遣通知 暨 现场搜查许可',
+    lbl_code: '案件编号:',
+    lbl_loc: '事发地点:',
+    val_loc: '圣艾琳钟楼 — 顶部齿轮回廊',
+    lbl_time: '派遣时间:',
+    val_time: '第1日 · 04:17 AM [寒雨与浓雾]',
+    lbl_victim: '主要死者:',
+    val_victim: '埃利亚·索恩 · 钟表匠公会大师',
+    lbl_mandate: '行动指令:',
+    val_mandate: '查明反常心脏猝死起因；依法查封机巧钟表核心证物',
+    stamp_main: '案发现场准入批准',
+    stamp_sub: '第四警区法医搜查令',
+    footer: '三级绝密 · 仅限指定调查督察亲启'
+  },
+  ko: {
+    tab: '📁 제4관할서 · 특별수사과',
+    title: '제7구역 경찰위원회 · 강력수사계',
+    subtitle: '법의학 현장 출동 지령 및 사건 현장 출입 인가서',
+    lbl_code: '사건 코드:',
+    lbl_loc: '현장 위치:',
+    val_loc: '성 아이린 시계탑 — 상층 태엽 기계실',
+    lbl_time: '출동 시각:',
+    val_time: '1일 차 · 04:17 AM [차가운 비와 짙은 안개]',
+    lbl_victim: '주요 피해자:',
+    val_victim: '엘리아 쏜 · 시계장인 조합 거장',
+    lbl_mandate: '수사 지침:',
+    val_mandate: '비정상적 심정지 사인 규명 및 시계태엽 핵심 증거물 확보',
+    stamp_main: '사건 현장 수사 인가',
+    stamp_sub: '제4관할서 공식 영장 집행',
+    footer: '3급 기밀 · 전담 조사관 외 열람 엄금'
+  }
+};
+
 // --- END: i18n.js ---
 
 // --- BEGIN: thoughts.js ---
@@ -10361,40 +10450,94 @@ function bootGame() {
 
   let currentProgress = 0;
   let isLoaded = false;
+  let lastMilestone = 0;
 
   function finishLoading() {
     if (isLoaded) return;
     isLoaded = true;
     currentProgress = 100;
     if (progressFill) progressFill.style.width = '100%';
-    if (progressPct) progressPct.textContent = '100%';
+    if (progressPct) {
+      progressPct.textContent = '100%';
+      progressPct.classList.add('ready');
+    }
+    const track = document.querySelector('.progress-track');
+    if (track) track.classList.add('complete-surge');
+
     const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
     const finalPhase = activePhases[activePhases.length - 1];
-    if (telemetryText) telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
+    if (telemetryText) {
+      telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
+    }
     clearInterval(progressInterval);
     clearInterval(quoteInterval);
     if (enterBtn) {
       enterBtn.classList.add('ready');
       enterBtn.focus();
     }
+    if (audio.playClockworkChime) audio.playClockworkChime();
   }
 
   const progressInterval = setInterval(() => {
-    currentProgress += Math.floor(Math.random() * 5) + 3;
+    // Dynamic forensic pacing: rapid start, calibration pauses at milestones, smooth lock
+    let step = Math.floor(Math.random() * 3) + 2; // base step 2-4%
+    if (currentProgress < 25) {
+      step += 2; // quick initial neural spooling
+    } else if (currentProgress >= 25 && currentProgress < 35) {
+      step = 1; // forensic calibration pause at 30%
+    } else if (currentProgress >= 60 && currentProgress < 70) {
+      step = 1; // forensic sector lock pause
+    } else if (currentProgress >= 88 && currentProgress < 95) {
+      step = 2;
+    }
+
+    currentProgress += step;
+
     if (currentProgress >= 100) {
       finishLoading();
       return;
     }
 
     if (progressFill) progressFill.style.width = `${currentProgress}%`;
-    if (progressPct) progressPct.textContent = `${currentProgress}%`;
+    if (progressPct) {
+      progressPct.textContent = `${currentProgress}%`;
+      // Check milestone flash (25%, 50%, 75%)
+      const currentMilestone = Math.floor(currentProgress / 25);
+      if (currentMilestone > lastMilestone) {
+        lastMilestone = currentMilestone;
+        progressPct.classList.add('milestone-flash');
+        setTimeout(() => progressPct.classList.remove('milestone-flash'), 250);
+        if (audio.playUiHover) audio.playUiHover();
+      }
+    }
 
     const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
     const phase = activePhases.find(p => currentProgress <= p.at);
     if (phase && telemetryText) {
       telemetryText.textContent = phase.text;
     }
-  }, 45);
+  }, 65);
+
+  
+  function updateDossierLanguage(lang) {
+    const data = (typeof DOSSIER_I18N !== 'undefined' && (DOSSIER_I18N[lang] || DOSSIER_I18N['en'])) || {};
+    const setT = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+    setT('dossier-tab-label', data.tab);
+    setT('dossier-header-title', data.title);
+    setT('dossier-header-subtitle', data.subtitle);
+    setT('dossier-lbl-code', data.lbl_code);
+    setT('dossier-lbl-loc', data.lbl_loc);
+    setT('dossier-val-loc', data.val_loc);
+    setT('dossier-lbl-time', data.lbl_time);
+    setT('dossier-val-time', data.val_time);
+    setT('dossier-lbl-victim', data.lbl_victim);
+    setT('dossier-val-victim', data.val_victim);
+    setT('dossier-lbl-mandate', data.lbl_mandate);
+    setT('dossier-val-mandate', data.val_mandate);
+    setT('dossier-stamp-main', data.stamp_main);
+    setT('dossier-stamp-sub', data.stamp_sub);
+    setT('dossier-footer-note', data.footer);
+  }
 
   let isEntering = false;
 
@@ -10424,7 +10567,8 @@ function bootGame() {
     // High-tech decryption / deciphering sequence morphing AENIGMA into aenigmArchive
     const cypherChars = '0123456789ABCDEF!#$&*@%¥§';
     const targetStem = 'aenigm';
-    const targetSuffix = 'Archive';
+    const targetPivot = 'A';
+    const targetSuffix = 'rchive';
     const targetFull = 'aenigmArchive';
     
     let scrambleTicks = 0;
@@ -10457,7 +10601,7 @@ function bootGame() {
           titleEl.classList.add('decrypted');
           titleEl.innerHTML = `
             <div class="brand-decrypted-wrapper">
-              <span class="brand-stem">${targetStem}</span><span class="brand-suffix">${targetSuffix}</span>
+              <span class="brand-stem">${targetStem}</span><span class="brand-junction" title="Connecting Nexus">${targetPivot}</span><span class="brand-suffix">${targetSuffix}</span>
             </div>
             <div class="archive-decrypt-badge">◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈</div>
           `;
@@ -10470,18 +10614,64 @@ function bootGame() {
           if (audio.playDiscovery) audio.playDiscovery();
           if (audio.playDossierStamp) audio.playDossierStamp();
 
-          // After showing the glorious decrypted title, smoothly transition to creator stage
+          // Longer hold for aenigmArchive: 2200ms with telemetry progression
+          setTimeout(() => {
+            if (telemetryText) {
+              telemetryText.textContent = "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]";
+            }
+          }, 1100);
+
           setTimeout(() => {
             loadingStage.classList.add('loader-stage-warp');
-            setTimeout(() => {
-              loadingStage.style.display = 'none';
-              if (creatorStage) {
-                creatorStage.classList.remove('hidden');
-              }
-              ui.applyLanguage(state.currentLanguage);
-              initCharacterCreator();
-            }, 550);
-          }, 750);
+
+            // Launch Cinematic Noir Detective Case Dossier Transition
+            const caseTransition = document.getElementById('detective-case-transition');
+            const rubberStamp = document.getElementById('dossier-rubber-stamp');
+
+            if (caseTransition) {
+              updateDossierLanguage(state.currentLanguage);
+              caseTransition.classList.remove('hidden');
+              if (audio.playBookRead) audio.playBookRead();
+
+              // Stamp the dossier with official red seal after 600ms
+              setTimeout(() => {
+                if (rubberStamp) {
+                  rubberStamp.classList.add('stamped');
+                }
+                if (audio.playDossierStamp) audio.playDossierStamp();
+
+                // Hold stamped dossier for 1200ms, then unseal and open case file
+                setTimeout(() => {
+                  caseTransition.classList.add('opening');
+                  if (audio.playWatchInspect) audio.playWatchInspect();
+
+                  setTimeout(() => {
+                    loadingStage.style.display = 'none';
+                    caseTransition.classList.add('hidden');
+                    caseTransition.classList.remove('opening');
+                    if (rubberStamp) rubberStamp.classList.remove('stamped');
+
+                    if (creatorStage) {
+                      creatorStage.classList.remove('hidden');
+                    }
+                    ui.applyLanguage(state.currentLanguage);
+                    initCharacterCreator();
+                  }, 600);
+                }, 1200);
+              }, 600);
+
+            } else {
+              // Fallback
+              setTimeout(() => {
+                loadingStage.style.display = 'none';
+                if (creatorStage) {
+                  creatorStage.classList.remove('hidden');
+                }
+                ui.applyLanguage(state.currentLanguage);
+                initCharacterCreator();
+              }, 550);
+            }
+          }, 2200);
         }
       }, 25);
     } else {

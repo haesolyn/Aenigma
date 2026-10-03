@@ -3,7 +3,7 @@ import { audio } from './audio.js';
 import { state } from './state.js';
 import { UIController } from './ui.js';
 import { CASE_DATA } from './cases.js';
-import { LOADER_QUOTES_I18N, TELEMETRY_PHASES_I18N, ALIASES_I18N, t } from './i18n.js';
+import { LOADER_QUOTES_I18N, TELEMETRY_PHASES_I18N, ALIASES_I18N, DOSSIER_I18N, t } from './i18n.js';
 
 let hasBooted = false;
 
@@ -38,40 +38,94 @@ function bootGame() {
 
   let currentProgress = 0;
   let isLoaded = false;
+  let lastMilestone = 0;
 
   function finishLoading() {
     if (isLoaded) return;
     isLoaded = true;
     currentProgress = 100;
     if (progressFill) progressFill.style.width = '100%';
-    if (progressPct) progressPct.textContent = '100%';
+    if (progressPct) {
+      progressPct.textContent = '100%';
+      progressPct.classList.add('ready');
+    }
+    const track = document.querySelector('.progress-track');
+    if (track) track.classList.add('complete-surge');
+
     const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
     const finalPhase = activePhases[activePhases.length - 1];
-    if (telemetryText) telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
+    if (telemetryText) {
+      telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
+    }
     clearInterval(progressInterval);
     clearInterval(quoteInterval);
     if (enterBtn) {
       enterBtn.classList.add('ready');
       enterBtn.focus();
     }
+    if (audio.playClockworkChime) audio.playClockworkChime();
   }
 
   const progressInterval = setInterval(() => {
-    currentProgress += Math.floor(Math.random() * 5) + 3;
+    // Dynamic forensic pacing: rapid start, calibration pauses at milestones, smooth lock
+    let step = Math.floor(Math.random() * 3) + 2; // base step 2-4%
+    if (currentProgress < 25) {
+      step += 2; // quick initial neural spooling
+    } else if (currentProgress >= 25 && currentProgress < 35) {
+      step = 1; // forensic calibration pause at 30%
+    } else if (currentProgress >= 60 && currentProgress < 70) {
+      step = 1; // forensic sector lock pause
+    } else if (currentProgress >= 88 && currentProgress < 95) {
+      step = 2;
+    }
+
+    currentProgress += step;
+
     if (currentProgress >= 100) {
       finishLoading();
       return;
     }
 
     if (progressFill) progressFill.style.width = `${currentProgress}%`;
-    if (progressPct) progressPct.textContent = `${currentProgress}%`;
+    if (progressPct) {
+      progressPct.textContent = `${currentProgress}%`;
+      // Check milestone flash (25%, 50%, 75%)
+      const currentMilestone = Math.floor(currentProgress / 25);
+      if (currentMilestone > lastMilestone) {
+        lastMilestone = currentMilestone;
+        progressPct.classList.add('milestone-flash');
+        setTimeout(() => progressPct.classList.remove('milestone-flash'), 250);
+        if (audio.playUiHover) audio.playUiHover();
+      }
+    }
 
     const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
     const phase = activePhases.find(p => currentProgress <= p.at);
     if (phase && telemetryText) {
       telemetryText.textContent = phase.text;
     }
-  }, 45);
+  }, 65);
+
+  
+  function updateDossierLanguage(lang) {
+    const data = (typeof DOSSIER_I18N !== 'undefined' && (DOSSIER_I18N[lang] || DOSSIER_I18N['en'])) || {};
+    const setT = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+    setT('dossier-tab-label', data.tab);
+    setT('dossier-header-title', data.title);
+    setT('dossier-header-subtitle', data.subtitle);
+    setT('dossier-lbl-code', data.lbl_code);
+    setT('dossier-lbl-loc', data.lbl_loc);
+    setT('dossier-val-loc', data.val_loc);
+    setT('dossier-lbl-time', data.lbl_time);
+    setT('dossier-val-time', data.val_time);
+    setT('dossier-lbl-victim', data.lbl_victim);
+    setT('dossier-val-victim', data.val_victim);
+    setT('dossier-lbl-mandate', data.lbl_mandate);
+    setT('dossier-val-mandate', data.val_mandate);
+    setT('dossier-stamp-main', data.stamp_main);
+    setT('dossier-stamp-sub', data.stamp_sub);
+    setT('dossier-footer-note', data.footer);
+  }
 
   let isEntering = false;
 
@@ -101,7 +155,8 @@ function bootGame() {
     // High-tech decryption / deciphering sequence morphing AENIGMA into aenigmArchive
     const cypherChars = '0123456789ABCDEF!#$&*@%¥§';
     const targetStem = 'aenigm';
-    const targetSuffix = 'Archive';
+    const targetPivot = 'A';
+    const targetSuffix = 'rchive';
     const targetFull = 'aenigmArchive';
     
     let scrambleTicks = 0;
@@ -134,7 +189,7 @@ function bootGame() {
           titleEl.classList.add('decrypted');
           titleEl.innerHTML = `
             <div class="brand-decrypted-wrapper">
-              <span class="brand-stem">${targetStem}</span><span class="brand-suffix">${targetSuffix}</span>
+              <span class="brand-stem">${targetStem}</span><span class="brand-junction" title="Connecting Nexus">${targetPivot}</span><span class="brand-suffix">${targetSuffix}</span>
             </div>
             <div class="archive-decrypt-badge">◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈</div>
           `;
@@ -147,18 +202,64 @@ function bootGame() {
           if (audio.playDiscovery) audio.playDiscovery();
           if (audio.playDossierStamp) audio.playDossierStamp();
 
-          // After showing the glorious decrypted title, smoothly transition to creator stage
+          // Longer hold for aenigmArchive: 2200ms with telemetry progression
+          setTimeout(() => {
+            if (telemetryText) {
+              telemetryText.textContent = "[DISPATCHING CASE #D4-04 INVESTIGATION DOSSIER...]";
+            }
+          }, 1100);
+
           setTimeout(() => {
             loadingStage.classList.add('loader-stage-warp');
-            setTimeout(() => {
-              loadingStage.style.display = 'none';
-              if (creatorStage) {
-                creatorStage.classList.remove('hidden');
-              }
-              ui.applyLanguage(state.currentLanguage);
-              initCharacterCreator();
-            }, 550);
-          }, 750);
+
+            // Launch Cinematic Noir Detective Case Dossier Transition
+            const caseTransition = document.getElementById('detective-case-transition');
+            const rubberStamp = document.getElementById('dossier-rubber-stamp');
+
+            if (caseTransition) {
+              updateDossierLanguage(state.currentLanguage);
+              caseTransition.classList.remove('hidden');
+              if (audio.playBookRead) audio.playBookRead();
+
+              // Stamp the dossier with official red seal after 600ms
+              setTimeout(() => {
+                if (rubberStamp) {
+                  rubberStamp.classList.add('stamped');
+                }
+                if (audio.playDossierStamp) audio.playDossierStamp();
+
+                // Hold stamped dossier for 1200ms, then unseal and open case file
+                setTimeout(() => {
+                  caseTransition.classList.add('opening');
+                  if (audio.playWatchInspect) audio.playWatchInspect();
+
+                  setTimeout(() => {
+                    loadingStage.style.display = 'none';
+                    caseTransition.classList.add('hidden');
+                    caseTransition.classList.remove('opening');
+                    if (rubberStamp) rubberStamp.classList.remove('stamped');
+
+                    if (creatorStage) {
+                      creatorStage.classList.remove('hidden');
+                    }
+                    ui.applyLanguage(state.currentLanguage);
+                    initCharacterCreator();
+                  }, 600);
+                }, 1200);
+              }, 600);
+
+            } else {
+              // Fallback
+              setTimeout(() => {
+                loadingStage.style.display = 'none';
+                if (creatorStage) {
+                  creatorStage.classList.remove('hidden');
+                }
+                ui.applyLanguage(state.currentLanguage);
+                initCharacterCreator();
+              }, 550);
+            }
+          }, 2200);
         }
       }, 25);
     } else {

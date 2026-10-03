@@ -55,11 +55,17 @@
         “The clock never stops. Only the flesh within it forgets how to beat.”
       </div>
 
-      <!-- Defragmentation Progress Bar -->
+      <!-- Defragmentation Progress Bar & Telemetry HUD -->
       <div class="loader-progress-box">
         <div class="telemetry-row">
-          <span id="loader-telemetry-text">Initializing neural telemetry...</span>
-          <span id="loader-progress-pct">0%</span>
+          <div class="telemetry-left">
+            <span class="loader-sector-badge">SEC.04</span>
+            <span id="loader-telemetry-text">Initializing neural telemetry...</span>
+            <span class="terminal-cursor">▋</span>
+          </div>
+          <div class="loader-pct-container">
+            <span id="loader-progress-pct" class="loader-progress-pct">0%</span>
+          </div>
         </div>
         <div class="progress-track">
           <div id="loader-progress-fill" class="progress-fill"></div>
@@ -69,6 +75,71 @@
       <button id="loader-enter-btn" class="action-btn-large">ENTER THE ARCHIVE</button>
     </div>
   </section>
+
+  <!-- ========================================================================
+       CINEMATIC NOIR CASE DOSSIER TRANSITION OVERLAY
+       ======================================================================== -->
+  <div id="detective-case-transition" class="detective-case-transition hidden">
+    <div class="dossier-folder-container">
+      
+      <!-- Top Manila Folder Tab -->
+      <div class="dossier-folder-tab">
+        <span class="dossier-tab-label" id="dossier-tab-label">📁 PRECINCT 4 · SPECIAL INVESTIGATION BRANCH</span>
+        <span class="dossier-tab-id">REF: #D4-04/HOR</span>
+      </div>
+
+      <!-- Main Dossier Folder Paper Body -->
+      <div class="dossier-folder-paper">
+        <div class="dossier-evidence-tape">EVIDENCE · DO NOT TAMPER · CRIME SCENE</div>
+        
+        <div class="dossier-paper-header">
+          <div class="precinct-badge-mark">⚖️</div>
+          <div class="precinct-header-text">
+            <h3 id="dossier-header-title">SECTOR 7 POLICE COMMISSION · HOMICIDE DIVISION</h3>
+            <p id="dossier-header-subtitle">FORENSIC INCIDENT DISPATCH & CRIME SCENE CLEARANCE</p>
+          </div>
+        </div>
+
+        <div class="dossier-typewriter-body">
+          <div class="dossier-row">
+            <span class="dossier-label" id="dossier-lbl-code">INCIDENT CODE:</span>
+            <span class="dossier-val highlight">#D4-04 / HOROLOGIST</span>
+          </div>
+          <div class="dossier-row">
+            <span class="dossier-label" id="dossier-lbl-loc">LOCATION:</span>
+            <span class="dossier-val" id="dossier-val-loc">Saint Irene Clocktower — Upper Clockwork Gallery</span>
+          </div>
+          <div class="dossier-row">
+            <span class="dossier-label" id="dossier-lbl-time">DISPATCH TIME:</span>
+            <span class="dossier-val" id="dossier-val-time">Day 1 · 04:17 AM [Cold Rain & Low Fog]</span>
+          </div>
+          <div class="dossier-row">
+            <span class="dossier-label" id="dossier-lbl-victim">PRIMARY VICTIM:</span>
+            <span class="dossier-val" id="dossier-val-victim">Elia Thorne · Master Guild Horologist</span>
+          </div>
+          <div class="dossier-row">
+            <span class="dossier-label" id="dossier-lbl-mandate">DIRECTIVE:</span>
+            <span class="dossier-val" id="dossier-val-mandate">Establish cause of unnatural death; secure clockwork evidence</span>
+          </div>
+        </div>
+
+        <!-- The Dramatic Official Red Stamp -->
+        <div class="dossier-rubber-stamp" id="dossier-rubber-stamp">
+          <div class="stamp-border">
+            <span class="stamp-stars">★ ★ ★</span>
+            <span class="stamp-main-text" id="dossier-stamp-main">CRIME SCENE AUTHORIZED</span>
+            <span class="stamp-sub-text" id="dossier-stamp-sub">PRECINCT 4 FORENSIC INQUIRY</span>
+            <span class="stamp-stars">★ ★ ★</span>
+          </div>
+        </div>
+
+        <div class="dossier-footer-note">
+          <span id="dossier-footer-note">CLASSIFIED LEVEL III · EYES OF ASSIGNED INSPECTOR ONLY</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ========================================================================
        STAGE 2: DETECTIVE PROFILING (CHARACTER CREATION)

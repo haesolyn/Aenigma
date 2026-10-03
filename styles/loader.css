@@ -155,40 +155,201 @@
   100% { transform: scaleY(1); }
 }
 
-/* Progress bar */
+/* Enhanced Progress Bar & Telemetry HUD */
 .loader-progress-box {
   width: 100%;
+  max-width: 580px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: rgba(12, 16, 24, 0.65);
+  border: 1px solid rgba(224, 215, 199, 0.14);
+  border-radius: 8px;
+  padding: 14px 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.7);
+  position: relative;
+  backdrop-filter: blur(6px);
 }
 
 .telemetry-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: clamp(0.72rem, 1.4vw, 0.82rem);
   color: var(--text-secondary);
   letter-spacing: 1px;
+  gap: 10px;
 }
 
+.telemetry-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loader-sector-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--gold-accent);
+  border-radius: 2px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  color: #4df0ff;
+  font-weight: 900;
+  animation: cursorBlink 0.8s infinite;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Dynamic Nixie Glow Percentage Counter */
+.loader-pct-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.loader-progress-pct {
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+  color: #4df0ff;
+  text-shadow: 0 0 10px rgba(77, 240, 255, 0.8), 0 0 20px rgba(77, 240, 255, 0.4);
+  min-width: 48px;
+  text-align: right;
+  letter-spacing: 1px;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.loader-progress-pct.milestone-flash {
+  color: #ffffff !important;
+  text-shadow: 0 0 14px #ffffff, 0 0 28px #4df0ff !important;
+  transform: scale(1.15);
+}
+
+.loader-progress-pct.ready {
+  color: var(--gold-accent) !important;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.95), 0 0 30px rgba(212, 175, 55, 0.6) !important;
+  transform: scale(1.08);
+}
+
+/* Track with forensic calibration tick marks */
 .progress-track {
   width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  height: 12px;
+  background: #0a0d14;
+  border: 1px solid rgba(224, 215, 199, 0.22);
+  border-radius: 6px;
   overflow: hidden;
-  padding: 1px;
+  padding: 2px;
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+/* 10% Calibration notches across the track */
+.progress-track::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(10% - 1px),
+    rgba(255, 255, 255, 0.14) calc(10% - 1px),
+    rgba(255, 255, 255, 0.14) 10%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Vibrant Animated Defragmentation Fill */
 .progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--crimson-accent), var(--gold-accent), var(--color-intellect));
+  background: linear-gradient(90deg, #ff2a6d 0%, #d4af37 45%, #00f2fe 100%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  position: relative;
+  transition: width 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 16px rgba(77, 240, 255, 0.7);
+  animation: gradientFlow 2.5s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Moving Scanlines Pattern inside Fill */
+.progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.22) 0,
+    rgba(255, 255, 255, 0.22) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  background-size: 24px 24px;
+  animation: scanStripe 0.8s linear infinite;
+  opacity: 0.75;
+}
+
+@keyframes scanStripe {
+  0% { background-position: 0 0; }
+  100% { background-position: 24px 0; }
+}
+
+/* Glowing Leading Laser Head / Spark at the tip of the progress */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -3px;
+  width: 6px;
+  height: calc(100% + 4px);
+  background: #ffffff;
   border-radius: 3px;
-  transition: width 0.2s ease-out;
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 8px #ffffff, 0 0 18px #00f2fe, 0 0 30px #00f2fe;
+  z-index: 3;
+}
+
+/* Completion surge animation when reaching 100% */
+.progress-track.complete-surge {
+  border-color: #4df0ff;
+  box-shadow: 0 0 25px rgba(77, 240, 255, 0.85), inset 0 0 15px rgba(212, 175, 55, 0.6);
+  animation: surgeFlash 0.6s ease-out;
+}
+
+@keyframes surgeFlash {
+  0% { transform: scale(1); filter: brightness(1.8); }
+  50% { transform: scale(1.02); filter: brightness(2.2); }
+  100% { transform: scale(1); filter: brightness(1); }
 }
 
 .action-btn-large {
@@ -575,6 +736,65 @@
   text-transform: none;
 }
 
+/* Connecting pivot letter 'A' in aenigmArchive */
+.brand-junction {
+  font-family: var(--font-title);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.22em;
+  line-height: 1;
+  margin: 0 clamp(2px, 0.5vw, 6px);
+  color: #ff2a6d;
+  background: linear-gradient(180deg, #ff2a6d 0%, #ff6b35 50%, #f7c531 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 42, 109, 0.95)) drop-shadow(0 0 24px rgba(255, 107, 53, 0.75));
+  animation: junctionPulse 2.2s infinite alternate ease-in-out;
+  transform: translateY(-2px);
+  letter-spacing: clamp(1px, 0.3vw, 3px);
+}
+
+/* Precision optical nexus reticle brackets framing the connecting 'A' */
+.brand-junction::before {
+  content: '▼';
+  position: absolute;
+  top: -0.55em;
+  left: 50%;
+  transform: translateX(-50%) scale(0.65);
+  font-size: 0.38em;
+  color: #ff2a6d;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px #ff2a6d);
+  pointer-events: none;
+}
+
+.brand-junction::after {
+  content: '▲';
+  position: absolute;
+  bottom: -0.45em;
+  left: 50%;
+  transform: translateX(-50%) scale(0.65);
+  font-size: 0.38em;
+  color: #f7c531;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 4px #f7c531);
+  pointer-events: none;
+}
+
+@keyframes junctionPulse {
+  0% {
+    transform: translateY(-2px) scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 42, 109, 0.85)) drop-shadow(0 0 18px rgba(255, 107, 53, 0.6));
+  }
+  100% {
+    transform: translateY(-3px) scale(1.1);
+    filter: drop-shadow(0 0 16px rgba(255, 42, 109, 1)) drop-shadow(0 0 28px rgba(247, 197, 49, 0.9));
+  }
+}
+
 .brand-suffix {
   font-family: var(--font-title);
   color: #4df0ff;
@@ -614,4 +834,260 @@
   transform: scale(1.08) !important;
   filter: blur(6px) !important;
   pointer-events: none !important;
+}
+
+
+/* ==========================================================================
+   CINEMATIC NOIR CASE DOSSIER TRANSITION OVERLAY
+   ========================================================================== */
+.detective-case-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(14, 18, 24, 0.96) 0%, rgba(6, 8, 12, 0.99) 100%);
+  backdrop-filter: blur(12px);
+  padding: clamp(12px, 3vh, 30px);
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  overflow: hidden;
+}
+
+.detective-case-transition.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.detective-case-transition.opening {
+  opacity: 0;
+  transform: scale(1.1);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* Authentic Weathered Manila Cardstock Folder */
+.dossier-folder-container {
+  width: 100%;
+  max-width: 620px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(212, 175, 55, 0.15);
+  transform: translateY(20px) scale(0.95);
+  animation: dossierSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dossierSlideIn {
+  0% { transform: translateY(30px) scale(0.92); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Manila Folder Top Tab */
+.dossier-folder-tab {
+  align-self: flex-start;
+  background: linear-gradient(180deg, #c2a675 0%, #a88d5e 100%);
+  border: 1px solid rgba(224, 215, 199, 0.4);
+  border-bottom: none;
+  border-radius: 6px 12px 0 0;
+  padding: 6px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+  margin-left: 20px;
+}
+
+.dossier-tab-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #1a1712;
+  letter-spacing: 1px;
+}
+
+.dossier-tab-id {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #8b1e22;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* Vintage Aged Incident Report Paper Sheet */
+.dossier-folder-paper {
+  background: #eae2d0 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  border: 2px solid #8c734b;
+  border-radius: 4px;
+  padding: clamp(18px, 3vh, 26px);
+  position: relative;
+  overflow: hidden;
+  color: #1a1815;
+  box-shadow: inset 0 0 40px rgba(100, 75, 40, 0.25);
+}
+
+/* Diagonal Crime Scene Evidence Tape */
+.dossier-evidence-tape {
+  position: absolute;
+  top: 18px;
+  right: -55px;
+  transform: rotate(35deg);
+  background: repeating-linear-gradient(45deg, #e6b800, #e6b800 10px, #1a1a1a 10px, #1a1a1a 20px);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 3px 60px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 2px #000;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.dossier-paper-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 2px solid #3d3528;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.precinct-badge-mark {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.precinct-header-text h3 {
+  font-family: var(--font-title);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  letter-spacing: 1.5px;
+  color: #1c1813;
+  margin: 0 0 2px 0;
+  text-transform: uppercase;
+}
+
+.precinct-header-text p {
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 1.2vw, 0.72rem);
+  color: #594d3c;
+  letter-spacing: 1px;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Typewritten Incident Details */
+.dossier-typewriter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.4vw, 0.84rem);
+  line-height: 1.45;
+  color: #24201a;
+  background: rgba(255, 255, 255, 0.45);
+  padding: 12px 14px;
+  border: 1px dashed rgba(80, 65, 40, 0.35);
+  border-radius: 3px;
+}
+
+.dossier-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.dossier-label {
+  min-width: 125px;
+  font-weight: 800;
+  color: #4a3e2e;
+  letter-spacing: 0.5px;
+}
+
+.dossier-val {
+  flex: 1;
+  font-weight: 600;
+  color: #111;
+}
+
+.dossier-val.highlight {
+  font-weight: 900;
+  color: #8b1e22;
+  letter-spacing: 1px;
+}
+
+/* The Heavy Official Crimson Rubber Stamp */
+.dossier-rubber-stamp {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-12deg) scale(2.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.15s ease;
+}
+
+.dossier-rubber-stamp.stamped {
+  opacity: 0.94;
+  transform: translate(-50%, -50%) rotate(-11deg) scale(1);
+}
+
+.stamp-border {
+  border: 4px double #b51a20;
+  padding: 8px 22px;
+  border-radius: 6px;
+  background: rgba(181, 26, 32, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #b51a20;
+  box-shadow: 0 0 12px rgba(181, 26, 32, 0.25), inset 0 0 8px rgba(181, 26, 32, 0.15);
+  filter: contrast(1.3);
+}
+
+.stamp-main-text {
+  font-family: var(--font-title);
+  font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+  font-weight: 900;
+  letter-spacing: clamp(2px, 0.8vw, 4px);
+  text-transform: uppercase;
+  text-shadow: 0 0 2px rgba(181, 26, 32, 0.6);
+}
+
+.stamp-sub-text {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.stamp-stars {
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+}
+
+.dossier-footer-note {
+  margin-top: 14px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(80, 65, 40, 0.25);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #635745;
+  letter-spacing: 1.5px;
+  text-align: center;
+  font-weight: 700;
 }

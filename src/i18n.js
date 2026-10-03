@@ -2495,3 +2495,92 @@ export function tCase(caseId, field, lang = 'en') {
   const currentLang = c[field] && c[field][lang] ? lang : 'en';
   return c[field][currentLang] || c[field]['en'] || c[field]['id'] || '';
 }
+
+
+export const DOSSIER_I18N = {
+  en: {
+    tab: '📁 PRECINCT 4 · SPECIAL INVESTIGATION BRANCH',
+    title: 'SECTOR 7 POLICE COMMISSION · HOMICIDE DIVISION',
+    subtitle: 'FORENSIC INCIDENT DISPATCH & CRIME SCENE CLEARANCE',
+    lbl_code: 'INCIDENT CODE:',
+    lbl_loc: 'LOCATION:',
+    val_loc: 'Saint Irene Clocktower — Upper Clockwork Gallery',
+    lbl_time: 'DISPATCH TIME:',
+    val_time: 'Day 1 · 04:17 AM [Cold Rain & Low Fog]',
+    lbl_victim: 'PRIMARY VICTIM:',
+    val_victim: 'Elia Thorne · Master Guild Horologist',
+    lbl_mandate: 'DIRECTIVE:',
+    val_mandate: 'Establish cause of unnatural death; secure clockwork evidence',
+    stamp_main: 'CRIME SCENE AUTHORIZED',
+    stamp_sub: 'PRECINCT 4 FORENSIC INQUIRY',
+    footer: 'CLASSIFIED LEVEL III · EYES OF ASSIGNED INSPECTOR ONLY'
+  },
+  id: {
+    tab: '📁 PRESIUM 4 · CABANG PENYELIDIKAN KHUSUS',
+    title: 'KOMISI KEPOLISIAN SEKTOR 7 · DIVISI PEMBUNUHAN',
+    subtitle: 'DISPOSISI INSIDEN FORENSIK & IZIN MASUK TKP',
+    lbl_code: 'KODE INSIDEN:',
+    lbl_loc: 'LOKASI TKP:',
+    val_loc: 'Menara Jam Saint Irene — Galeri Jam Atas',
+    lbl_time: 'WAKTU DISPOSISI:',
+    val_time: 'Hari 1 · 04:17 AM [Hujan Dingin & Kabut Tebal]',
+    lbl_victim: 'KORBAN UTAMA:',
+    val_victim: 'Elia Thorne · Ahli Jam Guild Utama',
+    lbl_mandate: 'MANDAT:',
+    val_mandate: 'Selidiki penyebab kematian tak wajar; amankan bukti roda gigi',
+    stamp_main: 'AKSES TKP DIIZINKAN',
+    stamp_sub: 'PENYELIDIKAN RESMI PRESIUM 4',
+    footer: 'RAHASIA TINGKAT III · HANYA UNTUK INSPEKTUR DITUGASKAN'
+  },
+  ja: {
+    tab: '📁 第4分署 · 特別捜査課',
+    title: '第7セクター警察委員会 · 殺人捜査課',
+    subtitle: '法医学現場出動指令 兼 現場突入許可書',
+    lbl_code: '事件番号:',
+    lbl_loc: '現場住所:',
+    val_loc: '聖アイリーン時計塔 — 最上階機械室',
+    lbl_time: '出動時刻:',
+    val_time: '第1日目 · 04:17 AM [冷雨と濃霧]',
+    lbl_victim: '被害者名:',
+    val_victim: 'エリア・ソーン · 時計師ギルド総代',
+    lbl_mandate: '捜査指令:',
+    val_mandate: '不審死の原因究明、および仕掛け歯車の証拠保全',
+    stamp_main: '現場立入捜査許可',
+    stamp_sub: '第4分署鑑識令状執行',
+    footer: '機密区分III · 担当捜査官以外の閲覧を禁ず'
+  },
+  zh: {
+    tab: '📁 第四警区 · 特别调查处',
+    title: '第七分区警察委员会 · 凶杀调查科',
+    subtitle: '法医现场派遣通知 暨 现场搜查许可',
+    lbl_code: '案件编号:',
+    lbl_loc: '事发地点:',
+    val_loc: '圣艾琳钟楼 — 顶部齿轮回廊',
+    lbl_time: '派遣时间:',
+    val_time: '第1日 · 04:17 AM [寒雨与浓雾]',
+    lbl_victim: '主要死者:',
+    val_victim: '埃利亚·索恩 · 钟表匠公会大师',
+    lbl_mandate: '行动指令:',
+    val_mandate: '查明反常心脏猝死起因；依法查封机巧钟表核心证物',
+    stamp_main: '案发现场准入批准',
+    stamp_sub: '第四警区法医搜查令',
+    footer: '三级绝密 · 仅限指定调查督察亲启'
+  },
+  ko: {
+    tab: '📁 제4관할서 · 특별수사과',
+    title: '제7구역 경찰위원회 · 강력수사계',
+    subtitle: '법의학 현장 출동 지령 및 사건 현장 출입 인가서',
+    lbl_code: '사건 코드:',
+    lbl_loc: '현장 위치:',
+    val_loc: '성 아이린 시계탑 — 상층 태엽 기계실',
+    lbl_time: '출동 시각:',
+    val_time: '1일 차 · 04:17 AM [차가운 비와 짙은 안개]',
+    lbl_victim: '주요 피해자:',
+    val_victim: '엘리아 쏜 · 시계장인 조합 거장',
+    lbl_mandate: '수사 지침:',
+    val_mandate: '비정상적 심정지 사인 규명 및 시계태엽 핵심 증거물 확보',
+    stamp_main: '사건 현장 수사 인가',
+    stamp_sub: '제4관할서 공식 영장 집행',
+    footer: '3급 기밀 · 전담 조사관 외 열람 엄금'
+  }
+};
