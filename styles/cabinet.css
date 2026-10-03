@@ -193,3 +193,30 @@
   background: var(--gold-accent);
   box-shadow: 0 0 16px rgba(212, 175, 55, 0.4);
 }
+
+@media (max-width: 600px) {
+  .thought-nodes-viewport {
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    padding: 10px;
+    gap: 10px;
+    max-height: 220px;
+  }
+  .thought-slot-node {
+    height: 110px;
+    padding: 8px;
+  }
+  .thought-icon-emblem {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+  }
+  .thought-node-name {
+    font-size: 0.72rem;
+  }
+  .thought-inspector-panel {
+    padding: 14px;
+    gap: 10px;
+  }
+  .thought-inspector-panel .thought-heading {
+    font-size: 1.15rem;
+  }
+}

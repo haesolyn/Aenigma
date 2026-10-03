@@ -68,8 +68,9 @@
   animation: fadeInBanner 0.35s ease-out;
   display: flex;
   flex-direction: column;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   flex-shrink: 0;
+  max-width: 100%;
 }
 
 @keyframes fadeInBanner {
@@ -77,10 +78,73 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+.evidence-poi-photo-wrap {
+  width: 100%;
+  height: clamp(110px, 18vh, 180px);
+  overflow: hidden;
+  position: relative;
+  background: #050608;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.evidence-poi-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: brightness(0.92) contrast(1.08);
+  transition: transform 0.4s ease;
+}
+
+.evidence-poi-photo-wrap:hover .evidence-poi-photo {
+  transform: scale(1.03);
+}
+
+.evidence-poi-details {
+  padding: clamp(8px, 1.2vh, 12px) clamp(10px, 1.5vw, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(12, 14, 20, 0.95);
+}
+
+.evidence-poi-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.evidence-poi-icon {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  flex-shrink: 0;
+}
+
+.evidence-poi-title {
+  font-family: var(--font-heading);
+  font-size: clamp(0.85rem, 1.3vw, 1.02rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evidence-poi-desc {
+  font-family: var(--font-body);
+  font-size: clamp(0.78rem, 1.1vw, 0.9rem);
+  line-height: 1.42;
+  color: var(--text-secondary);
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Also maintain backwards compatibility aliases */
 .evidence-image-frame {
   position: relative;
   width: 100%;
-  height: 190px;
+  height: clamp(110px, 18vh, 180px);
   overflow: hidden;
   background: #050608;
 }
@@ -91,79 +155,16 @@
   object-fit: cover;
   object-position: center;
   filter: brightness(0.95) contrast(1.06);
-  transition: transform 0.4s ease;
-}
-
-.evidence-image-frame:hover .evidence-img {
-  transform: scale(1.03);
-}
-
-.evidence-scanline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  pointer-events: none;
-}
-
-.evidence-zoom-tag {
-  position: absolute;
-  bottom: 8px;
-  right: 10px;
-  background: rgba(10, 12, 17, 0.88);
-  border: 1px solid var(--border-subtle);
-  padding: 3px 8px;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 1px;
-  color: var(--gold-accent);
-  border-radius: 2px;
-  backdrop-filter: blur(4px);
-}
-
-.evidence-meta-block {
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: rgba(12, 14, 20, 0.92);
-  border-top: 1px solid var(--border-subtle);
-}
-
-.evidence-poi-badge {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--gold-accent);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.evidence-poi-title {
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 1px;
-}
-
-.evidence-poi-desc {
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  line-height: 1.45;
-  color: var(--text-secondary);
 }
 
 /* Dialogue Blocks */
 .dialogue-entry {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(6px, 1vh, 8px);
   animation: fadeInEntry 0.3s ease-out;
+  min-width: 0;
+  max-width: 100%;
 }
 
 @keyframes fadeInEntry {
@@ -174,19 +175,24 @@
 .speaker-title-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(6px, 1vw, 10px);
+  min-width: 0;
 }
 
 .speaker-avatar {
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  flex-shrink: 0;
 }
 
 .speaker-label {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 1px;
+  font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+  letter-spacing: 0.5px;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .speaker-equalizer {
@@ -196,6 +202,7 @@
   height: 12px;
   margin-left: 6px;
   opacity: 0.8;
+  flex-shrink: 0;
 }
 
 .speaker-equalizer span {
@@ -219,11 +226,13 @@
 
 .speaker-prose {
   font-family: var(--font-body);
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: clamp(0.92rem, 1.35vw, 1.08rem);
+  line-height: 1.55;
   color: #dfdbd2;
   margin-left: 4px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Inner Voice Injections (Ratio, Elysia, Carnal, Reflex) */
@@ -231,39 +240,44 @@
   background: rgba(255, 255, 255, 0.02);
   border-left: 3px solid;
   border-radius: 0 4px 4px 0;
-  padding: 10px 14px;
-  margin-top: 6px;
-  margin-left: 10px;
+  padding: clamp(8px, 1.2vh, 12px) clamp(10px, 1.4vw, 14px);
+  margin-top: 4px;
+  margin-left: clamp(4px, 1vw, 10px);
   box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.3);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .voice-badge {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 1.5px;
+  font-size: clamp(0.64rem, 0.9vw, 0.72rem);
+  letter-spacing: clamp(0.6px, 0.2vw, 1.5px);
   text-transform: uppercase;
   margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .voice-prose {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 1.02rem;
-  line-height: 1.5;
+  font-size: clamp(0.86rem, 1.25vw, 1.02rem);
+  line-height: 1.48;
   color: #c9c3b8;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Dialogue Choice Buttons Bottom Panel */
 .dialogue-choices-container {
   flex-shrink: 0;
-  padding: 12px 18px;
+  padding: clamp(8px, 1.2vh, 12px) clamp(10px, 1.5vw, 16px);
   background: #11131a;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-height: 38%;
+  gap: clamp(5px, 0.8vh, 8px);
+  max-height: clamp(140px, 35vh, 280px);
   overflow-y: auto;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
 }
@@ -273,23 +287,33 @@
   border: 1px solid rgba(224, 215, 199, 0.12);
   color: #d8d2c6;
   font-family: var(--font-body);
-  font-size: 0.98rem;
-  line-height: 1.35;
-  padding: 10px 14px;
+  font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+  line-height: 1.36;
+  padding: clamp(7px, 1vh, 10px) clamp(8px, 1.2vw, 12px);
   border-radius: 4px;
   text-align: left;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: clamp(6px, 1vw, 10px);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.choice-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
 }
 
 .choice-btn:hover {
   background: rgba(229, 169, 60, 0.12);
   border-color: var(--border-bright);
   color: #fff;
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 .choice-btn.visited {
@@ -314,8 +338,9 @@
   font-family: var(--font-mono);
   font-weight: 700;
   color: var(--gold-accent);
-  font-size: 0.9rem;
-  min-width: 20px;
+  font-size: 0.88rem;
+  min-width: 24px;
+  flex-shrink: 0;
 }
 
 /* White Check Button */
@@ -345,12 +370,19 @@
 .check-prob-pill {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   margin-left: auto;
   align-self: center;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  flex-shrink: 0 !important;
+  min-width: max-content !important;
+  letter-spacing: 0.5px;
 }
 
 /* --------------------------------------------------------------------------
@@ -460,4 +492,42 @@
 @keyframes pulseCrit {
   0% { transform: scale(1); }
   100% { transform: scale(1.08); }
+}
+
+/* Responsive Dialogue & Mobile Choices */
+@media (max-width: 768px) {
+  .dialogue-scroll-feed {
+    padding: 12px 14px 20px 14px;
+    gap: 12px;
+  }
+  .dialogue-prose {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+  .voice-card {
+    padding: 10px 14px;
+  }
+  .voice-text {
+    font-size: 0.88rem;
+  }
+  .dialogue-choices-container {
+    padding: 8px 12px;
+    gap: 6px;
+    max-height: 45%;
+  }
+  .choice-btn {
+    padding: 8px 12px;
+    font-size: 0.92rem;
+  }
+  .dice-roll-stage {
+    padding: 18px 14px;
+    gap: 16px;
+  }
+  .die-box {
+    width: 60px;
+    height: 60px;
+  }
+  .outcome-announcement {
+    font-size: 1.4rem;
+  }
 }

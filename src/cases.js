@@ -1032,3 +1032,87 @@ export const CASE_DATA = {
     }
   }
 };
+
+// ============================================================================
+// MULTI-CASE ARCHIVE & GRAND CONSPIRACY DOSSIER SYSTEM
+// ============================================================================
+export const ALL_CASES_ARCHIVE = [
+  {
+    id: 'case_d4_01',
+    code: '#D4-01/DRF',
+    status: 'solved',
+    icon: '🌊',
+    date: '14 Oct 1926 · 23:15',
+    titleKey: 'case_01_title',
+    victimKey: 'case_01_victim',
+    locationKey: 'case_01_loc',
+    summaryKey: 'case_01_summary',
+    keystoneNameKey: 'case_01_keystone_name',
+    keystoneDescKey: 'case_01_keystone_desc',
+    keystoneIcon: '📜',
+    isKeystoneUnlocked: () => true
+  },
+  {
+    id: 'case_d4_02',
+    code: '#D4-02/ARS',
+    status: 'solved',
+    icon: '🔥',
+    date: '28 Oct 1926 · 02:40',
+    titleKey: 'case_02_title',
+    victimKey: 'case_02_victim',
+    locationKey: 'case_02_loc',
+    summaryKey: 'case_02_summary',
+    keystoneNameKey: 'case_02_keystone_name',
+    keystoneDescKey: 'case_02_keystone_desc',
+    keystoneIcon: '📄',
+    isKeystoneUnlocked: () => true
+  },
+  {
+    id: 'case_d4_03',
+    code: '#D4-03/TNC',
+    status: 'solved',
+    icon: '🧪',
+    date: '02 Nov 1926 · 19:10',
+    titleKey: 'case_03_title',
+    victimKey: 'case_03_victim',
+    locationKey: 'case_03_loc',
+    summaryKey: 'case_03_summary',
+    keystoneNameKey: 'case_03_keystone_name',
+    keystoneDescKey: 'case_03_keystone_desc',
+    keystoneIcon: '🩸',
+    isKeystoneUnlocked: () => true
+  },
+  {
+    id: 'case_d4_04',
+    code: '#D4-04/HOR',
+    status: 'active',
+    icon: '⏳',
+    dateKey: 'case_date_today',
+    date: 'Today · 03:42 AM',
+    titleKey: 'case_04_title',
+    victimKey: 'case_04_victim',
+    locationKey: 'case_04_loc',
+    summaryKey: 'case_04_summary',
+    keystoneNameKey: 'case_04_keystone_name',
+    keystoneDescKey: 'case_04_keystone_desc',
+    keystoneIcon: '🗝️',
+    isKeystoneUnlocked: (state) => !!(state && (state.hasClue('clue_confession_full') || state.hasClue('clue_perpetuum_ledger') || (state.flags && state.flags.case_solved)))
+  },
+  {
+    id: 'case_prime_omega',
+    code: '#PRIME-00/OMEGA',
+    status: 'master',
+    icon: '👑',
+    dateKey: 'case_date_final',
+    date: 'Grand Synthesis',
+    titleKey: 'case_omega_title',
+    victimKey: 'case_omega_victim',
+    locationKey: 'case_omega_loc',
+    summaryKey: 'case_omega_summary',
+    keystoneNameKey: 'case_omega_keystone_name',
+    keystoneDescKey: 'case_omega_keystone_desc',
+    keystoneIcon: '⚖️',
+    isKeystoneUnlocked: (state) => !!(state && state.flags && state.flags.case_solved)
+  }
+];
+

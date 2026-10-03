@@ -98,7 +98,7 @@
         <button id="btn-randomize-identity" class="hud-btn" style="width: 100%; justify-content: center;">
           🎲 RANDOMIZE DOSSIER
         </button>
-        <div style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">
+        <div id="creator-precinct-subtext" style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">
           Precinct 4 Homicide Division · Eastern District 7
         </div>
       </div>
@@ -106,24 +106,24 @@
       <!-- Right Column: Profiling Form -->
       <div class="creator-main">
         <div class="creator-section-title">
-          <span>INVESTIGATOR DOSSIER</span>
-          <span style="font-size: 0.8rem; color: var(--gold-burnished);">CHARACTER CREATION</span>
+          <span id="creator-dossier-title">INVESTIGATOR DOSSIER</span>
+          <span id="creator-dossier-subtitle" style="font-size: 0.8rem; color: var(--gold-burnished);">CHARACTER CREATION</span>
         </div>
 
         <div class="input-row">
           <div class="field-group">
-            <label for="creator-name-input">DETECTIVE FULL NAME</label>
+            <label for="creator-name-input" id="creator-name-label">DETECTIVE FULL NAME</label>
             <input type="text" id="creator-name-input" class="text-input" value="Renata Vance">
           </div>
           <div class="field-group">
-            <label for="creator-alias-input">ALIAS / PSYCHOLOGICAL TITLE</label>
+            <label for="creator-alias-input" id="creator-alias-label">ALIAS / PSYCHOLOGICAL TITLE</label>
             <input type="text" id="creator-alias-input" class="text-input" value="The Dissolute Inspector">
           </div>
         </div>
 
         <!-- Attribute Points Allocation -->
         <div class="creator-section-title" style="margin-top: 10px;">
-          <span>FACETS OF PSYCHE</span>
+          <span id="creator-facets-title">FACETS OF PSYCHE</span>
           <span id="creator-points-pool" style="font-size: 0.85rem; color: var(--gold-accent);">4 Points Available</span>
         </div>
 
@@ -131,59 +131,59 @@
           <!-- Intellect -->
           <div class="attr-card intellect">
             <div class="attr-header">
-              <span class="attr-name" style="color: var(--color-intellect);">INTELLECT</span>
+              <span class="attr-name" id="attr-name-intellect" style="color: var(--color-intellect);">INTELLECT</span>
               <div class="attr-controls">
                 <button class="stepper-btn" data-attr="intellect" data-delta="-1">-</button>
                 <span class="attr-val" id="attr-val-intellect">3</span>
                 <button class="stepper-btn" data-attr="intellect" data-delta="1">+</button>
               </div>
             </div>
-            <span class="attr-subtext">Logic, Encyclopedia, Rhetoric, Conceptualization. Cold deduction and rational analysis.</span>
+            <span class="attr-subtext" id="attr-desc-intellect">Logic, Encyclopedia, Rhetoric, Conceptualization. Cold deduction and rational analysis.</span>
           </div>
 
           <!-- Psyche -->
           <div class="attr-card psyche">
             <div class="attr-header">
-              <span class="attr-name" style="color: var(--color-psyche);">PSYCHE</span>
+              <span class="attr-name" id="attr-name-psyche" style="color: var(--color-psyche);">PSYCHE</span>
               <div class="attr-controls">
                 <button class="stepper-btn" data-attr="psyche" data-delta="-1">-</button>
                 <span class="attr-val" id="attr-val-psyche">3</span>
                 <button class="stepper-btn" data-attr="psyche" data-delta="1">+</button>
               </div>
             </div>
-            <span class="attr-subtext">Esoterica, Empathy, Authority, Suggestion. Supernatural hunches and emotional gravity.</span>
+            <span class="attr-subtext" id="attr-desc-psyche">Esoterica, Empathy, Authority, Suggestion. Supernatural hunches and emotional gravity.</span>
           </div>
 
           <!-- Physique -->
           <div class="attr-card physique">
             <div class="attr-header">
-              <span class="attr-name" style="color: var(--color-physique);">PHYSIQUE</span>
+              <span class="attr-name" id="attr-name-physique" style="color: var(--color-physique);">PHYSIQUE</span>
               <div class="attr-controls">
                 <button class="stepper-btn" data-attr="physique" data-delta="-1">-</button>
                 <span class="attr-val" id="attr-val-physique">2</span>
                 <button class="stepper-btn" data-attr="physique" data-delta="1">+</button>
               </div>
             </div>
-            <span class="attr-subtext">Endurance, Pain Threshold, Electrochemistry. Adrenaline, gut instinct, and survival stamina.</span>
+            <span class="attr-subtext" id="attr-desc-physique">Endurance, Pain Threshold, Electrochemistry. Adrenaline, gut instinct, and survival stamina.</span>
           </div>
 
           <!-- Motorics -->
           <div class="attr-card motorics">
             <div class="attr-header">
-              <span class="attr-name" style="color: var(--color-motorics);">MOTORICS</span>
+              <span class="attr-name" id="attr-name-motorics" style="color: var(--color-motorics);">MOTORICS</span>
               <div class="attr-controls">
                 <button class="stepper-btn" data-attr="motorics" data-delta="-1">-</button>
                 <span class="attr-val" id="attr-val-motorics">2</span>
                 <button class="stepper-btn" data-attr="motorics" data-delta="1">+</button>
               </div>
             </div>
-            <span class="attr-subtext">Perception, Hand-Eye Coordination, Interfacing, Savoir Faire. Senses and micro-clues.</span>
+            <span class="attr-subtext" id="attr-desc-motorics">Perception, Hand-Eye Coordination, Interfacing, Savoir Faire. Senses and micro-clues.</span>
           </div>
         </div>
 
         <!-- Signature Skill -->
         <div class="creator-section-title" style="margin-top: 10px;">
-          <span>SIGNATURE SKILL (+2 BONUS & INTRUSIVE VOICE)</span>
+          <span id="creator-signature-title">SIGNATURE SKILL (+2 BONUS & INTRUSIVE VOICE)</span>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <button class="hud-btn sig-skill-btn active" data-skill="esoterica">🔮 ESOTERICA</button>
@@ -196,7 +196,7 @@
 
         <!-- Vices & Psychological Flaws -->
         <div class="creator-section-title" style="margin-top: 10px;">
-          <span>PERSONAL VICE & PSYCHOLOGICAL FLAW</span>
+          <span id="creator-vices-title">PERSONAL VICE & PSYCHOLOGICAL FLAW</span>
         </div>
         <div class="vices-selector-grid">
           <div class="vice-card selected" data-vice="smoker">
@@ -234,68 +234,27 @@
     <header class="game-header">
       <div class="brand-section">
         <h1 class="game-title">AENIGMA</h1>
-        <span class="case-badge">CASE #04: THE SILENT WATCHMAKER</span>
+        <button id="hud-btn-case" class="hud-btn case-badge-btn" title="View Case Dossier & Master Investigation Board">
+          📋 <span id="case-badge-text" class="case-badge-text">KASUS #D4-04</span>
+        </button>
       </div>
 
-      <!-- Detective Status Info & Health/Morale -->
-      <div class="detective-quick-hud">
-        <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid var(--gold-accent); flex-shrink: 0;">
-          <img id="hud-avatar-img" src="assets/portrait_female.jpg" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+      <!-- Compact Clickable Detective Profile Chip -->
+      <button id="hud-btn-profile" class="hud-btn detective-profile-btn" title="View Detective Dossier & Vitals">
+        <div class="detective-mini-avatar">
+          <img id="hud-avatar-img" src="assets/portrait_female.jpg" alt="Avatar">
         </div>
-        <div class="detective-mini-info">
+        <div class="detective-chip-info">
           <span id="hud-detective-name" class="detective-name-display">Renata Vance</span>
-          <span id="hud-detective-alias" class="detective-alias-display">The Dissolute Inspector</span>
-        </div>
-
-        <div class="status-meters">
-          <!-- Health / Endurance -->
-          <div class="meter-group">
-            <div class="meter-label-row health">
-              <span>ENDURANCE</span>
-              <span id="health-pip-count">HP</span>
-            </div>
-            <div id="health-pips" class="segmented-bar">
-              <div class="segment-pip health active"></div>
-              <div class="segment-pip health active"></div>
-              <div class="segment-pip health active"></div>
-              <div class="segment-pip health active"></div>
-            </div>
-          </div>
-
-          <!-- Morale / Psyche -->
-          <div class="meter-group">
-            <div class="meter-label-row morale">
-              <span>MORALE</span>
-              <span id="morale-pip-count">SP</span>
-            </div>
-            <div id="morale-pips" class="segmented-bar">
-              <div class="segment-pip morale active"></div>
-              <div class="segment-pip morale active"></div>
-              <div class="segment-pip morale active"></div>
-              <div class="segment-pip morale active"></div>
-            </div>
+          <div class="hud-vitals-mini">
+            <span class="vital-chip hp">🩸 <span id="hud-hp-preview">4/4</span></span>
+            <span class="vital-chip sp">🧠 <span id="hud-sp-preview">4/4</span></span>
           </div>
         </div>
-
-        <!-- Time Tracker -->
-        <div id="hud-time-display" class="hud-btn" style="cursor: default;">
-          DAY 1 · 04:20
-        </div>
-
-        <!-- Investigation Progress Bar -->
-        <div class="hud-progress-container" id="hud-progress-container" title="Case Progression">
-          <div class="hud-progress-info">
-            <span class="hud-progress-title" id="hud-progress-title">PROGRESS</span>
-            <span class="hud-progress-val" id="hud-progress-val">5%</span>
-          </div>
-          <div class="hud-progress-track">
-            <div class="hud-progress-fill" id="hud-progress-fill" style="width: 5%;"></div>
-          </div>
-        </div>
-      </div>
+      </button>
 
       <!-- Navigation Tab Buttons -->
-      <nav class="nav-tab-group">
+      <nav class="nav-tab-group" id="nav-tab-group">
         <button id="nav-btn-cabinet" class="hud-btn">
           <span id="tab-cabinet-text">🧠 THOUGHT CABINET</span> <span id="cabinet-count-badge" class="badge-counter">0</span>
         </button>
@@ -305,11 +264,11 @@
         <button id="nav-btn-inventory" class="hud-btn">
           <span id="tab-inv-text">💼 INVENTORY</span> <span id="inv-count-badge" class="badge-counter">3</span>
         </button>
-        <button id="nav-btn-audio" class="hud-btn">
+        <button id="nav-btn-audio" class="hud-btn" title="Toggle Sound">
           🔊 <span class="btn-label" id="audio-btn-label">AUDIO: ON</span>
         </button>
-        <button id="nav-btn-language" class="hud-btn">
-          🌐 <span id="current-lang-label">LANGUAGE: ENGLISH</span>
+        <button id="nav-btn-language" class="hud-btn" title="Select Language">
+          🌐 <span id="current-lang-label">ENGLISH</span>
         </button>
       </nav>
     </header>
@@ -329,9 +288,6 @@
         <div class="scene-viewport-controls">
           <button id="btn-toggle-poi-markers" class="scene-ctrl-chip" title="Toggle POI Indicators (M / Click)">
             <span class="ctrl-icon">👁️</span> <span class="ctrl-text" id="toggle-markers-label">MARKERS</span>
-          </button>
-          <button id="btn-toggle-radar-ping" class="scene-ctrl-chip" title="Sonar Radar Pulse (Space)">
-            <span class="ctrl-icon">📡</span> <span class="ctrl-text" id="radar-ping-label">RADAR</span>
           </button>
         </div>
 
@@ -361,7 +317,7 @@
       <aside class="dialogue-column-wrapper">
         <div class="dialogue-header-bar">
           <span id="current-speaker-title" class="current-interlocutor-name">Forensic Observation</span>
-          <span class="interlocutor-status">ACTIVE INTERACTION</span>
+          <span class="interlocutor-status" id="interlocutor-status-text">ACTIVE INTERACTION</span>
         </div>
 
         <!-- Dynamic Prose Feed -->
@@ -380,7 +336,7 @@
   <div id="cabinet-modal" class="modal-backdrop">
     <div class="modal-window">
       <div class="modal-header">
-        <h2 class="modal-title">LEMARI PIKIRAN · THOUGHT CABINET</h2>
+        <h2 class="modal-title" id="cabinet-modal-title">THOUGHT CABINET</h2>
         <button class="modal-close-btn">&times;</button>
       </div>
       <div class="modal-body">
@@ -398,7 +354,7 @@
   <div id="inventory-modal" class="modal-backdrop">
     <div class="modal-window">
       <div class="modal-header">
-        <h2 class="modal-title">DETECTIVE COAT & EVIDENCE BAG</h2>
+        <h2 class="modal-title" id="inventory-modal-title">DETECTIVE COAT & EVIDENCE BAG</h2>
         <button class="modal-close-btn">&times;</button>
       </div>
       <div class="modal-body">
@@ -411,13 +367,25 @@
        MODAL 3: CLUE MATRIX / CASE DOSSIER
        ======================================================================== -->
   <div id="clues-modal" class="modal-backdrop">
-    <div class="modal-window">
+    <div class="modal-window case-board-modal-window" style="max-width: 860px;">
       <div class="modal-header">
-        <h2 class="modal-title">CASE DOSSIER · EVIDENCE DEDUCTION MATRIX</h2>
+        <h2 class="modal-title" id="clues-modal-title">PAPAN INVESTIGASI & ARSIP KASUS</h2>
         <button class="modal-close-btn">&times;</button>
       </div>
-      <div class="modal-body">
-        <div id="clues-list-container" class="clue-matrix-list"></div>
+      <div class="case-board-tab-bar" id="case-board-tab-bar">
+        <button class="case-tab-btn active" data-tab="active" id="tab-btn-case-active">
+          <span>🔍</span> <span id="tab-case-active-label">KASUS AKTIF [#D4-04]</span>
+        </button>
+        <button class="case-tab-btn" data-tab="archive" id="tab-btn-case-archive">
+          <span>📁</span> <span id="tab-case-archive-label">ARSIP KASUS (3)</span>
+        </button>
+        <button class="case-tab-btn master-tab" data-tab="master" id="tab-btn-case-master">
+          <span>👑</span> <span id="tab-case-master-label">KASUS UTAMA [#PRIME-00]</span>
+        </button>
+      </div>
+      <div class="modal-body case-board-modal-body" id="case-board-modal-body">
+        <div id="case-board-content"></div>
+        <div id="clues-list-container" class="clue-matrix-list" style="display: none;"></div>
       </div>
     </div>
   </div>
@@ -438,7 +406,7 @@
           </div>
 
           <div class="score-tally-board">
-            <span>2D6 ROLL + MODIFIERS:</span>
+            <span id="dice-tally-label">2D6 ROLL + MODIFIERS:</span>
             <span id="dice-score-val" class="score-total-val">?</span>
           </div>
 
@@ -460,7 +428,7 @@
   <div id="victory-modal" class="modal-backdrop">
     <div class="modal-window" style="max-width: 640px;">
       <div class="modal-header">
-        <h2 class="modal-title">CASE CONCLUDED</h2>
+        <h2 class="modal-title" id="victory-modal-title">CASE CONCLUDED</h2>
         <button class="modal-close-btn">&times;</button>
       </div>
       <div class="modal-body" style="text-align: center; padding: 32px;">
@@ -471,7 +439,7 @@
     </div>
   </div>
   <!-- ========================================================================
-       MODAL 6: MULTI-LANGUAGE SELECTOR (12 NATIVE LANGUAGES)
+       MODAL 6: MULTI-LANGUAGE SELECTOR (5 NATIVE LANGUAGES: EN, ID, ZH, JA, KO)
        ======================================================================== -->
   <div id="language-modal" class="modal-backdrop">
     <div class="modal-window" style="max-width: 680px;">
@@ -504,7 +472,112 @@
     </div>
   </div>
 
-  <!-- JavaScript Entry Point (Universal standalone bundle, runs on both file:// and http://) -->
+    <!-- ========================================================================
+       MODAL 8: DETECTIVE DOSSIER & PSYCHOLOGICAL PROFILE (POPUP ON CLICK)
+       ======================================================================== -->
+  <div id="profile-modal" class="modal-backdrop">
+    <div class="modal-window profile-modal-window" style="max-width: 720px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="profile-modal-title">DOSSIER DETEKTIF & PROFIL PSIKOLOGIS</h2>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body profile-modal-body">
+        <div class="profile-layout-grid">
+          
+          <!-- Left Column: Portrait & Identity -->
+          <div class="profile-col-identity">
+            <div class="profile-portrait-frame">
+              <img id="profile-avatar-img" src="assets/portrait_female.jpg" alt="Detective Portrait">
+            </div>
+            <h3 id="profile-name-text" class="profile-name-text">Renata Vance</h3>
+            <div id="profile-alias-text" class="profile-alias-text">The Dissolute Inspector</div>
+            <div id="profile-precinct-text" class="profile-precinct-text">Divisi Pembunuhan Distrik 4 · Sektor Timur 7</div>
+
+            <!-- Investigation Time Card -->
+            <div class="profile-time-badge">
+              <span class="profile-time-icon">⏱️</span>
+              <div class="profile-time-info">
+                <span class="profile-time-label" id="profile-time-label">WAKTU INVESTIGASI</span>
+                <span id="profile-time-val" class="profile-time-val">HARI 1 · 04:20</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Vitals, Progress, Facets, Signature, Vice -->
+          <div class="profile-col-details">
+            
+            <!-- Vitals -->
+            <div class="profile-section-title" id="profile-vitals-title">KONDISI VITAL & KETAHANAN</div>
+            <div class="profile-vitals-grid">
+              <div class="profile-meter-card health">
+                <div class="profile-meter-head">
+                  <span id="profile-health-title">DAYA TAHAN (HP)</span>
+                  <span id="profile-health-count" class="profile-pip-val">4 / 4</span>
+                </div>
+                <div id="profile-health-pips" class="segmented-bar full-width"></div>
+              </div>
+
+              <div class="profile-meter-card morale">
+                <div class="profile-meter-head">
+                  <span id="profile-morale-title">KEWARASAN (SP)</span>
+                  <span id="profile-morale-count" class="profile-pip-val">4 / 4</span>
+                </div>
+                <div id="profile-morale-pips" class="segmented-bar full-width"></div>
+              </div>
+            </div>
+
+            <!-- Case Progress -->
+            <div class="profile-section-title" style="margin-top: 14px;" id="profile-progress-header">RESOLUSI KASUS</div>
+            <div class="profile-progress-box">
+              <div class="hud-progress-info">
+                <span id="profile-progress-title">PROGRES PENYELIDIKAN</span>
+                <span id="profile-progress-val">5%</span>
+              </div>
+              <div class="hud-progress-track">
+                <div id="profile-progress-fill" class="hud-progress-fill" style="width: 5%;"></div>
+              </div>
+            </div>
+
+            <!-- Facets of Psyche -->
+            <div class="profile-section-title" style="margin-top: 14px;" id="profile-facets-title">ASPEK KEJIWAAN</div>
+            <div class="profile-facets-grid">
+              <div class="profile-facet-chip intellect">
+                <span class="facet-label" id="profile-facet-intellect-label">INTELEK</span>
+                <span class="facet-val" id="profile-facet-intellect-val">4</span>
+              </div>
+              <div class="profile-facet-chip psyche">
+                <span class="facet-label" id="profile-facet-psyche-label">KEJIWAAN</span>
+                <span class="facet-val" id="profile-facet-psyche-val">5</span>
+              </div>
+              <div class="profile-facet-chip physique">
+                <span class="facet-label" id="profile-facet-physique-label">FISIK</span>
+                <span class="facet-val" id="profile-facet-physique-val">2</span>
+              </div>
+              <div class="profile-facet-chip motorics">
+                <span class="facet-label" id="profile-facet-motorics-label">MOTORIK</span>
+                <span class="facet-val" id="profile-facet-motorics-val">3</span>
+              </div>
+            </div>
+
+            <!-- Signature Skill & Vice summary -->
+            <div class="profile-perks-row" style="margin-top: 14px;">
+              <div class="profile-perk-card">
+                <div class="profile-perk-label" id="profile-sig-label">KEAHLIAN KHUSUS</div>
+                <div class="profile-perk-title" id="profile-sig-val">🔮 ESOTERIKA</div>
+              </div>
+              <div class="profile-perk-card">
+                <div class="profile-perk-label" id="profile-vice-label">KEBIASAAN BURUK</div>
+                <div class="profile-perk-title" id="profile-vice-val">🚬 Perokok Berat Astra Red</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- JavaScript Entry Point (Universal standalone bundle, runs on both file:// and http://) -->
   <script src="dist/bundle.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@ if (-not (Test-Path $distDir)) {
 
 $fileOrder = @(
   'audio.js',
+  'dialogue_i18n.js',
   'i18n.js',
   'thoughts.js',
   'cases.js',

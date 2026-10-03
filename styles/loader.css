@@ -16,6 +16,11 @@
   align-items: center;
   background-color: var(--bg-deep);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding: clamp(12px, 3vh, 32px) clamp(10px, 2vw, 24px);
+  -webkit-overflow-scrolling: touch;
 }
 
 .fullscreen-stage.hidden {
@@ -28,19 +33,20 @@
    LOADING SCREEN: Analog Tape & Fractured Synapses
    -------------------------------------------------------------------------- */
 .loader-content {
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 680px;
-  width: 90%;
+  max-width: min(680px, 92vw);
+  width: 92%;
   text-align: center;
-  gap: 28px;
+  gap: clamp(14px, 2.5vh, 28px);
 }
 
 .title-ornament {
   font-family: var(--font-title);
-  font-size: 3.2rem;
-  letter-spacing: 12px;
+  font-size: clamp(1.8rem, 5.8vw, 3.2rem);
+  letter-spacing: clamp(4px, 1.4vw, 12px);
   color: var(--gold-accent);
   text-shadow: 0 0 24px rgba(212, 175, 55, 0.4), 0 0 60px rgba(139, 30, 34, 0.5);
   animation: titleGlow 4s infinite alternate ease-in-out;
@@ -54,10 +60,11 @@
 .subtitle-quote {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: clamp(0.85rem, 2vw, 1.15rem);
   color: var(--text-secondary);
-  line-height: 1.6;
-  min-height: 60px;
+  line-height: 1.5;
+  min-height: auto;
+  max-width: 90vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,6 +75,8 @@
 .tape-cassette-unit {
   width: 220px;
   height: 90px;
+  transform: scale(clamp(0.75, 1.2vw + 0.5, 1));
+  transform-origin: center;
   background: #141722;
   border: 2px solid rgba(224, 215, 199, 0.2);
   border-radius: 6px;
@@ -228,9 +237,11 @@
    CHARACTER CREATOR SCREEN
    -------------------------------------------------------------------------- */
 .creator-container {
-  width: 92%;
+  margin: auto;
+  width: 94%;
   max-width: 1100px;
   max-height: 90vh;
+  max-height: 90dvh;
   background: var(--bg-card);
   border: 1px solid var(--border-bright);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 0, 0, 0.8);
@@ -242,8 +253,12 @@
 
 @media (max-width: 900px) {
   .creator-container {
+    width: 96%;
     grid-template-columns: 1fr;
+    max-height: 94vh;
+    max-height: 94dvh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -256,6 +271,15 @@
   align-items: center;
   gap: 20px;
   text-align: center;
+}
+
+@media (max-width: 900px) {
+  .creator-sidebar {
+    padding: 16px;
+    gap: 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
 }
 
 .portrait-frame {
@@ -314,6 +338,13 @@
   gap: 16px;
 }
 
+@media (max-width: 640px) {
+  .input-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
 .field-group {
   display: flex;
   flex-direction: column;
@@ -351,6 +382,13 @@
   gap: 14px;
 }
 
+@media (max-width: 640px) {
+  .attributes-allocator-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
 .attr-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
@@ -359,6 +397,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 
 .attr-card.intellect { border-left: 4px solid var(--color-intellect); }
@@ -370,6 +409,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 }
 
 .attr-name {
@@ -377,12 +417,15 @@
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 1px;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .attr-controls {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .stepper-btn {
@@ -398,6 +441,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  flex-shrink: 0;
 }
 
 .stepper-btn:hover {
@@ -416,6 +460,8 @@
 .attr-subtext {
   font-size: 0.8rem;
   color: var(--text-muted);
+  line-height: 1.35;
+  overflow-wrap: break-word;
 }
 
 /* Vices and Flaws Selector */
@@ -423,6 +469,13 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .vices-selector-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }
 
 .vice-card {

@@ -1197,9 +1197,8 @@ const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
-        "id": "graves_opt_preliminary",
-        "en": "\"What is your preliminary assessment, Graves?\"",
         "id": "\"Bagaimana penilaian awalmu, Graves?\"",
+        "en": "\"What is your preliminary assessment, Graves?\"",
         "zh": "“格雷夫斯，你的初步现场判断是什么？”",
         "ja": "「グレイヴス、お前の予備的な見立てはどうなんだ？」",
         "ko": "\"그레이브스, 자네의 예비 소견은 어떤가?\"",
@@ -1212,9 +1211,8 @@ const DIALOGUE_I18N_FULL = {
         "ar": "\"ما هو تقييمك الأولي يا غريفز؟\""
       },
       {
-        "id": "graves_opt_rhetoric",
-        "en": "[RHETORIC - Medium 10] \"You seem in an awful hurry to file this report, Graves. Who called you first?\"",
         "id": "[RETORIKA - Sedang 10] \"Terburu-buru sekali kamu menutup laporan ini, Graves. Siapa yang menghubungimu duluan?\"",
+        "en": "[RHETORIC - Medium 10] \"You seem in an awful hurry to file this report, Graves. Who called you first?\"",
         "zh": "[修辞 - 难度10] “你似乎急不可耐地想结案归档啊，格雷夫斯。今晚到底是谁第一个给你通的信？”",
         "ja": "[修辞学 - 難易度10] 「ひどく急いで報告書をまとめようとしているな、グレイヴス。最初に呼んだのは誰だ？」",
         "ko": "[수사학 - 보통 10] \"보고서를 서둘러 넘기려는 기색이 역력하군, 그레이브스. 누가 자넬 먼저 불렀지?\"",
@@ -1227,9 +1225,8 @@ const DIALOGUE_I18N_FULL = {
         "ar": "[البلاغة - متوسط 10] \"تبدو في عجلة مريبة لتقييد هذا التقرير يا غريفز. من الذي اتصل بك أولاً؟\""
       },
       {
-        "id": "graves_opt_conspiracy",
-        "en": "\"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is.\"",
         "id": "\"Aku tahu tentang hadiah buronan Sindikat, Graves. Katakan di mana buku besar itu.\"",
+        "en": "\"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is.\"",
         "zh": "“我知道大辛迪加悬赏那本账册的事了，格雷夫斯。把它的藏匿处告诉我。”",
         "ja": "「大シンジケートの懸賞金のことは知っているぞ、グレイヴス。帳簿がどこにあるか言え。」",
         "ko": "\"거대 신디케이트의 현상금에 대해 알고 있네, 그레이브스. 그 장부가 어디 있는지 말하게.\"",
@@ -1242,9 +1239,8 @@ const DIALOGUE_I18N_FULL = {
         "ar": "\"أعرف بشأن مكافأة نقابة الجريمة يا غريفز. أخبرني أين يقع ذلك السجل المحاسبي.\""
       },
       {
-        "id": "graves_opt_cigarette",
-        "en": "\"I need a cigarette before my synapses completely disconnect.\"",
         "id": "\"Aku butuh sebatang rokok sebelum sinapsis sarafku benar-benar putus.\"",
+        "en": "\"I need a cigarette before my synapses completely disconnect.\"",
         "zh": "“在我脑神经彻底短路前，我需要来根烟提神。”",
         "ja": "「シナプスが完全に焼き切れる前に、煙草を一本くれ。」",
         "ko": "\"신경 시냅스가 완전히 끊기기 전에 담배 한 대 피워야겠군.\"",
@@ -1257,9 +1253,8 @@ const DIALOGUE_I18N_FULL = {
         "ar": "\"أحتاج إلى سيجارة قبل أن تنقطع نقاط تشابكي العصبي تمامًا.\""
       },
       {
-        "id": "graves_opt_leave",
-        "en": "[Step away from Inspector Graves]",
         "id": "[Tinggalkan percakapan dengan Graves]",
+        "en": "[Step away from Inspector Graves]",
         "zh": "[暂别格雷夫斯警探]",
         "ja": "[グレイヴス警部との会話を終える]",
         "ko": "[그레이브스 형사와의 대화를 마치고 물러난다]",
@@ -1451,6 +1446,52 @@ const DIALOGUE_I18N_FULL = {
         "pt": "[Voltar à investigação]",
         "ar": "[العودة إلى التحقيق]"
       }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "极乐直觉",
+          "ja": "エリシア",
+          "ko": "엘리시아",
+          "es": "Elysia",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليزيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "极乐直觉 [心智]",
+          "ja": "エリシア [精神]",
+          "ko": "엘리시아 [심리]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليزيا [الروح]"
+        },
+        "text": {
+          "en": "Greed radiates off him like heat from a kiln. But he didn't kill Vance—he arrived too late and found her already cold.",
+          "id": "Keserakahan memancar dari dirinya bagai panas dari tungku pembakaran. Tapi bukan dia yang membunuh Vance—dia tiba terlalu terlambat dan mendapati tubuhnya sudah dingin membeku.",
+          "zh": "贪婪如窑炉的余热般从他身上不断蒸腾散发。但他并没有亲自动手杀死梵斯——他只是来得太迟，赶到时尸体早已冰凉透骨。",
+          "ja": "陶芸窯のような熱気となって強欲が彼から立ち込めている。だが彼がヴァンスを殺したのではない——到着が遅すぎ、すでに冷たくなっていた遺体を見つけただけだ。",
+          "ko": "가마에서 뿜어져 나오는 열기처럼 탐욕이 그에게서 흘러나옵니다. 하지만 그가 밴스를 죽인 것은 아닙니다. 너무 늦게 도착해 이미 차갑게 식은 시신을 발견했을 뿐입니다.",
+          "es": "La codicia irradia de él como el calor de un horno. Pero no mató a Vance; llegó demasiado tarde y la encontró ya fría.",
+          "fr": "L'avidité émane de lui comme la chaleur d'un fourneau. Mais il n'a pas tué Vance : il est arrivé trop tard et l'a trouvée déjà froide.",
+          "de": "Habgier strahlt von ihm aus wie Hitze aus einem Brennofen. Aber er hat Vance nicht getötet – er kam zu spät und fand sie bereits kalt vor.",
+          "ru": "Жадность исходит от него, как жар из печи. Но он не убивал Вэнс — он пришел слишком поздно и застал ее уже остывшей.",
+          "it": "L'avidità si sprigiona da lui come calore da una fornace. Ma non ha ucciso Vance: è arrivato troppo tardi e l'ha trovata già fredda.",
+          "pt": "A ganância irradia dele como o calor de uma fornalha. Mas ele não matou Vance — chegou tarde demais e a encontrou fria.",
+          "ar": "ينبعث الجشع منه كحرارة تتصاعد من فرن متقد. لكنه لم يقتل فانس، بل وصل متأخرًا ووجد جثتها باردة بالفعل."
+        }
+      }
     ]
   },
   "graves_cigarette": {
@@ -1497,6 +1538,52 @@ const DIALOGUE_I18N_FULL = {
         "pt": "[Soprar fumaça na penumbra e retornar]",
         "ar": "[نفث الدخان في عتمة البرج والعودة]"
       }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Reflex",
+          "id": "Refleks",
+          "zh": "反应力",
+          "ja": "反射神経",
+          "ko": "반사신경",
+          "es": "Reflejo",
+          "fr": "Réflexe",
+          "de": "Reflex",
+          "ru": "Рефлекс",
+          "it": "Riflesso",
+          "pt": "Reflexo",
+          "ar": "رد الفعل"
+        },
+        "badge": {
+          "en": "REFLEX [Motorics]",
+          "id": "REFLEKS [Motorik]",
+          "zh": "反应力 [运动敏捷]",
+          "ja": "反射神経 [運動]",
+          "ko": "반사신경 [운동]",
+          "es": "REFLEJO [Motricidad]",
+          "fr": "RÉFLEXE [Motricité]",
+          "de": "REFLEX [Motorik]",
+          "ru": "РЕФЛЕКС [Моторика]",
+          "it": "RIFLESSO [Motorica]",
+          "pt": "REFLEXO [Motricidade]",
+          "ar": "رد الفعل [الحركية]"
+        },
+        "text": {
+          "en": "The sulfur match strikes with an electric hiss. Inhaling the tar-heavy smoke calms your tremor. +1 Morale restored.",
+          "id": "Korek api belerang menyala dengan desisan elektrik. Menghirup asap pekat tembakau menenangkan tremor tanganmu. +1 Moral dipulihkan.",
+          "zh": "硫磺火柴在擦条上划出一声带电般的咝咝脆响。深吸一口焦油浓重的辛辣烟气，让你颤抖的手指终于重获镇定。+1 精神士气恢复。",
+          "ja": "硫黄のマッチが電気のような摩擦音を立てて擦られる。タールに満ちた煙を吸い込むと、指先の震えが和らぐ。士気+1回復。",
+          "ko": "유황 성냥이 전기가 튀듯 쉬익 소리를 내며 타오릅니다. 타르가 짙은 연기를 들이마시자 손끝의 떨림이 가라앉습니다. 사기 +1 회복.",
+          "es": "El fósforo de azufre chisporrotea con un siseo eléctrico. Inhalar el humo espeso de alquitrán calma tu temblor. +1 Moral restaurada.",
+          "fr": "L'allumette au soufre s'embrase dans un chuintement électrique. Inhaler cette fumée chargée de goudron apaise vos tremblements. +1 Moral restauré.",
+          "de": "Das Schwefelhölzchen entzündet sich mit einem zischenden Laut. Der teerhaltige Rauch beruhigt dein Zittern. +1 Moral wiederhergestellt.",
+          "ru": "Серная спичка вспыхивает с электрическим шипением. Вдох смолистого дыма унимает дрожь в пальцах. +1 к Боевому духу.",
+          "it": "Il fiammifero allo zolfo si accende con un sibilo elettrico. Inalare il fumo denso di catrame placa il tuo tremore. +1 Morale ripristinato.",
+          "pt": "O fósforo de enxofre risca com um chiado elétrico. Inalar a fumaça pesada de alcatrão acalma seu tremor. +1 Moral restaurada.",
+          "ar": "يشتعل عود الثقاب الكبريتي بفحيح كهربائي خافت. استنشاق الدخان المشبع بالقطران يهدئ رجفة أصابعك. +1 استعادة المعنويات."
+        }
+      }
     ]
   },
   "examine_pendulum_start": {
@@ -1530,46 +1617,150 @@ const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "[PERCEPTION - Challenging 12] Pry open her frozen right hand to inspect what she clenched.",
-        "id": "[PERSEPSI - Sulit 12] Buka paksa genggaman tangan kanannya yang membeku untuk melihat apa yang ia cengkeram.",
-        "zh": "[感知 - 困难12] 掰开她僵死冰冷的右手，检查死者死前紧攥之物。",
-        "ja": "[知覚 - 難度12] 硬直した右手をこじ開け、死の間際に何を握りしめていたか検分する。",
-        "ko": "[지각 - 난이도 12] 굳어버린 오른손을 강제로 벌려 쥐고 있던 것을 확인한다.",
-        "es": "[PERCEPCIÓN - Desafiante 12] Abrir su mano congelada para examinar qué apretaba.",
-        "fr": "[PERCEPTION - Difficile 12] Forcer sa main raidie pour examiner ce qu'elle serrait.",
-        "de": "[WAHRNEHMUNG - Schwer 12] Ihre erstarrte rechte Hand aufbiegen und untersuchen.",
+        "id": "[PERSEPSI - Sulit 12] Buka paksa genggaman tangan kanannya yang membeku untuk melihat apa yang ia cengkeram sebelum mati.",
+        "en": "[PERCEPTION - Challenging 12] Pry open her frozen right hand to see what she clenched before dying.",
+        "zh": "【感知 - 难度 12】掰开她僵死冰冷的右手，检查死者死前紧攥之物。",
+        "ja": "【知覚 - 難度 12】硬直した右手をこじ開け、死の間際に何を握りしめていたか検分する。",
+        "ko": "[지각 - 난이도 12] 굳어버린 오른손을 강제로 벌려 죽기 직전 쥐고 있던 것을 확인한다.",
+        "es": "[PERCEPCIÓN - Desafiante 12] Abrir su mano congelada para examinar qué apretaba antes de morir.",
+        "fr": "[PERCEPTION - Difficile 12] Forcer sa main droite figée pour voir ce qu'elle serrait avant de mourir.",
+        "de": "[WAHRNEHMUNG - Schwer 12] Ihre verkrampfte rechte Hand aufbrechen, um zu sehen, was sie festhielt.",
         "ru": "[ВОСПРИЯТИЕ - Сложность 12] Разжать ее одеревеневшие пальцы и изучить предмет в руке.",
-        "it": "[PERCEZIONE - Impegnativo 12] Apri la sua mano irrigidita per vedere cosa stringeva.",
-        "pt": "[PERCEPÇÃO - Desafiador 12] Forçar a mão direita congelada para ver o que segurava.",
-        "ar": "[الإدراك - صعب 12] فتح قبضتها اليمنى المتصلبة لمعاينة ما كانت تمسكه بقوة."
+        "it": "[PERCEZIONE - Impegnativo 12] Apri la sua mano irrigidita per vedere cosa stringeva prima di morire.",
+        "pt": "[PERCEPÇÃO - Desafiador 12] Forçar a mão direita congelada para ver o que ela segurava ao morrer.",
+        "ar": "[الإدراك - صعب 12] فتح قبضتها اليمنى المتصلبة لمعاينة ما كانت تمسكه بقوة قبل موتها."
       },
       {
+        "id": "[ESOTERIKA - Sedang 10] Teliti ukiran geometris aneh yang tergores di tulang selangkanya.",
         "en": "[ESOTERICA - Medium 10] Study the strange geometric incision carved into her collarbone.",
-        "id": "[ESOTERIKA - Sedang 10] Teliti ukiran geometris ganjil yang disayat di tulang selangkanya.",
-        "zh": "[秘教 - 难度10] 细细研读刻在她锁骨处那道诡异的几何几何星位刻痕。",
-        "ja": "[秘教 - 難易度10] 彼女の鎖骨に刻まれた奇妙な幾何学的印章を調べる。",
-        "ko": "[비전학 - 보통 10] 쇄골에 새겨진 기이한 기하학적 문양을 분석한다.",
+        "zh": "【秘教 - 难度 10】细细研读刻在她锁骨处那道诡异的几何炼金刻痕。",
+        "ja": "【秘教 - 難易度 10】彼女の鎖骨に刻まれた奇妙な幾何学的刻印を調べる。",
+        "ko": "[비전학 - 보통 10] 쇄골에 새겨진 기이한 기하학적 절개 문양을 분석한다.",
         "es": "[ESOTERISMO - Medio 10] Estudiar la extraña incisión geométrica tallada en su clavícula.",
         "fr": "[ÉSOTÉRISME - Moyen 10] Étudier l'étrange incision géométrique gravée sur sa clavicule.",
-        "de": "[ESOTERIK - Mittel 10] Die seltsame geometrische Ritzung an ihrem Schlüsselbein untersuchen.",
-        "ru": "[ЭЗОТЕРИКА - Сложность 10] Изучить странный геометрический знак, вырезанный на ключице.",
-        "it": "[ESOTERISMO - Medio 10] Esamina la strana incisione geometrica incisa sulla clavicola.",
+        "de": "[ESOTERIK - Mittel 10] Die seltsame geometrische Einritzung an ihrem Schlüsselbein untersuchen.",
+        "ru": "[ЭЗОТЕРИКА - Сложность 10] Изучить странные геометрические надрезы на ее ключице.",
+        "it": "[ESOTERISMO - Medio 10] Studia la strana incisione geometrica incisa sulla clavicola.",
         "pt": "[ESOTERISMO - Médio 10] Estudar a estranha incisão geométrica talhada na clavícula dela.",
         "ar": "[العلوم الباطنية - متوسط 10] دراسة النقش الهندسي الغريب المحفور على عظمة ترقوتها."
       },
       {
-        "en": "[Step away from the pendulum]",
-        "id": "[Mundur dari area pendulum]",
-        "zh": "[从钟摆齿轮区域退步]",
-        "ja": "[振り子の遺体から離れる]",
-        "ko": "[진자 시신에서 물러난다]",
-        "es": "[Alejarse del péndulo]",
-        "fr": "[S'éloigner du balancier]",
-        "de": "[Vom Pendel zurücktreten]",
-        "ru": "[Отойти от маятника]",
-        "it": "[Allontanati dal pendolo]",
-        "pt": "[Afastar-se do pêndulo]",
-        "ar": "[التراجع عن منطقة البندول]"
+        "id": "[BERBAHAYA] Raih ke dalam celah roda gigi escapement yang berputar untuk mencari bukti yang terjatuh.",
+        "en": "[DANGEROUS] Reach deep into the churning escapement gears to look for dropped evidence.",
+        "zh": "【极度危险】将手探入猛烈咬合转动的擒纵齿轮深处，搜寻掉落的证据残片。",
+        "ja": "【危険】回転する脱進機の歯車の奥深くに手を差し入れ、落ちた証拠を探す。",
+        "ko": "[위험] 맞물려 돌아가는 탈진기 톱니바퀴 틈새로 손을 뻗어 떨어진 증거를 찾는다.",
+        "es": "[PELIGROSO] Meter la mano entre los engranajes en marcha para buscar pruebas caídas.",
+        "fr": "[DANGEREUX] Plonger la main dans les engrenages en mouvement pour chercher un indice tombé.",
+        "de": "[GEFÄHRLICH] Tief in die mahlenden Zahnräder greifen, um nach Beweisen zu suchen.",
+        "ru": "[ОПАСНО] Залезть рукой глубоко в крутящиеся шестеренки в поисках упавших улик.",
+        "it": "[PERICOLOSO] Infila la mano negli ingranaggi in movimento per cercare prove cadute.",
+        "pt": "[PERIGOSO] Alcançar o fundo das engrenagens em movimento para procurar provas caídas.",
+        "ar": "[خطر] مد يدك في أعماق تروس ميزان الساعة الدوارة بحثًا عن أدلة ساقطة."
+      },
+      {
+        "id": "[Mundur dari jenazah]",
+        "en": "[Step back from the corpse]",
+        "zh": "【从尸体旁退后】",
+        "ja": "【遺体から離れる】",
+        "ko": "[시신에서 물러선다]",
+        "es": "[Alejarse del cadáver]",
+        "fr": "[S'éloigner du cadavre]",
+        "de": "[Von der Leiche zurücktreten]",
+        "ru": "[Отойти от тела]",
+        "it": "[Allontanati dal cadavere]",
+        "pt": "[Afastar-se do cadáver]",
+        "ar": "[الابتعاد عن الجثة]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Hypostasis deduction: She did not die here on the pendulum. She was killed at the window sill, bled out, and her body was dragged and mounted onto the clock mechanism to make the stoppage seem like an accidental disaster.",
+          "id": "Deduksi hipostasis: Korban tidak mati di sini pada pendulum. Dia dibunuh di dekat jendela, kehabisan darah, lalu jenazahnya diseret dan dipasang ke mekanisme jam agar penghentian jam tampak seperti bencana kecelakaan.",
+          "zh": "尸斑重力推演：她的真正死因绝非钟摆压迫。她是在窗台边遇刺身亡、流尽鲜血后，尸体才被凶手拖过来固定在齿轮配重上的，企图制造机械事故假象！",
+          "ja": "死斑の推論：彼女はこの振り子の上で死んだのではない。窓際で殺害されて失血死した後、時計停止を事故に見せかけるため遺体を運んで機構に固定したのだ。",
+          "ko": "시반 추론: 피해자는 시계추 위에서 사망한 것이 아닙니다. 창틀에서 살해당해 피를 흘린 뒤, 시계 정지를 우발적 사고처럼 위장하기 위해 시신을 기계 장치로 끌고 와 매달아 놓았습니다.",
+          "es": "Deducción de hipóstasis: No murió aquí en el péndulo. Fue asesinada en el alféizar de la ventana, se desangró y su cuerpo fue arrastrado y montado en el mecanismo para simular un accidente.",
+          "fr": "Déduction d'hypostase : Elle n'est pas morte ici sur le balancier. Elle a été tuée près de la fenêtre, s'est vidée de son sang, puis son corps a été traîné et hissé sur le mécanisme pour simuler un accident.",
+          "de": "Livores-Deduktion: Sie starb nicht hier am Pendel. Sie wurde an der Fensterbank getötet, blutete aus, und ihre Leiche wurde auf das Uhrwerk geschleift, um einen Unfall vorzutäuschen.",
+          "ru": "Трупные пятна не врут: она умерла не здесь на маятнике. Ее убили у окна, она истекла кровью, а затем тело приволокли сюда для инсценировки несчастного случая.",
+          "it": "Deduzione dell'ipostasi: Non è morta qui sul pendolo. È stata uccisa sul davanzale, dissanguata, e il corpo è stato trascinato e montato sull'orologio per simulare un disastro accidentale.",
+          "pt": "Dedução de hipóstase: Ela não morreu aqui no pêndulo. Foi assassinada no parapeito, sangrou até morrer, e seu corpo foi arrastado e montado no mecanismo para forjar um acidente.",
+          "ar": "استنتاج علمي للترسب الدموي: لم تمت الضحية هنا على البندول بل قُتلت عند حافة النافذة ونزفت حتى الموت، ثم سُحلت جثتها ورُكبت على ثقل الساعة ليبدو التوقف وكأنه حادث عرضي."
+        }
+      },
+      {
+        "voice": {
+          "en": "Carnal",
+          "id": "Karnal",
+          "zh": "肉体本能",
+          "ja": "肉体",
+          "ko": "육체",
+          "es": "Carnal",
+          "fr": "Carnal",
+          "de": "Körper",
+          "ru": "Тело",
+          "it": "Fisico",
+          "pt": "Físico",
+          "ar": "الجسد"
+        },
+        "badge": {
+          "en": "CARNAL [Physique]",
+          "id": "KARNAL [Fisik]",
+          "zh": "肉体本能 [体魄]",
+          "ja": "肉体 [身体]",
+          "ko": "육체 [신체]",
+          "es": "CARNAL [Físico]",
+          "fr": "CARNAL [Physique]",
+          "de": "KÖRPER [Physis]",
+          "ru": "ТЕЛО [Телосложение]",
+          "it": "FISICO [Fisico]",
+          "pt": "FÍSICO [Físico]",
+          "ar": "الجسد [البنية]"
+        },
+        "text": {
+          "en": "Touch her wrist. The rigor mortis is uneven. The left arm is limp, while the right hand is frozen in a convulsive grip, clutching something tightly inside her palm.",
+          "id": "Sentuh pergelangan tangannya. Kaku mayatnya tidak merata. Lengan kirinya lemas, sedangkan tangan kanannya membeku dalam cengkeraman kejang, menggenggam sesuatu dengan sangat erat di telapak tangannya.",
+          "zh": "触碰她的手腕。尸僵分布极不均匀。左臂软垂无力，而右手却在死前痉挛中彻底僵死，掌心死死攥紧着某种冰冷的小物件。",
+          "ja": "手首に触れてみろ。死後硬直に偏りがある。左腕はだらりと垂れ下がっているが、右手は激しい痙攣のまま凍りつき、掌の中に何かを固く握りしめている。",
+          "ko": "손목을 만져보십시오. 사후강직이 불균등합니다. 왼팔은 축 늘어져 있지만, 오른손은 경련하듯 굳어 손바닥 안에 무언가를 억세게 움켜쥐고 있습니다.",
+          "es": "Toca su muñeca. El rigor mortis es desigual. El brazo izquierdo está flácido, mientras que la mano derecha está congelada en un agarre convulsivo, apretando algo con fuerza en la palma.",
+          "fr": "Touchez son poignet. La rigidité cadavérique est inégale. Le bras gauche est flasque, tandis que la main droite est figée dans une crispation convulsive, serrant fort quelque chose dans sa paume.",
+          "de": "Berühre ihr Handgelenk. Die Totenstarre ist ungleichmäßig. Der linke Arm ist schlaff, während die rechte Hand in krampfhaftem Griff erstarrt ist und etwas fest umschlossen hält.",
+          "ru": "Коснись ее запястья. Трупное окоченение неравномерно. Левая рука безжизненна, но правая ладонь судорожно сжата в кулак, намертво удерживая что-то внутри.",
+          "it": "Tocca il suo polso. Il rigor mortis è irregolare. Il braccio sinistro è flaccido, mentre la mano destra è congelata in una presa convulsiva, stringendo saldamente qualcosa nel palmo.",
+          "pt": "Toque o pulso dela. O rigor mortis é irregular. O braço esquerdo está mole, enquanto a mão direita congelou num aperto convulsivo, segurando algo com força na palma.",
+          "ar": "المس معصمها. التخشب الرمي غير متكافئ؛ الذراع اليسرى مرتخية، بينما اليد اليمنى متجمدة في قبضة تشنجية تطبق بقوة على شيء ما داخل راحة يدها."
+        }
       }
     ]
   },
@@ -1604,18 +1795,78 @@ const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "\"The killer did not use brute force. They used a parlor trick.\"",
-        "id": "\"Pembunuhnya tidak memakai tenaga kasar. Mereka memakai trik ruang tamu yang licik.\"",
-        "zh": "“凶手根本不是靠蛮力行凶。这是一场精心策划的沙龙式暗杀。”",
-        "ja": "「犯人は腕力で殺したのではない。サロンの毒針という陰湿な手口だ。」",
-        "ko": "\"범인은 완력을 쓰지 않았소. 살롱식 속임수 독살극이었던 거지.\"",
-        "es": "\"El asesino no usó la fuerza bruta. Usó un truco de salón.\"",
-        "fr": "\"L'assassin n'a pas usé de la force brute. C'était un assassinat de salon.\"",
-        "de": "\"Der Mörder brauchte keine rohe Gewalt. Es war ein tückisches Giftattentat.\"",
-        "ru": "«Убийца не применял грубую силу. Это было коварное салонное убийство.»",
-        "it": "\"L'assassino non ha usato la forza bruta. È stato un trucco velenoso da salotto.\"",
-        "pt": "\"O assassino não usou força bruta. Foi um truque engenhoso de salão.\"",
-        "ar": "\"القاتل لم يستخدم القوة الغاشمة بل حيلة صالونات ماكرة قاتلة.\""
+        "en": "\"The killer didn't use brute force. They used a parlor trick.\"",
+        "id": "\"Pembunuhnya tidak memakai kekerasan fisik semata. Mereka memakai tipu muslihat yang licik.\"",
+        "zh": "“凶手并没有使用粗暴蛮力，而是用了一种阴险的江湖障眼法。”",
+        "ja": "「犯人は腕力を使ったんじゃない。巧妙なトリックを使ったんだ。」",
+        "ko": "\"범인은 무력을 쓰지 않았소. 교묘한 속임수를 썼지.\"",
+        "es": "\"El asesino no usó fuerza bruta. Usó un truco de salón.\"",
+        "fr": "\"Le tueur n'a pas usé de force brute. C'était un tour de passe-passe.\"",
+        "de": "\"Der Mörder wandte keine rohe Gewalt an. Es war ein billiger Zaubertrick.\"",
+        "ru": "«Убийца не применял грубую силу. Он использовал фокус с ядом.»",
+        "it": "\"L'assassino non ha usato la forza bruta. Ha usato un trucco da salotto.\"",
+        "pt": "\"O assassino não usou força bruta. Usou um truque de salão.\"",
+        "ar": "\"لم يستخدم القاتل القوة الغاشمة، بل خدعة ماكرة ملتوية.\""
+      },
+      {
+        "en": "[Close]",
+        "id": "[Tutup]",
+        "zh": "【关闭】",
+        "ja": "【閉じる】",
+        "ko": "[닫기]",
+        "es": "[Cerrar]",
+        "fr": "[Fermer]",
+        "de": "[Schließen]",
+        "ru": "[Закрыть]",
+        "it": "[Chiudi]",
+        "pt": "[Fechar]",
+        "ar": "[إغلاق]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Reflex",
+          "id": "Refleks",
+          "zh": "反应力",
+          "ja": "反射神経",
+          "ko": "반사신경",
+          "es": "Reflejo",
+          "fr": "Réflexe",
+          "de": "Reflex",
+          "ru": "Рефлекс",
+          "it": "Riflesso",
+          "pt": "Reflexo",
+          "ar": "رد الفعل"
+        },
+        "badge": {
+          "en": "REFLEX [Motorics]",
+          "id": "REFLEKS [Motorik]",
+          "zh": "反应力 [运动敏捷]",
+          "ja": "反射神経 [運動]",
+          "ko": "반사신경 [운동]",
+          "es": "REFLEJO [Motricidad]",
+          "fr": "RÉFLEXE [Motricité]",
+          "de": "REFLEX [Motorik]",
+          "ru": "РЕФЛЕКС [Моторика]",
+          "it": "RIFLESSO [Motorica]",
+          "pt": "REFLEXO [Motricidade]",
+          "ar": "رد الفعل [الحركية]"
+        },
+        "text": {
+          "en": "Belladonna and mercuric oxide. An assassination needle. Vance was paralyzed with neurotoxin before her body was hoisted onto the pendulum!",
+          "id": "Belladonna dan oksida merkuri. Jarum pembunuh. Vance dilumpuhkan dengan racun saraf sebelum jenazahnya diangkat ke pendulum!",
+          "zh": "颠茄素与氧化汞结晶。这是一枚特制的暗杀毒针！梵斯在尸体被挂上钟摆前，就已经被剧毒神经毒素彻底麻痹了！",
+          "ja": "ベラドンナと酸化水銀。暗殺用の毒針だ。ヴァンスは振り子に吊るされる前に、神経毒で麻痺させられていたのだ！",
+          "ko": "벨라도나와 산화수은. 암살용 독침입니다. 밴스는 시신이 시계추에 매달리기 전에 이미 신경독으로 마비되어 있었습니다!",
+          "es": "Belladona y óxido mercúrico. Una aguja de asesinato. ¡Vance fue paralizada con neurotoxina antes de ser izada al péndulo!",
+          "fr": "Belladone et oxyde de mercure. Une aiguille d'assassinat. Vance a été paralysée par une neurotoxine avant d'être hissée sur le balancier !",
+          "de": "Tollkirsche und Quecksilberoxid. Eine Attentatsnadel. Vance wurde gelähmt, bevor sie an das Pendel gehängt wurde!",
+          "ru": "Белладонна и оксид ртути. Игла убийцы. Вэнс была парализована нейротоксином до того, как тело подняли на маятник!",
+          "it": "Belladonna e ossido di mercurio. Un ago da assassinio. Vance è stata paralizzata prima di essere issata sul pendolo!",
+          "pt": "Beladona e óxido mercúrico. Uma agulha de assassinato. Vance foi paralisada com neurotoxina antes de ser erguida ao pêndulo!",
+          "ar": "ست الحسن وأكسيد الزئبق. إبرة اغتيال غادرة. لقد شُل جسد فانس بسم عصبي قبل رفع جثتها على البندول!"
+        }
       }
     ]
   },
@@ -1650,32 +1901,92 @@ const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "[INTERFACING - Medium 10] Pry open the rear balance cock to inspect the escapement gears.",
-        "id": "[PENYELARASAN - Sedang 10] Buka tutup belakang mekanisme untuk memeriksa roda escapement.",
-        "zh": "[机械交互 - 难度10] 挑开后盖摆轮夹板，仔细检视内部擒纵机芯。",
-        "ja": "[機構連動 - 難易度10] 裏蓋のテンプ受けを開け、脱進機内部を検分する。",
-        "ko": "[기계 인터페이스 - 보통 10] 뒷면 밸런스 콕을 조심스레 열어 무브먼트 내부를 검사한다.",
-        "es": "[INTERFAZ - Medio 10] Abrir la tapa trasera para inspeccionar los engranajes.",
-        "fr": "[INTERACTION - Moyen 10] Ouvrir le couvercle arrière pour examiner le mécanisme.",
-        "de": "[VERZAHNUNG - Mittel 10] Den Unruhkloben aufhebeln und das Getriebe inspizieren.",
-        "ru": "[МЕХАНИКА - Сложность 10] Вскрыть заднюю крышку механизма и осмотреть шестерни.",
-        "it": "[INTERFACCIAMENTO - Medio 10] Apri il fondello posteriore per esaminare lo scappamento.",
-        "pt": "[INTERFACIAMENTO - Médio 10] Abrir a tampa traseira para inspecionar as engrenagens.",
-        "ar": "[التفاعل الآلي - متوسط 10] فك غطاء الميزان الخلفي لمعاينة تروس الحركة الدقيقة."
+        "id": "[PENYELARASAN MESIN - Sedang 11] Cungkil penutup belakang dengan ujung kuku untuk memeriksa roda gigi bagian dalam.",
+        "en": "[INTERFACING - Medium 11] Pop open the back casing with your thumbnail to examine the inner movement.",
+        "zh": "【机构连动 - 难度 11】用指甲挑开怀表后盖，检视其内嵌的复杂机芯。",
+        "ja": "【機構連動 - 難易度 11】親指の爪で裏蓋をこじ開け、内部のムーブメントを調べる。",
+        "ko": "[기계 조율 - 보통 11] 엄지손톱으로 뒷면 덮개를 열어 내부 무브먼트를 살펴본다.",
+        "es": "[CONEXIÓN MECÁNICA - Medio 11] Abrir la tapa trasera con la uña para examinar el movimiento interno.",
+        "fr": "[INTERFAÇAGE - Moyen 11] Ouvrir le boîtier arrière avec l'ongle pour examiner le mouvement.",
+        "de": "[MECHANIK - Mittel 11] Das hintere Gehäuse aufhebeln, um das Innenleben zu untersuchen.",
+        "ru": "[ВЗАИМОДЕЙСТВИЕ - Сложность 11] Поддеть ногтем заднюю крышку и изучить механизм.",
+        "it": "[INTERAZIONE - Medio 11] Apri il coperchio posteriore per esaminare il meccanismo interno.",
+        "pt": "[INTERAÇÃO - Médio 11] Abrir a tampa traseira para examinar o mecanismo interno.",
+        "ar": "[التعامل الميكانيكي - متوسط 11] فتح الغطاء الخلفي لمعاينة التروس الداخلية للحركة."
       },
       {
-        "en": "[Put the watch down]",
-        "id": "[Kembalikan jam saku ke tempatnya]",
-        "zh": "[放低怀表]",
-        "ja": "[時計を元に戻す]",
-        "ko": "[회중시계를 내려놓는다]",
-        "es": "[Dejar el reloj]",
-        "fr": "[Reposer la montre]",
-        "de": "[Die Uhr weglegen]",
-        "ru": "[Отложить часы]",
-        "it": "[Riponi l'orologio]",
-        "pt": "[Guardar o relógio]",
-        "ar": "[إعادة الساعة إلى مكانها]"
+        "id": "[Masukkan arloji ke dalam kantong bukti]",
+        "en": "[Put the watch in evidence bag]",
+        "zh": "【将怀表放入物证袋】",
+        "ja": "【懐中時計を証拠品袋に収める】",
+        "ko": "[시계를 증거품 가방에 보관한다]",
+        "es": "[Poner el reloj en la bolsa de pruebas]",
+        "fr": "[Mettre la montre dans le sac à preuves]",
+        "de": "[Die Uhr in die Beweismitteltasche legen]",
+        "ru": "[Убрать часы в мешок для улик]",
+        "it": "[Metti l'orologio nella busta delle prove]",
+        "pt": "[Colocar o relógio no saco de evidências]",
+        "ar": "[وضع الساعة في حقيبة الأدلة]"
+      },
+      {
+        "id": "[Mundur]",
+        "en": "[Step back]",
+        "zh": "【退后】",
+        "ja": "【戻る】",
+        "ko": "[뒤로 물러선다]",
+        "es": "[Retroceder]",
+        "fr": "[Reculer]",
+        "de": "[Zurücktreten]",
+        "ru": "[Назад]",
+        "it": "[Indietro]",
+        "pt": "[Recuar]",
+        "ar": "[الرجوع للخلف]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Listen. The cadence is wrong. A normal escapement beats at five ticks per second (300 BPM). This mechanism is pulsing in an irregular triplet: tap... tap-tap... tap.",
+          "id": "Dengarkan baik-baik. Ketukannya ganjil. Escapement jam normal berdetak lima kali per detik (300 BPM). Mekanisme ini berdenyut dalam pola triplet tak beraturan: tik... tik-tik... tik.",
+          "zh": "侧耳细听。这种摆动节奏完全不对。普通钟表擒纵器每秒敲击五次（300 BPM）。而眼前的精密机构却在以一种诡异的三连音脉动：咔……咔-咔……咔。",
+          "ja": "聴け。リズムが狂っている。通常の脱進機は毎秒5回（300 BPM）刻む。この機構は不規則な三連符で脈打っている：カチッ……カチ・カチッ……カチッ。",
+          "ko": "귀를 기울이십시오. 박자가 잘못되었습니다. 보통의 탈진기는 초당 5회(300 BPM) 박동합니다. 하지만 이 장치는 불규칙한 세 박자로 뛰고 있습니다. 틱... 틱-틱... 틱.",
+          "es": "Escucha. La cadencia es errónea. Un escape normal late a cinco tics por segundo (300 BPM). Este mecanismo pulsa en un triplete irregular: tac... tac-tac... tac.",
+          "fr": "Écoutez. Le rythme est anormal. Un échappement régulier bat à cinq coups par seconde. Ce mécanisme pulse en un triolet irrégulier : tic... tic-tic... tic.",
+          "de": "Hör zu. Der Takt stimmt nicht. Ein normales Hemmungswerk tickt fünfmal pro Sekunde. Dieses pulsiert in einer unregelmäßigen Triole: tick... tick-tick... tick.",
+          "ru": "Послушай. Ритм нарушен. Обычный спуск тикает пять раз в секунду. Этот механизм пульсирует странной триолью: тик... тик-тик... тик.",
+          "it": "Ascolta. Il ritmo è sbagliato. Un normale scappamento batte cinque tic al secondo. Questo meccanismo pulsa in una terzina irregolare: tic... tic-tic... tic.",
+          "pt": "Ouça. A cadência está errada. Um escape normal bate cinco vezes por segundo. Este mecanismo pulsa em tercinas irregulares: tique... tique-tique... tique.",
+          "ar": "أنصت بدقة. الإيقاع غير سليم؛ ميزان الساعة المعتاد ينبض 5 دقات بالثانية، بينما تنبض هذه الآلية بنمط ثلاثي مضطرب."
+        }
       }
     ]
   },
@@ -1756,46 +2067,60 @@ const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "[INPUT WATCH CODE: 7-3-12] Turn the tumblers to the numbers inscribed in Aurelia's pocket watch.",
-        "id": "[MASUKKAN KODE JAM: 7-3-12] Putar roda kombinasi ke angka yang terukir di jam saku Aurelia.",
-        "zh": "【输入怀表密码：7-3-12】按照奥蕾莉亚怀表摆轮上所刻的密码转动滚轮。",
-        "ja": "【時計の暗号入力：7-3-12】オレリアの懐中時計に刻まれていた番号へダイヤルを回す。",
-        "ko": "[회중시계 암호 입력: 7-3-12] 오렐리아의 회중시계에 적혀 있던 세 자리 번호로 다이얼을 돌린다.",
-        "es": "[INTRODUCIR CÓDIGO: 7-3-12] Girar los cilindros según el código del reloj de Aurelia.",
-        "fr": "[ENTRER LE CODE : 7-3-12] Aligner les crans sur les chiffres de la montre d'Aurelia.",
-        "de": "[UHR-CODE EINGEBEN: 7-3-12] Die Zahlenkombination aus der Taschenuhr einstellen.",
-        "ru": "[ВВЕСТИ КОД ИЗ ЧАСОВ: 7-3-12] Набрать шифр, выгравированный на часах Аурелии.",
-        "it": "[INSERISCI CODICE: 7-3-12] Allinea le ghiere sui numeri dell'orologio di Aurelia.",
-        "pt": "[INSERIR CÓDIGO: 7-3-12] Girar os cilindros para os números gravados no relógio.",
-        "ar": "[إدخال شفرة الساعة: 7-3-12] تدوير الأقراص وفقًا للأرقام المنقوشة في ساعة الجيب."
+        "id": "[Jika kombinasi diketahui (7-3-12)] Masukkan kode yang ditemukan di dalam arloji Aurelia.",
+        "en": "[If combination known (7-3-12)] Enter the code found inside Aurelia's watch.",
+        "zh": "【若已知密码组合（7-3-12）】输入从奥蕾莉亚怀表内刻痕获取的三重密码。",
+        "ja": "【暗証番号既知時（7-3-12）】オレリアの懐中時計で見つけた暗号を入力する。",
+        "ko": "[비밀번호를 안다면 (7-3-12)] 오렐리아의 시계 안에서 발견한 암호를 입력한다.",
+        "es": "[Si conoce la combinación (7-3-12)] Introducir el código hallado en el reloj de Aurelia.",
+        "fr": "[Si combinaison connue (7-3-12)] Entrer le code trouvé dans la montre d'Aurelia.",
+        "de": "[Kombination bekannt (7-3-12)] Den Code aus Aurelias Uhr eingeben.",
+        "ru": "[Если комбинация известна (7-3-12)] Ввести шифр из часов Аурелии.",
+        "it": "[Se la combinazione è nota (7-3-12)] Inserisci il codice trovato nell'orologio.",
+        "pt": "[Se a combinação for conhecida (7-3-12)] Digitar o código do relógio de Aurelia.",
+        "ar": "[إذا كانت الشفرة معروفة (7-3-12)] إدخال الرمز المكتشف داخل ساعة أوريليا."
       },
       {
-        "en": "[LOGIC - Challenging 13] Crack the alchemical combination tumbler by mechanical acoustic resonance.",
-        "id": "[LOGIKA - Sulit 13] Retas kombinasi brankas dengan mendengarkan resonansi akustik mekanik.",
-        "zh": "[逻辑 - 困难13] 贴耳细听内部簧片震颤，纯靠严密逻辑与机械声学共振破译密码。",
-        "ja": "[論理 - 難度13] 機械的な音響共鳴と冷徹な推論だけで金庫のダイヤルを解読する。",
-        "ko": "[논리 - 난이도 13] 음향 공명과 순수 논리적 연역으로 금고의 암호를 해킹한다.",
-        "es": "[LÓGICA - Desafiante 13] Descifrar la combinación mediante resonancia acústica.",
-        "fr": "[LOGIQUE - Difficile 13] Décoder la combinaison par résonance acoustique.",
-        "de": "[LOGIK - Schwer 13] Das Schloss durch akustische Resonanzanalyse knacken.",
-        "ru": "[ЛОГИКА - Сложность 13] Взломать замок по акустическому резонансу шестерен.",
-        "it": "[LOGICA - Impegnativo 13] Decifra la combinazione mediante risonanza acustica.",
-        "pt": "[LÓGICA - Desafiador 13] Decifrar a combinação por ressonância acústica mecânica.",
-        "ar": "[المنطق - صعب 13] فك شفرة الخزنة عبر الاستماع لرنين الميكانيكا الداخلي."
+        "id": "[LOGIKA - Sulit 13] Coba deduksikan susunan pin gembok melalui getaran akustik.",
+        "en": "[LOGIC - Hard 13] Attempt to deduce the tumbler alignment by acoustic vibration.",
+        "zh": "【逻辑 - 困难 13】借助听觉振动推演滚轮内部销栓的对齐卡位。",
+        "ja": "【論理 - 難度 13】音響振動からタンブラーの噛み合わせを推論する。",
+        "ko": "[논리 - 어려움 13] 음향 진동을 감지해 텀블러 핀의 정렬을 추리해 낸다.",
+        "es": "[LÓGICA - Difícil 13] Deducir la alineación de los tambores mediante vibración acústica.",
+        "fr": "[LOGIQUE - Difficile 13] Déduire l'alignement des goupilles par vibration acoustique.",
+        "de": "[LOGIK - Schwer 13] Versuchen, die Zuhaltungen durch Vibrationen zu erschließen.",
+        "ru": "[ЛОГИКА - Сложность 13] Вычислить положение штифтов по звуку вибраций.",
+        "it": "[LOGICA - Difficile 13] Deduci l'allineamento dei perni tramite vibrazioni acustiche.",
+        "pt": "[LÓGICA - Difícil 13] Deduzir o alinhamento dos pinos pela vibração acústica.",
+        "ar": "[المنطق - صعب 13] استنتاج محاذاة مسامير القفل من خلال الاهتزازات الصوتية."
       },
       {
-        "en": "[Leave safe for now]",
-        "id": "[Tinggalkan brankas untuk sementara]",
-        "zh": "[暂离保险箱]",
-        "ja": "[今は金庫から離れる]",
-        "ko": "[금고에서 잠시 물러난다]",
-        "es": "[Dejar la caja fuerte]",
-        "fr": "[S'éloigner du coffre]",
-        "de": "[Den Tresor vorerst belassen]",
-        "ru": "[Оставить сейф]",
+        "id": "[KEKUATAN FISIK - Berbahaya] Coba cungkil paksa tutup besi tebal dengan linggis.",
+        "en": "[BRUTE FORCE - Dangerous] Try to pry open the heavy iron lid with a crowbar.",
+        "zh": "【暴力破解 - 危险】尝试用重型撬棍强行撬开沉重的铸铁保险柜盖。",
+        "ja": "【腕力 - 危険】バールを使って重い鉄の蓋を無理やりこじ開けようとする。",
+        "ko": "[완력 - 위험] 쇠지렛대로 무거운 철제 뚜껑을 강제로 비틀어 열어본다.",
+        "es": "[FUERZA BRUTA - Peligroso] Intentar forzar la pesada tapa de hierro con una palanca.",
+        "fr": "[FORCE BRUTE - Dangereux] Forcer le couvercle de fer à l'aide d'un pied-de-biche.",
+        "de": "[ROHE GEWALT - Gefährlich] Versuchen, den schweren Eisendeckel aufzubrechen.",
+        "ru": "[СИЛА - Опасно] Попытаться вскрыть тяжелую крышку монтировкой.",
+        "it": "[FORZA BRUTA - Pericoloso] Tenta di scassinare il pesante coperchio con un piede di porco.",
+        "pt": "[FORÇA BRUTA - Perigoso] Tentar forçar a tampa pesada com um pé de cabra.",
+        "ar": "[القوة البدنية - خطير] محاولة خلع الغطاء الحديدي الثقيل بالقوة باستخدام عتلة."
+      },
+      {
+        "id": "[Tinggalkan brankas tanpa disentuh]",
+        "en": "[Leave safe untouched]",
+        "zh": "【暂不动保险箱】",
+        "ja": "【金庫に手を触れず立ち去る】",
+        "ko": "[금고를 그대로 두고 물러난다]",
+        "es": "[Dejar la caja intacta]",
+        "fr": "[Laisser le coffre]",
+        "de": "[Den Safe unberührt lassen]",
+        "ru": "[Не трогать сейф]",
         "it": "[Lascia la cassaforte]",
-        "pt": "[Deixar o cofre por enquanto]",
-        "ar": "[ترك الخزنة في الوقت الحالي]"
+        "pt": "[Deixar o cofre intacto]",
+        "ar": "[ترك الخزنة دون لمسها]"
       }
     ]
   },
@@ -1842,6 +2167,52 @@ const DIALOGUE_I18N_FULL = {
         "it": "\"La prova definitiva di corruzione e cospirazione.\"",
         "pt": "\"Prova irrefutável de conspiração e corrupção.\"",
         "ar": "\"دليل قاطع لا يقبل الشك على الفساد والمؤامرة الكبرى.\""
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Look at the final entry dated last evening: 'Vivienne knows. She sold the cipher to the Syndicate for passage to the New Continent. Tonight she brings me tea. I know what is in the cup.'",
+          "id": "Lihat catatan terakhir bertanggal kemarin malam: 'Vivienne tahu. Dia menjual sandi rahasia kepada Sindikat demi tiket pelayaran ke Benua Baru. Malam ini dia membawakanku teh. Aku tahu apa yang ada di dalam cangkir itu.'",
+          "zh": "细读昨夜最后那行凌乱的字迹：‘薇薇安知晓了一切。她将密文出卖给辛迪加，换取前往新大陆的船票。今晚她给我端来了红茶。我心知肚明那杯子里装着什么。’",
+          "ja": "昨晩の日付の最後の記録を見ろ：『ヴィヴィアンは知っている。彼女は新大陸への渡航証と引き換えに暗号をシンジケートへ売った。今夜彼女は紅茶を持ってくる。そのカップに何が入っているか、私には分かっている。』",
+          "ko": "어젯밤 날짜로 적힌 마지막 기록을 보십시오. '비비안이 알고 있다. 그녀는 신대륙으로 가는 뱃삯을 위해 암호표를 신디케이트에 팔아넘겼다. 오늘 밤 그녀가 차를 가져온다. 잔 속에 무엇이 들었는지 나는 알고 있다.'",
+          "es": "Mira la última entrada de anoche: 'Vivienne lo sabe. Vendió la clave al Sindicato. Esta noche me trae té. Sé qué hay en la taza'.",
+          "fr": "Lisez la dernière entrée : 'Vivienne sait. Elle a vendu le chiffre au Syndicat. Ce soir, elle m'apporte le thé. Je sais ce qu'il y a dans la tasse.'",
+          "de": "Sieh dir den letzten Eintrag an: 'Vivienne weiß es. Sie verkaufte die Chiffre ans Syndikat. Heute Nacht bringt sie Tee. Ich weiß, was in der Tasse ist.'",
+          "ru": "Взгляни на последнюю запись: «Вивьен знает. Она продала шифр Синдикату. Сегодня она несет мне чай. Я знаю, что в чашке».",
+          "it": "Guarda l'ultima annotazione: 'Vivienne sa. Ha venduto il cifrario al Sindacato. Stasera mi porta il tè. So cosa c'è nella tazza'.",
+          "pt": "Veja a última anotação: 'Vivienne sabe. Vendeu a cifra ao Sindicato. Esta noite ela me traz chá. Eu sei o que há na xícara'.",
+          "ar": "انظر إلى التدوينة الأخيرة المؤرخة ليلة أمس: 'فيفيان تعلم. باعت الشفرة للنقابة. الليلة تقدم لي الشاي وأعلم جيدًا ما في الكأس'."
+        }
       }
     ]
   },
@@ -1922,60 +2293,74 @@ const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
+        "id": "\"Di mana Anda berada pada pukul 03:42 dini hari saat jam menara berhenti?\"",
         "en": "\"Where were you at 03:42 AM when the tower clock stopped?\"",
-        "id": "\"Di mana kamu berada pada pukul 03:42 saat jam menara berhenti?\"",
-        "zh": "“凌晨03:42钟楼停摆的那一刻，你在什么地方？”",
-        "ja": "「時計が止まった午前3時42分、あなたはどこにいた？」",
-        "ko": "\"시계탑이 멈춘 오전 03시 42분에 부인은 어디 있었소?\"",
-        "es": "\"¿Dónde estaba usted a las 03:42 cuando se detuvo el reloj?\"",
+        "zh": "“凌晨03:42分大钟骤停时，你究竟身在何处？”",
+        "ja": "「時計塔が止まった午前3時42分、お前はどこにいた？」",
+        "ko": "\"탑 시계가 멈춘 새벽 03시 42분에 부인은 어디 계셨습니까?\"",
+        "es": "\"¿Dónde estaba usted a las 03:42 cuando se detuvo el reloj de la torre?\"",
         "fr": "\"Où étiez-vous à 03h42 quand l'horloge s'est arrêtée ?\"",
-        "de": "\"Wo waren Sie um 03:42 Uhr, als die Turmuhr stehenblieb?\"",
-        "ru": "«Где вы были в 03:42, когда часы башни остановились?»",
-        "it": "\"Dov'era alle 03:42 quando l'orologio si è fermato?\"",
+        "de": "\"Wo waren Sie um 03:42 Uhr, als die Turmuhr stoppte?\"",
+        "ru": "«Где вы были в 03:42, когда часы на башне остановились?»",
+        "it": "\"Dov'era alle 03:42 quando l'orologio della torre si è fermato?\"",
         "pt": "\"Onde você estava às 03:42 quando o relógio da torre parou?\"",
-        "ar": "\"أين كنتِ في تمام الساعة 03:42 فجرًا حين توقفت ساعة البرج؟\""
+        "ar": "\"أين كنت في تمام الساعة 03:42 فجرًا عندما توقفت ساعة البرج؟\""
       },
       {
+        "id": "[EMPATI - Sedang 10] \"Anda tidak pernah mencintainya, bukan, Nyonya?\"",
         "en": "[EMPATHY - Medium 10] \"You did not love her, did you, Madame?\"",
-        "id": "[EMPATI - Sedang 10] \"Kamu sebenarnya tidak mencintainya lagi, bukan begitu Nyonya?\"",
-        "zh": "[同理心 - 难度10] “你其实早已不再爱她了，对吗，夫人？”",
-        "ja": "[共感 - 難易度10] 「あなたは彼女を愛してなどいなかった、そうですね夫人？」",
-        "ko": "[공감 - 보통 10] \"부인은 그녀를 더 이상 사랑하지 않았지요?\"",
-        "es": "[EMPATÍA - Medio 10] \"Usted ya no la amaba, ¿verdad, Madame?\"",
-        "fr": "[EMPATHIE - Moyen 10] \"Vous ne l'aimiez plus, n'est-ce pas, Madame ?\"",
-        "de": "[EMPATHIE - Mittel 10] \"Sie haben sie nicht mehr geliebt, nicht wahr, Madame?\"",
-        "ru": "[ЭМПАТИЯ - Сложность 10] «Вы ведь больше не любили ее, мадам?»",
-        "it": "[EMPATIA - Medio 10] \"Non la amava più, non è vero, Madame?\"",
-        "pt": "[EMPATIA - Médio 10] \"Você não a amava mais, não é, Madame?\"",
-        "ar": "[التعاطف - متوسط 10] \"لم تعودي تحبينها على الإطلاق، أليس كذلك يا سيدتي؟\""
+        "zh": "【共情 - 难度 10】“你其实从未深爱过她，对吗，夫人？”",
+        "ja": "【共感 - 難易度 10】「彼女を愛してなどいなかったのだろう、マダム？」",
+        "ko": "[공감 - 보통 10] \"부인은 그녀를 사랑하지 않았군요, 그렇지 않습니까?\"",
+        "es": "[EMPATÍA - Medio 10] \"No la amaba, ¿verdad, Madame?\"",
+        "fr": "[EMPATHIE - Moyen 10] \"Vous ne l'aimiez pas, n'est-ce pas, Madame ?\"",
+        "de": "[EMPATHIE - Mittel 10] \"Sie haben sie nie geliebt, nicht wahr, Madame?\"",
+        "ru": "[ЭМПАТИЯ - Сложность 10] «Вы ведь никогда не любили ее, мадам?»",
+        "it": "[EMPATIA - Medio 10] \"Non l'amava affatto, vero, Madame?\"",
+        "pt": "[EMPATIA - Médio 10] \"Você não a amava, não é, Madame?\"",
+        "ar": "[التعاطف - متوسط 10] \"لم تكوني تحبينها على الإطلاق، أليس كذلك يا سيدتي؟\""
       },
       {
-        "en": "[RED CHECK] [AUTHORITY - Challenging 13] \"Enough theatrics, Vivienne. We have the poisoned queen, the cyanide vials, and the Perpetuum ledger. You killed her.\"",
-        "id": "[UJI MERAH] [OTORITAS - Sulit 13] \"Cukup sandiwaranya, Vivienne. Kami memiliki ratu catur beracun, ampul sianida, dan buku besar Perpetuum. Kamu yang membunuhnya.\"",
-        "zh": "【绝命检定】[权威 - 困难13] “闹剧该结束了，薇薇安。毒针黑后、带毒安瓿和总账簿全在我们手上。是你动的手。”",
-        "ja": "【赤の判定】[威信 - 難度13] 「茶番は終わりだ、ヴィヴィアン。毒のクイーンも金庫の台帳も手に入った。お前が殺したんだ。」",
-        "ko": "[결전 판정] [권위 - 난이도 13] \"연극은 끝났소, 비비안. 독침 퀸과 금고 원장을 전부 확보했소. 당신이 죽인 거요.\"",
-        "es": "[CONTROL ROJO] [AUTORIDAD - 13] \"Basta de teatro, Vivienne. Tenemos la reina envenenada y el libro mayor. Fuiste tú.\"",
-        "fr": "[TEST ROUGE] [AUTORITÉ - 13] \"Assez de comédie, Vivienne. Nous avons la reine empoisonnée et le registre. C'est vous.\"",
-        "de": "[ROTE PROBE] [AUTORITÄT - 13] \"Genug Theater, Vivienne. Wir haben die giftige Dame und das Hauptbuch. Sie haben sie getötet.\"",
-        "ru": "[КРАСНАЯ ПРОВЕРКА] [АВТОРИТЕТ - 13] «Хватит спектаклей, Вивьен. У нас есть отравленный ферзь и гроссбух. Вы убили ее.»",
-        "it": "[PROVA ROSSA] [AUTORITÀ - 13] \"Basta con la commedia, Vivienne. Abbiamo la regina avvelenata e il mastro. Sei stata tu.\"",
-        "pt": "[TESTE VERMELHO] [AUTORIDADE - 13] \"Chega de teatro, Vivienne. Temos a rainha envenenada e o livro-razão. Foi você.\"",
-        "ar": "[فحص أحمر حاسم] [السلطة - صعب 13] \"كفى مسرحيات يا فيفيان. ملكة الشطرنج المسمومة ودفتر الحسابات كلاهما بحوزتنا. أنتِ من قتلتها.\""
+        "id": "[UJI MERAH] [OTORITAS - Sulit 13] \"Cukup sandiwaranya, Vivienne. Kami menemukan bidak ratu catur beracun dan sobekan beludru dari mantelmu di balkon. Kamulah yang membunuhnya.\"",
+        "en": "[RED CHECK] [AUTHORITY - Challenging 13] \"Enough theatrics, Vivienne. We found the poisoned chess queen and the torn velvet from your coat on the balcony. You murdered her.\"",
+        "zh": "【红色检定】【威信 - 困难 13】“够了，收起你的拙劣演戏吧，薇薇安。我们在露台搜出了涂毒的黑王后棋子和从你大衣上撕裂的丝绒碎布。是你亲手谋杀了她！”",
+        "ja": "【レッドチェック】【威信 - 難度 13】「茶番劇は終わりだ、ヴィヴィアン。毒入りのクイーンの駒も、バルコニーで見つかったお前のコートのビロードも揃っている。お前が彼女を殺したんだ。」",
+        "ko": "[레드 체크] [권위 - 어려움 13] \"연극은 그만두시오, 비비안. 독이 묻은 체스 퀸과 발코니에서 뜯겨나간 외투의 벨벳 조각을 찾아냈소. 당신이 그녀를 살해했소.\"",
+        "es": "[CHEQUEO ROJO] [AUTORIDAD - Desafiante 13] \"Basta de teatro, Vivienne. Hallamos la reina envenenada y el terciopelo desgarrado de su abrigo. Usted la asesinó.\"",
+        "fr": "[TEST ROUGE] [AUTORITÉ - Difficile 13] \"Assez de comédie, Vivienne. Nous avons retrouvé la reine empoisonnée et le velours de votre manteau. Vous l'avez tuée.\"",
+        "de": "[ROTER CHECK] [AUTORITÄT - Schwer 13] \"Genug des Theaters, Vivienne. Wir haben die vergiftete Schachkönigin und den Samt Ihres Mantels gefunden. Sie haben sie ermordet.\"",
+        "ru": "[КРАСНАЯ ПРОВЕРКА] [АВТОРИТЕТ - Сложность 13] «Хватит спектаклей, Вивьен. Мы нашли отравленного ферзя и лоскут бархата от вашего пальто. Вы ее убили.»",
+        "it": "[TEST ROSSO] [AUTORITÀ - Impegnativo 13] \"Basta teatrini, Vivienne. Abbiamo trovato la regina avvelenata e il velluto strappato del suo cappotto. È stata lei.\"",
+        "pt": "[TESTE VERMELHO] [AUTORIDADE - Desafiador 13] \"Chega de teatro, Vivienne. Encontramos a rainha envenenada e o veludo rasgado do seu casaco. Você a matou.\"",
+        "ar": "[فحص أحمر] [السلطة - صعب 13] \"كفى تمثيلاً يا فيفيان؛ وجدنا ملكة الشطرنج المسمومة وقطعة المخمل الممزقة من معطفك على الشرفة. أنتِ من قتلها.\""
       },
       {
-        "en": "[Step away from Madame Vance]",
-        "id": "[Mundur dari hadapan Nyonya Vance]",
-        "zh": "[暂别薇薇安夫人]",
-        "ja": "[未亡人から距離を置く]",
-        "ko": "[비비안 부인에게서 물러난다]",
-        "es": "[Alejarse de Madame Vance]",
-        "fr": "[S'éloigner de Madame Vance]",
-        "de": "[Sich von Madame Vance entfernen]",
-        "ru": "[Отойти от мадам Вэнс]",
-        "it": "[Allontanati da Madame Vance]",
-        "pt": "[Afastar-se de Madame Vance]",
-        "ar": "[التراجع عن السيدة فانس]"
+        "id": "[TUDUHAN GEGABAH - Berbahaya] \"Aku tidak butuh bukti, Vivienne! Kamu yang membunuh Aurelia dan aku menangkapmu sekarang juga!\"",
+        "en": "[RASH ACCUSATION - Dangerous] \"I don't need evidence, Vivienne! You killed Aurelia and I am arresting you right now!\"",
+        "zh": "【鲁莽指控 - 极度危险】“我根本不需要证据，薇薇安！就是你杀了奥蕾莉亚，我现在就要逮捕你！”",
+        "ja": "【無謀な告発 - 危険】「証拠など要らん！お前がオレリアを殺したんだ、今すぐ逮捕してやる！」",
+        "ko": "[성급한 고발 - 위험] \"증거 따윈 필요 없소, 비비안! 당신이 오렐리아를 죽였고 당장 체포하겠소!\"",
+        "es": "[ACUSACIÓN TEMERARIA - Peligroso] \"¡No necesito pruebas, Vivienne! ¡Usted la mató y queda arrestada!\"",
+        "fr": "[ACCUSATION TÉMÉRAIRE - Dangereux] \"Je n'ai pas besoin de preuves, Vivienne ! Vous l'avez tuée et je vous arrête !\"",
+        "de": "[ÜBEREILTE BESCHULDIGUNG - Gefährlich] \"Ich brauche keine Beweise, Vivienne! Sie werden auf der Stelle verhaftet!\"",
+        "ru": "[ОПРОМЕТЧИВОЕ ОБВИНЕНИЕ - Опасно] «Мне не нужны улики, Вивьен! Вы убили ее, и я арестую вас прямо сейчас!»",
+        "it": "[ACCUSA AZZARDATA - Pericoloso] \"Non ho bisogno di prove, Vivienne! Lei l'ha uccisa e la arresto subito!\"",
+        "pt": "[ACUSAÇÃO PRECIPITADA - Perigoso] \"Não preciso de provas, Vivienne! Você a matou e está presa agora mesmo!\"",
+        "ar": "[اتهام متهور - خطير] \"لست بحاجة لأدلة يا فيفيان! أنتِ من قتلت أوريليا وأنا أعتقلك فورًا!\""
+      },
+      {
+        "id": "[Mundur]",
+        "en": "[Step away]",
+        "zh": "【转身离开】",
+        "ja": "【立ち去る】",
+        "ko": "[물러선다]",
+        "es": "[Apartarse]",
+        "fr": "[S'éloigner]",
+        "de": "[Wegtreten]",
+        "ru": "[Отойти]",
+        "it": "[Allontanati]",
+        "pt": "[Afastar-se]",
+        "ar": "[الابتعاد]"
       }
     ]
   },
@@ -2050,6 +2435,96 @@ const DIALOGUE_I18N_FULL = {
         "it": "[VERDETTO FINALE: Consegna le prove sulla corruzione del Sindacato alla stampa]",
         "pt": "[VEREDITO FINAL: Expor o Sindicato e a polícia corrupta à imprensa livre]",
         "ar": "[الحكم النهائي: فضح النقابة والشرطة الفاسدة عبر الصحافة المستقلة للرأي العام]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "EPIPHANY. The puzzle is solved. Vance was not a mere victim; she was the orchestrator of her own mechanical suicide pact. She used her partner's vengeance as the final gear in her escapement.",
+          "id": "PENCERAHAN LOGIKA. Teka-teki ini terpecahkan. Vance bukan sekadar korban pasif; dia adalah perancang konspirasi mekanis kematiannya sendiri. Dia memanfaatkan dendam pasangannya sebagai roda gigi terakhir dalam mekanisme escapement-nya.",
+          "zh": "灵光顿悟！迷局彻底破晓。奥蕾莉亚·梵斯绝非单纯的受害者；她是这场精密机械自戕契约的总导演！她将同伴的复仇执念化作了自己这具致命擒纵钟摆上的最后一枚咬合齿轮！",
+          "ja": "啓示！謎はすべて解かれた。ヴァンスは単なる被害者ではなかった。自らの機械的死の契約を仕組んだ演出家だったのだ。パートナーの復讐心を、自身の脱進機の最終ギアとして利用したのだ。",
+          "ko": "경이로운 직관. 수수께끼가 마침내 풀렸습니다. 밴스는 단순한 피해자가 아니었습니다. 자신의 죽음을 설계한 기계적 공모자였습니다. 파트너의 복수심을 자신의 탈진기 마지막 톱니바퀴로 이용한 것입니다.",
+          "es": "EPIFANÍA. El enigma está resuelto. Vance orquestó su propio pacto de suicidio mecánico, usando la venganza como el último engranaje.",
+          "fr": "ÉPIPHANIE. L'énigme est résolue. Vance était l'architecte de son propre pacte suicidaire, utilisant la vengeance comme ultime rouage.",
+          "de": "EPIPHANIE. Das Rätsel ist gelöst. Vance orchestrierte ihren eigenen mechanischen Suizid und nutzte Rache als letztes Rädchen im Getriebe.",
+          "ru": "ОЗАРЕНИЕ. Головоломка решена. Вэнс спланировала собственную гибель, использовав чужую месть как последнюю шестерню в механизме.",
+          "it": "EPIFANIA. Il puzzle è risolto. Vance ha orchestrato il proprio patto suicida meccanico, usando la vendetta come ingranaggio finale.",
+          "pt": "EPIFANIA. O enigma está resolvido. Vance orquestrou o próprio pacto de suicídio mecânico, usando a vingança como a engrenagem final.",
+          "ar": "إشراق ذهني واستنارة! حُل اللغز بالكامل؛ لم تكن فانس مجرد ضحية، بل نسجت خطة انتحار ميكانيكية استغلت فيها رغبة شريكتها بالانتقام كترس أخير."
+        }
+      },
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "极乐直觉",
+          "ja": "エリシア",
+          "ko": "엘리시아",
+          "es": "Elysia",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليزيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "极乐直觉 [心智]",
+          "ja": "エリシア [精神]",
+          "ko": "엘리시아 [심리]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليزيا [الروح]"
+        },
+        "text": {
+          "en": "The case is cracked. The rain outside sounds quieter now, like a theater curtain slowly falling over the stage.",
+          "id": "Kasus ini telah terpecahkan. Deru hujan di luar kini terdengar lebih tenang, bagai tirai teater yang perlahan turun menutup panggung pertunjukan.",
+          "zh": "悬案告破。窗外的暴雨声在此刻悄然轻柔下来，宛如华丽大幕在一出漫长悲剧的舞台上缓缓垂落。",
+          "ja": "事件は解決した。外の雨音は今や静まり返り、劇場の幕が舞台へと静かに降りていくかのようだ。",
+          "ko": "사건이 해결되었습니다. 바깥의 빗소리가 이제는 한결 차분하게 들려옵니다. 무대 위로 천천히 내려앉는 극장의 장막처럼.",
+          "es": "Caso resuelto. La lluvia afuera suena más suave, como un telón que cae sobre el escenario.",
+          "fr": "L'affaire est résolue. La pluie semble plus douce dehors, comme un rideau qui tombe sur la scène.",
+          "de": "Der Fall ist gelöst. Der Regen draußen klingt nun sanfter, wie ein Theatervorhang, der langsam fällt.",
+          "ru": "Дело раскрыто. Шум дождя за окном стихает, словно занавес медленно опускается на сцену.",
+          "it": "Il caso è chiuso. La pioggia fuori sembra più sommessa, come un sipario che cala sul palcoscenico.",
+          "pt": "Caso encerrado. A chuva lá fora soa mais branda, como uma cortina caindo lentamente sobre o palco.",
+          "ar": "أُغلقت القضية وحُلت خيوطها، وبات صوت المطر في الخارج خافتًا كستار مسرحي يسدل بهدوء على خشبة العرض."
+        }
       }
     ]
   },
@@ -2465,6 +2940,52 @@ const DIALOGUE_I18N_FULL = {
         "pt": "\"Droga de mãos trêmulas...\"",
         "ar": "\"سحقًا، كانت اليد مفخخة بسم!\""
       }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Carnal",
+          "id": "Karnal",
+          "zh": "肉体本能",
+          "ja": "肉体",
+          "ko": "육체",
+          "es": "Carnal",
+          "fr": "Carnal",
+          "de": "Körper",
+          "ru": "Тело",
+          "it": "Fisico",
+          "pt": "Físico",
+          "ar": "الجسد"
+        },
+        "badge": {
+          "en": "CARNAL [Physique]",
+          "id": "KARNAL [Fisik]",
+          "zh": "肉体本能 [体魄]",
+          "ja": "肉体 [身体]",
+          "ko": "육체 [신체]",
+          "es": "CARNAL [Físico]",
+          "fr": "CARNAL [Physique]",
+          "de": "KÖRPER [Physis]",
+          "ru": "ТЕЛО [Телосложение]",
+          "it": "FISICO [Fisico]",
+          "pt": "FÍSICO [Físico]",
+          "ar": "الجسد [البنية]"
+        },
+        "text": {
+          "en": "Clumsy! Your alcohol-trembled fingers slipped onto the needle. The venom spreads like liquid fire through your veins.",
+          "id": "Ceroboh! Jemarimu yang gemetar karena alkohol tergelincir mengenai jarum beracun. Bisanya menyebar bagai api cair di pembuluh darahmu.",
+          "zh": "笨手笨脚！你因酒精宿醉而颤抖的手指狠狠划在了尖锐的毒针上。毒液宛如烈火液体般顺着静脉急剧蔓延！",
+          "ja": "不器用め！アルコールで震える指が毒針を掠めた。猛毒が液体の炎となって血管を駆け巡る。",
+          "ko": "어설프기는! 알코올로 떨리는 손가락이 독침을 스치고 말았습니다. 독이 액체 불꽃처럼 혈관을 타고 번져나갑니다.",
+          "es": "¡Torpe! Tus dedos temblorosos resbalaron contra la aguja. El veneno arde como fuego líquido por tus venas.",
+          "fr": "Maladroit ! Vos doigts tremblants ont glissé sur l'aiguille. Le venin se répand comme un feu liquide dans vos veines.",
+          "de": "Ungeschickt! Deine zitternden Finger glitten auf die Nadel. Das Gift breitet sich wie flüssiges Feuer in deinen Adern aus.",
+          "ru": "Неуклюже! Дрожащие пальцы соскользнули прямо на иглу. Яд жидким огнем разливается по венам.",
+          "it": "Maldestro! Le tue dita tremanti sono scivolate sull'ago. Il veleno si diffonde come fuoco liquido nelle vene.",
+          "pt": "Desajeitado! Seus dedos trêmulos deslizaram sobre a agulha. O veneno se espalha como fogo líquido nas veias.",
+          "ar": "خرق فاضح! انزلقت أصابعك المرتجفة من الكحول لتلمس الإبرة، لينتشر السم كنار سائلة في أوردتك."
+        }
+      }
     ]
   },
   "pendulum_esoterica_win": {
@@ -2722,6 +3243,52 @@ const DIALOGUE_I18N_FULL = {
         "it": "[Torna all'interno]",
         "pt": "[Voltar para dentro]",
         "ar": "[الرجوع للداخل]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "极乐直觉",
+          "ja": "エリシア",
+          "ko": "엘리시아",
+          "es": "Elysia",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليزيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "极乐直觉 [心智]",
+          "ja": "エリシア [精神]",
+          "ko": "엘리시아 [심리]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليزيا [الروح]"
+        },
+        "text": {
+          "en": "Someone stood here right after the clock stopped. They stood in the rain, looking out over the sleeping city, wiping something off their gloves. The scent of bitter almond still lingers on the stone.",
+          "id": "Seseorang berdiri di sini tepat setelah jam menara berhenti. Mereka berdiri di tengah hujan, menatap ke arah kota yang terlelap, menyeka sesuatu dari sarung tangan mereka. Aroma almond pahit masih tertinggal samar di bebatuan.",
+          "zh": "就在大钟骤停的瞬间，曾有人站在此处。凶手伫立在暴雨中俯瞰沉睡的街市，从容擦拭着皮手套上的痕迹。湿漉漉的石栏上还隐隐残留着苦杏仁的气味。",
+          "ja": "時計が止まった直後、誰かがここに立っていた。雨の中に立ち、眠れる街を見下ろしながら、手袋の汚れを拭っていたのだ。石の上には今も苦いアーモンドの香りが漂っている。",
+          "ko": "시계가 멈춘 직후 누군가 이곳에 서 있었습니다. 빗속에 서서 잠든 도시를 내려다보며 장갑에 묻은 무언가를 닦아냈습니다. 석조 난간에는 여전히 씁쓸한 아몬드 향이 감돌고 있습니다.",
+          "es": "Alguien estuvo aquí justo tras detenerse el reloj. Mirando la ciudad bajo la lluvia, limpiándose los guantes. El olor a almendras amargas aún perdura.",
+          "fr": "Quelqu'un se tenait ici juste après l'arrêt de l'horloge. Dans la pluie, observant la ville, essuyant ses gants. Une odeur d'amande amère flotte encore.",
+          "de": "Jemand stand hier, kurz nachdem die Uhr stoppte. Im Regen, über die Stadt blickend, Handschuhe abwischend. Der Duft von Bittermandel hängt am Stein.",
+          "ru": "Кто-то стоял здесь сразу после остановки часов. Вглядывался в спящий город под дождем и вытирал перчатки. Запах горького миндаля все еще держится на камне.",
+          "it": "Qualcuno è rimasto qui subito dopo il blocco dell'orologio. Sotto la pioggia, a pulire i guanti. L'odore di mandorla amara aleggia ancora sulla pietra.",
+          "pt": "Alguém esteve aqui logo após o relógio parar. Na chuva, olhando a cidade, limpando as luvas. O cheiro de amêndoa amarga ainda paira na pedra.",
+          "ar": "وقف أحدهم هنا فور توقف الساعة مباشرة متأملاً المدينة تحت المطر ومسح قفازاته؛ ورائحة اللوز المر ما تزال عالقة بالحجر."
+        }
       }
     ]
   },
@@ -3262,32 +3829,18 @@ const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
-        "en": "[Log clue: Shattered Reagents & Syndicate Crest]",
-        "id": "[Catat bukti: Serpihan Reagen Kimia & Lambang Sindikat]",
-        "zh": "【记录线索：碎裂的试剂瓶与辛迪加火漆印】",
-        "ja": "【手がかりを記録：破壊された試薬瓶と紋章】",
-        "ko": "[단서 기록: 깨진 시약병과 신디케이트 문장]",
-        "es": "[Registrar pista: Reactivos Rotos y Emblema]",
-        "fr": "[Noter l'indice : Réactifs Brisés et Sceau]",
-        "de": "[Hinweis aufnehmen: Zerschlagene Reagenzien]",
-        "ru": "[Записать улику: Осколки реагентов и печать]",
-        "it": "[Registra indizio: Reagenti Infranti e Sigillo]",
-        "pt": "[Registrar pista: Reagentes Quebrados e Brasão]",
-        "ar": "[تسجيل الدليل: زجاجات كواشف محطمة وخاتم النقابة]"
-      },
-      {
+        "id": "[Turun kembali ke lantai utama]",
         "en": "[Step back down to the main floor]",
-        "id": "[Kembali ke lantai utama]",
-        "zh": "【回到主钟楼】",
-        "ja": "【主フロアへ戻る】",
-        "ko": "[메인 플로어로 복귀]",
+        "zh": "【回到塔楼主楼层】",
+        "ja": "【メインフロアへ戻る】",
+        "ko": "[메인 층으로 내려간다]",
         "es": "[Bajar al piso principal]",
-        "fr": "[Redescendre au niveau principal]",
-        "de": "[Zurück zum Hauptboden]",
-        "ru": "[Спуститься на главный этаж]",
+        "fr": "[Redescendre à l'étage principal]",
+        "de": "[Zurück zum Hauptgeschoss]",
+        "ru": "[Спуститься на основной этаж]",
         "it": "[Torna al piano principale]",
-        "pt": "[Descer para o piso principal]",
-        "ar": "[النزول للطابق الرئيسي]"
+        "pt": "[Descer ao piso principal]",
+        "ar": "[النزول إلى الطابق الرئيسي]"
       }
     ]
   },
@@ -3368,25 +3921,11 @@ const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
-        "en": "[Log clue: Acoustic Resonance Tripwire Mechanism]",
-        "id": "[Catat bukti: Mekanisme Kawat Picu Akustik]",
-        "zh": "【记录线索：钟鸣共振引线机构】",
-        "ja": "【手がかりを記録：音響共鳴トラップワイヤー】",
-        "ko": "[단서 기록: 음향 공명 격발 와이어 장치]",
-        "es": "[Registrar pista: Mecanismo de Resonancia]",
-        "fr": "[Noter l'indice : Mécanisme de Déclenchement]",
-        "de": "[Hinweis aufnehmen: Akustischer Auslösedraht]",
-        "ru": "[Записать улику: Акустический спусковой механизм]",
-        "it": "[Registra indizio: Meccanismo a Risonanza]",
-        "pt": "[Registrar pista: Mecanismo de Fio Acústico]",
-        "ar": "[تسجيل الدليل: آلية سلك التفجير بالرنين الصوتي]"
-      },
-      {
-        "en": "[Step down from the bell housing]",
         "id": "[Turun dari kubah lonceng]",
-        "zh": "【走下钟楼支架】",
+        "en": "[Step down from the bell housing]",
+        "zh": "【从钟顶支架上走下来】",
         "ja": "【鐘楼から降りる】",
-        "ko": "[종탑에서 내려온다]",
+        "ko": "[종탑 하부로 내려간다]",
         "es": "[Bajar del campanario]",
         "fr": "[Descendre de la cloche]",
         "de": "[Vom Glockengehäuse herabsteigen]",
@@ -3858,24 +4397,16 @@ const NEW_POIS_I18N = {
 // --- END: dialogue_i18n.js ---
 
 // --- BEGIN: i18n.js ---
-// Aenigma Multi-Language Localization System (12 Native Languages)
-// Supported: id (Indonesian), en (English), ja (Japanese), zh (Chinese Simplified),
-// ko (Korean), es (Spanish), fr (French), de (German), ru (Russian),
-// it (Italian), pt (Portuguese), ar (Arabic)
+// Aenigma Multi-Language Localization System (5 Native Languages)
+// Supported: en (English - Default), id (Bahasa Indonesia), zh (Chinese Simplified),
+// ja (Japanese), ko (Korean)
 
 const SUPPORTED_LANGUAGES = [
   { code: 'en', name: 'English', native: 'English', flag: '🇬🇧', dir: 'ltr' },
   { code: 'id', name: 'Bahasa Indonesia', native: 'Bahasa Indonesia', flag: '🇮🇩', dir: 'ltr' },
   { code: 'zh', name: 'Chinese', native: '简体中文', flag: '🇨🇳', dir: 'ltr' },
   { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵', dir: 'ltr' },
-  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', dir: 'ltr' },
-  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', dir: 'ltr' },
-  { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', dir: 'ltr' },
-  { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪', dir: 'ltr' },
-  { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺', dir: 'ltr' },
-  { code: 'it', name: 'Italian', native: 'Italiano', flag: '🇮🇹', dir: 'ltr' },
-  { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹', dir: 'ltr' },
-  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', dir: 'rtl' },
+  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', dir: 'ltr' }
 ];
 
 const PROGRESS_LABELS = {
@@ -3883,14 +4414,7 @@ const PROGRESS_LABELS = {
   id: 'PROGRES',
   zh: '破案进度',
   ja: '捜査進捗',
-  ko: '수사 진행',
-  es: 'PROGRESO',
-  fr: 'PROGRESSION',
-  de: 'FORTSCHRITT',
-  ru: 'ПРОГРЕСС',
-  it: 'PROGRESSO',
-  pt: 'PROGRESSO',
-  ar: 'تقدم القضية'
+  ko: '수사 진행'
 };
 
 const SKILL_NAMES_I18N = {
@@ -3924,20 +4448,35 @@ const DISTRICT_LABELS = {
   id: 'SEKTOR 7',
   zh: '第七区',
   ja: '第7管区',
-  ko: '제7구역',
-  es: 'DISTRITO 7',
-  fr: 'SECTEUR 7',
-  de: 'SEKTOR 7',
-  ru: 'СЕКТОР 7',
-  it: 'DISTRETTO 7',
-  pt: 'DISTRITO 7',
-  ar: 'المنطقة 7'
+  ko: '제7구역'
 };
 
 const UI_TRANSLATIONS = {
   id: {
+    toast_case_opened: 'Berkas Kasus Dibuka: Aurelia Vance · Selamat datang di Sektor 7, Detektif {name}',
     game_title: 'A E N I G M A',
-    case_badge: 'KASUS #04: SANG PEMBUAT JAM YANG BISU',
+    case_badge: 'KASUS #D4-04',
+    archive_intro_text: 'Arsip kasus yang berhasil dipecahkan sebelumnya oleh Detektif Renata Vance di Sektor 7. Setiap kasus yang selesai meninggalkan bukti kunci (Keystone Evidence) yang mengarah pada dalang sindikat rahasia yang sama.',
+    keystone_network_title: 'MATRIKS BENANG MERAH KONSPIRASI (KEYSTONE EVIDENCE WEB)',
+    from_prefix: 'DARI',
+    status_secured: '✓ AMAN',
+    status_unmasked: '✓ TERBONGKAR',
+    status_inquiry: '⏳ DALAM INKUIRI',
+    k4_unlocked_desc: 'Pengakuan pembunuhan & bukti transaksi suap 50.000 guilder terbongkar!',
+    k4_pending_desc: 'Sedang diselidiki di Menara Irene: brankas rahasia & pengakuan dalang.',
+    case_date_today: 'Hari Ini · 03:42 AM',
+    case_date_final: 'Sintesis Penyelidikan Terakhir',
+    case_tab_active: 'KASUS AKTIF [#D4-04]',
+    case_tab_archive: 'ARSIP KASUS (3)',
+    case_tab_master: 'KASUS UTAMA [#PRIME-00]',
+    case_status_active: '⚡ AKTIF / SEDANG DISELIDIKI',
+    case_status_solved: '✓ TERPECAHKAN',
+    case_status_master: '👑 KASUS UTAMA',
+    keystone_secured: '✓ KUNCI BUKTI DIPEROLEH',
+    keystone_pending: '⏳ BELUM TERUNGKAP',
+    btn_synthesize_master: 'HUBUNGKAN SELURUH BENANG MERAH KONSPIRASI',
+    master_synthesis_ready: 'SELURUH 4 KUNCI BUKTI TERHIMPUN! KONSORSIUM BAYANGAN SEKTOR 7 TERBONGKAR!',
+    master_synthesis_not_ready: 'Masih membutuhkan bukti konklusif dari Kasus #D4-04 untuk mengungkap dalang.',
     loader_quote: '“Detik jam tak pernah berhenti. Hanya daging di dalamnya yang lupa cara berdetak.”',
     loader_telemetry: 'Menginisialisasi telemetri saraf...',
     loader_enter: 'MASUKI PIKIRAN',
@@ -3978,7 +4517,7 @@ const UI_TRANSLATIONS = {
     interlocutor_active: 'INTERAKSI AKTIF',
     modal_cabinet_title: 'LEMARI PIKIRAN · THOUGHT CABINET',
     modal_inventory_title: 'MANTEL DETEKTIF & KANTONG BUKTI',
-    modal_clues_title: 'DOSSIER KASUS · MATRIKS DEDUKSI BUKTI',
+    modal_clues_title: 'PAPAN INVESTIGASI & ARSIP KASUS',
     modal_dice_title: 'UJI KEAHLIAN',
     modal_language_title: 'PILIH BAHASA TERJEMAHAN',
     modal_victory_title: 'KASUS SELESAI',
@@ -4003,11 +4542,66 @@ const UI_TRANSLATIONS = {
     toast_xp_gained: 'PENGALAMAN BERTAMBAH:',
     toast_level_up: 'NAIK TINGKAT! POIN KEAHLIAN DIDAPATKAN',
     toast_damage_health: 'TERLUKA! DAYA TAHAN BERKURANG',
-    toast_damage_morale: 'TERGUNCANG! KEWARASAN BERKURANG'
+    toast_damage_morale: 'TERGUNCANG! KEWARASAN BERKURANG',
+    audio_on: 'AUDIO: AKTIF',
+    audio_off: 'AUDIO: MATI',
+    scene_btn_markers: 'TITIK BUKTI',
+    scene_btn_hidden: 'DISEMBUNYIKAN',
+    scene_btn_radar: 'RADAR',
+    scene_inspect_hint: 'PERIKSA BUKTI',
+    dice_epiphany: 'PENCERAHAN MUTLAK! SUKSES KRITIS (ANGKA KEMBAR ENAM)',
+    dice_snake_eyes: 'MATA ULAR! KEGAGALAN FATAL (ANGKA KEMBAR SATU)',
+    cabinet_empty: 'Belum ada pikiran yang diendapkan. Renungkan bukti di tempat kejadian untuk memicu gagasan.',
+    cabinet_researching: 'Sedang diinternalisasi...',
+    cabinet_internalized_status: '✨ TEROBOSAN PSIKOLOGIS PERMANEN AKTIF',
+    cabinet_btn_internalize: 'INTERNALISASI PIKIRAN INI',
+    cabinet_locked_hint: 'Selidiki lebih lanjut di Menara Saint Irene untuk membuka pikiran ini.',
+    cabinet_temp_box: 'Efek Perenungan Sementara',
+    cabinet_perm_box: 'Terobosan Kejiwaan Permanen',
+    inventory_empty: 'Kantong mantelmu hanya berisi serpihan kain dan penyesalan dingin.',
+    clues_empty: 'Belum ada bukti penting yang tercatat. Teliti menara jam dengan cermat.',
+    victory_lead: 'Penyelidik Utama:',
+    victory_facet: 'Keahlian Utama:',
+    victory_clues: 'Bukti Terkumpul:',
+    victory_thoughts: 'Pikiran Diinternalisasi:',
+    ending_coverup: 'Kebenaran di balik kematian Aurelia Vance telah terungkap. Lonceng keadilan berdentang melintasi Sektor 7.',
+    dialogue_idle_prompt: 'Periksa titik bukti atau buka dossier kasus untuk melanjutkan penyelidikan.',
+    dialogue_leave: '[Tinggalkan pengamatan & kembali ke TKP]',
+    item_type_tool: 'ALAT',
+    item_type_consumable: 'KONSUMSI',
+    item_type_clue: 'BUKTI',
+    item_type_relic: 'RELIK',
+    buff_label: 'Bonus Keahlian:',
+    profile_modal_title: 'DOSSIER DETEKTIF & PROFIL PSIKOLOGIS',
+    profile_vitals_title: 'KONDISI VITAL & KETAHANAN',
+    profile_progress_header: 'RESOLUSI KASUS',
+    profile_time_label: 'WAKTU INVESTIGASI'
   },
   en: {
+    toast_case_opened: 'Case File Opened: Aurelia Vance · Welcome to District 7, Detective {name}',
     game_title: 'A E N I G M A',
-    case_badge: 'CASE #04: THE SILENT WATCHMAKER',
+    case_badge: 'CASE #D4-04',
+    archive_intro_text: 'Archive of previous homicide cases solved by Detective Renata Vance in District 7. Each resolved case uncovered a vital Keystone Evidence connecting to the same covert syndicate.',
+    keystone_network_title: 'KEYSTONE EVIDENCE & CONSPIRACY WEB',
+    from_prefix: 'FROM',
+    status_secured: '✓ SECURED',
+    status_unmasked: '✓ EXPOSED',
+    status_inquiry: '⏳ IN INQUIRY',
+    k4_unlocked_desc: 'Murder confession & 50,000 guilder bribery records fully exposed!',
+    k4_pending_desc: 'Active inquiry in Saint Irene: search floorboard safe & extract suspect confession.',
+    case_date_today: 'Today · 03:42 AM',
+    case_date_final: 'Grand Inquiry Synthesis',
+    case_tab_active: 'ACTIVE INQUIRY [#D4-04]',
+    case_tab_archive: 'SOLVED ARCHIVE (3)',
+    case_tab_master: 'MASTER CASE [#PRIME-00]',
+    case_status_active: '⚡ ACTIVE INQUIRY',
+    case_status_solved: '✓ SOLVED',
+    case_status_master: '👑 MASTER CASE',
+    keystone_secured: '✓ KEYSTONE CLUE SECURED',
+    keystone_pending: '⏳ PENDING DISCOVERY',
+    btn_synthesize_master: 'SYNTHESIZE CONSPIRACY EVIDENCE WEB',
+    master_synthesis_ready: 'ALL 4 KEYSTONES SECURED! THE DISTRICT 7 SYNDICATE STANDS EXPOSED!',
+    master_synthesis_not_ready: 'Conclusive evidence from Case #D4-04 still required to finalize synthesis.',
     loader_quote: '“The clock never stops. Only the flesh within it forgets how to beat.”',
     loader_telemetry: 'Initializing neural telemetry...',
     loader_enter: 'ENTER THE MIND',
@@ -4048,7 +4642,7 @@ const UI_TRANSLATIONS = {
     interlocutor_active: 'ACTIVE INTERACTION',
     modal_cabinet_title: 'THOUGHT CABINET',
     modal_inventory_title: 'DETECTIVE COAT & EVIDENCE BAG',
-    modal_clues_title: 'CASE DOSSIER · EVIDENCE DEDUCTION MATRIX',
+    modal_clues_title: 'CASE DOSSIER & MASTER INVESTIGATION BOARD',
     modal_dice_title: 'SKILL CHECK',
     modal_language_title: 'CHOOSE SUBTITLE & UI LANGUAGE',
     modal_victory_title: 'CASE CONCLUDED',
@@ -4073,11 +4667,66 @@ const UI_TRANSLATIONS = {
     toast_xp_gained: 'EXPERIENCE GAINED:',
     toast_level_up: 'LEVEL UP! SKILL POINT GAINED',
     toast_damage_health: 'INJURED! ENDURANCE REDUCED',
-    toast_damage_morale: 'SHAKEN! MORALE COMPROMISED'
+    toast_damage_morale: 'SHAKEN! MORALE COMPROMISED',
+    audio_on: 'AUDIO: ON',
+    audio_off: 'AUDIO: OFF',
+    scene_btn_markers: 'MARKERS',
+    scene_btn_hidden: 'HIDDEN',
+    scene_btn_radar: 'RADAR',
+    scene_inspect_hint: 'INVESTIGATE',
+    dice_epiphany: 'EPIPHANY! CRITICAL SUCCESS (DOUBLE SIX)',
+    dice_snake_eyes: 'SNAKE EYES! CRITICAL FAILURE (DOUBLE ONES)',
+    cabinet_empty: 'No thoughts currently incubating. Contemplate crime scene evidence to spark ideas.',
+    cabinet_researching: 'Internalizing...',
+    cabinet_internalized_status: '✨ PERMANENT BREAKTHROUGH ACTIVE',
+    cabinet_btn_internalize: 'INTERNALIZE THIS THOUGHT',
+    cabinet_locked_hint: 'Investigate further in Saint Irene to unlock this thought.',
+    cabinet_temp_box: 'Temporary Contemplation Effect',
+    cabinet_perm_box: 'Permanent Psychological Breakthrough',
+    inventory_empty: 'Your coat pockets contain only lint and cold regret.',
+    clues_empty: 'No critical evidence cataloged yet. Scrutinize the clocktower.',
+    victory_lead: 'Lead Investigator:',
+    victory_facet: 'Signature Facet:',
+    victory_clues: 'Evidence Gathered:',
+    victory_thoughts: 'Thoughts Internalized:',
+    ending_coverup: 'The truth behind Aurelia Vance has been brought into the light. Justice tolls across District 7.',
+    dialogue_idle_prompt: 'Examine points of interest or consult your clues dossier to proceed.',
+    dialogue_leave: '[Step back & return to crime scene]',
+    item_type_tool: 'TOOL',
+    item_type_consumable: 'CONSUMABLE',
+    item_type_clue: 'CLUE',
+    item_type_relic: 'RELIC',
+    buff_label: 'Skill Buff:',
+    profile_modal_title: 'DETECTIVE DOSSIER & PSYCHOLOGICAL PROFILE',
+    profile_vitals_title: 'VITALS & ENDURANCE',
+    profile_progress_header: 'CASE RESOLUTION',
+    profile_time_label: 'INVESTIGATION TIME'
   },
   ja: {
+    toast_case_opened: '捜査ファイル開封：オレリア・ヴァンス · 第7管区へようこそ、{name}刑事',
     game_title: 'エ ニ グ マ',
-    case_badge: '事件 #04: 沈黙の時計師',
+    case_badge: '事件 #D4-04',
+    archive_intro_text: 'レナータ・ヴァンス刑事が第7区で以前に解決した殺人事件の記録。解決した各事件は、同一の地下組織へと繋がる決定的な鍵証拠を残している。',
+    keystone_network_title: '決定的証拠の相関陰謀網',
+    from_prefix: '出処',
+    status_secured: '✓ 確保済',
+    status_unmasked: '✓ 暴露済',
+    status_inquiry: '⏳ 捜査中',
+    k4_unlocked_desc: '暗殺の自白と5万ギルダーの買収台帳が完全に露呈！',
+    k4_pending_desc: '聖アイリーン塔にて捜査中：床下の金庫を捜索し、容疑者の自白を引き出せ。',
+    case_date_today: '本日 · 午前03:42',
+    case_date_final: '全事件総合立証',
+    case_tab_active: '担当事件 [#D4-04]',
+    case_tab_archive: '解決済調書 (3)',
+    case_tab_master: '大事件 [#PRIME-00]',
+    case_status_active: '⚡ 捜査中',
+    case_status_solved: '✓ 解決済',
+    case_status_master: '👑 大事件',
+    keystone_secured: '✓ 決定的鍵証拠確保',
+    keystone_pending: '⏳ 未解明',
+    btn_synthesize_master: '陰謀の全相関関係を演繹統合する',
+    master_synthesis_ready: '全4つの重要証拠が集結！第7区の暗黒組織を完全暴露！',
+    master_synthesis_not_ready: '事件#D4-04の決定的な証拠がまだ不足しています。',
     loader_quote: '「時計の針は止まらない。止まるのは、鼓動を忘れた肉体だけだ。」',
     loader_telemetry: '神経テレメトリ初期化中...',
     loader_enter: '深層意識へ潜行',
@@ -4118,7 +4767,7 @@ const UI_TRANSLATIONS = {
     interlocutor_active: '接触中',
     modal_cabinet_title: '思考の閣僚 · THOUGHT CABINET',
     modal_inventory_title: '捜査官コート & 証拠品袋',
-    modal_clues_title: '事件調書 · 証拠演繹マトリクス',
+    modal_clues_title: '事件調書＆合同捜査盤',
     modal_dice_title: '技能判定',
     modal_language_title: '字幕および表示言語を選択',
     modal_victory_title: '事件解決',
@@ -4143,11 +4792,66 @@ const UI_TRANSLATIONS = {
     toast_xp_gained: '経験値獲得:',
     toast_level_up: 'レベル上昇！技能ポイント獲得',
     toast_damage_health: '負傷！耐久値減少',
-    toast_damage_morale: '精神動揺！精神力減少'
+    toast_damage_morale: '精神動揺！精神力減少',
+    audio_on: '音響: オン',
+    audio_off: '音響: オフ',
+    scene_btn_markers: '証拠マーカー',
+    scene_btn_hidden: '非表示',
+    scene_btn_radar: 'レーダー',
+    scene_inspect_hint: '詳しく調べる',
+    dice_epiphany: '神聖なる啓示！クリティカル成功 (ゾロ目 6)',
+    dice_snake_eyes: 'スネークアイズ！痛恨のファンブル (ゾロ目 1)',
+    cabinet_empty: '現在醸成中の思考はありません。事件現場の証拠を熟考し、閃きを得てください。',
+    cabinet_researching: '内面化の進行中...',
+    cabinet_internalized_status: '✨ 恒久的な精神の覚醒が有効',
+    cabinet_btn_internalize: 'この思考を内面化する',
+    cabinet_locked_hint: '聖アイリーン時計塔をさらに捜査することで、この思考が閃きます。',
+    cabinet_temp_box: '一時的な熟考による影響',
+    cabinet_perm_box: '内面化完了による恒久覚醒',
+    inventory_empty: 'コートのポケットには埃と冷えた後悔しか残されていない。',
+    clues_empty: '決定的証拠はまだ調書に記録されていません。時計塔を精査してください。',
+    victory_lead: '主任捜査官:',
+    victory_facet: '象徴的技能:',
+    victory_clues: '収集された決定的証拠:',
+    victory_thoughts: '内面化された思考閣僚:',
+    ending_coverup: 'オレリア・ヴァンスの死の真相は白日の下に晒された。第7区に真実の鐘が鳴り響く。',
+    dialogue_idle_prompt: '捜査対象を調べるか、証拠調書を確認して捜査を進めてください。',
+    dialogue_leave: '[観察を終えて現場に戻る]',
+    item_type_tool: '道具',
+    item_type_consumable: '消耗品',
+    item_type_clue: '手掛かり',
+    item_type_relic: '遺物',
+    buff_label: 'スキル強化:',
+    profile_modal_title: '刑事調書・精神プロファイル',
+    profile_vitals_title: 'バイタル＆耐久状態',
+    profile_progress_header: '事件解決進捗',
+    profile_time_label: '捜査経過時間'
   },
   zh: {
+    toast_case_opened: '案件档案已开启：奥蕾莉亚·梵斯 · 欢迎来到第七区，{name}探长',
     game_title: 'A E N I G M A',
-    case_badge: '案件 #04: 沉默的钟表宗师',
+    case_badge: '案件 #D4-04',
+    archive_intro_text: '雷娜塔·万斯探长此前在第七区成功告破的谋杀案卷。每起案件结案后均留下一项关键铁证，直指同一幕后黑金结社。',
+    keystone_network_title: '核心罪证与全域阴谋网络',
+    from_prefix: '来自',
+    status_secured: '✓ 已锁定',
+    status_unmasked: '✓ 彻底曝光',
+    status_inquiry: '⏳ 侦查中',
+    k4_unlocked_desc: '谋杀买凶自白与5万盾巨额贿赂账目已彻底浮出水面！',
+    k4_pending_desc: '圣艾琳钟楼现场侦查中：搜查暗格保险箱并撬开嫌疑人口供。',
+    case_date_today: '今日 · 凌晨03:42',
+    case_date_final: '终极调查综合研判',
+    case_tab_active: '当前案件 [#D4-04]',
+    case_tab_archive: '已破结案档案 (3)',
+    case_tab_master: '终极主案 [#PRIME-00]',
+    case_status_active: '⚡ 调查中',
+    case_status_solved: '✓ 已告破',
+    case_status_master: '👑 终极主案',
+    keystone_secured: '✓ 核心罪证已锁定',
+    keystone_pending: '⏳ 尚未揭晓',
+    btn_synthesize_master: '梳理并串联全域阴谋证据链',
+    master_synthesis_ready: '全部4项核心罪证已齐备！第七区黑金结社黑幕彻底揭露！',
+    master_synthesis_not_ready: '仍需第#D4-04案的关键铁证方可串联全网。',
     loader_quote: '“钟摆永不停歇。唯有齿轮间的血肉，遗忘了跳动的律动。”',
     loader_telemetry: '神经遥测初始化中...',
     loader_enter: '步入深层意识',
@@ -4188,7 +4892,7 @@ const UI_TRANSLATIONS = {
     interlocutor_active: '交互中',
     modal_cabinet_title: '思维内阁 · THOUGHT CABINET',
     modal_inventory_title: '风衣内衬与物证袋',
-    modal_clues_title: '案情档案 · 线索演绎矩阵',
+    modal_clues_title: '案件档案与主调查板',
     modal_dice_title: '技能检定',
     modal_language_title: '选择字幕及交互语言',
     modal_victory_title: '案情告破',
@@ -4213,11 +4917,66 @@ const UI_TRANSLATIONS = {
     toast_xp_gained: '获得经验:',
     toast_level_up: '等级提升！获得技能点',
     toast_damage_health: '受伤！体能扣减',
-    toast_damage_morale: '精神受创！理智扣减'
+    toast_damage_morale: '精神受创！理智扣减',
+    audio_on: '音频: 开启',
+    audio_off: '音频: 关闭',
+    scene_btn_markers: '证据标点',
+    scene_btn_hidden: '隐藏',
+    scene_btn_radar: '雷达扫描',
+    scene_inspect_hint: '勘查取证',
+    dice_epiphany: '顿悟神启！大获全胜 (双六满点)',
+    dice_snake_eyes: '蛇眼绝境！惨痛败北 (双一骰灾)',
+    cabinet_empty: '暂无正在孕育的思绪。仔细推敲现场线索以激发心智火花。',
+    cabinet_researching: '深度推演沉淀中...',
+    cabinet_internalized_status: '✨ 恒久心智顿悟已激活',
+    cabinet_btn_internalize: '内化此项心智思绪',
+    cabinet_locked_hint: '在圣艾琳钟楼展开更深层的调查以解锁此思绪。',
+    cabinet_temp_box: '沉思期间的暂时代价',
+    cabinet_perm_box: '彻底内化后的心智质变',
+    inventory_empty: '风衣口袋里空空如也，只剩下冷雨与悔恨。',
+    clues_empty: '案卷尚未收录关键物证。请仔细勘查钟楼。',
+    victory_lead: '首席调查官:',
+    victory_facet: '核心心智专精:',
+    victory_clues: '破案关键物证:',
+    victory_thoughts: '已内化思维格言:',
+    ending_coverup: '奥蕾莉亚·梵斯离奇命案的真相终见天日。正义之钟在第七区上空悲鸣回荡。',
+    dialogue_idle_prompt: '调查现场标点或查阅证据档案以继续推演案情。',
+    dialogue_leave: '[暂离此处，返回现场]',
+    item_type_tool: '工具',
+    item_type_consumable: '消耗品',
+    item_type_clue: '线索',
+    item_type_relic: '遗物',
+    buff_label: '技能增益:',
+    profile_modal_title: '侦探档案与心理侧写',
+    profile_vitals_title: '生命体征与生存状态',
+    profile_progress_header: '案情推进进度',
+    profile_time_label: '调查历时'
   },
   ko: {
+    toast_case_opened: '사건 파일 개시: 오렐리아 밴스 · 제7구역에 오신 것을 환영합니다, {name} 형사님',
     game_title: 'A E N I G M A',
-    case_badge: '사건 #04: 침묵의 시계 장인',
+    case_badge: '사건 #D4-04',
+    archive_intro_text: '레나타 반스 형사가 제7구역에서 이전에 해결한 살인 사건 기록입니다. 해결된 각 사건은 동일한 암흑 신디케이트로 이어지는 결정적 핵심 단서를 남겼습니다.',
+    keystone_network_title: '핵심 증거 연계 및 거대 음모망',
+    from_prefix: '출처',
+    status_secured: '✓ 확보됨',
+    status_unmasked: '✓ 진상 규명',
+    status_inquiry: '⏳ 수사 진행 중',
+    k4_unlocked_desc: '살인 청부 자백과 5만 길더 뇌물 장부가 완전히 드러났습니다!',
+    k4_pending_desc: '성 아이린 탑 현장 수사 중: 바닥 금고를 수색하고 용의자의 자백을 확보하십시오.',
+    case_date_today: '오늘 · 오전 03:42',
+    case_date_final: '최종 종합 수사 결론',
+    case_tab_active: '진행 사건 [#D4-04]',
+    case_tab_archive: '해결된 사건철 (3)',
+    case_tab_master: '최종 주 사건 [#PRIME-00]',
+    case_status_active: '⚡ 수사 진행 중',
+    case_status_solved: '✓ 해결 완료',
+    case_status_master: '👑 최종 주 사건',
+    keystone_secured: '✓ 핵심 단서 확보',
+    keystone_pending: '⏳ 미해결',
+    btn_synthesize_master: '음모의 모든 연결 고리를 연역 종합',
+    master_synthesis_ready: '4대 핵심 증거 확보 완료! 제7구역 암흑 신디케이트의 전모가 드러났습니다!',
+    master_synthesis_not_ready: '종합 수사를 완성하려면 사건 #D4-04의 결정적 단서가 더 필요합니다.',
     loader_quote: '“시계는 결코 멈추지 않는다. 멈추는 것은 고동을 잊은 육신뿐.”',
     loader_telemetry: '신경 원격 측정 초기화 중...',
     loader_enter: '심상으로 진입',
@@ -4258,7 +5017,7 @@ const UI_TRANSLATIONS = {
     interlocutor_active: '상호작용 중',
     modal_cabinet_title: '생각의 방 · THOUGHT CABINET',
     modal_inventory_title: '외투 주머니 & 증거물 가방',
-    modal_clues_title: '사건 조서 · 증거 연역 매트릭스',
+    modal_clues_title: '사건 서류철 및 종합 수사 본부',
     modal_dice_title: '기술 판정',
     modal_language_title: '자막 및 인터페이스 언어 선택',
     modal_victory_title: '사건 종결',
@@ -4283,9 +5042,43 @@ const UI_TRANSLATIONS = {
     toast_xp_gained: '경험치 획득:',
     toast_level_up: '레벨 업! 기술 포인트 획득',
     toast_damage_health: '부상! 체력 감소',
-    toast_damage_morale: '충격! 사기 저하'
+    toast_damage_morale: '충격! 사기 저하',
+    audio_on: '오디오: 켜짐',
+    audio_off: '오디오: 꺼짐',
+    scene_btn_markers: '증거 표식',
+    scene_btn_hidden: '숨김',
+    scene_btn_radar: '레이더 탐지',
+    scene_inspect_hint: '단서 조사',
+    dice_epiphany: '번뜩이는 영감! 대성공 (주사위 6 더블)',
+    dice_snake_eyes: '뱀의 눈! 치명적 대실패 (주사위 1 더블)',
+    cabinet_empty: '현재 내면화 중인 생각이 없습니다. 사건 현장의 단서를 곱씹어 새로운 발상을 떠올리세요.',
+    cabinet_researching: '생각을 내면화하는 중...',
+    cabinet_internalized_status: '✨ 영구적 심리 각성 효과 활성화',
+    cabinet_btn_internalize: '이 생각을 내면화하기',
+    cabinet_locked_hint: '성 아이린 시계탑을 더 깊이 조사하여 이 생각을 떠올리십시오.',
+    cabinet_temp_box: '임시 사색 상태 이상',
+    cabinet_perm_box: '영구적 정신적 돌파구',
+    inventory_empty: '외투 주머니에는 차가운 후회와 먼지뿐입니다.',
+    clues_empty: '아직 기록된 핵심 증거가 없습니다. 시계탑을 철저히 수색하십시오.',
+    victory_lead: '수석 수사관:',
+    victory_facet: '특화 기술:',
+    victory_clues: '수집된 핵심 증거:',
+    victory_thoughts: '내면화 완료된 사유:',
+    ending_coverup: '오렐리아 밴스의 죽음에 얽힌 진실이 마침내 밝혀졌습니다. 제7구역 전역에 정의의 종소리가 울려 퍼집니다.',
+    dialogue_idle_prompt: '현장 증거를 조사하거나 사건 조서를 열어 수사를 진행하십시오.',
+    dialogue_leave: '[관찰을 마치고 현장으로 돌아간다]',
+    item_type_tool: '도구',
+    item_type_consumable: '소모품',
+    item_type_clue: '단서',
+    item_type_relic: '유물',
+    buff_label: '스킬 강화:',
+    profile_modal_title: '형사 조서 및 심리 프로필',
+    profile_vitals_title: '활력 징후 및 생존 상태',
+    profile_progress_header: '사건 해결 진행',
+    profile_time_label: '수사 경과 시간'
   },
   es: {
+    toast_case_opened: 'Expediente del caso abierto: Aurelia Vance · Bienvenido al Distrito 7, Detective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'CASO #04: LA RELOJERA SILENCIOSA',
     loader_quote: '“El reloj nunca se detiene. Solo la carne en su interior olvida cómo latir.”',
@@ -4356,6 +5149,7 @@ const UI_TRANSLATIONS = {
     toast_damage_morale: '¡IMPACTO! MORAL COMPROMETIDA'
   },
   fr: {
+    toast_case_opened: 'Dossier de l\'affaire ouvert : Aurelia Vance · Bienvenue dans le District 7, Détective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'DOSSIER #04: L\'HORLOGÈRE SILENCIEUSE',
     loader_quote: '« L\'horloge ne s\'arrête jamais. Seule la chair en son sein oublie comment battre. »',
@@ -4426,6 +5220,7 @@ const UI_TRANSLATIONS = {
     toast_damage_morale: 'CHOC MENTAL ! MORAL COMPROMIS'
   },
   de: {
+    toast_case_opened: 'Fallakte geöffnet: Aurelia Vance · Willkommen im Bezirk 7, Detective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'FALL #04: DIE STUMME UHRMACHERIN',
     loader_quote: '„Die Uhr hält niemals an. Nur das Fleisch in ihrem Inneren vergisst das Schlagen.“',
@@ -4496,6 +5291,7 @@ const UI_TRANSLATIONS = {
     toast_damage_morale: 'ERSCHÜTTERT! MORAL GESCHWÄCHT'
   },
   ru: {
+    toast_case_opened: 'Дело открыто: Аурелия Вэнс · Добро пожаловать в Седьмой Район, детектив {name}',
     game_title: 'А Э Н И Г М А',
     case_badge: 'ДЕЛО #04: БЕЗМОЛВНЫЙ ЧАСОВЩИК',
     loader_quote: '«Часы никогда не останавливаются. Лишь плоть внутри них забывает, как биться».',
@@ -4566,6 +5362,7 @@ const UI_TRANSLATIONS = {
     toast_damage_morale: 'ШОК! БОЕВОЙ ДУХ ПОДОРВАН'
   },
   it: {
+    toast_case_opened: 'Fascicolo del caso aperto: Aurelia Vance · Benvenuto nel Distretto 7, Detective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'CASO #04: L\'OROLOGIAIA SILENZIOSA',
     loader_quote: '“L\'orologio non si ferma mai. È solo la carne al suo interno che dimentica come battere.”',
@@ -4636,6 +5433,7 @@ const UI_TRANSLATIONS = {
     toast_damage_morale: 'SCIOCCATO! MORALE COMPROMESSO'
   },
   pt: {
+    toast_case_opened: 'Dossiê do caso aberto: Aurelia Vance · Bem-vindo ao Distrito 7, Detetive {name}',
     game_title: 'A E N I G M A',
     case_badge: 'CASO #04: A RELOJOEIRA SILENCIOSA',
     loader_quote: '“O relógio nunca para. Apenas a carne em seu interior esquece como bater.”',
@@ -4706,6 +5504,7 @@ const UI_TRANSLATIONS = {
     toast_damage_morale: 'ABALADO! MORAL COMPROMETIDO'
   },
   ar: {
+    toast_case_opened: 'تم فتح ملف القضية: أوريليا فانس · مرحبًا بك في المقاطعة 7، أيها المحقق {name}',
     game_title: 'إ ي ن ي ج م ا',
     case_badge: 'القضية #04: صانعة الساعات الصامتة',
     loader_quote: '«عقارب الساعة لا تتوقف أبدًا. وحده الجسد بين تروسها ينسى كيف ينبض.»',
@@ -5427,6 +6226,673 @@ function tPoi(poiId, field = 'title', lang = 'en') {
   return poi[field][currentLang] || poi[field]['en'] || poi[field]['id'] || '';
 }
 
+// --------------------------------------------------------------------------
+// Character Creator Vices Localization (5 Native Languages)
+// --------------------------------------------------------------------------
+const VICES_I18N = {
+  smoker: {
+    title: {
+      en: '🚬 Chain-Smoker of Astra Red',
+      id: '🚬 Perokok Berat Astra Merah',
+      zh: '🚬 阿斯特拉红烟重度烟瘾',
+      ja: '🚬 アストラ・レッドのヘビースモーカー',
+      ko: '🚬 아스트라 레드 골초'
+    },
+    desc: {
+      en: 'Perception +1, but chronic cough lowers Endurance maximum by 1.',
+      id: 'Persepsi +1, namun batuk menahun mengurangi batas maksimal Daya Tahan sebesar 1.',
+      zh: '感知+1，但慢性剧烈咳嗽导致体能上限减少1。',
+      ja: '知覚+1、だが慢性的な咳き込みにより耐久力上限が1低下。',
+      ko: '지각 +1, 하지만 만성 기침으로 인해 최대 체력이 1 감소합니다.'
+    }
+  },
+  laudanum: {
+    title: {
+      en: '🧪 Tincture of Laudanum Addict',
+      id: '🧪 Ketergantungan Tinktur Laudanum',
+      zh: '🧪 阿片酊化学成瘾',
+      ja: '🧪 医療用アヘンチンキ中毒',
+      ko: '🧪 라우다넘 팅크제 중독'
+    },
+    desc: {
+      en: 'Esoterica +2, but sudden withdrawals inflict periodic Logic penalties.',
+      id: 'Esoterika +2, namun gejala sakau mendadak menimbulkan penalti Logika berkala.',
+      zh: '秘教+2，但突发的戒断反应会带来阶段性逻辑惩罚。',
+      ja: '秘教+2、だが禁断症状による定期的な論理ペナルティを受ける。',
+      ko: '비전 +2, 하지만 금단 현상 발생 시 주기적인 논리 페널티를 받습니다.'
+    }
+  },
+  insomniac: {
+    title: {
+      en: '🕯️ Insomniac Philosopher',
+      id: '🕯️ Filsuf Pengidap Insomnia',
+      zh: '🕯️ 失眠梦魇哲学家',
+      ja: '🕯️ 不眠症の思索家',
+      ko: '🕯️ 불면증에 시달리는 철학자'
+    },
+    desc: {
+      en: 'Conceptualization +2, but sleep deprivation heightens susceptibility to panic.',
+      id: 'Konseptualisasi +2, namun kurang tidur kronis memperparah kerentanan terhadap panik.',
+      zh: '概念化+2，但长期严重睡眠不足大幅加剧恐慌脆弱性。',
+      ja: '概念化+2、だが慢性的睡眠不足によりパニック耐性が低下。',
+      ko: '개념화 +2, 하지만 수면 부족으로 인해 정신적 패닉에 취약해집니다.'
+    }
+  },
+  klepto: {
+    title: {
+      en: '🗝️ Compulsive Relic Hoarder',
+      id: '🗝️ Pengumpul Relik Kompulsif',
+      zh: '🗝️ 强迫症古物囤积癖',
+      ja: '🗝️ 強迫的遺物蒐集癖',
+      ko: '🗝️ 강박적 유물 수집벽'
+    },
+    desc: {
+      en: 'Interfacing +2, but precinct colleagues view you with suspicion.',
+      id: 'Penyelarasan Mesin +2, namun rekan detektif memandangmu dengan curiga.',
+      zh: '机构连动+2，但警区同僚始终以怀疑甚至提防的目光注视着你。',
+      ja: '機構連動+2、だが分署の同僚たちから常に不審の目で見られる。',
+      ko: '기계 조율 +2, 하지만 관할서 동료들이 당신을 의심스럽게 바라봅니다.'
+    }
+  }
+};
+
+function tVice(viceKey, field = 'title', lang = 'en') {
+  const v = VICES_I18N[viceKey];
+  if (!v) return '';
+  const currentLang = v[field] && v[field][lang] ? lang : 'en';
+  return v[field][currentLang] || v[field]['en'] || v[field]['id'] || '';
+}
+
+// --------------------------------------------------------------------------
+// Thought Cabinet Database Localization (5 Native Languages)
+// --------------------------------------------------------------------------
+const THOUGHTS_I18N = {
+  clockmakers_paradox: {
+    name: {
+      en: "The Clockmaker's Paradox",
+      id: "Paradoks Sang Pembuat Jam",
+      zh: "钟表宗师的逆时悖论",
+      ja: "時計師の逆理",
+      ko: "시계 장인의 역설"
+    },
+    category: {
+      en: 'Dialectic Horology',
+      id: 'Dialektika Horologis',
+      zh: '辩证钟表学',
+      ja: '弁証法的時計学',
+      ko: '변증법적 시계학'
+    },
+    flavor: {
+      en: 'If Aurelia Vance designed pendulum escapements that measured moments before they physically transpired, did she build her own execution mechanism?',
+      id: 'Jika Aurelia Vance merancang mekanisme pendulum yang mengukur momen sebelum terjadi, apakah ia merancang mesin eksekusinya sendiri?',
+      zh: '如果奥蕾莉亚·梵斯所设计的擒纵机构能够在物理时刻降临前便预先记录，那她是否亲手铸造了自己的死刑机械？',
+      ja: 'もしオレリア・ヴァンスが物理的に刻まれる前の瞬間を測定する脱進機を設計していたなら、彼女は自らの処刑装置を組み立てたのだろうか？',
+      ko: '만약 오렐리아 밴스가 사건이 물리적으로 발생하기도 전에 그 순간을 측정하는 진자 탈착기를 설계했다면, 그녀는 자신의 처형 기계를 직접 만든 것인가?'
+    },
+    explanation: {
+      en: 'You find yourself staring at rotating brass gears until your retinas imprint with Roman numerals. Time is not a linear river; it is a coiled torsion spring waiting to snap backward.',
+      id: 'Kau menatap roda gigi kuningan hingga retinamu tercap angka Romawi. Waktu bukan aliran sungai linier; waktu adalah pegas torsi yang siap tersentak ke belakang.',
+      zh: '你凝视着轰鸣旋转的黄铜齿轮，直到罗马数字灼刻在你的视网膜上。时间绝非奔涌的单向长河；它是一根紧绷的扭力弹簧，随时可能疯狂倒卷。',
+      ja: '網膜にローマ数字が焼き付くまで、回転する真鍮の歯車を見つめ続ける。時間は直線的な川ではない。いつでも激しく逆回転しうる圧縮された捩りバネなのだ。',
+      ko: '망막에 로마 숫자가 각인될 때까지 회전하는 황동 톱니를 응시합니다. 시간은 선형적인 강물이 아닙니다. 언제든 거꾸로 튕겨 나갈 준비가 된 비틀림 용수철입니다.'
+    },
+    tempDrawback: {
+      en: 'Logic -1 (Migraine from impossible gear ratios)',
+      id: 'Logika -1 (Migrain akibat rasio roda gigi mustahil)',
+      zh: '逻辑 -1 (解析荒谬齿轮比引发的剧烈偏头痛)',
+      ja: '論理 -1 (不可能な歯車比による激しい偏頭痛)',
+      ko: '논리 -1 (불가능한 기어비로 인한 극심한 편두통)'
+    },
+    solution: {
+      en: 'Time is malleable when measured by murder. You perceive mechanical flaws in suspects testimonies before they even finish speaking.',
+      id: 'Waktu menjadi lentur saat diukur melalui pembunuhan. Kau mengenali cacat logis dalam kesaksian tersangka sebelum mereka selesai bicara.',
+      zh: '以谋杀为刻度时，时间展现出奇异的延展性。在嫌疑人话音未落之前，你已洞悉其供词中的逻辑致命断裂。',
+      ja: '殺人によって測定される時、時間は歪み始める。容疑者が言葉を結ぶ前に、その証言に潜む機械的欠陥を看破できる。',
+      ko: '살인으로 측정될 때 시간은 가변적이 됩니다. 용의자가 말을 끝마치기도 전에 그 증언의 기계적 모순을 간파합니다.'
+    }
+  },
+  amnesia_as_defense: {
+    name: {
+      en: 'Amnesia as Self-Defense',
+      id: 'Amnesia sebagai Pertahanan Diri',
+      zh: '作为自卫壁垒的失忆',
+      ja: '自己防衛としての記憶喪失',
+      ko: '자기 방어로서의 기억상실'
+    },
+    category: {
+      en: 'Psychological Splinter',
+      id: 'Serpihan Kejiwaan',
+      zh: '心理防御碎片',
+      ja: '精神的破片',
+      ko: '심리적 파편'
+    },
+    flavor: {
+      en: "Why did you drink yourself into oblivion last night? Perhaps your amnesia wasn't an accident, but an act of mercy by your subconscious.",
+      id: 'Mengapa kau menenggelamkan diri dalam alkohol semalam? Mungkin amnesiamu bukan ketidaksengajaan, melainkan tindakan belas kasih dari alam bawah sadarmu.',
+      zh: '昨夜你为何狂饮至神智全无？或许突如其来的失忆并非酒醉的意外，而是潜意识为拯救理智所施舍的慈悲。',
+      ja: '昨夜、なぜ意識を失うまで酒を呷ったのか？その記憶喪失は過失ではなく、潜在意識による慈悲深き自衛だったのではないか。',
+      ko: '어젯밤 당신은 왜 인사불성이 되도록 술을 마셨을까요? 기억상실은 실수가 아니라, 잠재의식이 베푼 자비였을지도 모릅니다.'
+    },
+    explanation: {
+      en: 'The past is a carnivorous beast in the dark. By forgetting your own name and yesterday\'s horrors, you rendered the predator toothless.',
+      id: 'Masa lalu adalah binatang buas di kegelapan. Dengan melupakan namamu dan kengerian kemarin, kau mencabut taring pemangsa itu.',
+      zh: '过去是一头潜伏在幽暗深处的食肉巨兽。遗忘自己的姓名与昨日的惨剧，正是你卸下巨兽利齿的唯一法门。',
+      ja: '過去とは暗闇に潜む肉食獣だ。己の名と昨日の惨劇を忘却することで、その牙を根こそぎ奪い去ったのだ。',
+      ko: '과거는 어둠 속의 육식수입니다. 이름과 어제의 공포를 망각함으로써 포식자의 이빨을 뽑아버린 것입니다.'
+    },
+    tempDrawback: {
+      en: 'Morale -1 (Empty mirrors produce cold vertigo)',
+      id: 'Kewarasan -1 (Cermin kosong memicu vertigo dingin)',
+      zh: '理智 -1 (凝视陌生空洞的镜影引发冰冷晕眩)',
+      ja: '精神力 -1 (空虚な鏡が冷酷な眩暈を引き起こす)',
+      ko: '사기 -1 (텅 빈 거울이 차가운 현기증을 유발함)'
+    },
+    solution: {
+      en: 'You accept the blank slate. What you forgot cannot be used to break your spirit.',
+      id: 'Kau menerima lembaran kosong ini. Hal yang terlupakan tak lagi dapat meremukkan jiwamu.',
+      zh: '你欣然接纳了这张空白画卷。已被遗忘的深渊之物，便再也无法击垮你坚硬如铁的意志。',
+      ja: '白紙の精神を受け入れる。忘却した過去は、もはやあなたの魂を打ち砕く刃にはなり得ない。',
+      ko: '백지상태를 온전히 수용합니다. 잊어버린 과거는 더 이상 당신의 영혼을 꺾을 수 없습니다.'
+    }
+  },
+  metaphysics_of_rain: {
+    name: {
+      en: 'Metaphysics of Cold Rain',
+      id: 'Metafisika Hujan Dingin',
+      zh: '寒雨的形而上学',
+      ja: '冷雨の形而上学',
+      ko: '차가운 비의 형이상학'
+    },
+    category: {
+      en: 'Atmospheric Melancholy',
+      id: 'Melankolia Atmosferik',
+      zh: '氛围忧郁',
+      ja: '大気的憂鬱',
+      ko: '대기적 우울'
+    },
+    flavor: {
+      en: 'The rain drumming on the clocktower roof sounds identical to a Morse code transmission from an extinct civilization.',
+      id: 'Hujan yang memukuli atap seng menara jam terdengar persis seperti transmisi kode Morse dari peradaban yang telah punah.',
+      zh: '雨点击打在钟楼锌铁屋顶上的闷响，听上去宛如某个早已覆灭的失落文明发来的莫尔斯电码。',
+      ja: '時計塔の屋根を叩く雨音は、滅亡した古代文明からのモールス信号と完全に一致している。',
+      ko: '시계탑 지붕을 두드리는 빗소리는 멸망한 문명이 보내는 모스 부호 통신과 똑같이 들립니다.'
+    },
+    explanation: {
+      en: 'Water carries electrical charges, industrial soot, and whispered regrets. If you listen closely, the storm tells you where the killer stepped.',
+      id: 'Air membawa muatan listrik, jelaga pabrik, dan bisikan penyesalan. Jika kau mendengarkan seksama, badai memberitahumu ke mana pembunuh melangkah.',
+      zh: '雨水承载着静电荷、工业烟尘与七百万码头工人的叹息。只要静心凝神，风暴自会低吟凶徒潜逃的足迹。',
+      ja: '雨水は電荷、煤煙、労働者たちの悔恨を運ぶ。耳を澄ませば、嵐そのものが犯人の足取りを囁いてくれる。',
+      ko: '빗물은 전하, 매연, 부두 노동자들의 후회를 실어 나릅니다. 귀를 기울이면 폭풍이 살인자의 발자취를 알려줍니다.'
+    },
+    tempDrawback: {
+      en: 'Conceptualization -1 (Distracted by dripping eaves)',
+      id: 'Konseptualisasi -1 (Terganggu oleh tetesan air atap)',
+      zh: '概念化 -1 (屋檐连绵的水滴声极度分散思绪)',
+      ja: '概念化 -1 (滴る雨垂れの音に思考を乱される)',
+      ko: '개념화 -1 (처마 밑 물방울 소리에 정신이 분산됨)'
+    },
+    solution: {
+      en: 'The atmospheric pressure sharpens your intuitive sixth sense. The city speaks directly into your ear canal.',
+      id: 'Tekanan atmosferik menajamkan indra keenammu. Kota ini berbisik langsung ke saluran telingamu.',
+      zh: '压抑的气压反常地淬炼了你的第六感直觉。整座工业都市的阴影正在贴着你的耳廓低语。',
+      ja: '気圧の変化が直観の第六感を研ぎ澄ます。街そのものが、あなたの耳朶へ直接語りかけてくる。',
+      ko: '대기압이 육감을 날카롭게 벼려냅니다. 도시 자체가 당신의 귓가에 직접 속삭입니다.'
+    }
+  },
+  sovereign_bureaucrat: {
+    name: {
+      en: 'The Sovereign Bureaucrat',
+      id: 'Birokrat Berdaulat',
+      zh: '至高无上的官僚专制',
+      ja: '絶対的官僚主義',
+      ko: '절대적 관료주의'
+    },
+    category: {
+      en: 'Civic Authority',
+      id: 'Otoritas Sipil',
+      zh: '公权权威',
+      ja: '市民権力',
+      ko: '시민 권위'
+    },
+    flavor: {
+      en: 'The chiefs think power resides in bayonets. But real power resides in the rubber stamp of an inspector who simply refuses to sign.',
+      id: 'Para petinggi mengira kekuasaan ada pada bayonet. Namun kekuasaan sejati ada pada stempel inspektur yang menolak bertanda tangan.',
+      zh: '高层误以为强权来自刺刀。然而至高权力实则蕴含在一位冷酷探长坚决拒签尸检移交文件的印章中。',
+      ja: '上層部は権力が銃剣に宿ると信じている。だが真の権力とは、移送書類への署名を冷淡に拒否する捜査官のゴム印にある。',
+      ko: '서장들은 권력이 총검에서 나온다고 믿습니다. 하지만 진정한 권력은 서명을 단호히 거부하는 검시관의 고무 직인에 있습니다.'
+    },
+    explanation: {
+      en: 'A badge is just tin. But procedural stubbornness? That is the immutable bedrock of civilization.',
+      id: 'Lencana hanyalah timah. Namun keteguhan prosedur? Itulah pondasi peradaban yang tak tergoyahkan.',
+      zh: '警徽不过是镀锡薄片。但程序上的铁面执拗？那才是人类文明不可撼动的基石。',
+      ja: 'バッジなどただのブリキ板だ。だが規程を盾にした頑迷さこそ、文明の不変の岩盤なのだ。',
+      ko: '배지는 양철 조각에 불과합니다. 그러나 절차적 고집이야말로 문명의 확고부동한 반석입니다.'
+    },
+    tempDrawback: {
+      en: 'Savoir Faire -1 (Stiff, unyielding posture)',
+      id: 'Savoir Faire -1 (Postur kaku dan tak kenal kompromi)',
+      zh: '从容自若 -1 (僵硬傲慢、难以妥协的官僚姿态)',
+      ja: '処世術 -1 (柔軟性を欠く強情な官僚的態度)',
+      ko: '기민성 -1 (타협을 모르는 뻣뻣하고 완고한 태도)'
+    },
+    solution: {
+      en: 'You exude the unshakeable weight of administrative dread. Witnesses fold before you even raise your voice.',
+      id: 'Kau memancarkan bobot intimidasi administratif. Saksi runtuh bahkan sebelum kau meninggikan suara.',
+      zh: '你浑身散发着窒息般的行政威压感。甚至在你拔高语调前，目击证人便已在心理防线前彻底溃败。',
+      ja: '圧倒的な行政的重圧を漂わせる。声を荒らげるまでもなく、目撃者は自ら心理的に屈服する。',
+      ko: '행정적 위압감의 서늘한 무게를 발산합니다. 목소리를 높이기도 전에 증인들이 먼저 무너집니다.'
+    }
+  },
+  nicotine_shroud: {
+    name: {
+      en: 'The Nicotine Shroud',
+      id: 'Selubung Nikotin',
+      zh: '尼古丁迷烟之幕',
+      ja: 'ニコチンの帳',
+      ko: '니코틴 장막'
+    },
+    category: {
+      en: 'Vice & Nerve',
+      id: 'Cacat & Keberanian',
+      zh: '恶癖与心性',
+      ja: '悪癖と胆力',
+      ko: '악벽과 담력'
+    },
+    flavor: {
+      en: 'The smoke from an Astra Red does not merely coat your alveoli; it forms a defensive aerosol boundary between your soul and the decaying world.',
+      id: 'Asap dari Astra Merah bukan sekadar melapisi paru-parumu; ia membentuk batas pelindung aerosol antara jiwamu dan dunia yang membusuk.',
+      zh: '阿斯特拉红烟的辛辣烟雾不仅附着在你的肺泡间；更在你疲惫的灵魂与这腐朽世界之间构筑起一道绝缘屏障。',
+      ja: 'アストラ・レッドの紫煙は肺を燻すだけでなく、魂と荒廃した世界との間に防壁を張り巡らせる。',
+      ko: '아스트라 레드의 연기는 폐를 감쌀 뿐만 아니라, 영혼과 부패한 세계 사이에 방어막을 형성합니다.'
+    },
+    explanation: {
+      en: 'Every inhalation is a tiny flame against the frost of District 7. You exhale gray clouds that obscure your trembling hands.',
+      id: 'Setiap hisapan adalah nyala api kecil melawan dinginnya Sektor 7. Kau menghembuskan awan kelabu yang menyamarkan tanganmu yang gemetar.',
+      zh: '每一次深吸，都是在第七区的刺骨寒霜中点燃微弱篝火。呼出的灰白烟雾，恰好遮掩了你不住颤抖的指尖。',
+      ja: '一服ごとに、第7区の凍てつく寒気へ抗う小さな炎を灯す。吐き出す灰色の煙が、震える指先を覆い隠す。',
+      ko: '들이마시는 한 모금마다 제7구역의 서리에 맞서는 작은 불씨가 됩니다. 내뿜는 회색 연기는 떨리는 손을 가려줍니다.'
+    },
+    tempDrawback: {
+      en: 'Endurance -1 (Rattling smoker cough)',
+      id: 'Daya Tahan -1 (Batuk perokok yang parau)',
+      zh: '体能 -1 (剧烈嘶哑的烟民抽搐咳嗽)',
+      ja: '耐久力 -1 (嗄れた激しい咳込み)',
+      ko: '체력 -1 (거칠게 쌕쌕거리는 흡연자 기침)'
+    },
+    solution: {
+      en: 'Steely nerves. In moments of panic, a single puff restores total tactical clarity.',
+      id: 'Keteguhan saraf baja. Di saat panik, satu hisapan memulihkan kejernihan taktis sepenuhnya.',
+      zh: '钢铁般的神经稳定性。在恐慌濒临失控的临界点，仅需深吸一口，便能瞬间重构缜密的战术冷静。',
+      ja: '鋼の胆力。パニックに陥る瞬間も、一服の煙が完全なる戦術的明晰さを取り戻させる。',
+      ko: '강철 같은 신경. 공황의 순간에도 단 한 모금의 흡연이 전술적 명석함을 되찾아줍니다.'
+    }
+  }
+};
+
+function tThought(thoughtId, field = 'name', lang = 'en') {
+  const thought = THOUGHTS_I18N[thoughtId];
+  if (!thought) return '';
+  const currentLang = thought[field] && thought[field][lang] ? lang : 'en';
+  return thought[field][currentLang] || thought[field]['en'] || thought[field]['id'] || '';
+}
+
+// --------------------------------------------------------------------------
+// Loading Screen & Detective Randomizer Localizations (5 Native Languages)
+// --------------------------------------------------------------------------
+const LOADER_QUOTES_I18N = {
+  en: [
+    "“The clock never stops. Only the flesh within it forgets how to beat.”",
+    "“There is a place where every unanswered question gathers like dead skin.”",
+    "“You cannot interrogate the fog. It already knows what you did.”",
+    "“Amnesia is not an absence of memory, but a presence of self-preservation.”",
+    "“In District 7, even the statues have pawn shop tags tied to their wrists.”"
+  ],
+  id: [
+    "“Detik jam tak pernah berhenti. Hanya daging di dalamnya yang lupa cara berdetak.”",
+    "“Ada tempat di mana pertanyaan tanpa jawaban berkumpul seperti kulit mati.”",
+    "“Kau tak bisa menginterogasi kabut. Ia telah tahu apa yang kau perbuat.”",
+    "“Amnesia bukanlah ketiadaan ingatan, melainkan kehadiran naluri pertahanan diri.”",
+    "“Di Sektor 7, bahkan patung-patung kota memiliki label rumah gadai di pergelangan tangannya.”"
+  ],
+  zh: [
+    "“钟摆永不停歇。唯有齿轮间的血肉，遗忘了跳动的律动。”",
+    "“每个悬而未决的疑问，终将在某个幽暗角落如死皮般堆积。”",
+    "“你无法审问迷雾。它早已窥见了你的一切罪孽。”",
+    "“失忆绝非记忆的缺席，而是求生本能的慈悲降临。”",
+    "“在第七区，就连广场上的大理石雕像，手腕上也系着当铺的标签。”"
+  ],
+  ja: [
+    "「時計の針は止まらない。止まるのは、鼓動を忘れた肉体だけだ。」",
+    "「答えの出ぬ問いが、死んだ皮膚のように降り積もる場所がある。」",
+    "「霧を尋問することはできない。霧は既に、お前の犯した罪を知っている。」",
+    "「記憶喪失とは記憶の欠如ではない。自己防衛本能の存在証明だ。」",
+    "「第7区では、街の石像の手首にさえ質屋の札が結びつけられている。」"
+  ],
+  ko: [
+    "“시계는 결코 멈추지 않는다. 멈추는 것은 고동을 잊은 육신뿐.”",
+    "“해답 없는 의문들이 각질처럼 쌓여가는 장소가 있다.”",
+    "“안개를 심문할 수는 없다. 안개는 이미 네가 한 일을 알고 있다.”",
+    "“기억상실은 기억의 부재가 아니라, 자기보존 본능의 엄연한 실재다.”",
+    "“제7구역에서는 석상의 손목에조차 전당포 전표가 묶여 있다.”"
+  ]
+};
+
+const TELEMETRY_PHASES_I18N = {
+  en: [
+    { at: 15, text: "Calibrating fractured synapses..." },
+    { at: 35, text: "Waking internal faculties: Ratio, Elysia, Carnal, Reflex..." },
+    { at: 60, text: "Loading forensic archives: Precinct 4..." },
+    { at: 85, text: "Reconstructing crime scene: Saint Irene Clocktower, 04:17 AM..." },
+    { at: 100, text: "Consciousness restored. Ready to investigate." }
+  ],
+  id: [
+    { at: 15, text: "Mengalibrasi sinapsis saraf yang retak..." },
+    { at: 35, text: "Membangunkan fakultas batin: Intelek, Kejiwaan, Fisik, Motorik..." },
+    { at: 60, text: "Memuat arsip forensik: Distrik 4..." },
+    { at: 85, text: "Merekonstruksi TKP: Menara Jam Saint Irene, 04:17..." },
+    { at: 100, text: "Kesadaran pulih. Siap memulai penyelidikan." }
+  ],
+  zh: [
+    { at: 15, text: "正在校准受损的神经突触..." },
+    { at: 35, text: "唤醒核心心智维次：理智、通灵、体魄、反应..." },
+    { at: 60, text: "载入第四警区法医绝密档案..." },
+    { at: 85, text: "现场全息重构：圣艾琳钟楼，凌晨04:17..." },
+    { at: 100, text: "深层意识已锚定。准备开启调查。" }
+  ],
+  ja: [
+    { at: 15, text: "断片化したシナプスを較正中..." },
+    { at: 35, text: "内なる精神機能を覚醒：知性、霊性、肉体、反射..." },
+    { at: 60, text: "第4分署の法医学記録をロード中..." },
+    { at: 85, text: "事件現場を再構築：聖アイリーン時計塔 午前04:17..." },
+    { at: 100, text: "意識の回復完了。捜査を開始せよ。" }
+  ],
+  ko: [
+    { at: 15, text: "분열된 신경 시냅스 보정 중..." },
+    { at: 35, text: "내면의 기능성 활성화: 이성, 영성, 육체, 반사..." },
+    { at: 60, text: "제4관할서 법의학 기록 적재 중..." },
+    { at: 85, text: "현장 재구성: 성 아이린 시계탑, 새벽 04:17..." },
+    { at: 100, text: "의식 회복 완료. 수사를 개시하십시오." }
+  ]
+};
+
+const ALIASES_I18N = {
+  en: [
+    'The Dissolute Inspector',
+    'The Ghost of Precinct 4',
+    'The Broken Dialectician',
+    'The Saint of Hangovers',
+    'The Clockwork Cynic',
+    'The Desolate Poet'
+  ],
+  id: [
+    'Inspektur yang Hancur',
+    'Hantu dari Distrik 4',
+    'Ahli Dialektika yang Patah',
+    'Santo Pemabuk Berat',
+    'Sinikus Roda Gigi',
+    'Penyair yang Sunyi'
+  ],
+  zh: [
+    '沉沦落魄的探长',
+    '第四警区的幽灵',
+    '支离破碎的辩证学者',
+    '宿醉弥撒的圣徒',
+    '机械发条犬儒者',
+    '荒原绝境的哀歌诗人'
+  ],
+  ja: [
+    '放蕩の警部',
+    '第4分署の亡霊',
+    '失意の弁証法家',
+    '二日酔いの聖者',
+    '時計仕掛けの冷笑家',
+    '荒涼たる詩人'
+  ],
+  ko: [
+    '방탕한 수사관',
+    '제4관할서의 유령',
+    '망가진 변증론자',
+    '숙취의 성자',
+    '태엽 장치의 냉소주의자',
+    '황량한 방랑 시인'
+  ]
+};
+
+
+
+
+// ============================================================================
+// Multi-Case Dossiers & Grand Conspiracy Localization Data
+// ============================================================================
+const CASES_I18N = {
+  case_d4_01: {
+    title: {
+      en: 'The Canal Drifter',
+      id: 'Mayat Mengapung di Kanal Distrik 4',
+      zh: '运河沉尸案',
+      ja: '運河の漂流死体',
+      ko: '운하의 표류 시신 사건'
+    },
+    victim: {
+      en: 'Tomas Karr (32, Dock Courier)',
+      id: 'Tomas Karr (32, Kurir Penyelundup)',
+      zh: '托马斯·卡尔 (32岁，码头走私信使)',
+      ja: 'トマス・カー (32歳、港湾密輸配達人)',
+      ko: '토마스 카 (32세, 부두 밀수 운반책)'
+    },
+    location: {
+      en: 'West Basin Canal, District 7',
+      id: 'Dermaga Kanal Barat Sektor 7',
+      zh: '第七区西蓄水运河码头',
+      ja: '第7区 西部運河船溜まり',
+      ko: '제7구역 서부 운하 선착장'
+    },
+    summary: {
+      en: 'The body of a dock courier was found bobbing in the tidal mud. Hidden in his oilskin lining was a secret silver wax seal and an encrypted Syndicate cargo manifest.',
+      id: 'Mayat kurir dermaga ditemukan mengapung di kanal berlumpur. Di balik lapisan mantelnya tersimpan segel lilin perak rahasia berlogo jam patah dan manifes klandestin.',
+      zh: '一名港口信使的浮尸在潮泥中被发现。其油布大衣夹层中缝藏着一枚刻有断裂齿轮的纯银蜡封及加密走私清单。',
+      ja: '運河の泥濘に浮かぶ波止場配達人の遺体。オイルスキンの裏地には、折れた歯車の刻まれた秘密の銀蝋印と暗号化された密輸目録が隠されていた。',
+      ko: '개펄에 떠오른 부두 운반책의 시신. 방수 외투 안감에서 부러진 톱니 문양의 은빛 밀랍 인장과 암호화된 밀수 목록이 발견되었습니다.'
+    },
+    keystoneName: {
+      en: 'Silver Syndicate Wax Seal',
+      id: 'Segel Lilin Sindikat Perak',
+      zh: '银色辛迪加蜡封印信',
+      ja: '銀色シンジケートの蝋印',
+      ko: '은빛 신디케이트 밀랍 인장'
+    },
+    keystoneDesc: {
+      en: 'Proves clandestine parts shipments routed to District 7 under corporate front accounts.',
+      id: 'Membuktikan pengiriman suku cadang terlarang ke Sektor 7 di bawah rekening bayangan konsorsium.',
+      zh: '证实违禁走私机械零件假借虚构商会账户正源源不断运入第七区。',
+      ja: 'ペーパーカンパニーの口座を通じ、第7区へ禁制品の機械部品が密輸されていた事実を証明する。',
+      ko: '유령 회사 계좌를 통해 제7구역으로 금지된 기계 부품이 밀수입되고 있었음을 증명합니다.'
+    }
+  },
+  case_d4_02: {
+    title: {
+      en: 'The Civic Vault Arson',
+      id: 'Kebakaran Gudang Arsip Catatan Sipil',
+      zh: '民政档案金库纵火案',
+      ja: '民政局保管庫放火事件',
+      ko: '민정 기록 보관소 방화 사건'
+    },
+    victim: {
+      en: 'Leonard Finch (64, Chief Archivist)',
+      id: 'Leonard Finch (64, Kepala Arsiparis)',
+      zh: '伦纳德·芬奇 (64岁，首席档案管理员)',
+      ja: 'レナード・フィンチ (64歳、筆頭記録保管官)',
+      ko: '레너드 핀치 (64세, 수석 기록보관관)'
+    },
+    location: {
+      en: 'Civic Records Sub-Vault, District 4',
+      id: 'Gudang Catatan Sipil Bawah Tanah Sektor 4',
+      zh: '第四警区民政档案地窖',
+      ja: '第4区 民政局地下記録庫',
+      ko: '제4구역 민정 기록 지하 보관소'
+    },
+    summary: {
+      en: 'A premeditated incendiary blast incinerated municipal land deeds. Finch died from smoke inhalation clutching charred titles to the Saint Irene clocktower foundations.',
+      id: 'Ledakan pembakaran berencana menghanguskan akta tanah kota. Finch tewas lemas sambil mendekap sisa lembaran akta pondasi Menara Jam Saint Irene.',
+      zh: '一场蓄谋已久的纵火爆炸彻底焚毁了市政土地契约。芬奇窒息身亡，怀中死死护着圣艾琳钟楼地基的焦黑地契。',
+      ja: '綿密に計画された放火により市政土地権利書が焼失。フィンチは聖アイリーン時計塔の基礎部分に関する焦げた権利書を抱きしめたまま窒息死していた。',
+      ko: '철저히 계획된 방화 폭발로 시의 토지 증서들이 전소되었습니다. 핀치는 성 아이린 시계탑 부지의 그을린 권리증을 품에 안은 채 질식사했습니다.'
+    },
+    keystoneName: {
+      en: 'Charred Vault Land Deed',
+      id: 'Halaman Akta Hangus Sektor Barat',
+      zh: '过火焦黑的特权土地地契',
+      ja: '焼け焦げた特権地権書',
+      ko: '불에 탄 특권 토지 권리증'
+    },
+    keystoneDesc: {
+      en: 'Names the City Magistrate as the secret beneficiary of Saint Irene clocktower acquisitions.',
+      id: 'Membuktikan Hakim Magistrat kota adalah penerima manfaat rahasia atas pembelian tanah Menara Irene.',
+      zh: '直接揭示市政大法官正是侵吞钟楼所有权幕后神秘财阀的最终收益人。',
+      ja: '時計塔周辺の買収劇における真の受益者が市政治安判事であることを露呈させる。',
+      ko: '시계탑 부지 매입의 배후에 있는 최종 수혜자가 시 치안판사임을 직접적으로 입증합니다.'
+    }
+  },
+  case_d4_03: {
+    title: {
+      en: "The Apothecary's Tincture",
+      id: 'Racun Belladonna Sang Kolektor Antik',
+      zh: '药剂师的淬毒酊剂案',
+      ja: '薬種商の毒劇薬事件',
+      ko: '약제사의 독성 팅크제 사건'
+    },
+    victim: {
+      en: 'Dr. Silas Vance (59, Horological Chemist)',
+      id: 'Dr. Silas Vance (59, Kurator Kimia Antik)',
+      zh: '塞拉斯·万斯博士 (59岁，钟表化学家)',
+      ja: 'サイラス・ヴァンス博士 (59歳、時計生化学者)',
+      ko: '사일러스 반스 박사 (59세, 시계 생화학자)'
+    },
+    location: {
+      en: 'Saint Jude Apothecary, East District',
+      id: 'Apotek Saint Jude, Sektor Timur',
+      zh: '东区圣犹大药局地下工坊',
+      ja: '東部地区 聖ユダ薬種店',
+      ko: '동부 구역 성 유다 약국 지하 공방'
+    },
+    summary: {
+      en: 'Killed in his laboratory by an odorless synthetic cyanide alkaloid. A clandestine serial numbered vial was recovered beneath his distilling alembic.',
+      id: 'Tewas di laboratoriumnya akibat racun alkaloid sianida sintetis tanpa bau. Ditemukan botol obat bernomor seri klandestin di bawah alat destilasi.',
+      zh: '在密闭实验室中被无色无味的合成氰化物毒杀。蒸馏器残骸下方散落着带有军规序列号的暗中调配试剂瓶。',
+      ja: '無臭の合成シアン化アルカロイドによって自室で毒殺。蒸留器の下から闇ルートの識別刻印が刻まれた小瓶が押収された。',
+      ko: '무취의 합성 시안화 알칼로이드에 의해 밀실에서 독살당했습니다. 증류기 아래에서 군용 암호 번호가 각인된 시약병이 발견되었습니다.'
+    },
+    keystoneName: {
+      en: 'Clandestine Serial Tincture Vial',
+      id: 'Vial Tinktur Berkode Klandestin',
+      zh: '军规黑市毒物试剂瓶',
+      ja: '闇市場の軍用薬瓶',
+      ko: '암시장 군용 독약 시약병'
+    },
+    keystoneDesc: {
+      en: 'Matches the chemical compound found in the puncture wound on Aurelia Vance.',
+      id: 'Formula sianida biru eksklusif yang sama persis dengan racun jarum pada Aurelia Vance.',
+      zh: '化学指纹与奥蕾莉亚·万斯颈部微型针孔中残留的致命毒素完全一致。',
+      ja: 'オウレリア・ヴァンスの首元に残された微小針孔の毒素と完全に同一の化学組成。',
+      ko: '오렐리아 반스의 목덜미에 남은 미세 주사 바늘 자국의 독소와 화학적으로 정확히 일치합니다.'
+    }
+  },
+  case_d4_04: {
+    title: {
+      en: 'The Silent Watchmaker of Saint Irene',
+      id: 'Sang Pembuat Jam yang Bisu di Menara Irene',
+      zh: '圣艾琳钟楼的无声制表师',
+      ja: '聖アイリーン時計塔の沈黙せる時計師',
+      ko: '성 아이린 시계탑의 침묵하는 시계 장인'
+    },
+    victim: {
+      en: 'Mistress Horologist Aurelia Vance (Age 56)',
+      id: 'Nyonya Horologis Aurelia Vance (Usia 56)',
+      zh: '首席钟表宗师 奥蕾莉亚·万斯 (56岁)',
+      ja: '主任時計師 オウレリア・ヴァンス (56歳)',
+      ko: '수석 시계 장인 오렐리아 반스 (56세)'
+    },
+    location: {
+      en: 'The Grand Pendulum Chamber, Tower of Saint Irene, District 7',
+      id: 'Ruang Bandul Raksasa, Menara Irene, Sektor 7',
+      zh: '第七区圣艾琳钟楼巨钟摆室',
+      ja: '第7区 聖アイリーン時計塔 巨大振子室',
+      ko: '제7구역 성 아이린 시계탑 대형 진자실'
+    },
+    summary: {
+      en: 'At 03:42 AM, the city clock stopped mid-stroke. Aurelia was impaled upon the pendulum in a room locked from within. Corrupt officials seek to bury it as an industrial accident.',
+      id: 'Pukul 03:42 pagi, lonceng kota terhenti mendadak. Aurelia tertusuk bandul raksasa dalam ruangan terkunci dari dalam. Petinggi korup berusaha menutupinya sebagai kecelakaan kerja.',
+      zh: '凌晨03:42分，巨大市钟戛然而止。奥蕾莉亚在密室中被大钟摆重锤贯穿胸膛。腐败官僚试图将其草草判定为机械工伤意外。',
+      ja: '午前03:42、大時計が突如停止。密室となった振子室でオウレリアが串刺し死体で発見された。腐敗した警察上層部は事故死として葬ろうとしている。',
+      ko: '새벽 03:42, 거대한 도시 시계가 멈췄습니다. 오렐리아는 밀실에서 진자 균형추에 꿰뚫린 채 발견되었습니다. 부패한 관료들은 이를 단순 안전사고로 위장하려 합니다.'
+    },
+    keystoneName: {
+      en: 'Perpetuum Blueprints & Syndicate Confession',
+      id: 'Cetak Biru Orloge & Pengakuan Dalang',
+      zh: '逆时发条设计图与贿赂自白',
+      ja: '永久機関設計図と買収自白',
+      ko: '영구시계 설계도 및 매수 자백'
+    },
+    keystoneDesc: {
+      en: 'Documents proving the murder was commissioned to facilitate complete temporal blackout for the Syndicate heist.',
+      id: 'Dokumen bukti pembunuhan dirancang untuk melumpuhkan kronometer kota demi sabotase sindikat.',
+      zh: '证明这起谋杀案是受幕后辛迪加雇佣，旨在瘫痪全市统一授时系统以便进行大规模洗劫。',
+      ja: '都市全域の標準時を停止させ、暗黒街の大規模略奪を容易にするための計画的暗殺であったことを立証する。',
+      ko: '도시 전역의 표준시를 마비시켜 대규모 약탈을 감행하기 위해 신디케이트가 사주한 청부 살인임을 증명합니다.'
+    }
+  },
+  case_prime_omega: {
+    title: {
+      en: 'THE GRAND PERPETUUM SYNDICATE CONSPIRACY',
+      id: 'KASUS UTAMA: KONSPIRASI SINDIKAT ORLOGE PERPETUUM',
+      zh: '终极主案：永恒钟表辛迪加大阴谋',
+      ja: '大事件：時計結社ペルペトゥームの巨大陰謀',
+      ko: '최종 주 사건: 영구시계 신디케이트의 거대 음모'
+    },
+    victim: {
+      en: 'The Temporal Sovereignty & Civilians of District 7',
+      id: 'Kedaulatan Waktu & Warga Sektor 7',
+      zh: '第七区全体民众与城市时间主权',
+      ja: '第7区市民の生命と都市の時間主権',
+      ko: '제7구역 시민의 안전과 도시 시간 주권'
+    },
+    location: {
+      en: 'Underworld Cartel Hub & High Magistrate Citadel',
+      id: 'Jaringan Sindikat Bawah Tanah & Balai Magistrat Sektor 7',
+      zh: '地下黑帮总枢纽与市政最高裁判所',
+      ja: '地下カルテル中枢および市政最高裁判所',
+      ko: '지하 카르텔 총본부 및 시 최고 재판소'
+    },
+    summary: {
+      en: 'Cases 01 through 04 form an unbroken chain of treason. The canal courier smuggled forbidden mechanisms, the archive fire erased paper trails, the apothecary brewed execution toxins, and Aurelia Vance was killed to seize the clocktower master switch. The syndicate planned to paralyze District 7 and seize perpetual power.',
+      id: 'Keempat kasus yang diselidiki Renata Vance adalah rantai konspirasi tunggal yang terencana: Kurir kanal mengangkut suku cadang, pembakaran arsip melenyapkan jejak tanah, racun apoteker mengeksekusi para saksi, dan pembunuhan sang pembuat jam bertujuan menguasai saklar menara kota demi kudeta waktu sindikat.',
+      zh: '自第01案至第04案是一张环环相扣的罪恶蛛网：运河走私走火入魔的禁忌部件、金库纵火抹杀土地证据、药剂师调制致命无痕毒素、谋杀制表大师以夺取全城授时总闸。幕后辛迪加企图趁时间瘫痪彻底掌控第七区。',
+      ja: '第01事件から第04事件までは全て一本の糸で繋がっていた。密輸、放火、毒殺、そして時計師暗殺による時限装置の強奪。時計結社は第7区の時間そのものを人質に取り、完全な支配を企てていた。',
+      ko: '제01호부터 제04호까지의 사건은 하나의 거대한 음모 사슬입니다. 부두 밀수, 방화 은폐, 독약 제조, 그리고 표준시 장악을 위한 시계 장인 살해까지. 신디케이트는 제7구역의 시간을 마비시키고 영구적인 권력을 장악하려 했습니다.'
+    },
+    keystoneName: {
+      en: 'Conspiracy Synthesis Dossier',
+      id: 'Sintesis Penyelidikan Sektor 7',
+      zh: '第七区全域大阴谋终审结论',
+      ja: '第7区全域巨大陰謀の総合立証',
+      ko: '제7구역 종합 수사 결론'
+    },
+    keystoneDesc: {
+      en: 'All 4 Keystone Evidence pieces align. The Syndicate Cartel and corrupt Magistrates stand fully unmasked.',
+      id: 'Keempat kunci bukti terhubung sempurna! Sindikat bayangan dan petinggi korup berhasil dibongkar total.',
+      zh: '全部4项关键拼图严丝合缝闭合！黑金结社与腐败法官的罪证已被彻底焊死。',
+      ja: '4つの決定的証拠が全て合致。結社の黒幕と買収された司法当局の罪状が白日の下に晒された。',
+      ko: '4가지 핵심 증거가 모두 완벽히 결합되었습니다. 암흑 신디케이트와 부패한 사법 당국의 진상이 완전히 밝혀졌습니다.'
+    }
+  }
+};
+
+function tCase(caseId, field, lang = 'en') {
+  const c = CASES_I18N[caseId];
+  if (!c) return '';
+  const currentLang = c[field] && c[field][lang] ? lang : 'en';
+  return c[field][currentLang] || c[field]['en'] || c[field]['id'] || '';
+}
 
 // --- END: i18n.js ---
 
@@ -6539,6 +8005,90 @@ const CASE_DATA = {
   }
 };
 
+// ============================================================================
+// MULTI-CASE ARCHIVE & GRAND CONSPIRACY DOSSIER SYSTEM
+// ============================================================================
+const ALL_CASES_ARCHIVE = [
+  {
+    id: 'case_d4_01',
+    code: '#D4-01/DRF',
+    status: 'solved',
+    icon: '🌊',
+    date: '14 Oct 1926 · 23:15',
+    titleKey: 'case_01_title',
+    victimKey: 'case_01_victim',
+    locationKey: 'case_01_loc',
+    summaryKey: 'case_01_summary',
+    keystoneNameKey: 'case_01_keystone_name',
+    keystoneDescKey: 'case_01_keystone_desc',
+    keystoneIcon: '📜',
+    isKeystoneUnlocked: () => true
+  },
+  {
+    id: 'case_d4_02',
+    code: '#D4-02/ARS',
+    status: 'solved',
+    icon: '🔥',
+    date: '28 Oct 1926 · 02:40',
+    titleKey: 'case_02_title',
+    victimKey: 'case_02_victim',
+    locationKey: 'case_02_loc',
+    summaryKey: 'case_02_summary',
+    keystoneNameKey: 'case_02_keystone_name',
+    keystoneDescKey: 'case_02_keystone_desc',
+    keystoneIcon: '📄',
+    isKeystoneUnlocked: () => true
+  },
+  {
+    id: 'case_d4_03',
+    code: '#D4-03/TNC',
+    status: 'solved',
+    icon: '🧪',
+    date: '02 Nov 1926 · 19:10',
+    titleKey: 'case_03_title',
+    victimKey: 'case_03_victim',
+    locationKey: 'case_03_loc',
+    summaryKey: 'case_03_summary',
+    keystoneNameKey: 'case_03_keystone_name',
+    keystoneDescKey: 'case_03_keystone_desc',
+    keystoneIcon: '🩸',
+    isKeystoneUnlocked: () => true
+  },
+  {
+    id: 'case_d4_04',
+    code: '#D4-04/HOR',
+    status: 'active',
+    icon: '⏳',
+    dateKey: 'case_date_today',
+    date: 'Today · 03:42 AM',
+    titleKey: 'case_04_title',
+    victimKey: 'case_04_victim',
+    locationKey: 'case_04_loc',
+    summaryKey: 'case_04_summary',
+    keystoneNameKey: 'case_04_keystone_name',
+    keystoneDescKey: 'case_04_keystone_desc',
+    keystoneIcon: '🗝️',
+    isKeystoneUnlocked: (state) => !!(state && (state.hasClue('clue_confession_full') || state.hasClue('clue_perpetuum_ledger') || (state.flags && state.flags.case_solved)))
+  },
+  {
+    id: 'case_prime_omega',
+    code: '#PRIME-00/OMEGA',
+    status: 'master',
+    icon: '👑',
+    dateKey: 'case_date_final',
+    date: 'Grand Synthesis',
+    titleKey: 'case_omega_title',
+    victimKey: 'case_omega_victim',
+    locationKey: 'case_omega_loc',
+    summaryKey: 'case_omega_summary',
+    keystoneNameKey: 'case_omega_keystone_name',
+    keystoneDescKey: 'case_omega_keystone_desc',
+    keystoneIcon: '⚖️',
+    isKeystoneUnlocked: (state) => !!(state && state.flags && state.flags.case_solved)
+  }
+];
+
+
 // --- END: cases.js ---
 
 // --- BEGIN: state.js ---
@@ -6550,7 +8100,9 @@ const LANG_STORAGE_KEY = 'aenigma_language_preference';
 class GameState {
   constructor() {
     this.listeners = [];
-    this.currentLanguage = localStorage.getItem(LANG_STORAGE_KEY) || 'en';
+    const savedLang = localStorage.getItem(LANG_STORAGE_KEY);
+    const validLangs = ['en', 'id', 'zh', 'ja', 'ko'];
+    this.currentLanguage = validLangs.includes(savedLang) ? savedLang : 'en';
     this.reset();
   }
 
@@ -7201,6 +8753,7 @@ class UIController {
     this.currentNodeId = null;
     this.currentInterlocutor = 'Forensic Observation';
     this.activePoi = null;
+    this.activeCaseTab = 'active';
 
     this.initElements();
     this.initLanguageSelector();
@@ -7222,8 +8775,14 @@ class UIController {
     this.victoryModal = document.getElementById('victory-modal');
     this.languageModal = document.getElementById('language-modal');
     this.gameoverModal = document.getElementById('gameover-modal');
+    this.profileModal = document.getElementById('profile-modal');
 
-    // Header meters & stats
+    // Header buttons & preview stats
+    this.hudBtnProfile = document.getElementById('hud-btn-profile');
+    this.hudBtnCase = document.getElementById('hud-btn-case');
+    this.hudHpPreview = document.getElementById('hud-hp-preview');
+    this.hudSpPreview = document.getElementById('hud-sp-preview');
+    this.hudAvatarImg = document.getElementById('hud-avatar-img');
     this.detNameEl = document.getElementById('hud-detective-name');
     this.detAliasEl = document.getElementById('hud-detective-alias');
     this.healthPipsContainer = document.getElementById('health-pips');
@@ -7241,6 +8800,8 @@ class UIController {
     this.thoughtInspector = document.getElementById('thought-inspector');
     this.inventoryContainer = document.getElementById('inventory-items-container');
     this.cluesContainer = document.getElementById('clues-list-container');
+    this.caseBoardContent = document.getElementById('case-board-content');
+    this.caseBoardTabBar = document.getElementById('case-board-tab-bar');
     this.toastContainer = document.getElementById('notification-toast-container');
   }
 
@@ -7312,7 +8873,7 @@ class UIController {
       langLabel.textContent = `${t('nav_language', currentLang).toUpperCase()}: ${langObj.native.toUpperCase()}`;
     }
     document.querySelectorAll('.stage-lang-btn .lang-label').forEach(el => {
-      el.textContent = langObj.native;
+      el.textContent = langObj.native.toUpperCase();
     });
 
     // Update Stage 1 texts
@@ -7324,10 +8885,64 @@ class UIController {
     if (enterBtn) enterBtn.textContent = t('loader_enter', currentLang);
 
     // Update Stage 2 Character Creator texts
-    const creatorTitle = document.querySelector('.creator-section-title span:first-child');
+    const creatorTitle = document.getElementById('creator-dossier-title') || document.querySelector('.creator-section-title span:first-child');
     if (creatorTitle) creatorTitle.textContent = t('creator_title', currentLang);
-    const creatorSub = document.querySelector('.creator-section-title span:last-child');
+    const creatorSub = document.getElementById('creator-dossier-subtitle') || document.querySelector('.creator-section-title span:last-child');
     if (creatorSub) creatorSub.textContent = t('creator_subtitle', currentLang);
+    const precinctSubtext = document.getElementById('creator-precinct-subtext');
+    if (precinctSubtext) precinctSubtext.textContent = t('precinct_label', currentLang);
+    const nameLabel = document.getElementById('creator-name-label');
+    if (nameLabel) nameLabel.textContent = t('name_label', currentLang);
+    const aliasLabel = document.getElementById('creator-alias-label');
+    if (aliasLabel) aliasLabel.textContent = t('alias_label', currentLang);
+    const facetsTitle = document.getElementById('creator-facets-title');
+    if (facetsTitle) facetsTitle.textContent = t('facets_title', currentLang);
+    const pointsPool = document.getElementById('creator-points-pool');
+    if (pointsPool) {
+      const match = pointsPool.textContent.match(/\d+/);
+      const pts = match ? match[0] : '4';
+      pointsPool.textContent = `${pts} ${t('points_available', currentLang)}`;
+    }
+
+    // Attributes labels & descriptions
+    const attrPairs = [
+      { id: 'intellect', name: 'intellect_name', desc: 'intellect_desc' },
+      { id: 'psyche', name: 'psyche_name', desc: 'psyche_desc' },
+      { id: 'physique', name: 'physique_name', desc: 'physique_desc' },
+      { id: 'motorics', name: 'motorics_name', desc: 'motorics_desc' }
+    ];
+    attrPairs.forEach(a => {
+      const nameEl = document.getElementById(`attr-name-${a.id}`);
+      if (nameEl) nameEl.textContent = t(a.name, currentLang);
+      const descEl = document.getElementById(`attr-desc-${a.id}`);
+      if (descEl) descEl.textContent = t(a.desc, currentLang);
+    });
+
+    // Signature skill section
+    const sigTitle = document.getElementById('creator-signature-title');
+    if (sigTitle) sigTitle.textContent = t('signature_title', currentLang);
+    const skillIcons = { esoterica: '🔮', logic: '🟦', empathy: '💜', perception: '👁️', endurance: '🩸', authority: '⚖️' };
+    document.querySelectorAll('.sig-skill-btn').forEach(btn => {
+      const skillKey = btn.dataset.skill;
+      if (skillKey) {
+        const icon = skillIcons[skillKey] || '✨';
+        btn.textContent = `${icon} ${tSkill(skillKey, currentLang).toUpperCase()}`;
+      }
+    });
+
+    // Vices section
+    const vicesTitle = document.getElementById('creator-vices-title');
+    if (vicesTitle) vicesTitle.textContent = t('vices_title', currentLang);
+    document.querySelectorAll('.vice-card').forEach(card => {
+      const vKey = card.dataset.vice;
+      if (vKey) {
+        const vTitle = card.querySelector('.vice-title');
+        if (vTitle) vTitle.textContent = tVice(vKey, 'title', currentLang);
+        const vDesc = card.querySelector('.vice-desc');
+        if (vDesc) vDesc.textContent = tVice(vKey, 'desc', currentLang);
+      }
+    });
+
     const btnFemale = document.getElementById('btn-gender-female');
     if (btnFemale) btnFemale.textContent = t('gender_female', currentLang);
     const btnMale = document.getElementById('btn-gender-male');
@@ -7340,6 +8955,8 @@ class UIController {
     // Update Header HUD
     const caseBadge = document.querySelector('.case-badge');
     if (caseBadge) caseBadge.textContent = t('case_badge', currentLang);
+    const caseBadgeText = document.getElementById('case-badge-text');
+    if (caseBadgeText) caseBadgeText.textContent = t('case_badge', currentLang);
 
     const tabCabinetText = document.getElementById('tab-cabinet-text');
     if (tabCabinetText) tabCabinetText.textContent = t('nav_cabinet', currentLang);
@@ -7347,6 +8964,13 @@ class UIController {
     if (tabCluesText) tabCluesText.textContent = t('nav_clues', currentLang);
     const tabInvText = document.getElementById('tab-inv-text');
     if (tabInvText) tabInvText.textContent = t('nav_inventory', currentLang);
+
+    const audioLabel = document.getElementById('audio-btn-label');
+    if (audioLabel) {
+      audioLabel.textContent = audio.isMuted ? t('audio_off', currentLang) : t('audio_on', currentLang);
+    }
+    const interlocutorStatus = document.getElementById('interlocutor-status-text');
+    if (interlocutorStatus) interlocutorStatus.textContent = t('interlocutor_active', currentLang);
 
     const healthLabel = document.querySelector('.meter-label-row.health span:first-child');
     if (healthLabel) healthLabel.textContent = t('endurance_label', currentLang);
@@ -7368,6 +8992,49 @@ class UIController {
     const hudToggleTitle = document.querySelector('.hud-toggle-title');
     if (hudToggleTitle) hudToggleTitle.textContent = DISTRICT_LABELS ? (DISTRICT_LABELS[currentLang] || 'DISTRICT 7') : 'DISTRICT 7';
 
+    const markersLabel = document.getElementById('toggle-markers-label');
+    if (markersLabel) {
+      const isHidden = document.getElementById('scene-viewport')?.classList.contains('markers-hidden');
+      markersLabel.textContent = isHidden ? t('scene_btn_hidden', currentLang) : t('scene_btn_markers', currentLang);
+    }
+    const diceTallyLabel = document.getElementById('dice-tally-label');
+    if (diceTallyLabel) diceTallyLabel.textContent = t('dice_tally', currentLang);
+
+    // Update Profile Modal Static Labels
+    const profTitle = document.getElementById('profile-modal-title');
+    if (profTitle) profTitle.textContent = t('profile_modal_title', currentLang);
+    const profVitalsTitle = document.getElementById('profile-vitals-title');
+    if (profVitalsTitle) profVitalsTitle.textContent = t('profile_vitals_title', currentLang);
+    const profProgHeader = document.getElementById('profile-progress-header');
+    if (profProgHeader) profProgHeader.textContent = t('profile_progress_header', currentLang);
+    const profTimeLabel = document.getElementById('profile-time-label');
+    if (profTimeLabel) profTimeLabel.textContent = t('profile_time_label', currentLang);
+    const profFacetsTitle = document.getElementById('profile-facets-title');
+    if (profFacetsTitle) profFacetsTitle.textContent = t('facets_title', currentLang);
+    const profSigLabel = document.getElementById('profile-sig-label');
+    if (profSigLabel) profSigLabel.textContent = t('signature_title', currentLang);
+    const profViceLabel = document.getElementById('profile-vice-label');
+    if (profViceLabel) profViceLabel.textContent = t('vices_title', currentLang);
+    const profPrecinctText = document.getElementById('profile-precinct-text');
+    if (profPrecinctText) profPrecinctText.textContent = t('precinct_label', currentLang);
+    const profHpTitle = document.getElementById('profile-health-title');
+    if (profHpTitle) profHpTitle.textContent = `${t('endurance_label', currentLang)} (HP)`;
+    const profSpTitle = document.getElementById('profile-morale-title');
+    if (profSpTitle) profSpTitle.textContent = `${t('morale_label', currentLang)} (SP)`;
+    const profProgTitle = document.getElementById('profile-progress-title');
+    if (profProgTitle) profProgTitle.textContent = PROGRESS_LABELS ? (PROGRESS_LABELS[currentLang] || 'PROGRESS') : 'PROGRESS';
+
+    const fIntLabel = document.getElementById('profile-facet-intellect-label');
+    if (fIntLabel) fIntLabel.textContent = t('intellect_name', currentLang).toUpperCase();
+    const fPsyLabel = document.getElementById('profile-facet-psyche-label');
+    if (fPsyLabel) fPsyLabel.textContent = t('psyche_name', currentLang).toUpperCase();
+    const fPhyLabel = document.getElementById('profile-facet-physique-label');
+    if (fPhyLabel) fPhyLabel.textContent = t('physique_name', currentLang).toUpperCase();
+    const fMotLabel = document.getElementById('profile-facet-motorics-label');
+    if (fMotLabel) fMotLabel.textContent = t('motorics_name', currentLang).toUpperCase();
+
+    this.renderProfile();
+
     // Update Modals Titles
     const cabTitle = document.querySelector('#cabinet-modal .modal-title');
     if (cabTitle) cabTitle.textContent = t('modal_cabinet_title', currentLang);
@@ -7375,6 +9042,15 @@ class UIController {
     if (invTitle) invTitle.textContent = t('modal_inventory_title', currentLang);
     const clueTitle = document.querySelector('#clues-modal .modal-title');
     if (clueTitle) clueTitle.textContent = t('modal_clues_title', currentLang);
+    const tabActiveLabel = document.getElementById('tab-case-active-label');
+    if (tabActiveLabel) tabActiveLabel.textContent = t('case_tab_active', currentLang);
+    const tabArchiveLabel = document.getElementById('tab-case-archive-label');
+    if (tabArchiveLabel) tabArchiveLabel.textContent = t('case_tab_archive', currentLang);
+    const tabMasterLabel = document.getElementById('tab-case-master-label');
+    if (tabMasterLabel) tabMasterLabel.textContent = t('case_tab_master', currentLang);
+    if (this.cluesModal && this.cluesModal.classList.contains('open')) {
+      this.renderCaseBoard();
+    }
     const langModalTitle = document.getElementById('language-modal-title');
     if (langModalTitle) langModalTitle.textContent = t('modal_language_title', currentLang);
     const vicTitle = document.querySelector('#victory-modal .modal-title');
@@ -7385,18 +9061,19 @@ class UIController {
     // Refresh dynamic scene markers & tooltips
     this.renderSceneMarkers();
 
-    // Refresh active inspection banner if open
-    if (this.activePoi) {
-      const bannerTitle = document.querySelector('.evidence-poi-title');
-      if (bannerTitle) bannerTitle.textContent = tPoi(this.activePoi, 'title', currentLang);
-      const bannerDesc = document.querySelector('.evidence-poi-desc');
-      if (bannerDesc) bannerDesc.textContent = tPoi(this.activePoi, 'description', currentLang);
-    }
+    // Refresh all evidence banners in feed
+    this.dialogueFeed.querySelectorAll('.inspection-evidence-banner').forEach(banner => {
+      const poiId = banner.dataset.poiId;
+      if (poiId) {
+        const bTitle = banner.querySelector('.evidence-poi-title');
+        if (bTitle) bTitle.textContent = tPoi(poiId, 'title', currentLang);
+        const bDesc = banner.querySelector('.evidence-poi-desc');
+        if (bDesc) bDesc.textContent = tPoi(poiId, 'description', currentLang);
+      }
+    });
 
-    // Refresh active dialogue node if currently interacting
-    if (this.currentNodeId) {
-      this.retranslateCurrentDialogue();
-    }
+    // Refresh active dialogue node and all past feed entries
+    this.retranslateCurrentDialogue();
 
     // Refresh open modals
     if (this.inventoryModal && this.inventoryModal.classList.contains('open')) {
@@ -7411,42 +9088,50 @@ class UIController {
   }
 
   retranslateCurrentDialogue() {
-    if (!this.currentNodeId) return;
-    const baseNode = this.caseData.dialogueNodes[this.currentNodeId];
-    if (!baseNode) return;
+    const currentLang = this.state.currentLanguage;
 
-    const node = getLocalizedDialogueNode(this.currentNodeId, this.state.currentLanguage, baseNode);
+    // Retranslate ALL past dialogue entries in feed
+    this.dialogueFeed.querySelectorAll('.dialogue-entry').forEach(entry => {
+      const nodeId = entry.dataset.nodeId;
+      if (nodeId && this.caseData.dialogueNodes[nodeId]) {
+        const baseNode = this.caseData.dialogueNodes[nodeId];
+        const node = getLocalizedDialogueNode(nodeId, currentLang, baseNode);
+        const speakerLabel = entry.querySelector('.speaker-label');
+        if (speakerLabel) speakerLabel.textContent = node.speaker || 'Narrative';
+        const prose = entry.querySelector('.speaker-prose');
+        if (prose) prose.textContent = node.text;
 
-    // Update speaker label
-    if (this.interlocutorNameEl) {
-      this.interlocutorNameEl.textContent = node.speaker || t('speaker_forensic', this.state.currentLanguage);
-    }
-
-    // Update last dialogue entry in feed
-    const entries = this.dialogueFeed.querySelectorAll('.dialogue-entry');
-    if (entries.length > 0) {
-      const lastEntry = entries[entries.length - 1];
-      const speakerLabel = lastEntry.querySelector('.speaker-label');
-      if (speakerLabel) speakerLabel.textContent = node.speaker || 'Narrative';
-      const prose = lastEntry.querySelector('.speaker-prose');
-      if (prose) prose.textContent = node.text;
-
-      // Update inner voices
-      const voiceBlocks = lastEntry.querySelectorAll('.inner-voice-block');
-      if (node.voices && node.voices.length > 0) {
-        node.voices.forEach((v, idx) => {
-          if (voiceBlocks[idx]) {
-            const badge = voiceBlocks[idx].querySelector('.voice-badge');
-            if (badge) badge.textContent = v.badge;
-            const voiceProse = voiceBlocks[idx].querySelector('.voice-prose');
-            if (voiceProse) voiceProse.textContent = `"${v.text}"`;
-          }
-        });
+        const voiceBlocks = entry.querySelectorAll('.inner-voice-block');
+        if (node.voices && node.voices.length > 0) {
+          node.voices.forEach((v, idx) => {
+            if (voiceBlocks[idx]) {
+              const badge = voiceBlocks[idx].querySelector('.voice-badge');
+              if (badge) badge.textContent = v.badge;
+              const voiceProse = voiceBlocks[idx].querySelector('.voice-prose');
+              if (voiceProse) voiceProse.textContent = `"${v.text}"`;
+            }
+          });
+        }
       }
-    }
+    });
 
-    // Re-render dialogue choices
-    this.renderChoices(node.options);
+    // Update current active interlocutor bar
+    if (this.currentNodeId) {
+      const baseNode = this.caseData.dialogueNodes[this.currentNodeId];
+      if (baseNode) {
+        const node = getLocalizedDialogueNode(this.currentNodeId, currentLang, baseNode);
+        if (this.interlocutorNameEl) {
+          this.interlocutorNameEl.textContent = node.speaker || t('speaker_forensic', currentLang);
+        }
+        // Re-render active options in current language
+        this.renderChoices(node.options);
+      }
+    } else {
+      if (this.interlocutorNameEl) {
+        this.interlocutorNameEl.textContent = t('speaker_forensic', currentLang);
+      }
+      this.dialogueChoices.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:12px;">${t('dialogue_idle_prompt', currentLang)}</div>`;
+    }
   }
 
   bindEvents() {
@@ -7525,9 +9210,30 @@ class UIController {
       });
     }
 
-    // Scene Toolbar Controls: Show/Hide POI Indicators & Sonar Radar Ping
+    // Case Board Tabs Switcher
+    document.querySelectorAll('.case-tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tab = e.currentTarget.dataset.tab;
+        if (tab) {
+          this.activeCaseTab = tab;
+          audio.playTabSwitch();
+          this.renderCaseBoard();
+        }
+      });
+    });
+
+    // Header Quick Triggers: Profile Dossier & Case Overview
+    document.getElementById('hud-btn-profile')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openProfileModal();
+    });
+    document.getElementById('hud-btn-case')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCluesModal();
+    });
+
+    // Scene Toolbar Controls: Show/Hide POI Indicators
     const toggleMarkersBtn = document.getElementById('btn-toggle-poi-markers');
-    const radarPingBtn = document.getElementById('btn-toggle-radar-ping');
     const sceneViewport = document.getElementById('scene-viewport');
 
     if (toggleMarkersBtn && sceneViewport) {
@@ -7543,19 +9249,7 @@ class UIController {
       });
     }
 
-    if (radarPingBtn) {
-      radarPingBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        audio.playPoiHover();
-        document.querySelectorAll('.poi-pulse-radar').forEach(p => {
-          p.style.animation = 'none';
-          void p.offsetWidth;
-          p.style.animation = 'radarPing 1.2s ease-out';
-        });
-      });
-    }
-
-    // Keyboard Hotkeys: 'M' for Markers toggle, 'Space' for Radar Ping
+    // Keyboard Hotkeys: 'M' for Markers toggle
     document.addEventListener('keydown', (e) => {
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
       if (e.key === 'm' || e.key === 'M') {
@@ -7643,32 +9337,131 @@ class UIController {
     modal.classList.remove('open');
   }
 
-  updateHUD() {
-    if (!this.detNameEl) return;
-    this.detNameEl.textContent = this.state.detective.name;
-    this.detAliasEl.textContent = this.state.detective.alias;
+  openProfileModal() {
+    this.openModal(this.profileModal);
+    this.renderProfile();
+  }
 
-    // Render Health Pips
-    this.healthPipsContainer.innerHTML = '';
-    for (let i = 0; i < this.state.detective.maxHealth; i++) {
-      const pip = document.createElement('div');
-      pip.className = `segment-pip health ${i < this.state.detective.health ? 'active' : ''}`;
-      this.healthPipsContainer.appendChild(pip);
-    }
+  renderProfile() {
+    if (!this.profileModal) return;
+    const lang = this.state.currentLanguage;
+    const det = this.state.detective;
+    const portraitSrc = det.portrait || (det.gender === 'male' ? 'assets/portrait_male.jpg' : 'assets/portrait_female.jpg');
 
-    // Render Morale Pips
-    this.moralePipsContainer.innerHTML = '';
-    for (let i = 0; i < this.state.detective.maxMorale; i++) {
-      const pip = document.createElement('div');
-      pip.className = `segment-pip morale ${i < this.state.detective.morale ? 'active' : ''}`;
-      this.moralePipsContainer.appendChild(pip);
-    }
+    const avatarEl = document.getElementById('profile-avatar-img');
+    if (avatarEl) avatarEl.src = portraitSrc;
+    const nameEl = document.getElementById('profile-name-text');
+    if (nameEl) nameEl.textContent = det.name;
+    const aliasEl = document.getElementById('profile-alias-text');
+    if (aliasEl) aliasEl.textContent = `"${det.alias}"`;
+    const precinctEl = document.getElementById('profile-precinct-text');
+    if (precinctEl) precinctEl.textContent = t('precinct_label', lang);
 
-    // Time display
+    // Time
     const h = String(this.state.time.hour).padStart(2, '0');
     const m = String(this.state.time.minute).padStart(2, '0');
-    const dayLabel = t('day_prefix', this.state.currentLanguage);
-    this.hudTimeEl.textContent = `${dayLabel} ${this.state.time.day} · ${h}:${m}`;
+    const timeVal = document.getElementById('profile-time-val');
+    if (timeVal) timeVal.textContent = `${t('day_prefix', lang)} ${this.state.time.day} · ${h}:${m}`;
+
+    // Vitals text & pips
+    const hpCount = document.getElementById('profile-health-count');
+    if (hpCount) hpCount.textContent = `${det.health} / ${det.maxHealth}`;
+    const spCount = document.getElementById('profile-morale-count');
+    if (spCount) spCount.textContent = `${det.morale} / ${det.maxMorale}`;
+
+    const hpPips = document.getElementById('profile-health-pips');
+    if (hpPips) {
+      hpPips.innerHTML = '';
+      for (let i = 0; i < det.maxHealth; i++) {
+        const pip = document.createElement('div');
+        pip.className = `segment-pip health ${i < det.health ? 'active' : ''}`;
+        hpPips.appendChild(pip);
+      }
+    }
+
+    const spPips = document.getElementById('profile-morale-pips');
+    if (spPips) {
+      spPips.innerHTML = '';
+      for (let i = 0; i < det.maxMorale; i++) {
+        const pip = document.createElement('div');
+        pip.className = `segment-pip morale ${i < det.morale ? 'active' : ''}`;
+        spPips.appendChild(pip);
+      }
+    }
+
+    // Progress
+    const pct = this.state.getProgressPercentage();
+    const progVal = document.getElementById('profile-progress-val');
+    if (progVal) progVal.textContent = `${pct}%`;
+    const progFill = document.getElementById('profile-progress-fill');
+    if (progFill) progFill.style.width = `${pct}%`;
+
+    // Facets
+    const fIntellect = document.getElementById('profile-facet-intellect-val');
+    if (fIntellect) fIntellect.textContent = det.attributes.intellect;
+    const fPsyche = document.getElementById('profile-facet-psyche-val');
+    if (fPsyche) fPsyche.textContent = det.attributes.psyche;
+    const fPhysique = document.getElementById('profile-facet-physique-val');
+    if (fPhysique) fPhysique.textContent = det.attributes.physique;
+    const fMotorics = document.getElementById('profile-facet-motorics-val');
+    if (fMotorics) fMotorics.textContent = det.attributes.motorics;
+
+    // Signature skill & Vice
+    const skillIcons = { esoterica: '🔮', logic: '🟦', empathy: '💜', perception: '👁️', endurance: '🩸', authority: '⚖️' };
+    const sigVal = document.getElementById('profile-sig-val');
+    if (sigVal) {
+      const icon = skillIcons[det.signatureSkill] || '✨';
+      sigVal.textContent = `${icon} ${tSkill(det.signatureSkill, lang).toUpperCase()}`;
+    }
+    const viceVal = document.getElementById('profile-vice-val');
+    if (viceVal) {
+      viceVal.textContent = tVice(det.vice, 'title', lang);
+    }
+  }
+
+  updateHUD() {
+    if (this.detNameEl) this.detNameEl.textContent = this.state.detective.name;
+    if (this.detAliasEl) this.detAliasEl.textContent = this.state.detective.alias;
+
+    // Mini vitals preview chip in header
+    if (this.hudHpPreview) {
+      this.hudHpPreview.textContent = `${this.state.detective.health}/${this.state.detective.maxHealth}`;
+    }
+    if (this.hudSpPreview) {
+      this.hudSpPreview.textContent = `${this.state.detective.morale}/${this.state.detective.maxMorale}`;
+    }
+    const portraitSrc = this.state.detective.portrait || (this.state.detective.gender === 'male' ? 'assets/portrait_male.jpg' : 'assets/portrait_female.jpg');
+    if (this.hudAvatarImg) {
+      this.hudAvatarImg.src = portraitSrc;
+    }
+
+    // Render Health Pips (if containers present)
+    if (this.healthPipsContainer) {
+      this.healthPipsContainer.innerHTML = '';
+      for (let i = 0; i < this.state.detective.maxHealth; i++) {
+        const pip = document.createElement('div');
+        pip.className = `segment-pip health ${i < this.state.detective.health ? 'active' : ''}`;
+        this.healthPipsContainer.appendChild(pip);
+      }
+    }
+
+    // Render Morale Pips (if containers present)
+    if (this.moralePipsContainer) {
+      this.moralePipsContainer.innerHTML = '';
+      for (let i = 0; i < this.state.detective.maxMorale; i++) {
+        const pip = document.createElement('div');
+        pip.className = `segment-pip morale ${i < this.state.detective.morale ? 'active' : ''}`;
+        this.moralePipsContainer.appendChild(pip);
+      }
+    }
+
+    // Time display (if present in header)
+    if (this.hudTimeEl) {
+      const h = String(this.state.time.hour).padStart(2, '0');
+      const m = String(this.state.time.minute).padStart(2, '0');
+      const dayLabel = t('day_prefix', this.state.currentLanguage);
+      this.hudTimeEl.textContent = `${dayLabel} ${this.state.time.day} · ${h}:${m}`;
+    }
 
     // Counters
     const cabBadge = document.getElementById('cabinet-count-badge');
@@ -7682,6 +9475,9 @@ class UIController {
 
     // Refresh Investigation Progress Meter
     this.updateProgressMeter();
+
+    // Also update full profile modal if it is active/rendered
+    this.renderProfile();
   }
 
   updateProgressMeter() {
@@ -7836,6 +9632,7 @@ class UIController {
     // Create Entry in Feed
     const entry = document.createElement('div');
     entry.className = 'dialogue-entry';
+    entry.dataset.nodeId = nodeId;
     entry.innerHTML = `
       <div class="speaker-title-row">
         <span class="speaker-avatar">${node.avatar || '👤'}</span>
@@ -7872,7 +9669,7 @@ class UIController {
     const renderCloseBtn = () => {
       const closeBtn = document.createElement('button');
       closeBtn.className = 'choice-btn';
-      closeBtn.innerHTML = `<span class="choice-num">[1]</span> <span>[${t('speaker_forensic', this.state.currentLanguage)}]</span>`;
+      closeBtn.innerHTML = `<span class="choice-num">[1]</span> <span class="choice-text">[${t('dialogue_leave', this.state.currentLanguage)}]</span>`;
       closeBtn.addEventListener('click', () => {
         this.currentNodeId = null;
         this.activePoi = null;
@@ -7916,7 +9713,7 @@ class UIController {
         btn.classList.add(check.type === 'red' ? 'red-check' : 'white-check');
         btn.innerHTML = `
           <span class="choice-num">[${currentNum}]</span>
-          <span>${visitedPrefix}${opt.text}</span>
+          <span class="choice-text">${visitedPrefix}${opt.text}</span>
           <span class="check-prob-pill">${prob}%</span>
         `;
 
@@ -7929,7 +9726,7 @@ class UIController {
       } else {
         btn.innerHTML = `
           <span class="choice-num">[${currentNum}]</span>
-          <span>${visitedPrefix}${opt.text}</span>
+          <span class="choice-text">${visitedPrefix}${opt.text}</span>
         `;
 
         btn.addEventListener('click', () => {
@@ -7972,6 +9769,8 @@ class UIController {
 
     const skillLabel = tSkill(checkConfig.skill, this.state.currentLanguage);
     checkHeader.textContent = `${skillLabel} (DC ${checkConfig.difficulty})`;
+    const tallyLabel = document.getElementById('dice-tally-label');
+    if (tallyLabel) tallyLabel.textContent = t('dice_tally', this.state.currentLanguage);
     d1El.classList.add('rolling');
     d2El.classList.add('rolling');
     outcomeEl.textContent = t('dice_rolling', this.state.currentLanguage);
@@ -7993,11 +9792,11 @@ class UIController {
       scoreVal.textContent = `${result.diceSum} + ${result.totalBonus} = ${result.totalScore}`;
 
       if (result.isCriticalSuccess) {
-        outcomeEl.textContent = `★ ${t('dice_passed', this.state.currentLanguage)} (EPIPHANY)`;
+        outcomeEl.textContent = `★ ${t('dice_epiphany', this.state.currentLanguage)}`;
         outcomeEl.className = 'outcome-announcement critical';
         audio.playSuccess();
       } else if (result.isCriticalFailure) {
-        outcomeEl.textContent = `☠ ${t('dice_failed', this.state.currentLanguage)} (SNAKE EYES)`;
+        outcomeEl.textContent = `☠ ${t('dice_snake_eyes', this.state.currentLanguage)}`;
         outcomeEl.className = 'outcome-announcement failed';
         audio.playFailure();
       } else if (result.passed) {
@@ -8049,6 +9848,7 @@ class UIController {
 
   renderCabinet() {
     this.thoughtNodesContainer.innerHTML = '';
+    const lang = this.state.currentLanguage;
     THOUGHTS_CATALOG.forEach(thought => {
       const isInternalized = this.state.thoughtCabinet.internalized.some(t => t.id === thought.id);
       const isCooking = this.state.thoughtCabinet.internalizing.find(t => t.id === thought.id);
@@ -8067,13 +9867,16 @@ class UIController {
         icon = '💡';
       }
 
+      const thoughtName = tThought(thought.id, 'name', lang) || thought.name;
+      const thoughtCat = tThought(thought.id, 'category', lang) || thought.category;
+
       const nodeCard = document.createElement('div');
       nodeCard.className = `thought-node-card ${statusClass}`;
       nodeCard.innerHTML = `
         <span class="node-icon">${icon}</span>
         <div class="node-info">
-          <div class="node-title">${thought.name}</div>
-          <span class="node-category">${thought.category}</span>
+          <div class="node-title">${thoughtName}</div>
+          <span class="node-category">${thoughtCat}</span>
         </div>
       `;
 
@@ -8100,32 +9903,40 @@ class UIController {
 
   inspectThought(thought, status) {
     const { isInternalized, isCooking, isKnown } = status;
+    const lang = this.state.currentLanguage;
+
+    const tName = tThought(thought.id, 'name', lang) || thought.name;
+    const tCat = tThought(thought.id, 'category', lang) || thought.category;
+    const tFlav = tThought(thought.id, 'flavor', lang) || thought.flavor;
+    const tExp = tThought(thought.id, 'explanation', lang) || thought.explanation;
+    const tTemp = tThought(thought.id, 'tempDrawback', lang) || thought.tempDrawback;
+    const tSol = tThought(thought.id, 'solution', lang) || thought.solution;
 
     let actionBtnHtml = '';
     if (isInternalized) {
-      actionBtnHtml = `<div style="color:var(--gold-accent);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">✨ PERMANENT BREAKTHROUGH ACTIVE</div>`;
+      actionBtnHtml = `<div style="color:var(--gold-accent);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">${t('cabinet_internalized_status', lang)}</div>`;
     } else if (isCooking) {
-      actionBtnHtml = `<div style="color:var(--color-psyche);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">⏳ Internalizing... (${isCooking.progress}/${thought.requiredTicks} case moments)</div>`;
+      actionBtnHtml = `<div style="color:var(--color-psyche);font-family:var(--font-mono);font-size:0.85rem;text-align:center;">⏳ ${t('cabinet_researching', lang)} (${isCooking.progress}/${thought.requiredTicks})</div>`;
     } else if (isKnown) {
-      actionBtnHtml = `<button class="internalize-action-btn" id="btn-start-internalize">INTERNALIZE THIS THOUGHT</button>`;
+      actionBtnHtml = `<button class="internalize-action-btn" id="btn-start-internalize">${t('cabinet_btn_internalize', lang)}</button>`;
     } else {
-      actionBtnHtml = `<div style="color:var(--text-muted);font-style:italic;font-size:0.85rem;text-align:center;">Investigate further in Saint Irene to unlock this thought.</div>`;
+      actionBtnHtml = `<div style="color:var(--text-muted);font-style:italic;font-size:0.85rem;text-align:center;">${t('cabinet_locked_hint', lang)}</div>`;
     }
 
     this.thoughtInspector.innerHTML = `
-      <span class="category-tag">${thought.category}</span>
-      <h3 class="thought-heading">${thought.name}</h3>
-      <div class="thought-flavor-quote">"${thought.flavor}"</div>
-      <div class="thought-deep-explanation">${thought.explanation}</div>
+      <span class="category-tag">${tCat}</span>
+      <h3 class="thought-heading">${tName}</h3>
+      <div class="thought-flavor-quote">"${tFlav}"</div>
+      <div class="thought-deep-explanation">${tExp}</div>
 
       <div class="thought-stat-box">
-        <span class="box-title">Temporary Contemplation Effect</span>
-        <span class="penalty-text">${thought.tempDrawback}</span>
+        <span class="box-title">${t('cabinet_temp_box', lang)}</span>
+        <span class="penalty-text">${tTemp}</span>
       </div>
 
       <div class="thought-stat-box">
-        <span class="box-title">Permanent Psychological Breakthrough</span>
-        <span class="bonus-text">${thought.solution}</span>
+        <span class="box-title">${t('cabinet_perm_box', lang)}</span>
+        <span class="bonus-text">${tSol}</span>
       </div>
 
       ${actionBtnHtml}
@@ -8154,6 +9965,10 @@ class UIController {
   renderInventory() {
     this.inventoryContainer.innerHTML = '';
     const lang = this.state.currentLanguage;
+    if (this.state.inventory.length === 0) {
+      this.inventoryContainer.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:16px;">${t('inventory_empty', lang)}</div>`;
+      return;
+    }
 
     this.state.inventory.forEach(item => {
       const card = document.createElement('div');
@@ -8161,11 +9976,13 @@ class UIController {
 
       let bonusText = '';
       if (item.bonus) {
-        bonusText = Object.entries(item.bonus).map(([k, v]) => `+${v} ${k.toUpperCase()}`).join(', ');
+        bonusText = Object.entries(item.bonus).map(([k, v]) => `+${v} ${tSkill(k, lang).toUpperCase()}`).join(', ');
       }
 
       const itemName = tItem(item.id, 'name', lang) || item.name;
       const itemDesc = tItem(item.id, 'description', lang) || item.description;
+      const itemTypeLabel = t(`item_type_${item.type}`, lang) || item.type;
+      const buffLabel = t('buff_label', lang) || 'Buff';
 
       let actionLabel = t('btn_use', lang);
       if (item.id === 'perpetuum_ledger') actionLabel = t('btn_read', lang);
@@ -8176,11 +9993,11 @@ class UIController {
           <span class="inv-icon">${item.icon}</span>
           <div>
             <div class="inv-name">${itemName}</div>
-            <span class="inv-type-pill">${item.type}</span>
+            <span class="inv-type-pill">${itemTypeLabel}</span>
           </div>
         </div>
         <div class="inv-description">${itemDesc}</div>
-        ${bonusText ? `<div class="inv-bonus-text">Buff: ${bonusText}</div>` : ''}
+        ${bonusText ? `<div class="inv-bonus-text">${buffLabel}: ${bonusText}</div>` : ''}
         <div class="inv-action-row">
           ${item.isUsable ? `
             <button class="inv-use-btn" data-id="${item.id}">
@@ -8200,32 +10017,240 @@ class UIController {
     });
   }
 
-  // Clues Modal
+  // Clues & Multi-Case Board Modal
   openCluesModal() {
     this.openModal(this.cluesModal);
-    this.renderClues();
+    this.renderCaseBoard();
   }
 
   renderClues() {
-    this.cluesContainer.innerHTML = '';
-    const lang = this.state.currentLanguage;
-    if (this.state.clues.length === 0) {
-      this.cluesContainer.innerHTML = `<div style="color:var(--text-muted);font-style:italic;padding:16px;">${t('scene_location', lang)}</div>`;
-      return;
+    this.renderCaseBoard();
+  }
+
+  renderCaseBoard() {
+    if (!this.caseBoardContent) {
+      this.caseBoardContent = document.getElementById('case-board-content');
     }
+    if (!this.caseBoardContent) return;
+    this.caseBoardContent.innerHTML = '';
+    const lang = this.state.currentLanguage;
+    const tab = this.activeCaseTab || 'active';
 
-    this.state.clues.forEach(clue => {
-      const card = document.createElement('div');
-      card.className = 'clue-card';
-      const clueTitle = tClue(clue.id, 'title', lang) || clue.title;
-      const clueDesc = tClue(clue.id, 'desc', lang) || clue.desc;
-
-      card.innerHTML = `
-        <div class="clue-title-line">📌 ${clueTitle}</div>
-        <div class="clue-detail-text">${clueDesc}</div>
-      `;
-      this.cluesContainer.appendChild(card);
+    // Update tab button visual active state
+    document.querySelectorAll('.case-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tab);
     });
+
+    if (tab === 'active') {
+      // Render Active Inquiry: Case #D4-04
+      const activeCase = (typeof ALL_CASES_ARCHIVE !== 'undefined' ? ALL_CASES_ARCHIVE.find(c => c.id === 'case_d4_04') : null) || {
+        code: '#D4-04/HOR',
+        dateKey: 'case_date_today',
+        date: 'Today · 03:42 AM',
+        isKeystoneUnlocked: () => false
+      };
+      const title = tCase('case_d4_04', 'title', lang);
+      const victim = tCase('case_d4_04', 'victim', lang);
+      const loc = tCase('case_d4_04', 'location', lang);
+      const summary = tCase('case_d4_04', 'summary', lang);
+      const dateText = t(activeCase.dateKey, lang) || activeCase.date;
+      const pct = this.state.getProgressPercentage();
+
+      const caseHtml = `
+        <div class="case-dossier-hero active-case">
+          <div class="case-hero-header">
+            <span class="case-hero-code">${activeCase.code}</span>
+            <span class="case-hero-status active">${t('case_status_active', lang)}</span>
+          </div>
+          <h3 class="case-hero-title">${title}</h3>
+          <div class="case-hero-meta">
+            <span>👤 <strong>${victim}</strong></span>
+            <span>📍 <strong>${loc}</strong></span>
+            <span>⏱️ <strong>${dateText}</strong></span>
+          </div>
+          <p class="case-hero-summary">${summary}</p>
+          <div class="case-hero-progress">
+            <div class="hud-progress-info">
+              <span>${(typeof PROGRESS_LABELS !== 'undefined' && PROGRESS_LABELS[lang]) || 'PROGRESS'}:</span>
+              <span>${pct}%</span>
+            </div>
+            <div class="hud-progress-track">
+              <div class="hud-progress-fill" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-evidence-section">
+          <div class="case-section-heading">
+            <span>📌 ${t('modal_clues_title', lang)} (${this.state.clues.length})</span>
+          </div>
+          <div class="case-clues-grid" id="active-case-clues-grid">
+            ${this.state.clues.length === 0 ? `
+              <div class="case-empty-notice">${t('clues_empty', lang)}</div>
+            ` : this.state.clues.map(clue => {
+              const cTitle = tClue(clue.id, 'title', lang) || clue.title;
+              const cDesc = tClue(clue.id, 'desc', lang) || clue.desc;
+              return `
+                <div class="case-evidence-card">
+                  <div class="evidence-card-title">🔍 ${cTitle}</div>
+                  <div class="evidence-card-desc">${cDesc}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      this.caseBoardContent.innerHTML = caseHtml;
+
+    } else if (tab === 'archive') {
+      // Render Solved Archive: Cases #D4-01, #D4-02, #D4-03
+      const solvedCases = (typeof ALL_CASES_ARCHIVE !== 'undefined' ? ALL_CASES_ARCHIVE.filter(c => c.status === 'solved') : []);
+      const solvedListHtml = solvedCases.map(c => {
+        const title = tCase(c.id, 'title', lang);
+        const victim = tCase(c.id, 'victim', lang);
+        const loc = tCase(c.id, 'location', lang);
+        const summary = tCase(c.id, 'summary', lang);
+        const kName = tCase(c.id, 'keystoneName', lang);
+        const kDesc = tCase(c.id, 'keystoneDesc', lang);
+        const dateText = t(c.dateKey, lang) || c.date;
+
+        return `
+          <div class="solved-case-dossier-card">
+            <div class="solved-case-head">
+              <span class="case-hero-code">${c.code}</span>
+              <span class="case-hero-status solved">${t('case_status_solved', lang)}</span>
+            </div>
+            <h4 class="solved-case-title">${c.icon} ${title}</h4>
+            <div class="case-hero-meta">
+              <span>👤 ${victim}</span>
+              <span>📍 ${loc}</span>
+              <span>📅 ${dateText}</span>
+            </div>
+            <p class="solved-case-summary">${summary}</p>
+            <div class="solved-case-keystone">
+              <div class="keystone-tag">${t('keystone_secured', lang)}:</div>
+              <div class="keystone-name">${c.keystoneIcon} ${kName}</div>
+              <div class="keystone-desc">${kDesc}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      this.caseBoardContent.innerHTML = `
+        <div class="solved-archive-container">
+          <div class="archive-intro-box">
+            <span>📁 ${t('case_tab_archive', lang)}</span>
+            <p>${t('archive_intro_text', lang)}</p>
+          </div>
+          <div class="solved-cases-list">
+            ${solvedListHtml}
+          </div>
+        </div>
+      `;
+
+    } else if (tab === 'master') {
+      // Render Grand Master Case: #PRIME-00/OMEGA
+      const omegaTitle = tCase('case_prime_omega', 'title', lang);
+      const omegaVictim = tCase('case_prime_omega', 'victim', lang);
+      const omegaLoc = tCase('case_prime_omega', 'location', lang);
+      const omegaSummary = tCase('case_prime_omega', 'summary', lang);
+
+      const k1Name = tCase('case_d4_01', 'keystoneName', lang);
+      const k1Desc = tCase('case_d4_01', 'keystoneDesc', lang);
+      const k2Name = tCase('case_d4_02', 'keystoneName', lang);
+      const k2Desc = tCase('case_d4_02', 'keystoneDesc', lang);
+      const k3Name = tCase('case_d4_03', 'keystoneName', lang);
+      const k3Desc = tCase('case_d4_03', 'keystoneDesc', lang);
+      const k4Name = tCase('case_d4_04', 'keystoneName', lang);
+
+      const k4Unlocked = !!(this.state && (this.state.hasClue('clue_confession_full') || this.state.hasClue('clue_perpetuum_ledger') || (this.state.flags && this.state.flags.case_solved)));
+      const k4Desc = k4Unlocked ? t('k4_unlocked_desc', lang) : t('k4_pending_desc', lang);
+
+      const fromPrefix = t('from_prefix', lang);
+      const statusSecured = t('status_secured', lang);
+      const statusK4 = k4Unlocked ? t('status_unmasked', lang) : t('status_inquiry', lang);
+
+      const masterHtml = `
+        <div class="master-case-hero">
+          <div class="case-hero-header">
+            <span class="case-hero-code gold">#PRIME-00/OMEGA</span>
+            <span class="case-hero-status master">${t('case_status_master', lang)}</span>
+          </div>
+          <h3 class="master-hero-title">👑 ${omegaTitle}</h3>
+          <div class="case-hero-meta">
+            <span>🎯 <strong>${omegaVictim}</strong></span>
+            <span>📍 <strong>${omegaLoc}</strong></span>
+          </div>
+          <p class="master-hero-summary">${omegaSummary}</p>
+        </div>
+
+        <div class="master-keystone-network">
+          <div class="case-section-heading">
+            <span>🕸️ ${t('keystone_network_title', lang)}</span>
+          </div>
+          <div class="keystone-grid">
+            
+            <div class="keystone-node secured">
+              <div class="keystone-node-head">
+                <span class="keystone-source-code">${fromPrefix} #D4-01/DRF</span>
+                <span class="keystone-status-badge secured">${statusSecured}</span>
+              </div>
+              <div class="keystone-node-title">📜 ${k1Name}</div>
+              <div class="keystone-node-info">${k1Desc}</div>
+            </div>
+
+            <div class="keystone-node secured">
+              <div class="keystone-node-head">
+                <span class="keystone-source-code">${fromPrefix} #D4-02/ARS</span>
+                <span class="keystone-status-badge secured">${statusSecured}</span>
+              </div>
+              <div class="keystone-node-title">📄 ${k2Name}</div>
+              <div class="keystone-node-info">${k2Desc}</div>
+            </div>
+
+            <div class="keystone-node secured">
+              <div class="keystone-node-head">
+                <span class="keystone-source-code">${fromPrefix} #D4-03/TNC</span>
+                <span class="keystone-status-badge secured">${statusSecured}</span>
+              </div>
+              <div class="keystone-node-title">🩸 ${k3Name}</div>
+              <div class="keystone-node-info">${k3Desc}</div>
+            </div>
+
+            <div class="keystone-node ${k4Unlocked ? 'secured' : 'pending'}">
+              <div class="keystone-node-head">
+                <span class="keystone-source-code">${fromPrefix} #D4-04/HOR</span>
+                <span class="keystone-status-badge ${k4Unlocked ? 'secured' : 'pending'}">${statusK4}</span>
+              </div>
+              <div class="keystone-node-title">🗝️ ${k4Name}</div>
+              <div class="keystone-node-info">${k4Desc}</div>
+            </div>
+
+          </div>
+
+          <div class="master-action-box">
+            <button id="btn-synthesize-master-case" class="action-btn-large ${k4Unlocked ? 'ready' : ''}" style="width: 100%;">
+              ⚖️ ${t('btn_synthesize_master', lang)}
+            </button>
+            <div class="master-synthesis-hint">
+              ${k4Unlocked ? t('master_synthesis_ready', lang) : t('master_synthesis_not_ready', lang)}
+            </div>
+          </div>
+        </div>
+      `;
+
+      this.caseBoardContent.innerHTML = masterHtml;
+
+      document.getElementById('btn-synthesize-master-case')?.addEventListener('click', () => {
+        if (k4Unlocked) {
+          audio.playVictoryChime();
+          this.showToast(`👑 ${t('master_synthesis_ready', lang)}`);
+        } else {
+          audio.playUiClick();
+          this.showToast(`⚠️ ${t('master_synthesis_not_ready', lang)}`);
+        }
+      });
+    }
   }
 
   // Atmospheric Game Over Horror Modal
@@ -8268,11 +10293,11 @@ class UIController {
     if (sum) {
       sum.innerHTML = `
         <strong>${t('case_badge', lang)}</strong><br><br>
-        Lead Investigator: <em>${this.state.detective.name}</em> ("${this.state.detective.alias}")<br>
-        Signature Facet: <em>${this.state.detective.signatureSkill.toUpperCase()}</em><br>
-        Clues Uncovered: <em>${this.state.clues.length} pieces of evidence</em><br>
-        Thoughts Internalized: <em>${this.state.thoughtCabinet.internalized.length}</em><br><br>
-        ${t('ending_coverup', lang) || 'The inquiry is closed. Justice has been wrought in Saint Irene.'}
+        ${t('victory_lead', lang)} <em>${this.state.detective.name}</em> ("${this.state.detective.alias}")<br>
+        ${t('victory_facet', lang)} <em>${tSkill(this.state.detective.signatureSkill, lang).toUpperCase()}</em><br>
+        ${t('victory_clues', lang)} <em>${this.state.clues.length}</em><br>
+        ${t('victory_thoughts', lang)} <em>${this.state.thoughtCabinet.internalized.length}</em><br><br>
+        ${t('ending_coverup', lang)}
       `;
     }
   }
@@ -8282,22 +10307,6 @@ class UIController {
 
 // --- BEGIN: main.js ---
 // Aenigma Main Bootstrap & Flow Orchestrator
-
-const PHILOSOPHICAL_QUOTES = [
-  "“The clock never stops. Only the flesh within it forgets how to beat.”",
-  "“There is a place where every unanswered question gathers like dead skin.”",
-  "“You cannot interrogate the fog. It already knows what you did.”",
-  "“Amnesia is not an absence of memory, but a presence of self-preservation.”",
-  "“In District 7, even the statues have pawn shop tags tied to their wrists.”"
-];
-
-const TELEMETRY_PHASES = [
-  { at: 15, text: "Calibrating fractured synapses..." },
-  { at: 35, text: "Waking internal faculties: Ratio, Elysia, Carnal, Reflex..." },
-  { at: 60, text: "Loading forensic archives: Precinct 4..." },
-  { at: 85, text: "Reconstructing crime scene: Saint Irene Clocktower, 04:17 AM..." },
-  { at: 100, text: "Consciousness restored. Ready to investigate." }
-];
 
 let hasBooted = false;
 
@@ -8319,11 +10328,12 @@ function bootGame() {
 
   let quoteIdx = 0;
   const quoteInterval = setInterval(() => {
-    quoteIdx = (quoteIdx + 1) % PHILOSOPHICAL_QUOTES.length;
+    const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
+    quoteIdx = (quoteIdx + 1) % activeQuotes.length;
     if (quoteEl) {
       quoteEl.style.opacity = '0';
       setTimeout(() => {
-        quoteEl.textContent = PHILOSOPHICAL_QUOTES[quoteIdx];
+        quoteEl.textContent = activeQuotes[quoteIdx];
         quoteEl.style.opacity = '1';
       }, 300);
     }
@@ -8338,7 +10348,9 @@ function bootGame() {
     currentProgress = 100;
     if (progressFill) progressFill.style.width = '100%';
     if (progressPct) progressPct.textContent = '100%';
-    if (telemetryText) telemetryText.textContent = "Consciousness restored. Ready to investigate.";
+    const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+    const finalPhase = activePhases[activePhases.length - 1];
+    if (telemetryText) telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
     clearInterval(progressInterval);
     clearInterval(quoteInterval);
     if (enterBtn) {
@@ -8357,7 +10369,8 @@ function bootGame() {
     if (progressFill) progressFill.style.width = `${currentProgress}%`;
     if (progressPct) progressPct.textContent = `${currentProgress}%`;
 
-    const phase = TELEMETRY_PHASES.find(p => currentProgress <= p.at);
+    const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+    const phase = activePhases.find(p => currentProgress <= p.at);
     if (phase && telemetryText) {
       telemetryText.textContent = phase.text;
     }
@@ -8374,6 +10387,7 @@ function bootGame() {
       if (creatorStage) {
         creatorStage.classList.remove('hidden');
       }
+      ui.applyLanguage(state.currentLanguage);
       initCharacterCreator();
     }, 400);
   }
@@ -8444,14 +10458,7 @@ function bootGame() {
       const maleFirstNames = ['Valerian', 'Ren', 'Silas', 'Kazuki', 'Dante', 'Arthur', 'Lysander', 'Jin', 'Victor', 'Kenji'];
       const firstNames = selectedGender === 'female' ? femaleFirstNames : maleFirstNames;
       const lastNames = ['Vance', 'Voss', 'Sterling', 'Cross', 'Lin', 'Zhang', 'Chen', 'Blackwood', 'Mercer', 'Winter'];
-      const aliases = [
-        'The Dissolute Inspector',
-        'The Ghost of Precinct 4',
-        'The Broken Dialectician',
-        'The Saint of Hangovers',
-        'The Clockwork Cynic',
-        'The Desolate Poet'
-      ];
+      const aliases = ALIASES_I18N[state.currentLanguage] || ALIASES_I18N['en'];
       nameInput.value = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
       aliasInput.value = aliases[Math.floor(Math.random() * aliases.length)];
     });
@@ -8477,12 +10484,19 @@ function bootGame() {
     });
 
     function updateCreatorAttributes() {
-      if (pointsPoolEl) pointsPoolEl.textContent = `${availablePoints} Points Available`;
+      if (pointsPoolEl) pointsPoolEl.textContent = `${availablePoints} ${t('points_available', state.currentLanguage)}`;
       ['intellect', 'psyche', 'physique', 'motorics'].forEach(a => {
         const valEl = document.getElementById(`attr-val-${a}`);
         if (valEl) valEl.textContent = currentAttr[a];
       });
     }
+
+    state.subscribe((event) => {
+      if (event === 'language_changed') {
+        updateCreatorAttributes();
+        ui.applyLanguage(state.currentLanguage);
+      }
+    });
 
     // Signature Skill Selection
     document.querySelectorAll('.sig-skill-btn').forEach(btn => {
@@ -8558,10 +10572,12 @@ function bootGame() {
 
         // Render Scene & Initial Narrative
         ui.updateHUD();
+        ui.applyLanguage(state.currentLanguage);
         ui.renderScene();
         const initialPoi = (window.CASE_DATA || CASE_DATA)?.pointsOfInterest?.find(p => p.id === 'poi_pendulum');
         ui.startDialogue('examine_pendulum_start', 'Crime Scene: Pendulum Chamber', initialPoi);
-        ui.showToast(`Case File Opened: Aurelia Vance · Welcome to District 7, Detective ${finalName}`);
+        const toastTemplate = t('toast_case_opened', state.currentLanguage) || `Case File Opened: Aurelia Vance · Welcome to District 7, Detective {name}`;
+        ui.showToast(toastTemplate.replace('{name}', finalName));
 
         // Briefly show scene overlay HUD for orientation on entry, then smoothly minimize to corner chip
         const sceneHud = document.getElementById('scene-overlay-hud');

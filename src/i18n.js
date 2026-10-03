@@ -1,22 +1,14 @@
 import { DIALOGUE_I18N_FULL, CLUES_I18N_FULL, NEW_POIS_I18N } from './dialogue_i18n.js';
-// Aenigma Multi-Language Localization System (12 Native Languages)
-// Supported: id (Indonesian), en (English), ja (Japanese), zh (Chinese Simplified),
-// ko (Korean), es (Spanish), fr (French), de (German), ru (Russian),
-// it (Italian), pt (Portuguese), ar (Arabic)
+// Aenigma Multi-Language Localization System (5 Native Languages)
+// Supported: en (English - Default), id (Bahasa Indonesia), zh (Chinese Simplified),
+// ja (Japanese), ko (Korean)
 
 export const SUPPORTED_LANGUAGES = [
   { code: 'en', name: 'English', native: 'English', flag: '🇬🇧', dir: 'ltr' },
   { code: 'id', name: 'Bahasa Indonesia', native: 'Bahasa Indonesia', flag: '🇮🇩', dir: 'ltr' },
   { code: 'zh', name: 'Chinese', native: '简体中文', flag: '🇨🇳', dir: 'ltr' },
   { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵', dir: 'ltr' },
-  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', dir: 'ltr' },
-  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸', dir: 'ltr' },
-  { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷', dir: 'ltr' },
-  { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪', dir: 'ltr' },
-  { code: 'ru', name: 'Russian', native: 'Русский', flag: '🇷🇺', dir: 'ltr' },
-  { code: 'it', name: 'Italian', native: 'Italiano', flag: '🇮🇹', dir: 'ltr' },
-  { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹', dir: 'ltr' },
-  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', dir: 'rtl' },
+  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷', dir: 'ltr' }
 ];
 
 export const PROGRESS_LABELS = {
@@ -24,14 +16,7 @@ export const PROGRESS_LABELS = {
   id: 'PROGRES',
   zh: '破案进度',
   ja: '捜査進捗',
-  ko: '수사 진행',
-  es: 'PROGRESO',
-  fr: 'PROGRESSION',
-  de: 'FORTSCHRITT',
-  ru: 'ПРОГРЕСС',
-  it: 'PROGRESSO',
-  pt: 'PROGRESSO',
-  ar: 'تقدم القضية'
+  ko: '수사 진행'
 };
 
 export const SKILL_NAMES_I18N = {
@@ -65,20 +50,35 @@ export const DISTRICT_LABELS = {
   id: 'SEKTOR 7',
   zh: '第七区',
   ja: '第7管区',
-  ko: '제7구역',
-  es: 'DISTRITO 7',
-  fr: 'SECTEUR 7',
-  de: 'SEKTOR 7',
-  ru: 'СЕКТОР 7',
-  it: 'DISTRETTO 7',
-  pt: 'DISTRITO 7',
-  ar: 'المنطقة 7'
+  ko: '제7구역'
 };
 
 export const UI_TRANSLATIONS = {
   id: {
+    toast_case_opened: 'Berkas Kasus Dibuka: Aurelia Vance · Selamat datang di Sektor 7, Detektif {name}',
     game_title: 'A E N I G M A',
-    case_badge: 'KASUS #04: SANG PEMBUAT JAM YANG BISU',
+    case_badge: 'KASUS #D4-04',
+    archive_intro_text: 'Arsip kasus yang berhasil dipecahkan sebelumnya oleh Detektif Renata Vance di Sektor 7. Setiap kasus yang selesai meninggalkan bukti kunci (Keystone Evidence) yang mengarah pada dalang sindikat rahasia yang sama.',
+    keystone_network_title: 'MATRIKS BENANG MERAH KONSPIRASI (KEYSTONE EVIDENCE WEB)',
+    from_prefix: 'DARI',
+    status_secured: '✓ AMAN',
+    status_unmasked: '✓ TERBONGKAR',
+    status_inquiry: '⏳ DALAM INKUIRI',
+    k4_unlocked_desc: 'Pengakuan pembunuhan & bukti transaksi suap 50.000 guilder terbongkar!',
+    k4_pending_desc: 'Sedang diselidiki di Menara Irene: brankas rahasia & pengakuan dalang.',
+    case_date_today: 'Hari Ini · 03:42 AM',
+    case_date_final: 'Sintesis Penyelidikan Terakhir',
+    case_tab_active: 'KASUS AKTIF [#D4-04]',
+    case_tab_archive: 'ARSIP KASUS (3)',
+    case_tab_master: 'KASUS UTAMA [#PRIME-00]',
+    case_status_active: '⚡ AKTIF / SEDANG DISELIDIKI',
+    case_status_solved: '✓ TERPECAHKAN',
+    case_status_master: '👑 KASUS UTAMA',
+    keystone_secured: '✓ KUNCI BUKTI DIPEROLEH',
+    keystone_pending: '⏳ BELUM TERUNGKAP',
+    btn_synthesize_master: 'HUBUNGKAN SELURUH BENANG MERAH KONSPIRASI',
+    master_synthesis_ready: 'SELURUH 4 KUNCI BUKTI TERHIMPUN! KONSORSIUM BAYANGAN SEKTOR 7 TERBONGKAR!',
+    master_synthesis_not_ready: 'Masih membutuhkan bukti konklusif dari Kasus #D4-04 untuk mengungkap dalang.',
     loader_quote: '“Detik jam tak pernah berhenti. Hanya daging di dalamnya yang lupa cara berdetak.”',
     loader_telemetry: 'Menginisialisasi telemetri saraf...',
     loader_enter: 'MASUKI PIKIRAN',
@@ -119,7 +119,7 @@ export const UI_TRANSLATIONS = {
     interlocutor_active: 'INTERAKSI AKTIF',
     modal_cabinet_title: 'LEMARI PIKIRAN · THOUGHT CABINET',
     modal_inventory_title: 'MANTEL DETEKTIF & KANTONG BUKTI',
-    modal_clues_title: 'DOSSIER KASUS · MATRIKS DEDUKSI BUKTI',
+    modal_clues_title: 'PAPAN INVESTIGASI & ARSIP KASUS',
     modal_dice_title: 'UJI KEAHLIAN',
     modal_language_title: 'PILIH BAHASA TERJEMAHAN',
     modal_victory_title: 'KASUS SELESAI',
@@ -144,11 +144,66 @@ export const UI_TRANSLATIONS = {
     toast_xp_gained: 'PENGALAMAN BERTAMBAH:',
     toast_level_up: 'NAIK TINGKAT! POIN KEAHLIAN DIDAPATKAN',
     toast_damage_health: 'TERLUKA! DAYA TAHAN BERKURANG',
-    toast_damage_morale: 'TERGUNCANG! KEWARASAN BERKURANG'
+    toast_damage_morale: 'TERGUNCANG! KEWARASAN BERKURANG',
+    audio_on: 'AUDIO: AKTIF',
+    audio_off: 'AUDIO: MATI',
+    scene_btn_markers: 'TITIK BUKTI',
+    scene_btn_hidden: 'DISEMBUNYIKAN',
+    scene_btn_radar: 'RADAR',
+    scene_inspect_hint: 'PERIKSA BUKTI',
+    dice_epiphany: 'PENCERAHAN MUTLAK! SUKSES KRITIS (ANGKA KEMBAR ENAM)',
+    dice_snake_eyes: 'MATA ULAR! KEGAGALAN FATAL (ANGKA KEMBAR SATU)',
+    cabinet_empty: 'Belum ada pikiran yang diendapkan. Renungkan bukti di tempat kejadian untuk memicu gagasan.',
+    cabinet_researching: 'Sedang diinternalisasi...',
+    cabinet_internalized_status: '✨ TEROBOSAN PSIKOLOGIS PERMANEN AKTIF',
+    cabinet_btn_internalize: 'INTERNALISASI PIKIRAN INI',
+    cabinet_locked_hint: 'Selidiki lebih lanjut di Menara Saint Irene untuk membuka pikiran ini.',
+    cabinet_temp_box: 'Efek Perenungan Sementara',
+    cabinet_perm_box: 'Terobosan Kejiwaan Permanen',
+    inventory_empty: 'Kantong mantelmu hanya berisi serpihan kain dan penyesalan dingin.',
+    clues_empty: 'Belum ada bukti penting yang tercatat. Teliti menara jam dengan cermat.',
+    victory_lead: 'Penyelidik Utama:',
+    victory_facet: 'Keahlian Utama:',
+    victory_clues: 'Bukti Terkumpul:',
+    victory_thoughts: 'Pikiran Diinternalisasi:',
+    ending_coverup: 'Kebenaran di balik kematian Aurelia Vance telah terungkap. Lonceng keadilan berdentang melintasi Sektor 7.',
+    dialogue_idle_prompt: 'Periksa titik bukti atau buka dossier kasus untuk melanjutkan penyelidikan.',
+    dialogue_leave: '[Tinggalkan pengamatan & kembali ke TKP]',
+    item_type_tool: 'ALAT',
+    item_type_consumable: 'KONSUMSI',
+    item_type_clue: 'BUKTI',
+    item_type_relic: 'RELIK',
+    buff_label: 'Bonus Keahlian:',
+    profile_modal_title: 'DOSSIER DETEKTIF & PROFIL PSIKOLOGIS',
+    profile_vitals_title: 'KONDISI VITAL & KETAHANAN',
+    profile_progress_header: 'RESOLUSI KASUS',
+    profile_time_label: 'WAKTU INVESTIGASI'
   },
   en: {
+    toast_case_opened: 'Case File Opened: Aurelia Vance · Welcome to District 7, Detective {name}',
     game_title: 'A E N I G M A',
-    case_badge: 'CASE #04: THE SILENT WATCHMAKER',
+    case_badge: 'CASE #D4-04',
+    archive_intro_text: 'Archive of previous homicide cases solved by Detective Renata Vance in District 7. Each resolved case uncovered a vital Keystone Evidence connecting to the same covert syndicate.',
+    keystone_network_title: 'KEYSTONE EVIDENCE & CONSPIRACY WEB',
+    from_prefix: 'FROM',
+    status_secured: '✓ SECURED',
+    status_unmasked: '✓ EXPOSED',
+    status_inquiry: '⏳ IN INQUIRY',
+    k4_unlocked_desc: 'Murder confession & 50,000 guilder bribery records fully exposed!',
+    k4_pending_desc: 'Active inquiry in Saint Irene: search floorboard safe & extract suspect confession.',
+    case_date_today: 'Today · 03:42 AM',
+    case_date_final: 'Grand Inquiry Synthesis',
+    case_tab_active: 'ACTIVE INQUIRY [#D4-04]',
+    case_tab_archive: 'SOLVED ARCHIVE (3)',
+    case_tab_master: 'MASTER CASE [#PRIME-00]',
+    case_status_active: '⚡ ACTIVE INQUIRY',
+    case_status_solved: '✓ SOLVED',
+    case_status_master: '👑 MASTER CASE',
+    keystone_secured: '✓ KEYSTONE CLUE SECURED',
+    keystone_pending: '⏳ PENDING DISCOVERY',
+    btn_synthesize_master: 'SYNTHESIZE CONSPIRACY EVIDENCE WEB',
+    master_synthesis_ready: 'ALL 4 KEYSTONES SECURED! THE DISTRICT 7 SYNDICATE STANDS EXPOSED!',
+    master_synthesis_not_ready: 'Conclusive evidence from Case #D4-04 still required to finalize synthesis.',
     loader_quote: '“The clock never stops. Only the flesh within it forgets how to beat.”',
     loader_telemetry: 'Initializing neural telemetry...',
     loader_enter: 'ENTER THE MIND',
@@ -189,7 +244,7 @@ export const UI_TRANSLATIONS = {
     interlocutor_active: 'ACTIVE INTERACTION',
     modal_cabinet_title: 'THOUGHT CABINET',
     modal_inventory_title: 'DETECTIVE COAT & EVIDENCE BAG',
-    modal_clues_title: 'CASE DOSSIER · EVIDENCE DEDUCTION MATRIX',
+    modal_clues_title: 'CASE DOSSIER & MASTER INVESTIGATION BOARD',
     modal_dice_title: 'SKILL CHECK',
     modal_language_title: 'CHOOSE SUBTITLE & UI LANGUAGE',
     modal_victory_title: 'CASE CONCLUDED',
@@ -214,11 +269,66 @@ export const UI_TRANSLATIONS = {
     toast_xp_gained: 'EXPERIENCE GAINED:',
     toast_level_up: 'LEVEL UP! SKILL POINT GAINED',
     toast_damage_health: 'INJURED! ENDURANCE REDUCED',
-    toast_damage_morale: 'SHAKEN! MORALE COMPROMISED'
+    toast_damage_morale: 'SHAKEN! MORALE COMPROMISED',
+    audio_on: 'AUDIO: ON',
+    audio_off: 'AUDIO: OFF',
+    scene_btn_markers: 'MARKERS',
+    scene_btn_hidden: 'HIDDEN',
+    scene_btn_radar: 'RADAR',
+    scene_inspect_hint: 'INVESTIGATE',
+    dice_epiphany: 'EPIPHANY! CRITICAL SUCCESS (DOUBLE SIX)',
+    dice_snake_eyes: 'SNAKE EYES! CRITICAL FAILURE (DOUBLE ONES)',
+    cabinet_empty: 'No thoughts currently incubating. Contemplate crime scene evidence to spark ideas.',
+    cabinet_researching: 'Internalizing...',
+    cabinet_internalized_status: '✨ PERMANENT BREAKTHROUGH ACTIVE',
+    cabinet_btn_internalize: 'INTERNALIZE THIS THOUGHT',
+    cabinet_locked_hint: 'Investigate further in Saint Irene to unlock this thought.',
+    cabinet_temp_box: 'Temporary Contemplation Effect',
+    cabinet_perm_box: 'Permanent Psychological Breakthrough',
+    inventory_empty: 'Your coat pockets contain only lint and cold regret.',
+    clues_empty: 'No critical evidence cataloged yet. Scrutinize the clocktower.',
+    victory_lead: 'Lead Investigator:',
+    victory_facet: 'Signature Facet:',
+    victory_clues: 'Evidence Gathered:',
+    victory_thoughts: 'Thoughts Internalized:',
+    ending_coverup: 'The truth behind Aurelia Vance has been brought into the light. Justice tolls across District 7.',
+    dialogue_idle_prompt: 'Examine points of interest or consult your clues dossier to proceed.',
+    dialogue_leave: '[Step back & return to crime scene]',
+    item_type_tool: 'TOOL',
+    item_type_consumable: 'CONSUMABLE',
+    item_type_clue: 'CLUE',
+    item_type_relic: 'RELIC',
+    buff_label: 'Skill Buff:',
+    profile_modal_title: 'DETECTIVE DOSSIER & PSYCHOLOGICAL PROFILE',
+    profile_vitals_title: 'VITALS & ENDURANCE',
+    profile_progress_header: 'CASE RESOLUTION',
+    profile_time_label: 'INVESTIGATION TIME'
   },
   ja: {
+    toast_case_opened: '捜査ファイル開封：オレリア・ヴァンス · 第7管区へようこそ、{name}刑事',
     game_title: 'エ ニ グ マ',
-    case_badge: '事件 #04: 沈黙の時計師',
+    case_badge: '事件 #D4-04',
+    archive_intro_text: 'レナータ・ヴァンス刑事が第7区で以前に解決した殺人事件の記録。解決した各事件は、同一の地下組織へと繋がる決定的な鍵証拠を残している。',
+    keystone_network_title: '決定的証拠の相関陰謀網',
+    from_prefix: '出処',
+    status_secured: '✓ 確保済',
+    status_unmasked: '✓ 暴露済',
+    status_inquiry: '⏳ 捜査中',
+    k4_unlocked_desc: '暗殺の自白と5万ギルダーの買収台帳が完全に露呈！',
+    k4_pending_desc: '聖アイリーン塔にて捜査中：床下の金庫を捜索し、容疑者の自白を引き出せ。',
+    case_date_today: '本日 · 午前03:42',
+    case_date_final: '全事件総合立証',
+    case_tab_active: '担当事件 [#D4-04]',
+    case_tab_archive: '解決済調書 (3)',
+    case_tab_master: '大事件 [#PRIME-00]',
+    case_status_active: '⚡ 捜査中',
+    case_status_solved: '✓ 解決済',
+    case_status_master: '👑 大事件',
+    keystone_secured: '✓ 決定的鍵証拠確保',
+    keystone_pending: '⏳ 未解明',
+    btn_synthesize_master: '陰謀の全相関関係を演繹統合する',
+    master_synthesis_ready: '全4つの重要証拠が集結！第7区の暗黒組織を完全暴露！',
+    master_synthesis_not_ready: '事件#D4-04の決定的な証拠がまだ不足しています。',
     loader_quote: '「時計の針は止まらない。止まるのは、鼓動を忘れた肉体だけだ。」',
     loader_telemetry: '神経テレメトリ初期化中...',
     loader_enter: '深層意識へ潜行',
@@ -259,7 +369,7 @@ export const UI_TRANSLATIONS = {
     interlocutor_active: '接触中',
     modal_cabinet_title: '思考の閣僚 · THOUGHT CABINET',
     modal_inventory_title: '捜査官コート & 証拠品袋',
-    modal_clues_title: '事件調書 · 証拠演繹マトリクス',
+    modal_clues_title: '事件調書＆合同捜査盤',
     modal_dice_title: '技能判定',
     modal_language_title: '字幕および表示言語を選択',
     modal_victory_title: '事件解決',
@@ -284,11 +394,66 @@ export const UI_TRANSLATIONS = {
     toast_xp_gained: '経験値獲得:',
     toast_level_up: 'レベル上昇！技能ポイント獲得',
     toast_damage_health: '負傷！耐久値減少',
-    toast_damage_morale: '精神動揺！精神力減少'
+    toast_damage_morale: '精神動揺！精神力減少',
+    audio_on: '音響: オン',
+    audio_off: '音響: オフ',
+    scene_btn_markers: '証拠マーカー',
+    scene_btn_hidden: '非表示',
+    scene_btn_radar: 'レーダー',
+    scene_inspect_hint: '詳しく調べる',
+    dice_epiphany: '神聖なる啓示！クリティカル成功 (ゾロ目 6)',
+    dice_snake_eyes: 'スネークアイズ！痛恨のファンブル (ゾロ目 1)',
+    cabinet_empty: '現在醸成中の思考はありません。事件現場の証拠を熟考し、閃きを得てください。',
+    cabinet_researching: '内面化の進行中...',
+    cabinet_internalized_status: '✨ 恒久的な精神の覚醒が有効',
+    cabinet_btn_internalize: 'この思考を内面化する',
+    cabinet_locked_hint: '聖アイリーン時計塔をさらに捜査することで、この思考が閃きます。',
+    cabinet_temp_box: '一時的な熟考による影響',
+    cabinet_perm_box: '内面化完了による恒久覚醒',
+    inventory_empty: 'コートのポケットには埃と冷えた後悔しか残されていない。',
+    clues_empty: '決定的証拠はまだ調書に記録されていません。時計塔を精査してください。',
+    victory_lead: '主任捜査官:',
+    victory_facet: '象徴的技能:',
+    victory_clues: '収集された決定的証拠:',
+    victory_thoughts: '内面化された思考閣僚:',
+    ending_coverup: 'オレリア・ヴァンスの死の真相は白日の下に晒された。第7区に真実の鐘が鳴り響く。',
+    dialogue_idle_prompt: '捜査対象を調べるか、証拠調書を確認して捜査を進めてください。',
+    dialogue_leave: '[観察を終えて現場に戻る]',
+    item_type_tool: '道具',
+    item_type_consumable: '消耗品',
+    item_type_clue: '手掛かり',
+    item_type_relic: '遺物',
+    buff_label: 'スキル強化:',
+    profile_modal_title: '刑事調書・精神プロファイル',
+    profile_vitals_title: 'バイタル＆耐久状態',
+    profile_progress_header: '事件解決進捗',
+    profile_time_label: '捜査経過時間'
   },
   zh: {
+    toast_case_opened: '案件档案已开启：奥蕾莉亚·梵斯 · 欢迎来到第七区，{name}探长',
     game_title: 'A E N I G M A',
-    case_badge: '案件 #04: 沉默的钟表宗师',
+    case_badge: '案件 #D4-04',
+    archive_intro_text: '雷娜塔·万斯探长此前在第七区成功告破的谋杀案卷。每起案件结案后均留下一项关键铁证，直指同一幕后黑金结社。',
+    keystone_network_title: '核心罪证与全域阴谋网络',
+    from_prefix: '来自',
+    status_secured: '✓ 已锁定',
+    status_unmasked: '✓ 彻底曝光',
+    status_inquiry: '⏳ 侦查中',
+    k4_unlocked_desc: '谋杀买凶自白与5万盾巨额贿赂账目已彻底浮出水面！',
+    k4_pending_desc: '圣艾琳钟楼现场侦查中：搜查暗格保险箱并撬开嫌疑人口供。',
+    case_date_today: '今日 · 凌晨03:42',
+    case_date_final: '终极调查综合研判',
+    case_tab_active: '当前案件 [#D4-04]',
+    case_tab_archive: '已破结案档案 (3)',
+    case_tab_master: '终极主案 [#PRIME-00]',
+    case_status_active: '⚡ 调查中',
+    case_status_solved: '✓ 已告破',
+    case_status_master: '👑 终极主案',
+    keystone_secured: '✓ 核心罪证已锁定',
+    keystone_pending: '⏳ 尚未揭晓',
+    btn_synthesize_master: '梳理并串联全域阴谋证据链',
+    master_synthesis_ready: '全部4项核心罪证已齐备！第七区黑金结社黑幕彻底揭露！',
+    master_synthesis_not_ready: '仍需第#D4-04案的关键铁证方可串联全网。',
     loader_quote: '“钟摆永不停歇。唯有齿轮间的血肉，遗忘了跳动的律动。”',
     loader_telemetry: '神经遥测初始化中...',
     loader_enter: '步入深层意识',
@@ -329,7 +494,7 @@ export const UI_TRANSLATIONS = {
     interlocutor_active: '交互中',
     modal_cabinet_title: '思维内阁 · THOUGHT CABINET',
     modal_inventory_title: '风衣内衬与物证袋',
-    modal_clues_title: '案情档案 · 线索演绎矩阵',
+    modal_clues_title: '案件档案与主调查板',
     modal_dice_title: '技能检定',
     modal_language_title: '选择字幕及交互语言',
     modal_victory_title: '案情告破',
@@ -354,11 +519,66 @@ export const UI_TRANSLATIONS = {
     toast_xp_gained: '获得经验:',
     toast_level_up: '等级提升！获得技能点',
     toast_damage_health: '受伤！体能扣减',
-    toast_damage_morale: '精神受创！理智扣减'
+    toast_damage_morale: '精神受创！理智扣减',
+    audio_on: '音频: 开启',
+    audio_off: '音频: 关闭',
+    scene_btn_markers: '证据标点',
+    scene_btn_hidden: '隐藏',
+    scene_btn_radar: '雷达扫描',
+    scene_inspect_hint: '勘查取证',
+    dice_epiphany: '顿悟神启！大获全胜 (双六满点)',
+    dice_snake_eyes: '蛇眼绝境！惨痛败北 (双一骰灾)',
+    cabinet_empty: '暂无正在孕育的思绪。仔细推敲现场线索以激发心智火花。',
+    cabinet_researching: '深度推演沉淀中...',
+    cabinet_internalized_status: '✨ 恒久心智顿悟已激活',
+    cabinet_btn_internalize: '内化此项心智思绪',
+    cabinet_locked_hint: '在圣艾琳钟楼展开更深层的调查以解锁此思绪。',
+    cabinet_temp_box: '沉思期间的暂时代价',
+    cabinet_perm_box: '彻底内化后的心智质变',
+    inventory_empty: '风衣口袋里空空如也，只剩下冷雨与悔恨。',
+    clues_empty: '案卷尚未收录关键物证。请仔细勘查钟楼。',
+    victory_lead: '首席调查官:',
+    victory_facet: '核心心智专精:',
+    victory_clues: '破案关键物证:',
+    victory_thoughts: '已内化思维格言:',
+    ending_coverup: '奥蕾莉亚·梵斯离奇命案的真相终见天日。正义之钟在第七区上空悲鸣回荡。',
+    dialogue_idle_prompt: '调查现场标点或查阅证据档案以继续推演案情。',
+    dialogue_leave: '[暂离此处，返回现场]',
+    item_type_tool: '工具',
+    item_type_consumable: '消耗品',
+    item_type_clue: '线索',
+    item_type_relic: '遗物',
+    buff_label: '技能增益:',
+    profile_modal_title: '侦探档案与心理侧写',
+    profile_vitals_title: '生命体征与生存状态',
+    profile_progress_header: '案情推进进度',
+    profile_time_label: '调查历时'
   },
   ko: {
+    toast_case_opened: '사건 파일 개시: 오렐리아 밴스 · 제7구역에 오신 것을 환영합니다, {name} 형사님',
     game_title: 'A E N I G M A',
-    case_badge: '사건 #04: 침묵의 시계 장인',
+    case_badge: '사건 #D4-04',
+    archive_intro_text: '레나타 반스 형사가 제7구역에서 이전에 해결한 살인 사건 기록입니다. 해결된 각 사건은 동일한 암흑 신디케이트로 이어지는 결정적 핵심 단서를 남겼습니다.',
+    keystone_network_title: '핵심 증거 연계 및 거대 음모망',
+    from_prefix: '출처',
+    status_secured: '✓ 확보됨',
+    status_unmasked: '✓ 진상 규명',
+    status_inquiry: '⏳ 수사 진행 중',
+    k4_unlocked_desc: '살인 청부 자백과 5만 길더 뇌물 장부가 완전히 드러났습니다!',
+    k4_pending_desc: '성 아이린 탑 현장 수사 중: 바닥 금고를 수색하고 용의자의 자백을 확보하십시오.',
+    case_date_today: '오늘 · 오전 03:42',
+    case_date_final: '최종 종합 수사 결론',
+    case_tab_active: '진행 사건 [#D4-04]',
+    case_tab_archive: '해결된 사건철 (3)',
+    case_tab_master: '최종 주 사건 [#PRIME-00]',
+    case_status_active: '⚡ 수사 진행 중',
+    case_status_solved: '✓ 해결 완료',
+    case_status_master: '👑 최종 주 사건',
+    keystone_secured: '✓ 핵심 단서 확보',
+    keystone_pending: '⏳ 미해결',
+    btn_synthesize_master: '음모의 모든 연결 고리를 연역 종합',
+    master_synthesis_ready: '4대 핵심 증거 확보 완료! 제7구역 암흑 신디케이트의 전모가 드러났습니다!',
+    master_synthesis_not_ready: '종합 수사를 완성하려면 사건 #D4-04의 결정적 단서가 더 필요합니다.',
     loader_quote: '“시계는 결코 멈추지 않는다. 멈추는 것은 고동을 잊은 육신뿐.”',
     loader_telemetry: '신경 원격 측정 초기화 중...',
     loader_enter: '심상으로 진입',
@@ -399,7 +619,7 @@ export const UI_TRANSLATIONS = {
     interlocutor_active: '상호작용 중',
     modal_cabinet_title: '생각의 방 · THOUGHT CABINET',
     modal_inventory_title: '외투 주머니 & 증거물 가방',
-    modal_clues_title: '사건 조서 · 증거 연역 매트릭스',
+    modal_clues_title: '사건 서류철 및 종합 수사 본부',
     modal_dice_title: '기술 판정',
     modal_language_title: '자막 및 인터페이스 언어 선택',
     modal_victory_title: '사건 종결',
@@ -424,9 +644,43 @@ export const UI_TRANSLATIONS = {
     toast_xp_gained: '경험치 획득:',
     toast_level_up: '레벨 업! 기술 포인트 획득',
     toast_damage_health: '부상! 체력 감소',
-    toast_damage_morale: '충격! 사기 저하'
+    toast_damage_morale: '충격! 사기 저하',
+    audio_on: '오디오: 켜짐',
+    audio_off: '오디오: 꺼짐',
+    scene_btn_markers: '증거 표식',
+    scene_btn_hidden: '숨김',
+    scene_btn_radar: '레이더 탐지',
+    scene_inspect_hint: '단서 조사',
+    dice_epiphany: '번뜩이는 영감! 대성공 (주사위 6 더블)',
+    dice_snake_eyes: '뱀의 눈! 치명적 대실패 (주사위 1 더블)',
+    cabinet_empty: '현재 내면화 중인 생각이 없습니다. 사건 현장의 단서를 곱씹어 새로운 발상을 떠올리세요.',
+    cabinet_researching: '생각을 내면화하는 중...',
+    cabinet_internalized_status: '✨ 영구적 심리 각성 효과 활성화',
+    cabinet_btn_internalize: '이 생각을 내면화하기',
+    cabinet_locked_hint: '성 아이린 시계탑을 더 깊이 조사하여 이 생각을 떠올리십시오.',
+    cabinet_temp_box: '임시 사색 상태 이상',
+    cabinet_perm_box: '영구적 정신적 돌파구',
+    inventory_empty: '외투 주머니에는 차가운 후회와 먼지뿐입니다.',
+    clues_empty: '아직 기록된 핵심 증거가 없습니다. 시계탑을 철저히 수색하십시오.',
+    victory_lead: '수석 수사관:',
+    victory_facet: '특화 기술:',
+    victory_clues: '수집된 핵심 증거:',
+    victory_thoughts: '내면화 완료된 사유:',
+    ending_coverup: '오렐리아 밴스의 죽음에 얽힌 진실이 마침내 밝혀졌습니다. 제7구역 전역에 정의의 종소리가 울려 퍼집니다.',
+    dialogue_idle_prompt: '현장 증거를 조사하거나 사건 조서를 열어 수사를 진행하십시오.',
+    dialogue_leave: '[관찰을 마치고 현장으로 돌아간다]',
+    item_type_tool: '도구',
+    item_type_consumable: '소모품',
+    item_type_clue: '단서',
+    item_type_relic: '유물',
+    buff_label: '스킬 강화:',
+    profile_modal_title: '형사 조서 및 심리 프로필',
+    profile_vitals_title: '활력 징후 및 생존 상태',
+    profile_progress_header: '사건 해결 진행',
+    profile_time_label: '수사 경과 시간'
   },
   es: {
+    toast_case_opened: 'Expediente del caso abierto: Aurelia Vance · Bienvenido al Distrito 7, Detective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'CASO #04: LA RELOJERA SILENCIOSA',
     loader_quote: '“El reloj nunca se detiene. Solo la carne en su interior olvida cómo latir.”',
@@ -497,6 +751,7 @@ export const UI_TRANSLATIONS = {
     toast_damage_morale: '¡IMPACTO! MORAL COMPROMETIDA'
   },
   fr: {
+    toast_case_opened: 'Dossier de l\'affaire ouvert : Aurelia Vance · Bienvenue dans le District 7, Détective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'DOSSIER #04: L\'HORLOGÈRE SILENCIEUSE',
     loader_quote: '« L\'horloge ne s\'arrête jamais. Seule la chair en son sein oublie comment battre. »',
@@ -567,6 +822,7 @@ export const UI_TRANSLATIONS = {
     toast_damage_morale: 'CHOC MENTAL ! MORAL COMPROMIS'
   },
   de: {
+    toast_case_opened: 'Fallakte geöffnet: Aurelia Vance · Willkommen im Bezirk 7, Detective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'FALL #04: DIE STUMME UHRMACHERIN',
     loader_quote: '„Die Uhr hält niemals an. Nur das Fleisch in ihrem Inneren vergisst das Schlagen.“',
@@ -637,6 +893,7 @@ export const UI_TRANSLATIONS = {
     toast_damage_morale: 'ERSCHÜTTERT! MORAL GESCHWÄCHT'
   },
   ru: {
+    toast_case_opened: 'Дело открыто: Аурелия Вэнс · Добро пожаловать в Седьмой Район, детектив {name}',
     game_title: 'А Э Н И Г М А',
     case_badge: 'ДЕЛО #04: БЕЗМОЛВНЫЙ ЧАСОВЩИК',
     loader_quote: '«Часы никогда не останавливаются. Лишь плоть внутри них забывает, как биться».',
@@ -707,6 +964,7 @@ export const UI_TRANSLATIONS = {
     toast_damage_morale: 'ШОК! БОЕВОЙ ДУХ ПОДОРВАН'
   },
   it: {
+    toast_case_opened: 'Fascicolo del caso aperto: Aurelia Vance · Benvenuto nel Distretto 7, Detective {name}',
     game_title: 'A E N I G M A',
     case_badge: 'CASO #04: L\'OROLOGIAIA SILENZIOSA',
     loader_quote: '“L\'orologio non si ferma mai. È solo la carne al suo interno che dimentica come battere.”',
@@ -777,6 +1035,7 @@ export const UI_TRANSLATIONS = {
     toast_damage_morale: 'SCIOCCATO! MORALE COMPROMESSO'
   },
   pt: {
+    toast_case_opened: 'Dossiê do caso aberto: Aurelia Vance · Bem-vindo ao Distrito 7, Detetive {name}',
     game_title: 'A E N I G M A',
     case_badge: 'CASO #04: A RELOJOEIRA SILENCIOSA',
     loader_quote: '“O relógio nunca para. Apenas a carne em seu interior esquece como bater.”',
@@ -847,6 +1106,7 @@ export const UI_TRANSLATIONS = {
     toast_damage_morale: 'ABALADO! MORAL COMPROMETIDO'
   },
   ar: {
+    toast_case_opened: 'تم فتح ملف القضية: أوريليا فانس · مرحبًا بك في المقاطعة 7، أيها المحقق {name}',
     game_title: 'إ ي ن ي ج م ا',
     case_badge: 'القضية #04: صانعة الساعات الصامتة',
     loader_quote: '«عقارب الساعة لا تتوقف أبدًا. وحده الجسد بين تروسها ينسى كيف ينبض.»',
@@ -1568,3 +1828,670 @@ export function tPoi(poiId, field = 'title', lang = 'en') {
   return poi[field][currentLang] || poi[field]['en'] || poi[field]['id'] || '';
 }
 
+// --------------------------------------------------------------------------
+// Character Creator Vices Localization (5 Native Languages)
+// --------------------------------------------------------------------------
+export const VICES_I18N = {
+  smoker: {
+    title: {
+      en: '🚬 Chain-Smoker of Astra Red',
+      id: '🚬 Perokok Berat Astra Merah',
+      zh: '🚬 阿斯特拉红烟重度烟瘾',
+      ja: '🚬 アストラ・レッドのヘビースモーカー',
+      ko: '🚬 아스트라 레드 골초'
+    },
+    desc: {
+      en: 'Perception +1, but chronic cough lowers Endurance maximum by 1.',
+      id: 'Persepsi +1, namun batuk menahun mengurangi batas maksimal Daya Tahan sebesar 1.',
+      zh: '感知+1，但慢性剧烈咳嗽导致体能上限减少1。',
+      ja: '知覚+1、だが慢性的な咳き込みにより耐久力上限が1低下。',
+      ko: '지각 +1, 하지만 만성 기침으로 인해 최대 체력이 1 감소합니다.'
+    }
+  },
+  laudanum: {
+    title: {
+      en: '🧪 Tincture of Laudanum Addict',
+      id: '🧪 Ketergantungan Tinktur Laudanum',
+      zh: '🧪 阿片酊化学成瘾',
+      ja: '🧪 医療用アヘンチンキ中毒',
+      ko: '🧪 라우다넘 팅크제 중독'
+    },
+    desc: {
+      en: 'Esoterica +2, but sudden withdrawals inflict periodic Logic penalties.',
+      id: 'Esoterika +2, namun gejala sakau mendadak menimbulkan penalti Logika berkala.',
+      zh: '秘教+2，但突发的戒断反应会带来阶段性逻辑惩罚。',
+      ja: '秘教+2、だが禁断症状による定期的な論理ペナルティを受ける。',
+      ko: '비전 +2, 하지만 금단 현상 발생 시 주기적인 논리 페널티를 받습니다.'
+    }
+  },
+  insomniac: {
+    title: {
+      en: '🕯️ Insomniac Philosopher',
+      id: '🕯️ Filsuf Pengidap Insomnia',
+      zh: '🕯️ 失眠梦魇哲学家',
+      ja: '🕯️ 不眠症の思索家',
+      ko: '🕯️ 불면증에 시달리는 철학자'
+    },
+    desc: {
+      en: 'Conceptualization +2, but sleep deprivation heightens susceptibility to panic.',
+      id: 'Konseptualisasi +2, namun kurang tidur kronis memperparah kerentanan terhadap panik.',
+      zh: '概念化+2，但长期严重睡眠不足大幅加剧恐慌脆弱性。',
+      ja: '概念化+2、だが慢性的睡眠不足によりパニック耐性が低下。',
+      ko: '개념화 +2, 하지만 수면 부족으로 인해 정신적 패닉에 취약해집니다.'
+    }
+  },
+  klepto: {
+    title: {
+      en: '🗝️ Compulsive Relic Hoarder',
+      id: '🗝️ Pengumpul Relik Kompulsif',
+      zh: '🗝️ 强迫症古物囤积癖',
+      ja: '🗝️ 強迫的遺物蒐集癖',
+      ko: '🗝️ 강박적 유물 수집벽'
+    },
+    desc: {
+      en: 'Interfacing +2, but precinct colleagues view you with suspicion.',
+      id: 'Penyelarasan Mesin +2, namun rekan detektif memandangmu dengan curiga.',
+      zh: '机构连动+2，但警区同僚始终以怀疑甚至提防的目光注视着你。',
+      ja: '機構連動+2、だが分署の同僚たちから常に不審の目で見られる。',
+      ko: '기계 조율 +2, 하지만 관할서 동료들이 당신을 의심스럽게 바라봅니다.'
+    }
+  }
+};
+
+export function tVice(viceKey, field = 'title', lang = 'en') {
+  const v = VICES_I18N[viceKey];
+  if (!v) return '';
+  const currentLang = v[field] && v[field][lang] ? lang : 'en';
+  return v[field][currentLang] || v[field]['en'] || v[field]['id'] || '';
+}
+
+// --------------------------------------------------------------------------
+// Thought Cabinet Database Localization (5 Native Languages)
+// --------------------------------------------------------------------------
+export const THOUGHTS_I18N = {
+  clockmakers_paradox: {
+    name: {
+      en: "The Clockmaker's Paradox",
+      id: "Paradoks Sang Pembuat Jam",
+      zh: "钟表宗师的逆时悖论",
+      ja: "時計師の逆理",
+      ko: "시계 장인의 역설"
+    },
+    category: {
+      en: 'Dialectic Horology',
+      id: 'Dialektika Horologis',
+      zh: '辩证钟表学',
+      ja: '弁証法的時計学',
+      ko: '변증법적 시계학'
+    },
+    flavor: {
+      en: 'If Aurelia Vance designed pendulum escapements that measured moments before they physically transpired, did she build her own execution mechanism?',
+      id: 'Jika Aurelia Vance merancang mekanisme pendulum yang mengukur momen sebelum terjadi, apakah ia merancang mesin eksekusinya sendiri?',
+      zh: '如果奥蕾莉亚·梵斯所设计的擒纵机构能够在物理时刻降临前便预先记录，那她是否亲手铸造了自己的死刑机械？',
+      ja: 'もしオレリア・ヴァンスが物理的に刻まれる前の瞬間を測定する脱進機を設計していたなら、彼女は自らの処刑装置を組み立てたのだろうか？',
+      ko: '만약 오렐리아 밴스가 사건이 물리적으로 발생하기도 전에 그 순간을 측정하는 진자 탈착기를 설계했다면, 그녀는 자신의 처형 기계를 직접 만든 것인가?'
+    },
+    explanation: {
+      en: 'You find yourself staring at rotating brass gears until your retinas imprint with Roman numerals. Time is not a linear river; it is a coiled torsion spring waiting to snap backward.',
+      id: 'Kau menatap roda gigi kuningan hingga retinamu tercap angka Romawi. Waktu bukan aliran sungai linier; waktu adalah pegas torsi yang siap tersentak ke belakang.',
+      zh: '你凝视着轰鸣旋转的黄铜齿轮，直到罗马数字灼刻在你的视网膜上。时间绝非奔涌的单向长河；它是一根紧绷的扭力弹簧，随时可能疯狂倒卷。',
+      ja: '網膜にローマ数字が焼き付くまで、回転する真鍮の歯車を見つめ続ける。時間は直線的な川ではない。いつでも激しく逆回転しうる圧縮された捩りバネなのだ。',
+      ko: '망막에 로마 숫자가 각인될 때까지 회전하는 황동 톱니를 응시합니다. 시간은 선형적인 강물이 아닙니다. 언제든 거꾸로 튕겨 나갈 준비가 된 비틀림 용수철입니다.'
+    },
+    tempDrawback: {
+      en: 'Logic -1 (Migraine from impossible gear ratios)',
+      id: 'Logika -1 (Migrain akibat rasio roda gigi mustahil)',
+      zh: '逻辑 -1 (解析荒谬齿轮比引发的剧烈偏头痛)',
+      ja: '論理 -1 (不可能な歯車比による激しい偏頭痛)',
+      ko: '논리 -1 (불가능한 기어비로 인한 극심한 편두통)'
+    },
+    solution: {
+      en: 'Time is malleable when measured by murder. You perceive mechanical flaws in suspects testimonies before they even finish speaking.',
+      id: 'Waktu menjadi lentur saat diukur melalui pembunuhan. Kau mengenali cacat logis dalam kesaksian tersangka sebelum mereka selesai bicara.',
+      zh: '以谋杀为刻度时，时间展现出奇异的延展性。在嫌疑人话音未落之前，你已洞悉其供词中的逻辑致命断裂。',
+      ja: '殺人によって測定される時、時間は歪み始める。容疑者が言葉を結ぶ前に、その証言に潜む機械的欠陥を看破できる。',
+      ko: '살인으로 측정될 때 시간은 가변적이 됩니다. 용의자가 말을 끝마치기도 전에 그 증언의 기계적 모순을 간파합니다.'
+    }
+  },
+  amnesia_as_defense: {
+    name: {
+      en: 'Amnesia as Self-Defense',
+      id: 'Amnesia sebagai Pertahanan Diri',
+      zh: '作为自卫壁垒的失忆',
+      ja: '自己防衛としての記憶喪失',
+      ko: '자기 방어로서의 기억상실'
+    },
+    category: {
+      en: 'Psychological Splinter',
+      id: 'Serpihan Kejiwaan',
+      zh: '心理防御碎片',
+      ja: '精神的破片',
+      ko: '심리적 파편'
+    },
+    flavor: {
+      en: "Why did you drink yourself into oblivion last night? Perhaps your amnesia wasn't an accident, but an act of mercy by your subconscious.",
+      id: 'Mengapa kau menenggelamkan diri dalam alkohol semalam? Mungkin amnesiamu bukan ketidaksengajaan, melainkan tindakan belas kasih dari alam bawah sadarmu.',
+      zh: '昨夜你为何狂饮至神智全无？或许突如其来的失忆并非酒醉的意外，而是潜意识为拯救理智所施舍的慈悲。',
+      ja: '昨夜、なぜ意識を失うまで酒を呷ったのか？その記憶喪失は過失ではなく、潜在意識による慈悲深き自衛だったのではないか。',
+      ko: '어젯밤 당신은 왜 인사불성이 되도록 술을 마셨을까요? 기억상실은 실수가 아니라, 잠재의식이 베푼 자비였을지도 모릅니다.'
+    },
+    explanation: {
+      en: 'The past is a carnivorous beast in the dark. By forgetting your own name and yesterday\'s horrors, you rendered the predator toothless.',
+      id: 'Masa lalu adalah binatang buas di kegelapan. Dengan melupakan namamu dan kengerian kemarin, kau mencabut taring pemangsa itu.',
+      zh: '过去是一头潜伏在幽暗深处的食肉巨兽。遗忘自己的姓名与昨日的惨剧，正是你卸下巨兽利齿的唯一法门。',
+      ja: '過去とは暗闇に潜む肉食獣だ。己の名と昨日の惨劇を忘却することで、その牙を根こそぎ奪い去ったのだ。',
+      ko: '과거는 어둠 속의 육식수입니다. 이름과 어제의 공포를 망각함으로써 포식자의 이빨을 뽑아버린 것입니다.'
+    },
+    tempDrawback: {
+      en: 'Morale -1 (Empty mirrors produce cold vertigo)',
+      id: 'Kewarasan -1 (Cermin kosong memicu vertigo dingin)',
+      zh: '理智 -1 (凝视陌生空洞的镜影引发冰冷晕眩)',
+      ja: '精神力 -1 (空虚な鏡が冷酷な眩暈を引き起こす)',
+      ko: '사기 -1 (텅 빈 거울이 차가운 현기증을 유발함)'
+    },
+    solution: {
+      en: 'You accept the blank slate. What you forgot cannot be used to break your spirit.',
+      id: 'Kau menerima lembaran kosong ini. Hal yang terlupakan tak lagi dapat meremukkan jiwamu.',
+      zh: '你欣然接纳了这张空白画卷。已被遗忘的深渊之物，便再也无法击垮你坚硬如铁的意志。',
+      ja: '白紙の精神を受け入れる。忘却した過去は、もはやあなたの魂を打ち砕く刃にはなり得ない。',
+      ko: '백지상태를 온전히 수용합니다. 잊어버린 과거는 더 이상 당신의 영혼을 꺾을 수 없습니다.'
+    }
+  },
+  metaphysics_of_rain: {
+    name: {
+      en: 'Metaphysics of Cold Rain',
+      id: 'Metafisika Hujan Dingin',
+      zh: '寒雨的形而上学',
+      ja: '冷雨の形而上学',
+      ko: '차가운 비의 형이상학'
+    },
+    category: {
+      en: 'Atmospheric Melancholy',
+      id: 'Melankolia Atmosferik',
+      zh: '氛围忧郁',
+      ja: '大気的憂鬱',
+      ko: '대기적 우울'
+    },
+    flavor: {
+      en: 'The rain drumming on the clocktower roof sounds identical to a Morse code transmission from an extinct civilization.',
+      id: 'Hujan yang memukuli atap seng menara jam terdengar persis seperti transmisi kode Morse dari peradaban yang telah punah.',
+      zh: '雨点击打在钟楼锌铁屋顶上的闷响，听上去宛如某个早已覆灭的失落文明发来的莫尔斯电码。',
+      ja: '時計塔の屋根を叩く雨音は、滅亡した古代文明からのモールス信号と完全に一致している。',
+      ko: '시계탑 지붕을 두드리는 빗소리는 멸망한 문명이 보내는 모스 부호 통신과 똑같이 들립니다.'
+    },
+    explanation: {
+      en: 'Water carries electrical charges, industrial soot, and whispered regrets. If you listen closely, the storm tells you where the killer stepped.',
+      id: 'Air membawa muatan listrik, jelaga pabrik, dan bisikan penyesalan. Jika kau mendengarkan seksama, badai memberitahumu ke mana pembunuh melangkah.',
+      zh: '雨水承载着静电荷、工业烟尘与七百万码头工人的叹息。只要静心凝神，风暴自会低吟凶徒潜逃的足迹。',
+      ja: '雨水は電荷、煤煙、労働者たちの悔恨を運ぶ。耳を澄ませば、嵐そのものが犯人の足取りを囁いてくれる。',
+      ko: '빗물은 전하, 매연, 부두 노동자들의 후회를 실어 나릅니다. 귀를 기울이면 폭풍이 살인자의 발자취를 알려줍니다.'
+    },
+    tempDrawback: {
+      en: 'Conceptualization -1 (Distracted by dripping eaves)',
+      id: 'Konseptualisasi -1 (Terganggu oleh tetesan air atap)',
+      zh: '概念化 -1 (屋檐连绵的水滴声极度分散思绪)',
+      ja: '概念化 -1 (滴る雨垂れの音に思考を乱される)',
+      ko: '개념화 -1 (처마 밑 물방울 소리에 정신이 분산됨)'
+    },
+    solution: {
+      en: 'The atmospheric pressure sharpens your intuitive sixth sense. The city speaks directly into your ear canal.',
+      id: 'Tekanan atmosferik menajamkan indra keenammu. Kota ini berbisik langsung ke saluran telingamu.',
+      zh: '压抑的气压反常地淬炼了你的第六感直觉。整座工业都市的阴影正在贴着你的耳廓低语。',
+      ja: '気圧の変化が直観の第六感を研ぎ澄ます。街そのものが、あなたの耳朶へ直接語りかけてくる。',
+      ko: '대기압이 육감을 날카롭게 벼려냅니다. 도시 자체가 당신의 귓가에 직접 속삭입니다.'
+    }
+  },
+  sovereign_bureaucrat: {
+    name: {
+      en: 'The Sovereign Bureaucrat',
+      id: 'Birokrat Berdaulat',
+      zh: '至高无上的官僚专制',
+      ja: '絶対的官僚主義',
+      ko: '절대적 관료주의'
+    },
+    category: {
+      en: 'Civic Authority',
+      id: 'Otoritas Sipil',
+      zh: '公权权威',
+      ja: '市民権力',
+      ko: '시민 권위'
+    },
+    flavor: {
+      en: 'The chiefs think power resides in bayonets. But real power resides in the rubber stamp of an inspector who simply refuses to sign.',
+      id: 'Para petinggi mengira kekuasaan ada pada bayonet. Namun kekuasaan sejati ada pada stempel inspektur yang menolak bertanda tangan.',
+      zh: '高层误以为强权来自刺刀。然而至高权力实则蕴含在一位冷酷探长坚决拒签尸检移交文件的印章中。',
+      ja: '上層部は権力が銃剣に宿ると信じている。だが真の権力とは、移送書類への署名を冷淡に拒否する捜査官のゴム印にある。',
+      ko: '서장들은 권력이 총검에서 나온다고 믿습니다. 하지만 진정한 권력은 서명을 단호히 거부하는 검시관의 고무 직인에 있습니다.'
+    },
+    explanation: {
+      en: 'A badge is just tin. But procedural stubbornness? That is the immutable bedrock of civilization.',
+      id: 'Lencana hanyalah timah. Namun keteguhan prosedur? Itulah pondasi peradaban yang tak tergoyahkan.',
+      zh: '警徽不过是镀锡薄片。但程序上的铁面执拗？那才是人类文明不可撼动的基石。',
+      ja: 'バッジなどただのブリキ板だ。だが規程を盾にした頑迷さこそ、文明の不変の岩盤なのだ。',
+      ko: '배지는 양철 조각에 불과합니다. 그러나 절차적 고집이야말로 문명의 확고부동한 반석입니다.'
+    },
+    tempDrawback: {
+      en: 'Savoir Faire -1 (Stiff, unyielding posture)',
+      id: 'Savoir Faire -1 (Postur kaku dan tak kenal kompromi)',
+      zh: '从容自若 -1 (僵硬傲慢、难以妥协的官僚姿态)',
+      ja: '処世術 -1 (柔軟性を欠く強情な官僚的態度)',
+      ko: '기민성 -1 (타협을 모르는 뻣뻣하고 완고한 태도)'
+    },
+    solution: {
+      en: 'You exude the unshakeable weight of administrative dread. Witnesses fold before you even raise your voice.',
+      id: 'Kau memancarkan bobot intimidasi administratif. Saksi runtuh bahkan sebelum kau meninggikan suara.',
+      zh: '你浑身散发着窒息般的行政威压感。甚至在你拔高语调前，目击证人便已在心理防线前彻底溃败。',
+      ja: '圧倒的な行政的重圧を漂わせる。声を荒らげるまでもなく、目撃者は自ら心理的に屈服する。',
+      ko: '행정적 위압감의 서늘한 무게를 발산합니다. 목소리를 높이기도 전에 증인들이 먼저 무너집니다.'
+    }
+  },
+  nicotine_shroud: {
+    name: {
+      en: 'The Nicotine Shroud',
+      id: 'Selubung Nikotin',
+      zh: '尼古丁迷烟之幕',
+      ja: 'ニコチンの帳',
+      ko: '니코틴 장막'
+    },
+    category: {
+      en: 'Vice & Nerve',
+      id: 'Cacat & Keberanian',
+      zh: '恶癖与心性',
+      ja: '悪癖と胆力',
+      ko: '악벽과 담력'
+    },
+    flavor: {
+      en: 'The smoke from an Astra Red does not merely coat your alveoli; it forms a defensive aerosol boundary between your soul and the decaying world.',
+      id: 'Asap dari Astra Merah bukan sekadar melapisi paru-parumu; ia membentuk batas pelindung aerosol antara jiwamu dan dunia yang membusuk.',
+      zh: '阿斯特拉红烟的辛辣烟雾不仅附着在你的肺泡间；更在你疲惫的灵魂与这腐朽世界之间构筑起一道绝缘屏障。',
+      ja: 'アストラ・レッドの紫煙は肺を燻すだけでなく、魂と荒廃した世界との間に防壁を張り巡らせる。',
+      ko: '아스트라 레드의 연기는 폐를 감쌀 뿐만 아니라, 영혼과 부패한 세계 사이에 방어막을 형성합니다.'
+    },
+    explanation: {
+      en: 'Every inhalation is a tiny flame against the frost of District 7. You exhale gray clouds that obscure your trembling hands.',
+      id: 'Setiap hisapan adalah nyala api kecil melawan dinginnya Sektor 7. Kau menghembuskan awan kelabu yang menyamarkan tanganmu yang gemetar.',
+      zh: '每一次深吸，都是在第七区的刺骨寒霜中点燃微弱篝火。呼出的灰白烟雾，恰好遮掩了你不住颤抖的指尖。',
+      ja: '一服ごとに、第7区の凍てつく寒気へ抗う小さな炎を灯す。吐き出す灰色の煙が、震える指先を覆い隠す。',
+      ko: '들이마시는 한 모금마다 제7구역의 서리에 맞서는 작은 불씨가 됩니다. 내뿜는 회색 연기는 떨리는 손을 가려줍니다.'
+    },
+    tempDrawback: {
+      en: 'Endurance -1 (Rattling smoker cough)',
+      id: 'Daya Tahan -1 (Batuk perokok yang parau)',
+      zh: '体能 -1 (剧烈嘶哑的烟民抽搐咳嗽)',
+      ja: '耐久力 -1 (嗄れた激しい咳込み)',
+      ko: '체력 -1 (거칠게 쌕쌕거리는 흡연자 기침)'
+    },
+    solution: {
+      en: 'Steely nerves. In moments of panic, a single puff restores total tactical clarity.',
+      id: 'Keteguhan saraf baja. Di saat panik, satu hisapan memulihkan kejernihan taktis sepenuhnya.',
+      zh: '钢铁般的神经稳定性。在恐慌濒临失控的临界点，仅需深吸一口，便能瞬间重构缜密的战术冷静。',
+      ja: '鋼の胆力。パニックに陥る瞬間も、一服の煙が完全なる戦術的明晰さを取り戻させる。',
+      ko: '강철 같은 신경. 공황의 순간에도 단 한 모금의 흡연이 전술적 명석함을 되찾아줍니다.'
+    }
+  }
+};
+
+export function tThought(thoughtId, field = 'name', lang = 'en') {
+  const thought = THOUGHTS_I18N[thoughtId];
+  if (!thought) return '';
+  const currentLang = thought[field] && thought[field][lang] ? lang : 'en';
+  return thought[field][currentLang] || thought[field]['en'] || thought[field]['id'] || '';
+}
+
+// --------------------------------------------------------------------------
+// Loading Screen & Detective Randomizer Localizations (5 Native Languages)
+// --------------------------------------------------------------------------
+export const LOADER_QUOTES_I18N = {
+  en: [
+    "“The clock never stops. Only the flesh within it forgets how to beat.”",
+    "“There is a place where every unanswered question gathers like dead skin.”",
+    "“You cannot interrogate the fog. It already knows what you did.”",
+    "“Amnesia is not an absence of memory, but a presence of self-preservation.”",
+    "“In District 7, even the statues have pawn shop tags tied to their wrists.”"
+  ],
+  id: [
+    "“Detik jam tak pernah berhenti. Hanya daging di dalamnya yang lupa cara berdetak.”",
+    "“Ada tempat di mana pertanyaan tanpa jawaban berkumpul seperti kulit mati.”",
+    "“Kau tak bisa menginterogasi kabut. Ia telah tahu apa yang kau perbuat.”",
+    "“Amnesia bukanlah ketiadaan ingatan, melainkan kehadiran naluri pertahanan diri.”",
+    "“Di Sektor 7, bahkan patung-patung kota memiliki label rumah gadai di pergelangan tangannya.”"
+  ],
+  zh: [
+    "“钟摆永不停歇。唯有齿轮间的血肉，遗忘了跳动的律动。”",
+    "“每个悬而未决的疑问，终将在某个幽暗角落如死皮般堆积。”",
+    "“你无法审问迷雾。它早已窥见了你的一切罪孽。”",
+    "“失忆绝非记忆的缺席，而是求生本能的慈悲降临。”",
+    "“在第七区，就连广场上的大理石雕像，手腕上也系着当铺的标签。”"
+  ],
+  ja: [
+    "「時計の針は止まらない。止まるのは、鼓動を忘れた肉体だけだ。」",
+    "「答えの出ぬ問いが、死んだ皮膚のように降り積もる場所がある。」",
+    "「霧を尋問することはできない。霧は既に、お前の犯した罪を知っている。」",
+    "「記憶喪失とは記憶の欠如ではない。自己防衛本能の存在証明だ。」",
+    "「第7区では、街の石像の手首にさえ質屋の札が結びつけられている。」"
+  ],
+  ko: [
+    "“시계는 결코 멈추지 않는다. 멈추는 것은 고동을 잊은 육신뿐.”",
+    "“해답 없는 의문들이 각질처럼 쌓여가는 장소가 있다.”",
+    "“안개를 심문할 수는 없다. 안개는 이미 네가 한 일을 알고 있다.”",
+    "“기억상실은 기억의 부재가 아니라, 자기보존 본능의 엄연한 실재다.”",
+    "“제7구역에서는 석상의 손목에조차 전당포 전표가 묶여 있다.”"
+  ]
+};
+
+export const TELEMETRY_PHASES_I18N = {
+  en: [
+    { at: 15, text: "Calibrating fractured synapses..." },
+    { at: 35, text: "Waking internal faculties: Ratio, Elysia, Carnal, Reflex..." },
+    { at: 60, text: "Loading forensic archives: Precinct 4..." },
+    { at: 85, text: "Reconstructing crime scene: Saint Irene Clocktower, 04:17 AM..." },
+    { at: 100, text: "Consciousness restored. Ready to investigate." }
+  ],
+  id: [
+    { at: 15, text: "Mengalibrasi sinapsis saraf yang retak..." },
+    { at: 35, text: "Membangunkan fakultas batin: Intelek, Kejiwaan, Fisik, Motorik..." },
+    { at: 60, text: "Memuat arsip forensik: Distrik 4..." },
+    { at: 85, text: "Merekonstruksi TKP: Menara Jam Saint Irene, 04:17..." },
+    { at: 100, text: "Kesadaran pulih. Siap memulai penyelidikan." }
+  ],
+  zh: [
+    { at: 15, text: "正在校准受损的神经突触..." },
+    { at: 35, text: "唤醒核心心智维次：理智、通灵、体魄、反应..." },
+    { at: 60, text: "载入第四警区法医绝密档案..." },
+    { at: 85, text: "现场全息重构：圣艾琳钟楼，凌晨04:17..." },
+    { at: 100, text: "深层意识已锚定。准备开启调查。" }
+  ],
+  ja: [
+    { at: 15, text: "断片化したシナプスを較正中..." },
+    { at: 35, text: "内なる精神機能を覚醒：知性、霊性、肉体、反射..." },
+    { at: 60, text: "第4分署の法医学記録をロード中..." },
+    { at: 85, text: "事件現場を再構築：聖アイリーン時計塔 午前04:17..." },
+    { at: 100, text: "意識の回復完了。捜査を開始せよ。" }
+  ],
+  ko: [
+    { at: 15, text: "분열된 신경 시냅스 보정 중..." },
+    { at: 35, text: "내면의 기능성 활성화: 이성, 영성, 육체, 반사..." },
+    { at: 60, text: "제4관할서 법의학 기록 적재 중..." },
+    { at: 85, text: "현장 재구성: 성 아이린 시계탑, 새벽 04:17..." },
+    { at: 100, text: "의식 회복 완료. 수사를 개시하십시오." }
+  ]
+};
+
+export const ALIASES_I18N = {
+  en: [
+    'The Dissolute Inspector',
+    'The Ghost of Precinct 4',
+    'The Broken Dialectician',
+    'The Saint of Hangovers',
+    'The Clockwork Cynic',
+    'The Desolate Poet'
+  ],
+  id: [
+    'Inspektur yang Hancur',
+    'Hantu dari Distrik 4',
+    'Ahli Dialektika yang Patah',
+    'Santo Pemabuk Berat',
+    'Sinikus Roda Gigi',
+    'Penyair yang Sunyi'
+  ],
+  zh: [
+    '沉沦落魄的探长',
+    '第四警区的幽灵',
+    '支离破碎的辩证学者',
+    '宿醉弥撒的圣徒',
+    '机械发条犬儒者',
+    '荒原绝境的哀歌诗人'
+  ],
+  ja: [
+    '放蕩の警部',
+    '第4分署の亡霊',
+    '失意の弁証法家',
+    '二日酔いの聖者',
+    '時計仕掛けの冷笑家',
+    '荒涼たる詩人'
+  ],
+  ko: [
+    '방탕한 수사관',
+    '제4관할서의 유령',
+    '망가진 변증론자',
+    '숙취의 성자',
+    '태엽 장치의 냉소주의자',
+    '황량한 방랑 시인'
+  ]
+};
+
+
+
+
+// ============================================================================
+// Multi-Case Dossiers & Grand Conspiracy Localization Data
+// ============================================================================
+export const CASES_I18N = {
+  case_d4_01: {
+    title: {
+      en: 'The Canal Drifter',
+      id: 'Mayat Mengapung di Kanal Distrik 4',
+      zh: '运河沉尸案',
+      ja: '運河の漂流死体',
+      ko: '운하의 표류 시신 사건'
+    },
+    victim: {
+      en: 'Tomas Karr (32, Dock Courier)',
+      id: 'Tomas Karr (32, Kurir Penyelundup)',
+      zh: '托马斯·卡尔 (32岁，码头走私信使)',
+      ja: 'トマス・カー (32歳、港湾密輸配達人)',
+      ko: '토마스 카 (32세, 부두 밀수 운반책)'
+    },
+    location: {
+      en: 'West Basin Canal, District 7',
+      id: 'Dermaga Kanal Barat Sektor 7',
+      zh: '第七区西蓄水运河码头',
+      ja: '第7区 西部運河船溜まり',
+      ko: '제7구역 서부 운하 선착장'
+    },
+    summary: {
+      en: 'The body of a dock courier was found bobbing in the tidal mud. Hidden in his oilskin lining was a secret silver wax seal and an encrypted Syndicate cargo manifest.',
+      id: 'Mayat kurir dermaga ditemukan mengapung di kanal berlumpur. Di balik lapisan mantelnya tersimpan segel lilin perak rahasia berlogo jam patah dan manifes klandestin.',
+      zh: '一名港口信使的浮尸在潮泥中被发现。其油布大衣夹层中缝藏着一枚刻有断裂齿轮的纯银蜡封及加密走私清单。',
+      ja: '運河の泥濘に浮かぶ波止場配達人の遺体。オイルスキンの裏地には、折れた歯車の刻まれた秘密の銀蝋印と暗号化された密輸目録が隠されていた。',
+      ko: '개펄에 떠오른 부두 운반책의 시신. 방수 외투 안감에서 부러진 톱니 문양의 은빛 밀랍 인장과 암호화된 밀수 목록이 발견되었습니다.'
+    },
+    keystoneName: {
+      en: 'Silver Syndicate Wax Seal',
+      id: 'Segel Lilin Sindikat Perak',
+      zh: '银色辛迪加蜡封印信',
+      ja: '銀色シンジケートの蝋印',
+      ko: '은빛 신디케이트 밀랍 인장'
+    },
+    keystoneDesc: {
+      en: 'Proves clandestine parts shipments routed to District 7 under corporate front accounts.',
+      id: 'Membuktikan pengiriman suku cadang terlarang ke Sektor 7 di bawah rekening bayangan konsorsium.',
+      zh: '证实违禁走私机械零件假借虚构商会账户正源源不断运入第七区。',
+      ja: 'ペーパーカンパニーの口座を通じ、第7区へ禁制品の機械部品が密輸されていた事実を証明する。',
+      ko: '유령 회사 계좌를 통해 제7구역으로 금지된 기계 부품이 밀수입되고 있었음을 증명합니다.'
+    }
+  },
+  case_d4_02: {
+    title: {
+      en: 'The Civic Vault Arson',
+      id: 'Kebakaran Gudang Arsip Catatan Sipil',
+      zh: '民政档案金库纵火案',
+      ja: '民政局保管庫放火事件',
+      ko: '민정 기록 보관소 방화 사건'
+    },
+    victim: {
+      en: 'Leonard Finch (64, Chief Archivist)',
+      id: 'Leonard Finch (64, Kepala Arsiparis)',
+      zh: '伦纳德·芬奇 (64岁，首席档案管理员)',
+      ja: 'レナード・フィンチ (64歳、筆頭記録保管官)',
+      ko: '레너드 핀치 (64세, 수석 기록보관관)'
+    },
+    location: {
+      en: 'Civic Records Sub-Vault, District 4',
+      id: 'Gudang Catatan Sipil Bawah Tanah Sektor 4',
+      zh: '第四警区民政档案地窖',
+      ja: '第4区 民政局地下記録庫',
+      ko: '제4구역 민정 기록 지하 보관소'
+    },
+    summary: {
+      en: 'A premeditated incendiary blast incinerated municipal land deeds. Finch died from smoke inhalation clutching charred titles to the Saint Irene clocktower foundations.',
+      id: 'Ledakan pembakaran berencana menghanguskan akta tanah kota. Finch tewas lemas sambil mendekap sisa lembaran akta pondasi Menara Jam Saint Irene.',
+      zh: '一场蓄谋已久的纵火爆炸彻底焚毁了市政土地契约。芬奇窒息身亡，怀中死死护着圣艾琳钟楼地基的焦黑地契。',
+      ja: '綿密に計画された放火により市政土地権利書が焼失。フィンチは聖アイリーン時計塔の基礎部分に関する焦げた権利書を抱きしめたまま窒息死していた。',
+      ko: '철저히 계획된 방화 폭발로 시의 토지 증서들이 전소되었습니다. 핀치는 성 아이린 시계탑 부지의 그을린 권리증을 품에 안은 채 질식사했습니다.'
+    },
+    keystoneName: {
+      en: 'Charred Vault Land Deed',
+      id: 'Halaman Akta Hangus Sektor Barat',
+      zh: '过火焦黑的特权土地地契',
+      ja: '焼け焦げた特権地権書',
+      ko: '불에 탄 특권 토지 권리증'
+    },
+    keystoneDesc: {
+      en: 'Names the City Magistrate as the secret beneficiary of Saint Irene clocktower acquisitions.',
+      id: 'Membuktikan Hakim Magistrat kota adalah penerima manfaat rahasia atas pembelian tanah Menara Irene.',
+      zh: '直接揭示市政大法官正是侵吞钟楼所有权幕后神秘财阀的最终收益人。',
+      ja: '時計塔周辺の買収劇における真の受益者が市政治安判事であることを露呈させる。',
+      ko: '시계탑 부지 매입의 배후에 있는 최종 수혜자가 시 치안판사임을 직접적으로 입증합니다.'
+    }
+  },
+  case_d4_03: {
+    title: {
+      en: "The Apothecary's Tincture",
+      id: 'Racun Belladonna Sang Kolektor Antik',
+      zh: '药剂师的淬毒酊剂案',
+      ja: '薬種商の毒劇薬事件',
+      ko: '약제사의 독성 팅크제 사건'
+    },
+    victim: {
+      en: 'Dr. Silas Vance (59, Horological Chemist)',
+      id: 'Dr. Silas Vance (59, Kurator Kimia Antik)',
+      zh: '塞拉斯·万斯博士 (59岁，钟表化学家)',
+      ja: 'サイラス・ヴァンス博士 (59歳、時計生化学者)',
+      ko: '사일러스 반스 박사 (59세, 시계 생화학자)'
+    },
+    location: {
+      en: 'Saint Jude Apothecary, East District',
+      id: 'Apotek Saint Jude, Sektor Timur',
+      zh: '东区圣犹大药局地下工坊',
+      ja: '東部地区 聖ユダ薬種店',
+      ko: '동부 구역 성 유다 약국 지하 공방'
+    },
+    summary: {
+      en: 'Killed in his laboratory by an odorless synthetic cyanide alkaloid. A clandestine serial numbered vial was recovered beneath his distilling alembic.',
+      id: 'Tewas di laboratoriumnya akibat racun alkaloid sianida sintetis tanpa bau. Ditemukan botol obat bernomor seri klandestin di bawah alat destilasi.',
+      zh: '在密闭实验室中被无色无味的合成氰化物毒杀。蒸馏器残骸下方散落着带有军规序列号的暗中调配试剂瓶。',
+      ja: '無臭の合成シアン化アルカロイドによって自室で毒殺。蒸留器の下から闇ルートの識別刻印が刻まれた小瓶が押収された。',
+      ko: '무취의 합성 시안화 알칼로이드에 의해 밀실에서 독살당했습니다. 증류기 아래에서 군용 암호 번호가 각인된 시약병이 발견되었습니다.'
+    },
+    keystoneName: {
+      en: 'Clandestine Serial Tincture Vial',
+      id: 'Vial Tinktur Berkode Klandestin',
+      zh: '军规黑市毒物试剂瓶',
+      ja: '闇市場の軍用薬瓶',
+      ko: '암시장 군용 독약 시약병'
+    },
+    keystoneDesc: {
+      en: 'Matches the chemical compound found in the puncture wound on Aurelia Vance.',
+      id: 'Formula sianida biru eksklusif yang sama persis dengan racun jarum pada Aurelia Vance.',
+      zh: '化学指纹与奥蕾莉亚·万斯颈部微型针孔中残留的致命毒素完全一致。',
+      ja: 'オウレリア・ヴァンスの首元に残された微小針孔の毒素と完全に同一の化学組成。',
+      ko: '오렐리아 반스의 목덜미에 남은 미세 주사 바늘 자국의 독소와 화학적으로 정확히 일치합니다.'
+    }
+  },
+  case_d4_04: {
+    title: {
+      en: 'The Silent Watchmaker of Saint Irene',
+      id: 'Sang Pembuat Jam yang Bisu di Menara Irene',
+      zh: '圣艾琳钟楼的无声制表师',
+      ja: '聖アイリーン時計塔の沈黙せる時計師',
+      ko: '성 아이린 시계탑의 침묵하는 시계 장인'
+    },
+    victim: {
+      en: 'Mistress Horologist Aurelia Vance (Age 56)',
+      id: 'Nyonya Horologis Aurelia Vance (Usia 56)',
+      zh: '首席钟表宗师 奥蕾莉亚·万斯 (56岁)',
+      ja: '主任時計師 オウレリア・ヴァンス (56歳)',
+      ko: '수석 시계 장인 오렐리아 반스 (56세)'
+    },
+    location: {
+      en: 'The Grand Pendulum Chamber, Tower of Saint Irene, District 7',
+      id: 'Ruang Bandul Raksasa, Menara Irene, Sektor 7',
+      zh: '第七区圣艾琳钟楼巨钟摆室',
+      ja: '第7区 聖アイリーン時計塔 巨大振子室',
+      ko: '제7구역 성 아이린 시계탑 대형 진자실'
+    },
+    summary: {
+      en: 'At 03:42 AM, the city clock stopped mid-stroke. Aurelia was impaled upon the pendulum in a room locked from within. Corrupt officials seek to bury it as an industrial accident.',
+      id: 'Pukul 03:42 pagi, lonceng kota terhenti mendadak. Aurelia tertusuk bandul raksasa dalam ruangan terkunci dari dalam. Petinggi korup berusaha menutupinya sebagai kecelakaan kerja.',
+      zh: '凌晨03:42分，巨大市钟戛然而止。奥蕾莉亚在密室中被大钟摆重锤贯穿胸膛。腐败官僚试图将其草草判定为机械工伤意外。',
+      ja: '午前03:42、大時計が突如停止。密室となった振子室でオウレリアが串刺し死体で発見された。腐敗した警察上層部は事故死として葬ろうとしている。',
+      ko: '새벽 03:42, 거대한 도시 시계가 멈췄습니다. 오렐리아는 밀실에서 진자 균형추에 꿰뚫린 채 발견되었습니다. 부패한 관료들은 이를 단순 안전사고로 위장하려 합니다.'
+    },
+    keystoneName: {
+      en: 'Perpetuum Blueprints & Syndicate Confession',
+      id: 'Cetak Biru Orloge & Pengakuan Dalang',
+      zh: '逆时发条设计图与贿赂自白',
+      ja: '永久機関設計図と買収自白',
+      ko: '영구시계 설계도 및 매수 자백'
+    },
+    keystoneDesc: {
+      en: 'Documents proving the murder was commissioned to facilitate complete temporal blackout for the Syndicate heist.',
+      id: 'Dokumen bukti pembunuhan dirancang untuk melumpuhkan kronometer kota demi sabotase sindikat.',
+      zh: '证明这起谋杀案是受幕后辛迪加雇佣，旨在瘫痪全市统一授时系统以便进行大规模洗劫。',
+      ja: '都市全域の標準時を停止させ、暗黒街の大規模略奪を容易にするための計画的暗殺であったことを立証する。',
+      ko: '도시 전역의 표준시를 마비시켜 대규모 약탈을 감행하기 위해 신디케이트가 사주한 청부 살인임을 증명합니다.'
+    }
+  },
+  case_prime_omega: {
+    title: {
+      en: 'THE GRAND PERPETUUM SYNDICATE CONSPIRACY',
+      id: 'KASUS UTAMA: KONSPIRASI SINDIKAT ORLOGE PERPETUUM',
+      zh: '终极主案：永恒钟表辛迪加大阴谋',
+      ja: '大事件：時計結社ペルペトゥームの巨大陰謀',
+      ko: '최종 주 사건: 영구시계 신디케이트의 거대 음모'
+    },
+    victim: {
+      en: 'The Temporal Sovereignty & Civilians of District 7',
+      id: 'Kedaulatan Waktu & Warga Sektor 7',
+      zh: '第七区全体民众与城市时间主权',
+      ja: '第7区市民の生命と都市の時間主権',
+      ko: '제7구역 시민의 안전과 도시 시간 주권'
+    },
+    location: {
+      en: 'Underworld Cartel Hub & High Magistrate Citadel',
+      id: 'Jaringan Sindikat Bawah Tanah & Balai Magistrat Sektor 7',
+      zh: '地下黑帮总枢纽与市政最高裁判所',
+      ja: '地下カルテル中枢および市政最高裁判所',
+      ko: '지하 카르텔 총본부 및 시 최고 재판소'
+    },
+    summary: {
+      en: 'Cases 01 through 04 form an unbroken chain of treason. The canal courier smuggled forbidden mechanisms, the archive fire erased paper trails, the apothecary brewed execution toxins, and Aurelia Vance was killed to seize the clocktower master switch. The syndicate planned to paralyze District 7 and seize perpetual power.',
+      id: 'Keempat kasus yang diselidiki Renata Vance adalah rantai konspirasi tunggal yang terencana: Kurir kanal mengangkut suku cadang, pembakaran arsip melenyapkan jejak tanah, racun apoteker mengeksekusi para saksi, dan pembunuhan sang pembuat jam bertujuan menguasai saklar menara kota demi kudeta waktu sindikat.',
+      zh: '自第01案至第04案是一张环环相扣的罪恶蛛网：运河走私走火入魔的禁忌部件、金库纵火抹杀土地证据、药剂师调制致命无痕毒素、谋杀制表大师以夺取全城授时总闸。幕后辛迪加企图趁时间瘫痪彻底掌控第七区。',
+      ja: '第01事件から第04事件までは全て一本の糸で繋がっていた。密輸、放火、毒殺、そして時計師暗殺による時限装置の強奪。時計結社は第7区の時間そのものを人質に取り、完全な支配を企てていた。',
+      ko: '제01호부터 제04호까지의 사건은 하나의 거대한 음모 사슬입니다. 부두 밀수, 방화 은폐, 독약 제조, 그리고 표준시 장악을 위한 시계 장인 살해까지. 신디케이트는 제7구역의 시간을 마비시키고 영구적인 권력을 장악하려 했습니다.'
+    },
+    keystoneName: {
+      en: 'Conspiracy Synthesis Dossier',
+      id: 'Sintesis Penyelidikan Sektor 7',
+      zh: '第七区全域大阴谋终审结论',
+      ja: '第7区全域巨大陰謀の総合立証',
+      ko: '제7구역 종합 수사 결론'
+    },
+    keystoneDesc: {
+      en: 'All 4 Keystone Evidence pieces align. The Syndicate Cartel and corrupt Magistrates stand fully unmasked.',
+      id: 'Keempat kunci bukti terhubung sempurna! Sindikat bayangan dan petinggi korup berhasil dibongkar total.',
+      zh: '全部4项关键拼图严丝合缝闭合！黑金结社与腐败法官的罪证已被彻底焊死。',
+      ja: '4つの決定的証拠が全て合致。結社の黒幕と買収された司法当局の罪状が白日の下に晒された。',
+      ko: '4가지 핵심 증거가 모두 완벽히 결합되었습니다. 암흑 신디케이트와 부패한 사법 당국의 진상이 완전히 밝혀졌습니다.'
+    }
+  }
+};
+
+export function tCase(caseId, field, lang = 'en') {
+  const c = CASES_I18N[caseId];
+  if (!c) return '';
+  const currentLang = c[field] && c[field][lang] ? lang : 'en';
+  return c[field][currentLang] || c[field]['en'] || c[field]['id'] || '';
+}

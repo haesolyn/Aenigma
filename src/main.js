@@ -3,22 +3,7 @@ import { audio } from './audio.js';
 import { state } from './state.js';
 import { UIController } from './ui.js';
 import { CASE_DATA } from './cases.js';
-
-const PHILOSOPHICAL_QUOTES = [
-  "“The clock never stops. Only the flesh within it forgets how to beat.”",
-  "“There is a place where every unanswered question gathers like dead skin.”",
-  "“You cannot interrogate the fog. It already knows what you did.”",
-  "“Amnesia is not an absence of memory, but a presence of self-preservation.”",
-  "“In District 7, even the statues have pawn shop tags tied to their wrists.”"
-];
-
-const TELEMETRY_PHASES = [
-  { at: 15, text: "Calibrating fractured synapses..." },
-  { at: 35, text: "Waking internal faculties: Ratio, Elysia, Carnal, Reflex..." },
-  { at: 60, text: "Loading forensic archives: Precinct 4..." },
-  { at: 85, text: "Reconstructing crime scene: Saint Irene Clocktower, 04:17 AM..." },
-  { at: 100, text: "Consciousness restored. Ready to investigate." }
-];
+import { LOADER_QUOTES_I18N, TELEMETRY_PHASES_I18N, ALIASES_I18N, t } from './i18n.js';
 
 let hasBooted = false;
 
@@ -40,11 +25,12 @@ function bootGame() {
 
   let quoteIdx = 0;
   const quoteInterval = setInterval(() => {
-    quoteIdx = (quoteIdx + 1) % PHILOSOPHICAL_QUOTES.length;
+    const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
+    quoteIdx = (quoteIdx + 1) % activeQuotes.length;
     if (quoteEl) {
       quoteEl.style.opacity = '0';
       setTimeout(() => {
-        quoteEl.textContent = PHILOSOPHICAL_QUOTES[quoteIdx];
+        quoteEl.textContent = activeQuotes[quoteIdx];
         quoteEl.style.opacity = '1';
       }, 300);
     }
@@ -59,7 +45,9 @@ function bootGame() {
     currentProgress = 100;
     if (progressFill) progressFill.style.width = '100%';
     if (progressPct) progressPct.textContent = '100%';
-    if (telemetryText) telemetryText.textContent = "Consciousness restored. Ready to investigate.";
+    const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+    const finalPhase = activePhases[activePhases.length - 1];
+    if (telemetryText) telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
     clearInterval(progressInterval);
     clearInterval(quoteInterval);
     if (enterBtn) {
@@ -78,7 +66,8 @@ function bootGame() {
     if (progressFill) progressFill.style.width = `${currentProgress}%`;
     if (progressPct) progressPct.textContent = `${currentProgress}%`;
 
-    const phase = TELEMETRY_PHASES.find(p => currentProgress <= p.at);
+    const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+    const phase = activePhases.find(p => currentProgress <= p.at);
     if (phase && telemetryText) {
       telemetryText.textContent = phase.text;
     }
@@ -95,6 +84,7 @@ function bootGame() {
       if (creatorStage) {
         creatorStage.classList.remove('hidden');
       }
+      ui.applyLanguage(state.currentLanguage);
       initCharacterCreator();
     }, 400);
   }
@@ -165,14 +155,7 @@ function bootGame() {
       const maleFirstNames = ['Valerian', 'Ren', 'Silas', 'Kazuki', 'Dante', 'Arthur', 'Lysander', 'Jin', 'Victor', 'Kenji'];
       const firstNames = selectedGender === 'female' ? femaleFirstNames : maleFirstNames;
       const lastNames = ['Vance', 'Voss', 'Sterling', 'Cross', 'Lin', 'Zhang', 'Chen', 'Blackwood', 'Mercer', 'Winter'];
-      const aliases = [
-        'The Dissolute Inspector',
-        'The Ghost of Precinct 4',
-        'The Broken Dialectician',
-        'The Saint of Hangovers',
-        'The Clockwork Cynic',
-        'The Desolate Poet'
-      ];
+      const aliases = ALIASES_I18N[state.currentLanguage] || ALIASES_I18N['en'];
       nameInput.value = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
       aliasInput.value = aliases[Math.floor(Math.random() * aliases.length)];
     });
@@ -198,12 +181,19 @@ function bootGame() {
     });
 
     function updateCreatorAttributes() {
-      if (pointsPoolEl) pointsPoolEl.textContent = `${availablePoints} Points Available`;
+      if (pointsPoolEl) pointsPoolEl.textContent = `${availablePoints} ${t('points_available', state.currentLanguage)}`;
       ['intellect', 'psyche', 'physique', 'motorics'].forEach(a => {
         const valEl = document.getElementById(`attr-val-${a}`);
         if (valEl) valEl.textContent = currentAttr[a];
       });
     }
+
+    state.subscribe((event) => {
+      if (event === 'language_changed') {
+        updateCreatorAttributes();
+        ui.applyLanguage(state.currentLanguage);
+      }
+    });
 
     // Signature Skill Selection
     document.querySelectorAll('.sig-skill-btn').forEach(btn => {
@@ -279,10 +269,12 @@ function bootGame() {
 
         // Render Scene & Initial Narrative
         ui.updateHUD();
+        ui.applyLanguage(state.currentLanguage);
         ui.renderScene();
         const initialPoi = (window.CASE_DATA || CASE_DATA)?.pointsOfInterest?.find(p => p.id === 'poi_pendulum');
         ui.startDialogue('examine_pendulum_start', 'Crime Scene: Pendulum Chamber', initialPoi);
-        ui.showToast(`Case File Opened: Aurelia Vance · Welcome to District 7, Detective ${finalName}`);
+        const toastTemplate = t('toast_case_opened', state.currentLanguage) || `Case File Opened: Aurelia Vance · Welcome to District 7, Detective {name}`;
+        ui.showToast(toastTemplate.replace('{name}', finalName));
 
         // Briefly show scene overlay HUD for orientation on entry, then smoothly minimize to corner chip
         const sceneHud = document.getElementById('scene-overlay-hud');

@@ -561,3 +561,56 @@
   font-size: 1rem;
   color: var(--text-secondary);
 }
+
+/* Responsive Scene Overlays & Tooltips */
+@media (max-width: 768px) {
+  .poi-pin-circle,
+  .poi-icon-box {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+  .poi-pulse-radar,
+  .poi-sonar-pulse {
+    width: 48px;
+    height: 48px;
+    top: -6px;
+    left: -6px;
+  }
+  .poi-tooltip-card,
+  .poi-label-tooltip {
+    max-width: min(210px, 60vw);
+    padding: 6px 10px;
+    bottom: 44px;
+  }
+  .poi-tooltip-title {
+    font-size: 0.78rem;
+  }
+  .poi-tooltip-hint {
+    font-size: 0.65rem;
+  }
+  .scene-overlay-hud {
+    bottom: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+    padding: 6px 10px;
+  }
+  .scene-location-title {
+    font-size: 0.85rem;
+  }
+  .scene-time-stamp {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .scene-viewport-controls {
+    top: 8px;
+    right: 8px;
+    gap: 6px;
+  }
+  .scene-ctrl-chip {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+}

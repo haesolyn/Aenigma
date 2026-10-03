@@ -6,7 +6,9 @@ const LANG_STORAGE_KEY = 'aenigma_language_preference';
 export class GameState {
   constructor() {
     this.listeners = [];
-    this.currentLanguage = localStorage.getItem(LANG_STORAGE_KEY) || 'en';
+    const savedLang = localStorage.getItem(LANG_STORAGE_KEY);
+    const validLangs = ['en', 'id', 'zh', 'ja', 'ko'];
+    this.currentLanguage = validLangs.includes(savedLang) ? savedLang : 'en';
     this.reset();
   }
 

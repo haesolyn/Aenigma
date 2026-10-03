@@ -80,9 +80,8 @@ export const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
-        "id": "graves_opt_preliminary",
-        "en": "\"What is your preliminary assessment, Graves?\"",
         "id": "\"Bagaimana penilaian awalmu, Graves?\"",
+        "en": "\"What is your preliminary assessment, Graves?\"",
         "zh": "“格雷夫斯，你的初步现场判断是什么？”",
         "ja": "「グレイヴス、お前の予備的な見立てはどうなんだ？」",
         "ko": "\"그레이브스, 자네의 예비 소견은 어떤가?\"",
@@ -95,9 +94,8 @@ export const DIALOGUE_I18N_FULL = {
         "ar": "\"ما هو تقييمك الأولي يا غريفز؟\""
       },
       {
-        "id": "graves_opt_rhetoric",
-        "en": "[RHETORIC - Medium 10] \"You seem in an awful hurry to file this report, Graves. Who called you first?\"",
         "id": "[RETORIKA - Sedang 10] \"Terburu-buru sekali kamu menutup laporan ini, Graves. Siapa yang menghubungimu duluan?\"",
+        "en": "[RHETORIC - Medium 10] \"You seem in an awful hurry to file this report, Graves. Who called you first?\"",
         "zh": "[修辞 - 难度10] “你似乎急不可耐地想结案归档啊，格雷夫斯。今晚到底是谁第一个给你通的信？”",
         "ja": "[修辞学 - 難易度10] 「ひどく急いで報告書をまとめようとしているな、グレイヴス。最初に呼んだのは誰だ？」",
         "ko": "[수사학 - 보통 10] \"보고서를 서둘러 넘기려는 기색이 역력하군, 그레이브스. 누가 자넬 먼저 불렀지?\"",
@@ -110,9 +108,8 @@ export const DIALOGUE_I18N_FULL = {
         "ar": "[البلاغة - متوسط 10] \"تبدو في عجلة مريبة لتقييد هذا التقرير يا غريفز. من الذي اتصل بك أولاً؟\""
       },
       {
-        "id": "graves_opt_conspiracy",
-        "en": "\"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is.\"",
         "id": "\"Aku tahu tentang hadiah buronan Sindikat, Graves. Katakan di mana buku besar itu.\"",
+        "en": "\"I know about the Grand Syndicate bounty, Graves. Tell me where that ledger is.\"",
         "zh": "“我知道大辛迪加悬赏那本账册的事了，格雷夫斯。把它的藏匿处告诉我。”",
         "ja": "「大シンジケートの懸賞金のことは知っているぞ、グレイヴス。帳簿がどこにあるか言え。」",
         "ko": "\"거대 신디케이트의 현상금에 대해 알고 있네, 그레이브스. 그 장부가 어디 있는지 말하게.\"",
@@ -125,9 +122,8 @@ export const DIALOGUE_I18N_FULL = {
         "ar": "\"أعرف بشأن مكافأة نقابة الجريمة يا غريفز. أخبرني أين يقع ذلك السجل المحاسبي.\""
       },
       {
-        "id": "graves_opt_cigarette",
-        "en": "\"I need a cigarette before my synapses completely disconnect.\"",
         "id": "\"Aku butuh sebatang rokok sebelum sinapsis sarafku benar-benar putus.\"",
+        "en": "\"I need a cigarette before my synapses completely disconnect.\"",
         "zh": "“在我脑神经彻底短路前，我需要来根烟提神。”",
         "ja": "「シナプスが完全に焼き切れる前に、煙草を一本くれ。」",
         "ko": "\"신경 시냅스가 완전히 끊기기 전에 담배 한 대 피워야겠군.\"",
@@ -140,9 +136,8 @@ export const DIALOGUE_I18N_FULL = {
         "ar": "\"أحتاج إلى سيجارة قبل أن تنقطع نقاط تشابكي العصبي تمامًا.\""
       },
       {
-        "id": "graves_opt_leave",
-        "en": "[Step away from Inspector Graves]",
         "id": "[Tinggalkan percakapan dengan Graves]",
+        "en": "[Step away from Inspector Graves]",
         "zh": "[暂别格雷夫斯警探]",
         "ja": "[グレイヴス警部との会話を終える]",
         "ko": "[그레이브스 형사와의 대화를 마치고 물러난다]",
@@ -334,6 +329,52 @@ export const DIALOGUE_I18N_FULL = {
         "pt": "[Voltar à investigação]",
         "ar": "[العودة إلى التحقيق]"
       }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "极乐直觉",
+          "ja": "エリシア",
+          "ko": "엘리시아",
+          "es": "Elysia",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليزيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "极乐直觉 [心智]",
+          "ja": "エリシア [精神]",
+          "ko": "엘리시아 [심리]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليزيا [الروح]"
+        },
+        "text": {
+          "en": "Greed radiates off him like heat from a kiln. But he didn't kill Vance—he arrived too late and found her already cold.",
+          "id": "Keserakahan memancar dari dirinya bagai panas dari tungku pembakaran. Tapi bukan dia yang membunuh Vance—dia tiba terlalu terlambat dan mendapati tubuhnya sudah dingin membeku.",
+          "zh": "贪婪如窑炉的余热般从他身上不断蒸腾散发。但他并没有亲自动手杀死梵斯——他只是来得太迟，赶到时尸体早已冰凉透骨。",
+          "ja": "陶芸窯のような熱気となって強欲が彼から立ち込めている。だが彼がヴァンスを殺したのではない——到着が遅すぎ、すでに冷たくなっていた遺体を見つけただけだ。",
+          "ko": "가마에서 뿜어져 나오는 열기처럼 탐욕이 그에게서 흘러나옵니다. 하지만 그가 밴스를 죽인 것은 아닙니다. 너무 늦게 도착해 이미 차갑게 식은 시신을 발견했을 뿐입니다.",
+          "es": "La codicia irradia de él como el calor de un horno. Pero no mató a Vance; llegó demasiado tarde y la encontró ya fría.",
+          "fr": "L'avidité émane de lui comme la chaleur d'un fourneau. Mais il n'a pas tué Vance : il est arrivé trop tard et l'a trouvée déjà froide.",
+          "de": "Habgier strahlt von ihm aus wie Hitze aus einem Brennofen. Aber er hat Vance nicht getötet – er kam zu spät und fand sie bereits kalt vor.",
+          "ru": "Жадность исходит от него, как жар из печи. Но он не убивал Вэнс — он пришел слишком поздно и застал ее уже остывшей.",
+          "it": "L'avidità si sprigiona da lui come calore da una fornace. Ma non ha ucciso Vance: è arrivato troppo tardi e l'ha trovata già fredda.",
+          "pt": "A ganância irradia dele como o calor de uma fornalha. Mas ele não matou Vance — chegou tarde demais e a encontrou fria.",
+          "ar": "ينبعث الجشع منه كحرارة تتصاعد من فرن متقد. لكنه لم يقتل فانس، بل وصل متأخرًا ووجد جثتها باردة بالفعل."
+        }
+      }
     ]
   },
   "graves_cigarette": {
@@ -380,6 +421,52 @@ export const DIALOGUE_I18N_FULL = {
         "pt": "[Soprar fumaça na penumbra e retornar]",
         "ar": "[نفث الدخان في عتمة البرج والعودة]"
       }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Reflex",
+          "id": "Refleks",
+          "zh": "反应力",
+          "ja": "反射神経",
+          "ko": "반사신경",
+          "es": "Reflejo",
+          "fr": "Réflexe",
+          "de": "Reflex",
+          "ru": "Рефлекс",
+          "it": "Riflesso",
+          "pt": "Reflexo",
+          "ar": "رد الفعل"
+        },
+        "badge": {
+          "en": "REFLEX [Motorics]",
+          "id": "REFLEKS [Motorik]",
+          "zh": "反应力 [运动敏捷]",
+          "ja": "反射神経 [運動]",
+          "ko": "반사신경 [운동]",
+          "es": "REFLEJO [Motricidad]",
+          "fr": "RÉFLEXE [Motricité]",
+          "de": "REFLEX [Motorik]",
+          "ru": "РЕФЛЕКС [Моторика]",
+          "it": "RIFLESSO [Motorica]",
+          "pt": "REFLEXO [Motricidade]",
+          "ar": "رد الفعل [الحركية]"
+        },
+        "text": {
+          "en": "The sulfur match strikes with an electric hiss. Inhaling the tar-heavy smoke calms your tremor. +1 Morale restored.",
+          "id": "Korek api belerang menyala dengan desisan elektrik. Menghirup asap pekat tembakau menenangkan tremor tanganmu. +1 Moral dipulihkan.",
+          "zh": "硫磺火柴在擦条上划出一声带电般的咝咝脆响。深吸一口焦油浓重的辛辣烟气，让你颤抖的手指终于重获镇定。+1 精神士气恢复。",
+          "ja": "硫黄のマッチが電気のような摩擦音を立てて擦られる。タールに満ちた煙を吸い込むと、指先の震えが和らぐ。士気+1回復。",
+          "ko": "유황 성냥이 전기가 튀듯 쉬익 소리를 내며 타오릅니다. 타르가 짙은 연기를 들이마시자 손끝의 떨림이 가라앉습니다. 사기 +1 회복.",
+          "es": "El fósforo de azufre chisporrotea con un siseo eléctrico. Inhalar el humo espeso de alquitrán calma tu temblor. +1 Moral restaurada.",
+          "fr": "L'allumette au soufre s'embrase dans un chuintement électrique. Inhaler cette fumée chargée de goudron apaise vos tremblements. +1 Moral restauré.",
+          "de": "Das Schwefelhölzchen entzündet sich mit einem zischenden Laut. Der teerhaltige Rauch beruhigt dein Zittern. +1 Moral wiederhergestellt.",
+          "ru": "Серная спичка вспыхивает с электрическим шипением. Вдох смолистого дыма унимает дрожь в пальцах. +1 к Боевому духу.",
+          "it": "Il fiammifero allo zolfo si accende con un sibilo elettrico. Inalare il fumo denso di catrame placa il tuo tremore. +1 Morale ripristinato.",
+          "pt": "O fósforo de enxofre risca com um chiado elétrico. Inalar a fumaça pesada de alcatrão acalma seu tremor. +1 Moral restaurada.",
+          "ar": "يشتعل عود الثقاب الكبريتي بفحيح كهربائي خافت. استنشاق الدخان المشبع بالقطران يهدئ رجفة أصابعك. +1 استعادة المعنويات."
+        }
+      }
     ]
   },
   "examine_pendulum_start": {
@@ -413,46 +500,150 @@ export const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "[PERCEPTION - Challenging 12] Pry open her frozen right hand to inspect what she clenched.",
-        "id": "[PERSEPSI - Sulit 12] Buka paksa genggaman tangan kanannya yang membeku untuk melihat apa yang ia cengkeram.",
-        "zh": "[感知 - 困难12] 掰开她僵死冰冷的右手，检查死者死前紧攥之物。",
-        "ja": "[知覚 - 難度12] 硬直した右手をこじ開け、死の間際に何を握りしめていたか検分する。",
-        "ko": "[지각 - 난이도 12] 굳어버린 오른손을 강제로 벌려 쥐고 있던 것을 확인한다.",
-        "es": "[PERCEPCIÓN - Desafiante 12] Abrir su mano congelada para examinar qué apretaba.",
-        "fr": "[PERCEPTION - Difficile 12] Forcer sa main raidie pour examiner ce qu'elle serrait.",
-        "de": "[WAHRNEHMUNG - Schwer 12] Ihre erstarrte rechte Hand aufbiegen und untersuchen.",
+        "id": "[PERSEPSI - Sulit 12] Buka paksa genggaman tangan kanannya yang membeku untuk melihat apa yang ia cengkeram sebelum mati.",
+        "en": "[PERCEPTION - Challenging 12] Pry open her frozen right hand to see what she clenched before dying.",
+        "zh": "【感知 - 难度 12】掰开她僵死冰冷的右手，检查死者死前紧攥之物。",
+        "ja": "【知覚 - 難度 12】硬直した右手をこじ開け、死の間際に何を握りしめていたか検分する。",
+        "ko": "[지각 - 난이도 12] 굳어버린 오른손을 강제로 벌려 죽기 직전 쥐고 있던 것을 확인한다.",
+        "es": "[PERCEPCIÓN - Desafiante 12] Abrir su mano congelada para examinar qué apretaba antes de morir.",
+        "fr": "[PERCEPTION - Difficile 12] Forcer sa main droite figée pour voir ce qu'elle serrait avant de mourir.",
+        "de": "[WAHRNEHMUNG - Schwer 12] Ihre verkrampfte rechte Hand aufbrechen, um zu sehen, was sie festhielt.",
         "ru": "[ВОСПРИЯТИЕ - Сложность 12] Разжать ее одеревеневшие пальцы и изучить предмет в руке.",
-        "it": "[PERCEZIONE - Impegnativo 12] Apri la sua mano irrigidita per vedere cosa stringeva.",
-        "pt": "[PERCEPÇÃO - Desafiador 12] Forçar a mão direita congelada para ver o que segurava.",
-        "ar": "[الإدراك - صعب 12] فتح قبضتها اليمنى المتصلبة لمعاينة ما كانت تمسكه بقوة."
+        "it": "[PERCEZIONE - Impegnativo 12] Apri la sua mano irrigidita per vedere cosa stringeva prima di morire.",
+        "pt": "[PERCEPÇÃO - Desafiador 12] Forçar a mão direita congelada para ver o que ela segurava ao morrer.",
+        "ar": "[الإدراك - صعب 12] فتح قبضتها اليمنى المتصلبة لمعاينة ما كانت تمسكه بقوة قبل موتها."
       },
       {
+        "id": "[ESOTERIKA - Sedang 10] Teliti ukiran geometris aneh yang tergores di tulang selangkanya.",
         "en": "[ESOTERICA - Medium 10] Study the strange geometric incision carved into her collarbone.",
-        "id": "[ESOTERIKA - Sedang 10] Teliti ukiran geometris ganjil yang disayat di tulang selangkanya.",
-        "zh": "[秘教 - 难度10] 细细研读刻在她锁骨处那道诡异的几何几何星位刻痕。",
-        "ja": "[秘教 - 難易度10] 彼女の鎖骨に刻まれた奇妙な幾何学的印章を調べる。",
-        "ko": "[비전학 - 보통 10] 쇄골에 새겨진 기이한 기하학적 문양을 분석한다.",
+        "zh": "【秘教 - 难度 10】细细研读刻在她锁骨处那道诡异的几何炼金刻痕。",
+        "ja": "【秘教 - 難易度 10】彼女の鎖骨に刻まれた奇妙な幾何学的刻印を調べる。",
+        "ko": "[비전학 - 보통 10] 쇄골에 새겨진 기이한 기하학적 절개 문양을 분석한다.",
         "es": "[ESOTERISMO - Medio 10] Estudiar la extraña incisión geométrica tallada en su clavícula.",
         "fr": "[ÉSOTÉRISME - Moyen 10] Étudier l'étrange incision géométrique gravée sur sa clavicule.",
-        "de": "[ESOTERIK - Mittel 10] Die seltsame geometrische Ritzung an ihrem Schlüsselbein untersuchen.",
-        "ru": "[ЭЗОТЕРИКА - Сложность 10] Изучить странный геометрический знак, вырезанный на ключице.",
-        "it": "[ESOTERISMO - Medio 10] Esamina la strana incisione geometrica incisa sulla clavicola.",
+        "de": "[ESOTERIK - Mittel 10] Die seltsame geometrische Einritzung an ihrem Schlüsselbein untersuchen.",
+        "ru": "[ЭЗОТЕРИКА - Сложность 10] Изучить странные геометрические надрезы на ее ключице.",
+        "it": "[ESOTERISMO - Medio 10] Studia la strana incisione geometrica incisa sulla clavicola.",
         "pt": "[ESOTERISMO - Médio 10] Estudar a estranha incisão geométrica talhada na clavícula dela.",
         "ar": "[العلوم الباطنية - متوسط 10] دراسة النقش الهندسي الغريب المحفور على عظمة ترقوتها."
       },
       {
-        "en": "[Step away from the pendulum]",
-        "id": "[Mundur dari area pendulum]",
-        "zh": "[从钟摆齿轮区域退步]",
-        "ja": "[振り子の遺体から離れる]",
-        "ko": "[진자 시신에서 물러난다]",
-        "es": "[Alejarse del péndulo]",
-        "fr": "[S'éloigner du balancier]",
-        "de": "[Vom Pendel zurücktreten]",
-        "ru": "[Отойти от маятника]",
-        "it": "[Allontanati dal pendolo]",
-        "pt": "[Afastar-se do pêndulo]",
-        "ar": "[التراجع عن منطقة البندول]"
+        "id": "[BERBAHAYA] Raih ke dalam celah roda gigi escapement yang berputar untuk mencari bukti yang terjatuh.",
+        "en": "[DANGEROUS] Reach deep into the churning escapement gears to look for dropped evidence.",
+        "zh": "【极度危险】将手探入猛烈咬合转动的擒纵齿轮深处，搜寻掉落的证据残片。",
+        "ja": "【危険】回転する脱進機の歯車の奥深くに手を差し入れ、落ちた証拠を探す。",
+        "ko": "[위험] 맞물려 돌아가는 탈진기 톱니바퀴 틈새로 손을 뻗어 떨어진 증거를 찾는다.",
+        "es": "[PELIGROSO] Meter la mano entre los engranajes en marcha para buscar pruebas caídas.",
+        "fr": "[DANGEREUX] Plonger la main dans les engrenages en mouvement pour chercher un indice tombé.",
+        "de": "[GEFÄHRLICH] Tief in die mahlenden Zahnräder greifen, um nach Beweisen zu suchen.",
+        "ru": "[ОПАСНО] Залезть рукой глубоко в крутящиеся шестеренки в поисках упавших улик.",
+        "it": "[PERICOLOSO] Infila la mano negli ingranaggi in movimento per cercare prove cadute.",
+        "pt": "[PERIGOSO] Alcançar o fundo das engrenagens em movimento para procurar provas caídas.",
+        "ar": "[خطر] مد يدك في أعماق تروس ميزان الساعة الدوارة بحثًا عن أدلة ساقطة."
+      },
+      {
+        "id": "[Mundur dari jenazah]",
+        "en": "[Step back from the corpse]",
+        "zh": "【从尸体旁退后】",
+        "ja": "【遺体から離れる】",
+        "ko": "[시신에서 물러선다]",
+        "es": "[Alejarse del cadáver]",
+        "fr": "[S'éloigner du cadavre]",
+        "de": "[Von der Leiche zurücktreten]",
+        "ru": "[Отойти от тела]",
+        "it": "[Allontanati dal cadavere]",
+        "pt": "[Afastar-se do cadáver]",
+        "ar": "[الابتعاد عن الجثة]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Hypostasis deduction: She did not die here on the pendulum. She was killed at the window sill, bled out, and her body was dragged and mounted onto the clock mechanism to make the stoppage seem like an accidental disaster.",
+          "id": "Deduksi hipostasis: Korban tidak mati di sini pada pendulum. Dia dibunuh di dekat jendela, kehabisan darah, lalu jenazahnya diseret dan dipasang ke mekanisme jam agar penghentian jam tampak seperti bencana kecelakaan.",
+          "zh": "尸斑重力推演：她的真正死因绝非钟摆压迫。她是在窗台边遇刺身亡、流尽鲜血后，尸体才被凶手拖过来固定在齿轮配重上的，企图制造机械事故假象！",
+          "ja": "死斑の推論：彼女はこの振り子の上で死んだのではない。窓際で殺害されて失血死した後、時計停止を事故に見せかけるため遺体を運んで機構に固定したのだ。",
+          "ko": "시반 추론: 피해자는 시계추 위에서 사망한 것이 아닙니다. 창틀에서 살해당해 피를 흘린 뒤, 시계 정지를 우발적 사고처럼 위장하기 위해 시신을 기계 장치로 끌고 와 매달아 놓았습니다.",
+          "es": "Deducción de hipóstasis: No murió aquí en el péndulo. Fue asesinada en el alféizar de la ventana, se desangró y su cuerpo fue arrastrado y montado en el mecanismo para simular un accidente.",
+          "fr": "Déduction d'hypostase : Elle n'est pas morte ici sur le balancier. Elle a été tuée près de la fenêtre, s'est vidée de son sang, puis son corps a été traîné et hissé sur le mécanisme pour simuler un accident.",
+          "de": "Livores-Deduktion: Sie starb nicht hier am Pendel. Sie wurde an der Fensterbank getötet, blutete aus, und ihre Leiche wurde auf das Uhrwerk geschleift, um einen Unfall vorzutäuschen.",
+          "ru": "Трупные пятна не врут: она умерла не здесь на маятнике. Ее убили у окна, она истекла кровью, а затем тело приволокли сюда для инсценировки несчастного случая.",
+          "it": "Deduzione dell'ipostasi: Non è morta qui sul pendolo. È stata uccisa sul davanzale, dissanguata, e il corpo è stato trascinato e montato sull'orologio per simulare un disastro accidentale.",
+          "pt": "Dedução de hipóstase: Ela não morreu aqui no pêndulo. Foi assassinada no parapeito, sangrou até morrer, e seu corpo foi arrastado e montado no mecanismo para forjar um acidente.",
+          "ar": "استنتاج علمي للترسب الدموي: لم تمت الضحية هنا على البندول بل قُتلت عند حافة النافذة ونزفت حتى الموت، ثم سُحلت جثتها ورُكبت على ثقل الساعة ليبدو التوقف وكأنه حادث عرضي."
+        }
+      },
+      {
+        "voice": {
+          "en": "Carnal",
+          "id": "Karnal",
+          "zh": "肉体本能",
+          "ja": "肉体",
+          "ko": "육체",
+          "es": "Carnal",
+          "fr": "Carnal",
+          "de": "Körper",
+          "ru": "Тело",
+          "it": "Fisico",
+          "pt": "Físico",
+          "ar": "الجسد"
+        },
+        "badge": {
+          "en": "CARNAL [Physique]",
+          "id": "KARNAL [Fisik]",
+          "zh": "肉体本能 [体魄]",
+          "ja": "肉体 [身体]",
+          "ko": "육체 [신체]",
+          "es": "CARNAL [Físico]",
+          "fr": "CARNAL [Physique]",
+          "de": "KÖRPER [Physis]",
+          "ru": "ТЕЛО [Телосложение]",
+          "it": "FISICO [Fisico]",
+          "pt": "FÍSICO [Físico]",
+          "ar": "الجسد [البنية]"
+        },
+        "text": {
+          "en": "Touch her wrist. The rigor mortis is uneven. The left arm is limp, while the right hand is frozen in a convulsive grip, clutching something tightly inside her palm.",
+          "id": "Sentuh pergelangan tangannya. Kaku mayatnya tidak merata. Lengan kirinya lemas, sedangkan tangan kanannya membeku dalam cengkeraman kejang, menggenggam sesuatu dengan sangat erat di telapak tangannya.",
+          "zh": "触碰她的手腕。尸僵分布极不均匀。左臂软垂无力，而右手却在死前痉挛中彻底僵死，掌心死死攥紧着某种冰冷的小物件。",
+          "ja": "手首に触れてみろ。死後硬直に偏りがある。左腕はだらりと垂れ下がっているが、右手は激しい痙攣のまま凍りつき、掌の中に何かを固く握りしめている。",
+          "ko": "손목을 만져보십시오. 사후강직이 불균등합니다. 왼팔은 축 늘어져 있지만, 오른손은 경련하듯 굳어 손바닥 안에 무언가를 억세게 움켜쥐고 있습니다.",
+          "es": "Toca su muñeca. El rigor mortis es desigual. El brazo izquierdo está flácido, mientras que la mano derecha está congelada en un agarre convulsivo, apretando algo con fuerza en la palma.",
+          "fr": "Touchez son poignet. La rigidité cadavérique est inégale. Le bras gauche est flasque, tandis que la main droite est figée dans une crispation convulsive, serrant fort quelque chose dans sa paume.",
+          "de": "Berühre ihr Handgelenk. Die Totenstarre ist ungleichmäßig. Der linke Arm ist schlaff, während die rechte Hand in krampfhaftem Griff erstarrt ist und etwas fest umschlossen hält.",
+          "ru": "Коснись ее запястья. Трупное окоченение неравномерно. Левая рука безжизненна, но правая ладонь судорожно сжата в кулак, намертво удерживая что-то внутри.",
+          "it": "Tocca il suo polso. Il rigor mortis è irregolare. Il braccio sinistro è flaccido, mentre la mano destra è congelata in una presa convulsiva, stringendo saldamente qualcosa nel palmo.",
+          "pt": "Toque o pulso dela. O rigor mortis é irregular. O braço esquerdo está mole, enquanto a mão direita congelou num aperto convulsivo, segurando algo com força na palma.",
+          "ar": "المس معصمها. التخشب الرمي غير متكافئ؛ الذراع اليسرى مرتخية، بينما اليد اليمنى متجمدة في قبضة تشنجية تطبق بقوة على شيء ما داخل راحة يدها."
+        }
       }
     ]
   },
@@ -487,18 +678,78 @@ export const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "\"The killer did not use brute force. They used a parlor trick.\"",
-        "id": "\"Pembunuhnya tidak memakai tenaga kasar. Mereka memakai trik ruang tamu yang licik.\"",
-        "zh": "“凶手根本不是靠蛮力行凶。这是一场精心策划的沙龙式暗杀。”",
-        "ja": "「犯人は腕力で殺したのではない。サロンの毒針という陰湿な手口だ。」",
-        "ko": "\"범인은 완력을 쓰지 않았소. 살롱식 속임수 독살극이었던 거지.\"",
-        "es": "\"El asesino no usó la fuerza bruta. Usó un truco de salón.\"",
-        "fr": "\"L'assassin n'a pas usé de la force brute. C'était un assassinat de salon.\"",
-        "de": "\"Der Mörder brauchte keine rohe Gewalt. Es war ein tückisches Giftattentat.\"",
-        "ru": "«Убийца не применял грубую силу. Это было коварное салонное убийство.»",
-        "it": "\"L'assassino non ha usato la forza bruta. È stato un trucco velenoso da salotto.\"",
-        "pt": "\"O assassino não usou força bruta. Foi um truque engenhoso de salão.\"",
-        "ar": "\"القاتل لم يستخدم القوة الغاشمة بل حيلة صالونات ماكرة قاتلة.\""
+        "en": "\"The killer didn't use brute force. They used a parlor trick.\"",
+        "id": "\"Pembunuhnya tidak memakai kekerasan fisik semata. Mereka memakai tipu muslihat yang licik.\"",
+        "zh": "“凶手并没有使用粗暴蛮力，而是用了一种阴险的江湖障眼法。”",
+        "ja": "「犯人は腕力を使ったんじゃない。巧妙なトリックを使ったんだ。」",
+        "ko": "\"범인은 무력을 쓰지 않았소. 교묘한 속임수를 썼지.\"",
+        "es": "\"El asesino no usó fuerza bruta. Usó un truco de salón.\"",
+        "fr": "\"Le tueur n'a pas usé de force brute. C'était un tour de passe-passe.\"",
+        "de": "\"Der Mörder wandte keine rohe Gewalt an. Es war ein billiger Zaubertrick.\"",
+        "ru": "«Убийца не применял грубую силу. Он использовал фокус с ядом.»",
+        "it": "\"L'assassino non ha usato la forza bruta. Ha usato un trucco da salotto.\"",
+        "pt": "\"O assassino não usou força bruta. Usou um truque de salão.\"",
+        "ar": "\"لم يستخدم القاتل القوة الغاشمة، بل خدعة ماكرة ملتوية.\""
+      },
+      {
+        "en": "[Close]",
+        "id": "[Tutup]",
+        "zh": "【关闭】",
+        "ja": "【閉じる】",
+        "ko": "[닫기]",
+        "es": "[Cerrar]",
+        "fr": "[Fermer]",
+        "de": "[Schließen]",
+        "ru": "[Закрыть]",
+        "it": "[Chiudi]",
+        "pt": "[Fechar]",
+        "ar": "[إغلاق]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Reflex",
+          "id": "Refleks",
+          "zh": "反应力",
+          "ja": "反射神経",
+          "ko": "반사신경",
+          "es": "Reflejo",
+          "fr": "Réflexe",
+          "de": "Reflex",
+          "ru": "Рефлекс",
+          "it": "Riflesso",
+          "pt": "Reflexo",
+          "ar": "رد الفعل"
+        },
+        "badge": {
+          "en": "REFLEX [Motorics]",
+          "id": "REFLEKS [Motorik]",
+          "zh": "反应力 [运动敏捷]",
+          "ja": "反射神経 [運動]",
+          "ko": "반사신경 [운동]",
+          "es": "REFLEJO [Motricidad]",
+          "fr": "RÉFLEXE [Motricité]",
+          "de": "REFLEX [Motorik]",
+          "ru": "РЕФЛЕКС [Моторика]",
+          "it": "RIFLESSO [Motorica]",
+          "pt": "REFLEXO [Motricidade]",
+          "ar": "رد الفعل [الحركية]"
+        },
+        "text": {
+          "en": "Belladonna and mercuric oxide. An assassination needle. Vance was paralyzed with neurotoxin before her body was hoisted onto the pendulum!",
+          "id": "Belladonna dan oksida merkuri. Jarum pembunuh. Vance dilumpuhkan dengan racun saraf sebelum jenazahnya diangkat ke pendulum!",
+          "zh": "颠茄素与氧化汞结晶。这是一枚特制的暗杀毒针！梵斯在尸体被挂上钟摆前，就已经被剧毒神经毒素彻底麻痹了！",
+          "ja": "ベラドンナと酸化水銀。暗殺用の毒針だ。ヴァンスは振り子に吊るされる前に、神経毒で麻痺させられていたのだ！",
+          "ko": "벨라도나와 산화수은. 암살용 독침입니다. 밴스는 시신이 시계추에 매달리기 전에 이미 신경독으로 마비되어 있었습니다!",
+          "es": "Belladona y óxido mercúrico. Una aguja de asesinato. ¡Vance fue paralizada con neurotoxina antes de ser izada al péndulo!",
+          "fr": "Belladone et oxyde de mercure. Une aiguille d'assassinat. Vance a été paralysée par une neurotoxine avant d'être hissée sur le balancier !",
+          "de": "Tollkirsche und Quecksilberoxid. Eine Attentatsnadel. Vance wurde gelähmt, bevor sie an das Pendel gehängt wurde!",
+          "ru": "Белладонна и оксид ртути. Игла убийцы. Вэнс была парализована нейротоксином до того, как тело подняли на маятник!",
+          "it": "Belladonna e ossido di mercurio. Un ago da assassinio. Vance è stata paralizzata prima di essere issata sul pendolo!",
+          "pt": "Beladona e óxido mercúrico. Uma agulha de assassinato. Vance foi paralisada com neurotoxina antes de ser erguida ao pêndulo!",
+          "ar": "ست الحسن وأكسيد الزئبق. إبرة اغتيال غادرة. لقد شُل جسد فانس بسم عصبي قبل رفع جثتها على البندول!"
+        }
       }
     ]
   },
@@ -533,32 +784,92 @@ export const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "[INTERFACING - Medium 10] Pry open the rear balance cock to inspect the escapement gears.",
-        "id": "[PENYELARASAN - Sedang 10] Buka tutup belakang mekanisme untuk memeriksa roda escapement.",
-        "zh": "[机械交互 - 难度10] 挑开后盖摆轮夹板，仔细检视内部擒纵机芯。",
-        "ja": "[機構連動 - 難易度10] 裏蓋のテンプ受けを開け、脱進機内部を検分する。",
-        "ko": "[기계 인터페이스 - 보통 10] 뒷면 밸런스 콕을 조심스레 열어 무브먼트 내부를 검사한다.",
-        "es": "[INTERFAZ - Medio 10] Abrir la tapa trasera para inspeccionar los engranajes.",
-        "fr": "[INTERACTION - Moyen 10] Ouvrir le couvercle arrière pour examiner le mécanisme.",
-        "de": "[VERZAHNUNG - Mittel 10] Den Unruhkloben aufhebeln und das Getriebe inspizieren.",
-        "ru": "[МЕХАНИКА - Сложность 10] Вскрыть заднюю крышку механизма и осмотреть шестерни.",
-        "it": "[INTERFACCIAMENTO - Medio 10] Apri il fondello posteriore per esaminare lo scappamento.",
-        "pt": "[INTERFACIAMENTO - Médio 10] Abrir a tampa traseira para inspecionar as engrenagens.",
-        "ar": "[التفاعل الآلي - متوسط 10] فك غطاء الميزان الخلفي لمعاينة تروس الحركة الدقيقة."
+        "id": "[PENYELARASAN MESIN - Sedang 11] Cungkil penutup belakang dengan ujung kuku untuk memeriksa roda gigi bagian dalam.",
+        "en": "[INTERFACING - Medium 11] Pop open the back casing with your thumbnail to examine the inner movement.",
+        "zh": "【机构连动 - 难度 11】用指甲挑开怀表后盖，检视其内嵌的复杂机芯。",
+        "ja": "【機構連動 - 難易度 11】親指の爪で裏蓋をこじ開け、内部のムーブメントを調べる。",
+        "ko": "[기계 조율 - 보통 11] 엄지손톱으로 뒷면 덮개를 열어 내부 무브먼트를 살펴본다.",
+        "es": "[CONEXIÓN MECÁNICA - Medio 11] Abrir la tapa trasera con la uña para examinar el movimiento interno.",
+        "fr": "[INTERFAÇAGE - Moyen 11] Ouvrir le boîtier arrière avec l'ongle pour examiner le mouvement.",
+        "de": "[MECHANIK - Mittel 11] Das hintere Gehäuse aufhebeln, um das Innenleben zu untersuchen.",
+        "ru": "[ВЗАИМОДЕЙСТВИЕ - Сложность 11] Поддеть ногтем заднюю крышку и изучить механизм.",
+        "it": "[INTERAZIONE - Medio 11] Apri il coperchio posteriore per esaminare il meccanismo interno.",
+        "pt": "[INTERAÇÃO - Médio 11] Abrir a tampa traseira para examinar o mecanismo interno.",
+        "ar": "[التعامل الميكانيكي - متوسط 11] فتح الغطاء الخلفي لمعاينة التروس الداخلية للحركة."
       },
       {
-        "en": "[Put the watch down]",
-        "id": "[Kembalikan jam saku ke tempatnya]",
-        "zh": "[放低怀表]",
-        "ja": "[時計を元に戻す]",
-        "ko": "[회중시계를 내려놓는다]",
-        "es": "[Dejar el reloj]",
-        "fr": "[Reposer la montre]",
-        "de": "[Die Uhr weglegen]",
-        "ru": "[Отложить часы]",
-        "it": "[Riponi l'orologio]",
-        "pt": "[Guardar o relógio]",
-        "ar": "[إعادة الساعة إلى مكانها]"
+        "id": "[Masukkan arloji ke dalam kantong bukti]",
+        "en": "[Put the watch in evidence bag]",
+        "zh": "【将怀表放入物证袋】",
+        "ja": "【懐中時計を証拠品袋に収める】",
+        "ko": "[시계를 증거품 가방에 보관한다]",
+        "es": "[Poner el reloj en la bolsa de pruebas]",
+        "fr": "[Mettre la montre dans le sac à preuves]",
+        "de": "[Die Uhr in die Beweismitteltasche legen]",
+        "ru": "[Убрать часы в мешок для улик]",
+        "it": "[Metti l'orologio nella busta delle prove]",
+        "pt": "[Colocar o relógio no saco de evidências]",
+        "ar": "[وضع الساعة في حقيبة الأدلة]"
+      },
+      {
+        "id": "[Mundur]",
+        "en": "[Step back]",
+        "zh": "【退后】",
+        "ja": "【戻る】",
+        "ko": "[뒤로 물러선다]",
+        "es": "[Retroceder]",
+        "fr": "[Reculer]",
+        "de": "[Zurücktreten]",
+        "ru": "[Назад]",
+        "it": "[Indietro]",
+        "pt": "[Recuar]",
+        "ar": "[الرجوع للخلف]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Listen. The cadence is wrong. A normal escapement beats at five ticks per second (300 BPM). This mechanism is pulsing in an irregular triplet: tap... tap-tap... tap.",
+          "id": "Dengarkan baik-baik. Ketukannya ganjil. Escapement jam normal berdetak lima kali per detik (300 BPM). Mekanisme ini berdenyut dalam pola triplet tak beraturan: tik... tik-tik... tik.",
+          "zh": "侧耳细听。这种摆动节奏完全不对。普通钟表擒纵器每秒敲击五次（300 BPM）。而眼前的精密机构却在以一种诡异的三连音脉动：咔……咔-咔……咔。",
+          "ja": "聴け。リズムが狂っている。通常の脱進機は毎秒5回（300 BPM）刻む。この機構は不規則な三連符で脈打っている：カチッ……カチ・カチッ……カチッ。",
+          "ko": "귀를 기울이십시오. 박자가 잘못되었습니다. 보통의 탈진기는 초당 5회(300 BPM) 박동합니다. 하지만 이 장치는 불규칙한 세 박자로 뛰고 있습니다. 틱... 틱-틱... 틱.",
+          "es": "Escucha. La cadencia es errónea. Un escape normal late a cinco tics por segundo (300 BPM). Este mecanismo pulsa en un triplete irregular: tac... tac-tac... tac.",
+          "fr": "Écoutez. Le rythme est anormal. Un échappement régulier bat à cinq coups par seconde. Ce mécanisme pulse en un triolet irrégulier : tic... tic-tic... tic.",
+          "de": "Hör zu. Der Takt stimmt nicht. Ein normales Hemmungswerk tickt fünfmal pro Sekunde. Dieses pulsiert in einer unregelmäßigen Triole: tick... tick-tick... tick.",
+          "ru": "Послушай. Ритм нарушен. Обычный спуск тикает пять раз в секунду. Этот механизм пульсирует странной триолью: тик... тик-тик... тик.",
+          "it": "Ascolta. Il ritmo è sbagliato. Un normale scappamento batte cinque tic al secondo. Questo meccanismo pulsa in una terzina irregolare: tic... tic-tic... tic.",
+          "pt": "Ouça. A cadência está errada. Um escape normal bate cinco vezes por segundo. Este mecanismo pulsa em tercinas irregulares: tique... tique-tique... tique.",
+          "ar": "أنصت بدقة. الإيقاع غير سليم؛ ميزان الساعة المعتاد ينبض 5 دقات بالثانية، بينما تنبض هذه الآلية بنمط ثلاثي مضطرب."
+        }
       }
     ]
   },
@@ -639,46 +950,60 @@ export const DIALOGUE_I18N_FULL = {
     },
     "options": [
       {
-        "en": "[INPUT WATCH CODE: 7-3-12] Turn the tumblers to the numbers inscribed in Aurelia's pocket watch.",
-        "id": "[MASUKKAN KODE JAM: 7-3-12] Putar roda kombinasi ke angka yang terukir di jam saku Aurelia.",
-        "zh": "【输入怀表密码：7-3-12】按照奥蕾莉亚怀表摆轮上所刻的密码转动滚轮。",
-        "ja": "【時計の暗号入力：7-3-12】オレリアの懐中時計に刻まれていた番号へダイヤルを回す。",
-        "ko": "[회중시계 암호 입력: 7-3-12] 오렐리아의 회중시계에 적혀 있던 세 자리 번호로 다이얼을 돌린다.",
-        "es": "[INTRODUCIR CÓDIGO: 7-3-12] Girar los cilindros según el código del reloj de Aurelia.",
-        "fr": "[ENTRER LE CODE : 7-3-12] Aligner les crans sur les chiffres de la montre d'Aurelia.",
-        "de": "[UHR-CODE EINGEBEN: 7-3-12] Die Zahlenkombination aus der Taschenuhr einstellen.",
-        "ru": "[ВВЕСТИ КОД ИЗ ЧАСОВ: 7-3-12] Набрать шифр, выгравированный на часах Аурелии.",
-        "it": "[INSERISCI CODICE: 7-3-12] Allinea le ghiere sui numeri dell'orologio di Aurelia.",
-        "pt": "[INSERIR CÓDIGO: 7-3-12] Girar os cilindros para os números gravados no relógio.",
-        "ar": "[إدخال شفرة الساعة: 7-3-12] تدوير الأقراص وفقًا للأرقام المنقوشة في ساعة الجيب."
+        "id": "[Jika kombinasi diketahui (7-3-12)] Masukkan kode yang ditemukan di dalam arloji Aurelia.",
+        "en": "[If combination known (7-3-12)] Enter the code found inside Aurelia's watch.",
+        "zh": "【若已知密码组合（7-3-12）】输入从奥蕾莉亚怀表内刻痕获取的三重密码。",
+        "ja": "【暗証番号既知時（7-3-12）】オレリアの懐中時計で見つけた暗号を入力する。",
+        "ko": "[비밀번호를 안다면 (7-3-12)] 오렐리아의 시계 안에서 발견한 암호를 입력한다.",
+        "es": "[Si conoce la combinación (7-3-12)] Introducir el código hallado en el reloj de Aurelia.",
+        "fr": "[Si combinaison connue (7-3-12)] Entrer le code trouvé dans la montre d'Aurelia.",
+        "de": "[Kombination bekannt (7-3-12)] Den Code aus Aurelias Uhr eingeben.",
+        "ru": "[Если комбинация известна (7-3-12)] Ввести шифр из часов Аурелии.",
+        "it": "[Se la combinazione è nota (7-3-12)] Inserisci il codice trovato nell'orologio.",
+        "pt": "[Se a combinação for conhecida (7-3-12)] Digitar o código do relógio de Aurelia.",
+        "ar": "[إذا كانت الشفرة معروفة (7-3-12)] إدخال الرمز المكتشف داخل ساعة أوريليا."
       },
       {
-        "en": "[LOGIC - Challenging 13] Crack the alchemical combination tumbler by mechanical acoustic resonance.",
-        "id": "[LOGIKA - Sulit 13] Retas kombinasi brankas dengan mendengarkan resonansi akustik mekanik.",
-        "zh": "[逻辑 - 困难13] 贴耳细听内部簧片震颤，纯靠严密逻辑与机械声学共振破译密码。",
-        "ja": "[論理 - 難度13] 機械的な音響共鳴と冷徹な推論だけで金庫のダイヤルを解読する。",
-        "ko": "[논리 - 난이도 13] 음향 공명과 순수 논리적 연역으로 금고의 암호를 해킹한다.",
-        "es": "[LÓGICA - Desafiante 13] Descifrar la combinación mediante resonancia acústica.",
-        "fr": "[LOGIQUE - Difficile 13] Décoder la combinaison par résonance acoustique.",
-        "de": "[LOGIK - Schwer 13] Das Schloss durch akustische Resonanzanalyse knacken.",
-        "ru": "[ЛОГИКА - Сложность 13] Взломать замок по акустическому резонансу шестерен.",
-        "it": "[LOGICA - Impegnativo 13] Decifra la combinazione mediante risonanza acustica.",
-        "pt": "[LÓGICA - Desafiador 13] Decifrar a combinação por ressonância acústica mecânica.",
-        "ar": "[المنطق - صعب 13] فك شفرة الخزنة عبر الاستماع لرنين الميكانيكا الداخلي."
+        "id": "[LOGIKA - Sulit 13] Coba deduksikan susunan pin gembok melalui getaran akustik.",
+        "en": "[LOGIC - Hard 13] Attempt to deduce the tumbler alignment by acoustic vibration.",
+        "zh": "【逻辑 - 困难 13】借助听觉振动推演滚轮内部销栓的对齐卡位。",
+        "ja": "【論理 - 難度 13】音響振動からタンブラーの噛み合わせを推論する。",
+        "ko": "[논리 - 어려움 13] 음향 진동을 감지해 텀블러 핀의 정렬을 추리해 낸다.",
+        "es": "[LÓGICA - Difícil 13] Deducir la alineación de los tambores mediante vibración acústica.",
+        "fr": "[LOGIQUE - Difficile 13] Déduire l'alignement des goupilles par vibration acoustique.",
+        "de": "[LOGIK - Schwer 13] Versuchen, die Zuhaltungen durch Vibrationen zu erschließen.",
+        "ru": "[ЛОГИКА - Сложность 13] Вычислить положение штифтов по звуку вибраций.",
+        "it": "[LOGICA - Difficile 13] Deduci l'allineamento dei perni tramite vibrazioni acustiche.",
+        "pt": "[LÓGICA - Difícil 13] Deduzir o alinhamento dos pinos pela vibração acústica.",
+        "ar": "[المنطق - صعب 13] استنتاج محاذاة مسامير القفل من خلال الاهتزازات الصوتية."
       },
       {
-        "en": "[Leave safe for now]",
-        "id": "[Tinggalkan brankas untuk sementara]",
-        "zh": "[暂离保险箱]",
-        "ja": "[今は金庫から離れる]",
-        "ko": "[금고에서 잠시 물러난다]",
-        "es": "[Dejar la caja fuerte]",
-        "fr": "[S'éloigner du coffre]",
-        "de": "[Den Tresor vorerst belassen]",
-        "ru": "[Оставить сейф]",
+        "id": "[KEKUATAN FISIK - Berbahaya] Coba cungkil paksa tutup besi tebal dengan linggis.",
+        "en": "[BRUTE FORCE - Dangerous] Try to pry open the heavy iron lid with a crowbar.",
+        "zh": "【暴力破解 - 危险】尝试用重型撬棍强行撬开沉重的铸铁保险柜盖。",
+        "ja": "【腕力 - 危険】バールを使って重い鉄の蓋を無理やりこじ開けようとする。",
+        "ko": "[완력 - 위험] 쇠지렛대로 무거운 철제 뚜껑을 강제로 비틀어 열어본다.",
+        "es": "[FUERZA BRUTA - Peligroso] Intentar forzar la pesada tapa de hierro con una palanca.",
+        "fr": "[FORCE BRUTE - Dangereux] Forcer le couvercle de fer à l'aide d'un pied-de-biche.",
+        "de": "[ROHE GEWALT - Gefährlich] Versuchen, den schweren Eisendeckel aufzubrechen.",
+        "ru": "[СИЛА - Опасно] Попытаться вскрыть тяжелую крышку монтировкой.",
+        "it": "[FORZA BRUTA - Pericoloso] Tenta di scassinare il pesante coperchio con un piede di porco.",
+        "pt": "[FORÇA BRUTA - Perigoso] Tentar forçar a tampa pesada com um pé de cabra.",
+        "ar": "[القوة البدنية - خطير] محاولة خلع الغطاء الحديدي الثقيل بالقوة باستخدام عتلة."
+      },
+      {
+        "id": "[Tinggalkan brankas tanpa disentuh]",
+        "en": "[Leave safe untouched]",
+        "zh": "【暂不动保险箱】",
+        "ja": "【金庫に手を触れず立ち去る】",
+        "ko": "[금고를 그대로 두고 물러난다]",
+        "es": "[Dejar la caja intacta]",
+        "fr": "[Laisser le coffre]",
+        "de": "[Den Safe unberührt lassen]",
+        "ru": "[Не трогать сейф]",
         "it": "[Lascia la cassaforte]",
-        "pt": "[Deixar o cofre por enquanto]",
-        "ar": "[ترك الخزنة في الوقت الحالي]"
+        "pt": "[Deixar o cofre intacto]",
+        "ar": "[ترك الخزنة دون لمسها]"
       }
     ]
   },
@@ -725,6 +1050,52 @@ export const DIALOGUE_I18N_FULL = {
         "it": "\"La prova definitiva di corruzione e cospirazione.\"",
         "pt": "\"Prova irrefutável de conspiração e corrupção.\"",
         "ar": "\"دليل قاطع لا يقبل الشك على الفساد والمؤامرة الكبرى.\""
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "Look at the final entry dated last evening: 'Vivienne knows. She sold the cipher to the Syndicate for passage to the New Continent. Tonight she brings me tea. I know what is in the cup.'",
+          "id": "Lihat catatan terakhir bertanggal kemarin malam: 'Vivienne tahu. Dia menjual sandi rahasia kepada Sindikat demi tiket pelayaran ke Benua Baru. Malam ini dia membawakanku teh. Aku tahu apa yang ada di dalam cangkir itu.'",
+          "zh": "细读昨夜最后那行凌乱的字迹：‘薇薇安知晓了一切。她将密文出卖给辛迪加，换取前往新大陆的船票。今晚她给我端来了红茶。我心知肚明那杯子里装着什么。’",
+          "ja": "昨晩の日付の最後の記録を見ろ：『ヴィヴィアンは知っている。彼女は新大陸への渡航証と引き換えに暗号をシンジケートへ売った。今夜彼女は紅茶を持ってくる。そのカップに何が入っているか、私には分かっている。』",
+          "ko": "어젯밤 날짜로 적힌 마지막 기록을 보십시오. '비비안이 알고 있다. 그녀는 신대륙으로 가는 뱃삯을 위해 암호표를 신디케이트에 팔아넘겼다. 오늘 밤 그녀가 차를 가져온다. 잔 속에 무엇이 들었는지 나는 알고 있다.'",
+          "es": "Mira la última entrada de anoche: 'Vivienne lo sabe. Vendió la clave al Sindicato. Esta noche me trae té. Sé qué hay en la taza'.",
+          "fr": "Lisez la dernière entrée : 'Vivienne sait. Elle a vendu le chiffre au Syndicat. Ce soir, elle m'apporte le thé. Je sais ce qu'il y a dans la tasse.'",
+          "de": "Sieh dir den letzten Eintrag an: 'Vivienne weiß es. Sie verkaufte die Chiffre ans Syndikat. Heute Nacht bringt sie Tee. Ich weiß, was in der Tasse ist.'",
+          "ru": "Взгляни на последнюю запись: «Вивьен знает. Она продала шифр Синдикату. Сегодня она несет мне чай. Я знаю, что в чашке».",
+          "it": "Guarda l'ultima annotazione: 'Vivienne sa. Ha venduto il cifrario al Sindacato. Stasera mi porta il tè. So cosa c'è nella tazza'.",
+          "pt": "Veja a última anotação: 'Vivienne sabe. Vendeu a cifra ao Sindicato. Esta noite ela me traz chá. Eu sei o que há na xícara'.",
+          "ar": "انظر إلى التدوينة الأخيرة المؤرخة ليلة أمس: 'فيفيان تعلم. باعت الشفرة للنقابة. الليلة تقدم لي الشاي وأعلم جيدًا ما في الكأس'."
+        }
       }
     ]
   },
@@ -805,60 +1176,74 @@ export const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
+        "id": "\"Di mana Anda berada pada pukul 03:42 dini hari saat jam menara berhenti?\"",
         "en": "\"Where were you at 03:42 AM when the tower clock stopped?\"",
-        "id": "\"Di mana kamu berada pada pukul 03:42 saat jam menara berhenti?\"",
-        "zh": "“凌晨03:42钟楼停摆的那一刻，你在什么地方？”",
-        "ja": "「時計が止まった午前3時42分、あなたはどこにいた？」",
-        "ko": "\"시계탑이 멈춘 오전 03시 42분에 부인은 어디 있었소?\"",
-        "es": "\"¿Dónde estaba usted a las 03:42 cuando se detuvo el reloj?\"",
+        "zh": "“凌晨03:42分大钟骤停时，你究竟身在何处？”",
+        "ja": "「時計塔が止まった午前3時42分、お前はどこにいた？」",
+        "ko": "\"탑 시계가 멈춘 새벽 03시 42분에 부인은 어디 계셨습니까?\"",
+        "es": "\"¿Dónde estaba usted a las 03:42 cuando se detuvo el reloj de la torre?\"",
         "fr": "\"Où étiez-vous à 03h42 quand l'horloge s'est arrêtée ?\"",
-        "de": "\"Wo waren Sie um 03:42 Uhr, als die Turmuhr stehenblieb?\"",
-        "ru": "«Где вы были в 03:42, когда часы башни остановились?»",
-        "it": "\"Dov'era alle 03:42 quando l'orologio si è fermato?\"",
+        "de": "\"Wo waren Sie um 03:42 Uhr, als die Turmuhr stoppte?\"",
+        "ru": "«Где вы были в 03:42, когда часы на башне остановились?»",
+        "it": "\"Dov'era alle 03:42 quando l'orologio della torre si è fermato?\"",
         "pt": "\"Onde você estava às 03:42 quando o relógio da torre parou?\"",
-        "ar": "\"أين كنتِ في تمام الساعة 03:42 فجرًا حين توقفت ساعة البرج؟\""
+        "ar": "\"أين كنت في تمام الساعة 03:42 فجرًا عندما توقفت ساعة البرج؟\""
       },
       {
+        "id": "[EMPATI - Sedang 10] \"Anda tidak pernah mencintainya, bukan, Nyonya?\"",
         "en": "[EMPATHY - Medium 10] \"You did not love her, did you, Madame?\"",
-        "id": "[EMPATI - Sedang 10] \"Kamu sebenarnya tidak mencintainya lagi, bukan begitu Nyonya?\"",
-        "zh": "[同理心 - 难度10] “你其实早已不再爱她了，对吗，夫人？”",
-        "ja": "[共感 - 難易度10] 「あなたは彼女を愛してなどいなかった、そうですね夫人？」",
-        "ko": "[공감 - 보통 10] \"부인은 그녀를 더 이상 사랑하지 않았지요?\"",
-        "es": "[EMPATÍA - Medio 10] \"Usted ya no la amaba, ¿verdad, Madame?\"",
-        "fr": "[EMPATHIE - Moyen 10] \"Vous ne l'aimiez plus, n'est-ce pas, Madame ?\"",
-        "de": "[EMPATHIE - Mittel 10] \"Sie haben sie nicht mehr geliebt, nicht wahr, Madame?\"",
-        "ru": "[ЭМПАТИЯ - Сложность 10] «Вы ведь больше не любили ее, мадам?»",
-        "it": "[EMPATIA - Medio 10] \"Non la amava più, non è vero, Madame?\"",
-        "pt": "[EMPATIA - Médio 10] \"Você não a amava mais, não é, Madame?\"",
-        "ar": "[التعاطف - متوسط 10] \"لم تعودي تحبينها على الإطلاق، أليس كذلك يا سيدتي؟\""
+        "zh": "【共情 - 难度 10】“你其实从未深爱过她，对吗，夫人？”",
+        "ja": "【共感 - 難易度 10】「彼女を愛してなどいなかったのだろう、マダム？」",
+        "ko": "[공감 - 보통 10] \"부인은 그녀를 사랑하지 않았군요, 그렇지 않습니까?\"",
+        "es": "[EMPATÍA - Medio 10] \"No la amaba, ¿verdad, Madame?\"",
+        "fr": "[EMPATHIE - Moyen 10] \"Vous ne l'aimiez pas, n'est-ce pas, Madame ?\"",
+        "de": "[EMPATHIE - Mittel 10] \"Sie haben sie nie geliebt, nicht wahr, Madame?\"",
+        "ru": "[ЭМПАТИЯ - Сложность 10] «Вы ведь никогда не любили ее, мадам?»",
+        "it": "[EMPATIA - Medio 10] \"Non l'amava affatto, vero, Madame?\"",
+        "pt": "[EMPATIA - Médio 10] \"Você não a amava, não é, Madame?\"",
+        "ar": "[التعاطف - متوسط 10] \"لم تكوني تحبينها على الإطلاق، أليس كذلك يا سيدتي؟\""
       },
       {
-        "en": "[RED CHECK] [AUTHORITY - Challenging 13] \"Enough theatrics, Vivienne. We have the poisoned queen, the cyanide vials, and the Perpetuum ledger. You killed her.\"",
-        "id": "[UJI MERAH] [OTORITAS - Sulit 13] \"Cukup sandiwaranya, Vivienne. Kami memiliki ratu catur beracun, ampul sianida, dan buku besar Perpetuum. Kamu yang membunuhnya.\"",
-        "zh": "【绝命检定】[权威 - 困难13] “闹剧该结束了，薇薇安。毒针黑后、带毒安瓿和总账簿全在我们手上。是你动的手。”",
-        "ja": "【赤の判定】[威信 - 難度13] 「茶番は終わりだ、ヴィヴィアン。毒のクイーンも金庫の台帳も手に入った。お前が殺したんだ。」",
-        "ko": "[결전 판정] [권위 - 난이도 13] \"연극은 끝났소, 비비안. 독침 퀸과 금고 원장을 전부 확보했소. 당신이 죽인 거요.\"",
-        "es": "[CONTROL ROJO] [AUTORIDAD - 13] \"Basta de teatro, Vivienne. Tenemos la reina envenenada y el libro mayor. Fuiste tú.\"",
-        "fr": "[TEST ROUGE] [AUTORITÉ - 13] \"Assez de comédie, Vivienne. Nous avons la reine empoisonnée et le registre. C'est vous.\"",
-        "de": "[ROTE PROBE] [AUTORITÄT - 13] \"Genug Theater, Vivienne. Wir haben die giftige Dame und das Hauptbuch. Sie haben sie getötet.\"",
-        "ru": "[КРАСНАЯ ПРОВЕРКА] [АВТОРИТЕТ - 13] «Хватит спектаклей, Вивьен. У нас есть отравленный ферзь и гроссбух. Вы убили ее.»",
-        "it": "[PROVA ROSSA] [AUTORITÀ - 13] \"Basta con la commedia, Vivienne. Abbiamo la regina avvelenata e il mastro. Sei stata tu.\"",
-        "pt": "[TESTE VERMELHO] [AUTORIDADE - 13] \"Chega de teatro, Vivienne. Temos a rainha envenenada e o livro-razão. Foi você.\"",
-        "ar": "[فحص أحمر حاسم] [السلطة - صعب 13] \"كفى مسرحيات يا فيفيان. ملكة الشطرنج المسمومة ودفتر الحسابات كلاهما بحوزتنا. أنتِ من قتلتها.\""
+        "id": "[UJI MERAH] [OTORITAS - Sulit 13] \"Cukup sandiwaranya, Vivienne. Kami menemukan bidak ratu catur beracun dan sobekan beludru dari mantelmu di balkon. Kamulah yang membunuhnya.\"",
+        "en": "[RED CHECK] [AUTHORITY - Challenging 13] \"Enough theatrics, Vivienne. We found the poisoned chess queen and the torn velvet from your coat on the balcony. You murdered her.\"",
+        "zh": "【红色检定】【威信 - 困难 13】“够了，收起你的拙劣演戏吧，薇薇安。我们在露台搜出了涂毒的黑王后棋子和从你大衣上撕裂的丝绒碎布。是你亲手谋杀了她！”",
+        "ja": "【レッドチェック】【威信 - 難度 13】「茶番劇は終わりだ、ヴィヴィアン。毒入りのクイーンの駒も、バルコニーで見つかったお前のコートのビロードも揃っている。お前が彼女を殺したんだ。」",
+        "ko": "[레드 체크] [권위 - 어려움 13] \"연극은 그만두시오, 비비안. 독이 묻은 체스 퀸과 발코니에서 뜯겨나간 외투의 벨벳 조각을 찾아냈소. 당신이 그녀를 살해했소.\"",
+        "es": "[CHEQUEO ROJO] [AUTORIDAD - Desafiante 13] \"Basta de teatro, Vivienne. Hallamos la reina envenenada y el terciopelo desgarrado de su abrigo. Usted la asesinó.\"",
+        "fr": "[TEST ROUGE] [AUTORITÉ - Difficile 13] \"Assez de comédie, Vivienne. Nous avons retrouvé la reine empoisonnée et le velours de votre manteau. Vous l'avez tuée.\"",
+        "de": "[ROTER CHECK] [AUTORITÄT - Schwer 13] \"Genug des Theaters, Vivienne. Wir haben die vergiftete Schachkönigin und den Samt Ihres Mantels gefunden. Sie haben sie ermordet.\"",
+        "ru": "[КРАСНАЯ ПРОВЕРКА] [АВТОРИТЕТ - Сложность 13] «Хватит спектаклей, Вивьен. Мы нашли отравленного ферзя и лоскут бархата от вашего пальто. Вы ее убили.»",
+        "it": "[TEST ROSSO] [AUTORITÀ - Impegnativo 13] \"Basta teatrini, Vivienne. Abbiamo trovato la regina avvelenata e il velluto strappato del suo cappotto. È stata lei.\"",
+        "pt": "[TESTE VERMELHO] [AUTORIDADE - Desafiador 13] \"Chega de teatro, Vivienne. Encontramos a rainha envenenada e o veludo rasgado do seu casaco. Você a matou.\"",
+        "ar": "[فحص أحمر] [السلطة - صعب 13] \"كفى تمثيلاً يا فيفيان؛ وجدنا ملكة الشطرنج المسمومة وقطعة المخمل الممزقة من معطفك على الشرفة. أنتِ من قتلها.\""
       },
       {
-        "en": "[Step away from Madame Vance]",
-        "id": "[Mundur dari hadapan Nyonya Vance]",
-        "zh": "[暂别薇薇安夫人]",
-        "ja": "[未亡人から距離を置く]",
-        "ko": "[비비안 부인에게서 물러난다]",
-        "es": "[Alejarse de Madame Vance]",
-        "fr": "[S'éloigner de Madame Vance]",
-        "de": "[Sich von Madame Vance entfernen]",
-        "ru": "[Отойти от мадам Вэнс]",
-        "it": "[Allontanati da Madame Vance]",
-        "pt": "[Afastar-se de Madame Vance]",
-        "ar": "[التراجع عن السيدة فانس]"
+        "id": "[TUDUHAN GEGABAH - Berbahaya] \"Aku tidak butuh bukti, Vivienne! Kamu yang membunuh Aurelia dan aku menangkapmu sekarang juga!\"",
+        "en": "[RASH ACCUSATION - Dangerous] \"I don't need evidence, Vivienne! You killed Aurelia and I am arresting you right now!\"",
+        "zh": "【鲁莽指控 - 极度危险】“我根本不需要证据，薇薇安！就是你杀了奥蕾莉亚，我现在就要逮捕你！”",
+        "ja": "【無謀な告発 - 危険】「証拠など要らん！お前がオレリアを殺したんだ、今すぐ逮捕してやる！」",
+        "ko": "[성급한 고발 - 위험] \"증거 따윈 필요 없소, 비비안! 당신이 오렐리아를 죽였고 당장 체포하겠소!\"",
+        "es": "[ACUSACIÓN TEMERARIA - Peligroso] \"¡No necesito pruebas, Vivienne! ¡Usted la mató y queda arrestada!\"",
+        "fr": "[ACCUSATION TÉMÉRAIRE - Dangereux] \"Je n'ai pas besoin de preuves, Vivienne ! Vous l'avez tuée et je vous arrête !\"",
+        "de": "[ÜBEREILTE BESCHULDIGUNG - Gefährlich] \"Ich brauche keine Beweise, Vivienne! Sie werden auf der Stelle verhaftet!\"",
+        "ru": "[ОПРОМЕТЧИВОЕ ОБВИНЕНИЕ - Опасно] «Мне не нужны улики, Вивьен! Вы убили ее, и я арестую вас прямо сейчас!»",
+        "it": "[ACCUSA AZZARDATA - Pericoloso] \"Non ho bisogno di prove, Vivienne! Lei l'ha uccisa e la arresto subito!\"",
+        "pt": "[ACUSAÇÃO PRECIPITADA - Perigoso] \"Não preciso de provas, Vivienne! Você a matou e está presa agora mesmo!\"",
+        "ar": "[اتهام متهور - خطير] \"لست بحاجة لأدلة يا فيفيان! أنتِ من قتلت أوريليا وأنا أعتقلك فورًا!\""
+      },
+      {
+        "id": "[Mundur]",
+        "en": "[Step away]",
+        "zh": "【转身离开】",
+        "ja": "【立ち去る】",
+        "ko": "[물러선다]",
+        "es": "[Apartarse]",
+        "fr": "[S'éloigner]",
+        "de": "[Wegtreten]",
+        "ru": "[Отойти]",
+        "it": "[Allontanati]",
+        "pt": "[Afastar-se]",
+        "ar": "[الابتعاد]"
       }
     ]
   },
@@ -933,6 +1318,96 @@ export const DIALOGUE_I18N_FULL = {
         "it": "[VERDETTO FINALE: Consegna le prove sulla corruzione del Sindacato alla stampa]",
         "pt": "[VEREDITO FINAL: Expor o Sindicato e a polícia corrupta à imprensa livre]",
         "ar": "[الحكم النهائي: فضح النقابة والشرطة الفاسدة عبر الصحافة المستقلة للرأي العام]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Ratio",
+          "id": "Rasio",
+          "zh": "理性",
+          "ja": "比率",
+          "ko": "이성",
+          "es": "Razón",
+          "fr": "Ratio",
+          "de": "Ratio",
+          "ru": "Рацио",
+          "it": "Ragione",
+          "pt": "Razão",
+          "ar": "العقلانية"
+        },
+        "badge": {
+          "en": "RATIO [Intellect]",
+          "id": "RASIO [Intelek]",
+          "zh": "理性 [智力]",
+          "ja": "比率 [知性]",
+          "ko": "이성 [지성]",
+          "es": "RAZÓN [Intelecto]",
+          "fr": "RATIO [Intellect]",
+          "de": "RATIO [Intellekt]",
+          "ru": "РАЦИО [Интеллект]",
+          "it": "RAGIONE [Intelletto]",
+          "pt": "RAZÃO [Intelecto]",
+          "ar": "العقلانية [الفكر]"
+        },
+        "text": {
+          "en": "EPIPHANY. The puzzle is solved. Vance was not a mere victim; she was the orchestrator of her own mechanical suicide pact. She used her partner's vengeance as the final gear in her escapement.",
+          "id": "PENCERAHAN LOGIKA. Teka-teki ini terpecahkan. Vance bukan sekadar korban pasif; dia adalah perancang konspirasi mekanis kematiannya sendiri. Dia memanfaatkan dendam pasangannya sebagai roda gigi terakhir dalam mekanisme escapement-nya.",
+          "zh": "灵光顿悟！迷局彻底破晓。奥蕾莉亚·梵斯绝非单纯的受害者；她是这场精密机械自戕契约的总导演！她将同伴的复仇执念化作了自己这具致命擒纵钟摆上的最后一枚咬合齿轮！",
+          "ja": "啓示！謎はすべて解かれた。ヴァンスは単なる被害者ではなかった。自らの機械的死の契約を仕組んだ演出家だったのだ。パートナーの復讐心を、自身の脱進機の最終ギアとして利用したのだ。",
+          "ko": "경이로운 직관. 수수께끼가 마침내 풀렸습니다. 밴스는 단순한 피해자가 아니었습니다. 자신의 죽음을 설계한 기계적 공모자였습니다. 파트너의 복수심을 자신의 탈진기 마지막 톱니바퀴로 이용한 것입니다.",
+          "es": "EPIFANÍA. El enigma está resuelto. Vance orquestó su propio pacto de suicidio mecánico, usando la venganza como el último engranaje.",
+          "fr": "ÉPIPHANIE. L'énigme est résolue. Vance était l'architecte de son propre pacte suicidaire, utilisant la vengeance comme ultime rouage.",
+          "de": "EPIPHANIE. Das Rätsel ist gelöst. Vance orchestrierte ihren eigenen mechanischen Suizid und nutzte Rache als letztes Rädchen im Getriebe.",
+          "ru": "ОЗАРЕНИЕ. Головоломка решена. Вэнс спланировала собственную гибель, использовав чужую месть как последнюю шестерню в механизме.",
+          "it": "EPIFANIA. Il puzzle è risolto. Vance ha orchestrato il proprio patto suicida meccanico, usando la vendetta come ingranaggio finale.",
+          "pt": "EPIFANIA. O enigma está resolvido. Vance orquestrou o próprio pacto de suicídio mecânico, usando a vingança como a engrenagem final.",
+          "ar": "إشراق ذهني واستنارة! حُل اللغز بالكامل؛ لم تكن فانس مجرد ضحية، بل نسجت خطة انتحار ميكانيكية استغلت فيها رغبة شريكتها بالانتقام كترس أخير."
+        }
+      },
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "极乐直觉",
+          "ja": "エリシア",
+          "ko": "엘리시아",
+          "es": "Elysia",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليزيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "极乐直觉 [心智]",
+          "ja": "エリシア [精神]",
+          "ko": "엘리시아 [심리]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليزيا [الروح]"
+        },
+        "text": {
+          "en": "The case is cracked. The rain outside sounds quieter now, like a theater curtain slowly falling over the stage.",
+          "id": "Kasus ini telah terpecahkan. Deru hujan di luar kini terdengar lebih tenang, bagai tirai teater yang perlahan turun menutup panggung pertunjukan.",
+          "zh": "悬案告破。窗外的暴雨声在此刻悄然轻柔下来，宛如华丽大幕在一出漫长悲剧的舞台上缓缓垂落。",
+          "ja": "事件は解決した。外の雨音は今や静まり返り、劇場の幕が舞台へと静かに降りていくかのようだ。",
+          "ko": "사건이 해결되었습니다. 바깥의 빗소리가 이제는 한결 차분하게 들려옵니다. 무대 위로 천천히 내려앉는 극장의 장막처럼.",
+          "es": "Caso resuelto. La lluvia afuera suena más suave, como un telón que cae sobre el escenario.",
+          "fr": "L'affaire est résolue. La pluie semble plus douce dehors, comme un rideau qui tombe sur la scène.",
+          "de": "Der Fall ist gelöst. Der Regen draußen klingt nun sanfter, wie ein Theatervorhang, der langsam fällt.",
+          "ru": "Дело раскрыто. Шум дождя за окном стихает, словно занавес медленно опускается на сцену.",
+          "it": "Il caso è chiuso. La pioggia fuori sembra più sommessa, come un sipario che cala sul palcoscenico.",
+          "pt": "Caso encerrado. A chuva lá fora soa mais branda, como uma cortina caindo lentamente sobre o palco.",
+          "ar": "أُغلقت القضية وحُلت خيوطها، وبات صوت المطر في الخارج خافتًا كستار مسرحي يسدل بهدوء على خشبة العرض."
+        }
       }
     ]
   },
@@ -1348,6 +1823,52 @@ export const DIALOGUE_I18N_FULL = {
         "pt": "\"Droga de mãos trêmulas...\"",
         "ar": "\"سحقًا، كانت اليد مفخخة بسم!\""
       }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Carnal",
+          "id": "Karnal",
+          "zh": "肉体本能",
+          "ja": "肉体",
+          "ko": "육체",
+          "es": "Carnal",
+          "fr": "Carnal",
+          "de": "Körper",
+          "ru": "Тело",
+          "it": "Fisico",
+          "pt": "Físico",
+          "ar": "الجسد"
+        },
+        "badge": {
+          "en": "CARNAL [Physique]",
+          "id": "KARNAL [Fisik]",
+          "zh": "肉体本能 [体魄]",
+          "ja": "肉体 [身体]",
+          "ko": "육체 [신체]",
+          "es": "CARNAL [Físico]",
+          "fr": "CARNAL [Physique]",
+          "de": "KÖRPER [Physis]",
+          "ru": "ТЕЛО [Телосложение]",
+          "it": "FISICO [Fisico]",
+          "pt": "FÍSICO [Físico]",
+          "ar": "الجسد [البنية]"
+        },
+        "text": {
+          "en": "Clumsy! Your alcohol-trembled fingers slipped onto the needle. The venom spreads like liquid fire through your veins.",
+          "id": "Ceroboh! Jemarimu yang gemetar karena alkohol tergelincir mengenai jarum beracun. Bisanya menyebar bagai api cair di pembuluh darahmu.",
+          "zh": "笨手笨脚！你因酒精宿醉而颤抖的手指狠狠划在了尖锐的毒针上。毒液宛如烈火液体般顺着静脉急剧蔓延！",
+          "ja": "不器用め！アルコールで震える指が毒針を掠めた。猛毒が液体の炎となって血管を駆け巡る。",
+          "ko": "어설프기는! 알코올로 떨리는 손가락이 독침을 스치고 말았습니다. 독이 액체 불꽃처럼 혈관을 타고 번져나갑니다.",
+          "es": "¡Torpe! Tus dedos temblorosos resbalaron contra la aguja. El veneno arde como fuego líquido por tus venas.",
+          "fr": "Maladroit ! Vos doigts tremblants ont glissé sur l'aiguille. Le venin se répand comme un feu liquide dans vos veines.",
+          "de": "Ungeschickt! Deine zitternden Finger glitten auf die Nadel. Das Gift breitet sich wie flüssiges Feuer in deinen Adern aus.",
+          "ru": "Неуклюже! Дрожащие пальцы соскользнули прямо на иглу. Яд жидким огнем разливается по венам.",
+          "it": "Maldestro! Le tue dita tremanti sono scivolate sull'ago. Il veleno si diffonde come fuoco liquido nelle vene.",
+          "pt": "Desajeitado! Seus dedos trêmulos deslizaram sobre a agulha. O veneno se espalha como fogo líquido nas veias.",
+          "ar": "خرق فاضح! انزلقت أصابعك المرتجفة من الكحول لتلمس الإبرة، لينتشر السم كنار سائلة في أوردتك."
+        }
+      }
     ]
   },
   "pendulum_esoterica_win": {
@@ -1605,6 +2126,52 @@ export const DIALOGUE_I18N_FULL = {
         "it": "[Torna all'interno]",
         "pt": "[Voltar para dentro]",
         "ar": "[الرجوع للداخل]"
+      }
+    ],
+    "voices": [
+      {
+        "voice": {
+          "en": "Elysia",
+          "id": "Elysia",
+          "zh": "极乐直觉",
+          "ja": "エリシア",
+          "ko": "엘리시아",
+          "es": "Elysia",
+          "fr": "Élysia",
+          "de": "Elysia",
+          "ru": "Элизия",
+          "it": "Elysia",
+          "pt": "Elísia",
+          "ar": "إليزيا"
+        },
+        "badge": {
+          "en": "ELYSIA [Psyche]",
+          "id": "ELYSIA [Kejiwaan]",
+          "zh": "极乐直觉 [心智]",
+          "ja": "エリシア [精神]",
+          "ko": "엘리시아 [심리]",
+          "es": "ELYSIA [Psique]",
+          "fr": "ÉLYSIA [Psyché]",
+          "de": "ELYSIA [Psyche]",
+          "ru": "ЭЛИЗИЯ [Психика]",
+          "it": "ELYSIA [Psiche]",
+          "pt": "ELÍSIA [Psique]",
+          "ar": "إليزيا [الروح]"
+        },
+        "text": {
+          "en": "Someone stood here right after the clock stopped. They stood in the rain, looking out over the sleeping city, wiping something off their gloves. The scent of bitter almond still lingers on the stone.",
+          "id": "Seseorang berdiri di sini tepat setelah jam menara berhenti. Mereka berdiri di tengah hujan, menatap ke arah kota yang terlelap, menyeka sesuatu dari sarung tangan mereka. Aroma almond pahit masih tertinggal samar di bebatuan.",
+          "zh": "就在大钟骤停的瞬间，曾有人站在此处。凶手伫立在暴雨中俯瞰沉睡的街市，从容擦拭着皮手套上的痕迹。湿漉漉的石栏上还隐隐残留着苦杏仁的气味。",
+          "ja": "時計が止まった直後、誰かがここに立っていた。雨の中に立ち、眠れる街を見下ろしながら、手袋の汚れを拭っていたのだ。石の上には今も苦いアーモンドの香りが漂っている。",
+          "ko": "시계가 멈춘 직후 누군가 이곳에 서 있었습니다. 빗속에 서서 잠든 도시를 내려다보며 장갑에 묻은 무언가를 닦아냈습니다. 석조 난간에는 여전히 씁쓸한 아몬드 향이 감돌고 있습니다.",
+          "es": "Alguien estuvo aquí justo tras detenerse el reloj. Mirando la ciudad bajo la lluvia, limpiándose los guantes. El olor a almendras amargas aún perdura.",
+          "fr": "Quelqu'un se tenait ici juste après l'arrêt de l'horloge. Dans la pluie, observant la ville, essuyant ses gants. Une odeur d'amande amère flotte encore.",
+          "de": "Jemand stand hier, kurz nachdem die Uhr stoppte. Im Regen, über die Stadt blickend, Handschuhe abwischend. Der Duft von Bittermandel hängt am Stein.",
+          "ru": "Кто-то стоял здесь сразу после остановки часов. Вглядывался в спящий город под дождем и вытирал перчатки. Запах горького миндаля все еще держится на камне.",
+          "it": "Qualcuno è rimasto qui subito dopo il blocco dell'orologio. Sotto la pioggia, a pulire i guanti. L'odore di mandorla amara aleggia ancora sulla pietra.",
+          "pt": "Alguém esteve aqui logo após o relógio parar. Na chuva, olhando a cidade, limpando as luvas. O cheiro de amêndoa amarga ainda paira na pedra.",
+          "ar": "وقف أحدهم هنا فور توقف الساعة مباشرة متأملاً المدينة تحت المطر ومسح قفازاته؛ ورائحة اللوز المر ما تزال عالقة بالحجر."
+        }
       }
     ]
   },
@@ -2145,32 +2712,18 @@ export const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
-        "en": "[Log clue: Shattered Reagents & Syndicate Crest]",
-        "id": "[Catat bukti: Serpihan Reagen Kimia & Lambang Sindikat]",
-        "zh": "【记录线索：碎裂的试剂瓶与辛迪加火漆印】",
-        "ja": "【手がかりを記録：破壊された試薬瓶と紋章】",
-        "ko": "[단서 기록: 깨진 시약병과 신디케이트 문장]",
-        "es": "[Registrar pista: Reactivos Rotos y Emblema]",
-        "fr": "[Noter l'indice : Réactifs Brisés et Sceau]",
-        "de": "[Hinweis aufnehmen: Zerschlagene Reagenzien]",
-        "ru": "[Записать улику: Осколки реагентов и печать]",
-        "it": "[Registra indizio: Reagenti Infranti e Sigillo]",
-        "pt": "[Registrar pista: Reagentes Quebrados e Brasão]",
-        "ar": "[تسجيل الدليل: زجاجات كواشف محطمة وخاتم النقابة]"
-      },
-      {
+        "id": "[Turun kembali ke lantai utama]",
         "en": "[Step back down to the main floor]",
-        "id": "[Kembali ke lantai utama]",
-        "zh": "【回到主钟楼】",
-        "ja": "【主フロアへ戻る】",
-        "ko": "[메인 플로어로 복귀]",
+        "zh": "【回到塔楼主楼层】",
+        "ja": "【メインフロアへ戻る】",
+        "ko": "[메인 층으로 내려간다]",
         "es": "[Bajar al piso principal]",
-        "fr": "[Redescendre au niveau principal]",
-        "de": "[Zurück zum Hauptboden]",
-        "ru": "[Спуститься на главный этаж]",
+        "fr": "[Redescendre à l'étage principal]",
+        "de": "[Zurück zum Hauptgeschoss]",
+        "ru": "[Спуститься на основной этаж]",
         "it": "[Torna al piano principale]",
-        "pt": "[Descer para o piso principal]",
-        "ar": "[النزول للطابق الرئيسي]"
+        "pt": "[Descer ao piso principal]",
+        "ar": "[النزول إلى الطابق الرئيسي]"
       }
     ]
   },
@@ -2251,25 +2804,11 @@ export const DIALOGUE_I18N_FULL = {
     ],
     "options": [
       {
-        "en": "[Log clue: Acoustic Resonance Tripwire Mechanism]",
-        "id": "[Catat bukti: Mekanisme Kawat Picu Akustik]",
-        "zh": "【记录线索：钟鸣共振引线机构】",
-        "ja": "【手がかりを記録：音響共鳴トラップワイヤー】",
-        "ko": "[단서 기록: 음향 공명 격발 와이어 장치]",
-        "es": "[Registrar pista: Mecanismo de Resonancia]",
-        "fr": "[Noter l'indice : Mécanisme de Déclenchement]",
-        "de": "[Hinweis aufnehmen: Akustischer Auslösedraht]",
-        "ru": "[Записать улику: Акустический спусковой механизм]",
-        "it": "[Registra indizio: Meccanismo a Risonanza]",
-        "pt": "[Registrar pista: Mecanismo de Fio Acústico]",
-        "ar": "[تسجيل الدليل: آلية سلك التفجير بالرنين الصوتي]"
-      },
-      {
-        "en": "[Step down from the bell housing]",
         "id": "[Turun dari kubah lonceng]",
-        "zh": "【走下钟楼支架】",
+        "en": "[Step down from the bell housing]",
+        "zh": "【从钟顶支架上走下来】",
         "ja": "【鐘楼から降りる】",
-        "ko": "[종탑에서 내려온다]",
+        "ko": "[종탑 하부로 내려간다]",
         "es": "[Bajar del campanario]",
         "fr": "[Descendre de la cloche]",
         "de": "[Vom Glockengehäuse herabsteigen]",
