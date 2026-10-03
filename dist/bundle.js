@@ -4479,7 +4479,7 @@ const UI_TRANSLATIONS = {
     master_synthesis_not_ready: 'Masih membutuhkan bukti konklusif dari Kasus #D4-04 untuk mengungkap dalang.',
     loader_quote: '“Detik jam tak pernah berhenti. Hanya daging di dalamnya yang lupa cara berdetak.”',
     loader_telemetry: 'Menginisialisasi telemetri saraf...',
-    loader_enter: 'MASUKI PIKIRAN',
+    loader_enter: 'MASUK KE ARSIP',
     creator_title: 'DOSSIER PENYELIDIK',
     creator_subtitle: 'PEMBUATAN KARAKTER',
     gender_female: '♀ WANITA',
@@ -4604,7 +4604,7 @@ const UI_TRANSLATIONS = {
     master_synthesis_not_ready: 'Conclusive evidence from Case #D4-04 still required to finalize synthesis.',
     loader_quote: '“The clock never stops. Only the flesh within it forgets how to beat.”',
     loader_telemetry: 'Initializing neural telemetry...',
-    loader_enter: 'ENTER THE MIND',
+    loader_enter: 'ENTER THE ARCHIVE',
     creator_title: 'INVESTIGATOR DOSSIER',
     creator_subtitle: 'CHARACTER CREATION',
     gender_female: '♀ FEMALE',
@@ -4729,7 +4729,7 @@ const UI_TRANSLATIONS = {
     master_synthesis_not_ready: '事件#D4-04の決定的な証拠がまだ不足しています。',
     loader_quote: '「時計の針は止まらない。止まるのは、鼓動を忘れた肉体だけだ。」',
     loader_telemetry: '神経テレメトリ初期化中...',
-    loader_enter: '深層意識へ潜行',
+    loader_enter: 'アーカイブへアクセス',
     creator_title: '捜査官調書',
     creator_subtitle: 'キャラクター作成',
     gender_female: '♀ 女性',
@@ -4854,7 +4854,7 @@ const UI_TRANSLATIONS = {
     master_synthesis_not_ready: '仍需第#D4-04案的关键铁证方可串联全网。',
     loader_quote: '“钟摆永不停歇。唯有齿轮间的血肉，遗忘了跳动的律动。”',
     loader_telemetry: '神经遥测初始化中...',
-    loader_enter: '步入深层意识',
+    loader_enter: '进入档案库',
     creator_title: '调查员档案',
     creator_subtitle: '角色塑造',
     gender_female: '♀ 女性',
@@ -4979,7 +4979,7 @@ const UI_TRANSLATIONS = {
     master_synthesis_not_ready: '종합 수사를 완성하려면 사건 #D4-04의 결정적 단서가 더 필요합니다.',
     loader_quote: '“시계는 결코 멈추지 않는다. 멈추는 것은 고동을 잊은 육신뿐.”',
     loader_telemetry: '신경 원격 측정 초기화 중...',
-    loader_enter: '심상으로 진입',
+    loader_enter: '기록 보관소 진입',
     creator_title: '수사관 기록부',
     creator_subtitle: '캐릭터 생성',
     gender_female: '♀ 여성',
@@ -5083,7 +5083,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'CASO #04: LA RELOJERA SILENCIOSA',
     loader_quote: '“El reloj nunca se detiene. Solo la carne en su interior olvida cómo latir.”',
     loader_telemetry: 'Iniciando telemetría neuronal...',
-    loader_enter: 'ENTRAR EN LA MENTE',
+    loader_enter: 'ACCEDER AL ARCHIVO',
     creator_title: 'EXPEDIENTE DE INVESTIGADOR',
     creator_subtitle: 'CREACIÓN DE PERSONAJE',
     gender_female: '♀ FEMENINO',
@@ -5154,7 +5154,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'DOSSIER #04: L\'HORLOGÈRE SILENCIEUSE',
     loader_quote: '« L\'horloge ne s\'arrête jamais. Seule la chair en son sein oublie comment battre. »',
     loader_telemetry: 'Initialisation de la télémétrie neurale...',
-    loader_enter: 'PÉNÉTRER L\'ESPRIT',
+    loader_enter: 'ACCÉDER AUX ARCHIVES',
     creator_title: 'DOSSIER D\'ENQUÊTEUR',
     creator_subtitle: 'CRÉATION DE PERSONNAGE',
     gender_female: '♀ FEMME',
@@ -5225,7 +5225,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'FALL #04: DIE STUMME UHRMACHERIN',
     loader_quote: '„Die Uhr hält niemals an. Nur das Fleisch in ihrem Inneren vergisst das Schlagen.“',
     loader_telemetry: 'Neuraltelemetrie wird initialisiert...',
-    loader_enter: 'DEN GEIST BETRETEN',
+    loader_enter: 'DAS ARCHIV BETRETEN',
     creator_title: 'ERMITTLER-DOSSIER',
     creator_subtitle: 'CHARAKTERERSTELLUNG',
     gender_female: '♀ WEIBLICH',
@@ -5296,7 +5296,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'ДЕЛО #04: БЕЗМОЛВНЫЙ ЧАСОВЩИК',
     loader_quote: '«Часы никогда не останавливаются. Лишь плоть внутри них забывает, как биться».',
     loader_telemetry: 'Инициализация нейротелеметрии...',
-    loader_enter: 'ВОЙТИ В СОЗНАНИЕ',
+    loader_enter: 'ВОЙТИ В АРХИВ',
     creator_title: 'ДОСЬЕ СЛЕДОВАТЕЛЯ',
     creator_subtitle: 'СОЗДАНИЕ ПЕРСОНАЖА',
     gender_female: '♀ ЖЕНЩИНА',
@@ -5367,7 +5367,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'CASO #04: L\'OROLOGIAIA SILENZIOSA',
     loader_quote: '“L\'orologio non si ferma mai. È solo la carne al suo interno che dimentica come battere.”',
     loader_telemetry: 'Inizializzazione telemetria neurale...',
-    loader_enter: 'ENTRA NELLA MENTE',
+    loader_enter: 'ACCEDI ALL\'ARCHIVIO',
     creator_title: 'DOSSIER DELL\'INVESTIGATORE',
     creator_subtitle: 'CREAZIONE PERSONAGGIO',
     gender_female: '♀ DONNA',
@@ -5438,7 +5438,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'CASO #04: A RELOJOEIRA SILENCIOSA',
     loader_quote: '“O relógio nunca para. Apenas a carne em seu interior esquece como bater.”',
     loader_telemetry: 'Inicializando telemetria neural...',
-    loader_enter: 'ENTRAR NA MENTE',
+    loader_enter: 'ACESSAR O ARQUIVO',
     creator_title: 'DOSSIÊ DO INVESTIGADOR',
     creator_subtitle: 'CRIAÇÃO DE PERSONAGEM',
     gender_female: '♀ FEMININO',
@@ -5509,7 +5509,7 @@ const UI_TRANSLATIONS = {
     case_badge: 'القضية #04: صانعة الساعات الصامتة',
     loader_quote: '«عقارب الساعة لا تتوقف أبدًا. وحده الجسد بين تروسها ينسى كيف ينبض.»',
     loader_telemetry: 'تهيئة القياس العصبي عن بُعد...',
-    loader_enter: 'ادخل إلى أعماق العقل',
+    loader_enter: 'الدخول إلى الأرشيف',
     creator_title: 'ملف المحقق',
     creator_subtitle: 'إنشاء الشخصية',
     gender_female: '♀ أنثى',
@@ -8231,6 +8231,15 @@ class GameState {
     this.resolvedChecks = {}; // checkId: { status: 'passed'|'failed', timestamp }
     this.visitedChoices = {}; // choiceKey: timestamp
     this.dialogueHistory = [];
+
+    // Ensure all critical danger effects and heartbeat are stopped on reset
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.classList.remove('in-danger');
+    }
+    if (typeof audio !== 'undefined' && audio && audio.setHeartbeatActive) {
+      audio.setHeartbeatActive(false);
+    }
+    this.checkSurvivalState();
   }
 
   markChoiceVisited(key) {
@@ -8821,6 +8830,17 @@ class UIController {
     document.getElementById('btn-retry-inquiry')?.addEventListener('click', () => {
       this.closeModal(this.gameoverModal);
       this.state.reset();
+
+      // Cleanly clear red vignette & critical pulse
+      if (typeof document !== 'undefined' && document.body) {
+        document.body.classList.remove('in-danger');
+      }
+      if (typeof audio !== 'undefined' && audio) {
+        if (audio.setHeartbeatActive) audio.setHeartbeatActive(false);
+        if (audio.playUiClick) audio.playUiClick();
+      }
+
+      this.updateHUD();
       this.activePoi = null;
       this.currentNodeId = null;
       this.applyLanguage(this.state.currentLanguage);
@@ -10376,20 +10396,106 @@ function bootGame() {
     }
   }, 45);
 
+  let isEntering = false;
+
   function enterGameStage() {
+    if (isEntering) return;
+    isEntering = true;
+
     audio.init();
-    audio.playDiscovery();
+    if (audio.playRadioTune) audio.playRadioTune();
+    if (audio.playUiClick) audio.playUiClick();
+
+    const titleEl = document.getElementById('loader-title-ornament') || document.querySelector('.title-ornament');
+    const cassetteUnit = document.querySelector('.tape-cassette-unit');
     const creatorStage = document.getElementById('creator-stage');
 
-    loadingStage.classList.add('hidden');
-    setTimeout(() => {
-      loadingStage.style.display = 'none';
-      if (creatorStage) {
-        creatorStage.classList.remove('hidden');
+    if (cassetteUnit) {
+      cassetteUnit.classList.add('fast-forward');
+    }
+
+    if (enterBtn) {
+      enterBtn.style.pointerEvents = 'none';
+      enterBtn.style.opacity = '0';
+      enterBtn.style.transform = 'scale(0.9)';
+      enterBtn.style.transition = 'all 0.3s ease';
+    }
+
+    // High-tech decryption / deciphering sequence morphing AENIGMA into aenigmArchive
+    const cypherChars = '0123456789ABCDEF!#$&*@%¥§';
+    const targetStem = 'aenigm';
+    const targetSuffix = 'Archive';
+    const targetFull = 'aenigmArchive';
+    
+    let scrambleTicks = 0;
+    const maxTicks = 16; // ~400ms at 25ms per tick
+
+    if (titleEl) {
+      titleEl.classList.add('decrypting');
+      if (telemetryText) {
+        telemetryText.textContent = "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]";
+        telemetryText.style.color = "#4df0ff";
       }
-      ui.applyLanguage(state.currentLanguage);
-      initCharacterCreator();
-    }, 400);
+
+      const scrambleInterval = setInterval(() => {
+        scrambleTicks++;
+        if (scrambleTicks < maxTicks) {
+          // Generate glitch scrambled characters
+          let scrambled = '';
+          for (let i = 0; i < targetFull.length; i++) {
+            if (i < Math.floor(scrambleTicks / 2)) {
+              scrambled += targetFull[i];
+            } else {
+              scrambled += cypherChars[Math.floor(Math.random() * cypherChars.length)];
+            }
+          }
+          titleEl.textContent = scrambled;
+        } else {
+          clearInterval(scrambleInterval);
+          // Decryption completed! Lock in "aenigmArchive"
+          titleEl.classList.remove('decrypting');
+          titleEl.classList.add('decrypted');
+          titleEl.innerHTML = `
+            <div class="brand-decrypted-wrapper">
+              <span class="brand-stem">${targetStem}</span><span class="brand-suffix">${targetSuffix}</span>
+            </div>
+            <div class="archive-decrypt-badge">◈ SECTOR 7 CASE DOSSIER DECRYPTED ◈</div>
+          `;
+          
+          if (telemetryText) {
+            telemetryText.textContent = "[ACCESS GRANTED: WELCOME DETECTIVE]";
+            telemetryText.style.color = "#d4af37";
+          }
+
+          if (audio.playDiscovery) audio.playDiscovery();
+          if (audio.playDossierStamp) audio.playDossierStamp();
+
+          // After showing the glorious decrypted title, smoothly transition to creator stage
+          setTimeout(() => {
+            loadingStage.classList.add('loader-stage-warp');
+            setTimeout(() => {
+              loadingStage.style.display = 'none';
+              if (creatorStage) {
+                creatorStage.classList.remove('hidden');
+              }
+              ui.applyLanguage(state.currentLanguage);
+              initCharacterCreator();
+            }, 550);
+          }, 750);
+        }
+      }, 25);
+    } else {
+      // Fallback
+      loadingStage.classList.add('hidden');
+      setTimeout(() => {
+        loadingStage.style.display = 'none';
+        if (creatorStage) {
+          creatorStage.classList.remove('hidden');
+        }
+        ui.applyLanguage(state.currentLanguage);
+        initCharacterCreator();
+      }, 400);
+    }
   }
 
   // Allow clicking anywhere on loading stage to complete or enter

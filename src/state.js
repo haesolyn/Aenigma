@@ -137,6 +137,15 @@ export class GameState {
     this.resolvedChecks = {}; // checkId: { status: 'passed'|'failed', timestamp }
     this.visitedChoices = {}; // choiceKey: timestamp
     this.dialogueHistory = [];
+
+    // Ensure all critical danger effects and heartbeat are stopped on reset
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.classList.remove('in-danger');
+    }
+    if (typeof audio !== 'undefined' && audio && audio.setHeartbeatActive) {
+      audio.setHeartbeatActive(false);
+    }
+    this.checkSurvivalState();
   }
 
   markChoiceVisited(key) {

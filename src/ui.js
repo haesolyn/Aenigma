@@ -81,6 +81,17 @@ export class UIController {
     document.getElementById('btn-retry-inquiry')?.addEventListener('click', () => {
       this.closeModal(this.gameoverModal);
       this.state.reset();
+
+      // Cleanly clear red vignette & critical pulse
+      if (typeof document !== 'undefined' && document.body) {
+        document.body.classList.remove('in-danger');
+      }
+      if (typeof audio !== 'undefined' && audio) {
+        if (audio.setHeartbeatActive) audio.setHeartbeatActive(false);
+        if (audio.playUiClick) audio.playUiClick();
+      }
+
+      this.updateHUD();
       this.activePoi = null;
       this.currentNodeId = null;
       this.applyLanguage(this.state.currentLanguage);
