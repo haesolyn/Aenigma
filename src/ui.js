@@ -1,5 +1,6 @@
 // Aenigma Master UI Controller & Interaction Engine
 import { audio } from './audio.js';
+import { firebaseService } from './firebase.js';
 import { SUPPORTED_LANGUAGES, PROGRESS_LABELS, DISTRICT_LABELS, t, tItem, tPoi, tClue, tSkill, tGameOver, getLocalizedDialogueNode, tVice, tThought, tCase } from './i18n.js';
 import { THOUGHTS_CATALOG } from './thoughts.js';
 import { CASE_DATA, ALL_CASES_ARCHIVE } from './cases.js';
@@ -19,6 +20,7 @@ export class UIController {
     this.initLanguageSelector();
     this.bindEvents();
     this.applyLanguage(this.state.currentLanguage);
+    this.initCloudSyncListeners();
   }
 
   initElements() {
@@ -36,6 +38,7 @@ export class UIController {
     this.languageModal = document.getElementById('language-modal');
     this.gameoverModal = document.getElementById('gameover-modal');
     this.profileModal = document.getElementById('profile-modal');
+    this.cloudModal = document.getElementById('cloud-modal');
 
     // Header buttons & preview stats
     this.hudBtnProfile = document.getElementById('hud-btn-profile');
@@ -104,6 +107,112 @@ export class UIController {
   openLanguageModal() {
     this.openModal(this.languageModal);
     this.renderLanguageList();
+  }
+
+  openCloudModal() {
+    this.openModal(this.cloudModal);
+    this.updateCloudModalUI();
+  }
+
+  updateCloudModalUI() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+    const status = firebaseService.getStatus();
+    const pill = document.getElementById('cloud-status-pill');
+    const idBadge = document.getElementById('cloud-player-id-display');
+    const lastSync = document.getElementById('cloud-last-sync-time');
+    const summary = document.getElementById('cloud-save-state-summary');
+
+    if (pill) {
+      if (status.isOnline && status.isInitialized) {
+        pill.className = 'status-pill';
+        pill.textContent = '● TERHUBUNG KE FIREBASE';
+      } else {
+        pill.className = 'status-pill offline';
+        pill.textContent = '○ MODE OFFLINE';
+      }
+    }
+
+    if (idBadge) {
+      idBadge.textContent = `ID: ${status.playerId || 'det_local'}`;
+    }
+
+    if (lastSync) {
+      if (status.lastSyncTime) {
+        const d = new Date(status.lastSyncTime);
+        lastSync.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      } else {
+        lastSync.textContent = 'Belum pernah disinkronkan';
+      }
+    }
+
+    if (summary) {
+      summary.textContent = status.isSaving ? 'Sedang menyimpan ke cloud...' : 'Sinkronisasi Otomatis Aktif';
+    }
+  }
+
+  initCloudSyncListeners() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+
+    // Listen to Firebase status changes
+    firebaseService.subscribe((event, data) => {
+      const dots = document.querySelectorAll('.hud-cloud-dot');
+      if (event === 'save_start') {
+        dots.forEach(d => {
+          d.className = 'hud-cloud-dot syncing';
+        });
+      } else if (event === 'save_success') {
+        dots.forEach(d => {
+          d.className = 'hud-cloud-dot';
+        });
+        this.updateCloudModalUI();
+      } else if (event === 'save_error') {
+        dots.forEach(d => {
+          d.className = 'hud-cloud-dot offline';
+        });
+        this.updateCloudModalUI();
+      } else if (event === 'auth_ready' || event === 'network_status') {
+        dots.forEach(d => {
+          d.className = (data && data.isOnline !== false) ? 'hud-cloud-dot' : 'hud-cloud-dot offline';
+        });
+        this.updateCloudModalUI();
+      }
+    });
+
+    // Cloud modal action buttons
+    document.getElementById('btn-cloud-save-now')?.addEventListener('click', async () => {
+      audio.playUiClick();
+      const feedback = document.getElementById('cloud-feedback-msg');
+      if (feedback) feedback.textContent = 'Sedang mengunggah data ke Firestore...';
+      const res = await this.state.saveToCloudNow();
+      if (res && res.success) {
+        if (feedback) feedback.textContent = '✓ Berhasil disimpan ke Cloud Firebase!';
+        this.showToast('☁️ Kemajuan Detektif tersimpan di Firebase Cloud!');
+        audio.playSuccess();
+      } else {
+        if (feedback) feedback.textContent = `Gagal menyimpan: ${res ? (res.error || res.reason) : 'Offline'}`;
+        audio.playDissonantDrone();
+      }
+      this.updateCloudModalUI();
+    });
+
+    document.getElementById('btn-cloud-load-now')?.addEventListener('click', async () => {
+      audio.playUiClick();
+      const feedback = document.getElementById('cloud-feedback-msg');
+      if (feedback) feedback.textContent = 'Mengunduh data dari Cloud Firebase...';
+      const success = await this.state.loadFromCloud();
+      if (success) {
+        if (feedback) feedback.textContent = '✓ Data berhasil dimuat dari Cloud!';
+        this.updateHUD();
+        this.renderScene();
+        this.showToast(`☁️ Berkas Kasus ${this.state.detective.name} dimuat dari Cloud!`);
+        audio.playSuccess();
+        setTimeout(() => this.closeModal(this.cloudModal), 1000);
+      } else {
+        if (feedback) feedback.textContent = 'Belum ada data simpanan di Cloud atau gagal memuat.';
+        audio.playDissonantDrone();
+      }
+      this.updateCloudModalUI();
+    });
   }
 
   renderLanguageList() {
@@ -447,6 +556,14 @@ export class UIController {
     document.getElementById('nav-btn-clues')?.addEventListener('click', () => {
       audio.playTabSwitch();
       this.openCluesModal();
+    });
+    document.getElementById('nav-btn-cloud')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCloudModal();
+    });
+    document.getElementById('loader-cloud-btn')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCloudModal();
     });
     document.getElementById('nav-btn-audio')?.addEventListener('click', (e) => {
       const isMuted = audio.toggleMute();

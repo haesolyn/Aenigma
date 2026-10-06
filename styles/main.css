@@ -1607,3 +1607,114 @@ body.in-danger .crt-vignette {
   text-align: center;
   line-height: 1.4;
 }
+
+/* ==========================================================================
+   FIREBASE CLOUD ARCHIVE & SAVE SYNC STYLES
+   ========================================================================== */
+.hud-cloud-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #2ecc71;
+  box-shadow: 0 0 6px rgba(46, 204, 113, 0.6);
+  margin-left: 4px;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+}
+
+.hud-cloud-dot.syncing {
+  background-color: #f39c12;
+  box-shadow: 0 0 8px rgba(243, 156, 18, 0.8);
+  animation: pulseSync 0.9s infinite alternate;
+}
+
+.hud-cloud-dot.offline {
+  background-color: #7f8c8d;
+  box-shadow: none;
+}
+
+@keyframes pulseSync {
+  from { opacity: 0.35; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: rgba(46, 204, 113, 0.12);
+  border: 1px solid rgba(46, 204, 113, 0.4);
+  color: #2ecc71;
+}
+
+.status-pill.offline {
+  background: rgba(231, 76, 60, 0.12);
+  border-color: rgba(231, 76, 60, 0.4);
+  color: #e74c3c;
+}
+
+.status-pill.syncing {
+  background: rgba(243, 156, 18, 0.12);
+  border-color: rgba(243, 156, 18, 0.4);
+  color: #f39c12;
+}
+
+.player-id-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-deep);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  word-break: break-all;
+}
+
+.cloud-status-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cloud-status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cloud-info-box {
+  margin-top: 6px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cloud-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+}
+
+.cloud-info-row .info-label {
+  color: var(--text-secondary);
+}
+
+.cloud-info-row .info-val {
+  color: var(--gold-accent);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+

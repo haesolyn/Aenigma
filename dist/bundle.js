@@ -8425,6 +8425,292 @@ const ALL_CASES_ARCHIVE = [
 
 // --- END: cases.js ---
 
+// --- BEGIN: firebase.js ---
+// Aenigma Firebase Cloud Integration Service
+// Connects the detective mystery RPG to Firebase Auth & Firestore Cloud Storage
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBF_YM5JKkan__1CMgEtSDMIFzfyitFwSc",
+  authDomain: "aenigmarchive.firebaseapp.com",
+  projectId: "aenigmarchive",
+  storageBucket: "aenigmarchive.firebasestorage.app",
+  messagingSenderId: "493065886023",
+  appId: "1:493065886023:web:c4d47b58959f9a7dda1462"
+};
+
+const CLOUD_PLAYER_ID_KEY = 'aenigma_cloud_player_id';
+
+class FirebaseService {
+  constructor() {
+    this.app = null;
+    this.auth = null;
+    this.db = null;
+    this.user = null;
+    this.playerId = null;
+    this.isInitialized = false;
+    this.isOnline = false;
+    this.isSaving = false;
+    this.lastSyncTime = null;
+    this.lastError = null;
+    this.saveTimeout = null;
+    this.listeners = [];
+
+    // Ensure persistent player ID fallback
+    this.ensurePlayerId();
+  }
+
+  ensurePlayerId() {
+    if (typeof localStorage !== 'undefined') {
+      let storedId = localStorage.getItem(CLOUD_PLAYER_ID_KEY);
+      if (!storedId) {
+        storedId = 'det_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+        localStorage.setItem(CLOUD_PLAYER_ID_KEY, storedId);
+      }
+      this.playerId = storedId;
+    } else {
+      this.playerId = 'det_offline_' + Math.random().toString(36).substring(2, 8);
+    }
+  }
+
+  init() {
+    if (this.isInitialized) return true;
+
+    if (typeof window === 'undefined' || typeof window.firebase === 'undefined') {
+      console.warn('[Firebase] SDK global not detected. Running in offline cache mode.');
+      this.isOnline = false;
+      return false;
+    }
+
+    try {
+      if (!window.firebase.apps || !window.firebase.apps.length) {
+        this.app = window.firebase.initializeApp(firebaseConfig);
+      } else {
+        this.app = window.firebase.app();
+      }
+
+      if (window.firebase.auth) {
+        this.auth = window.firebase.auth();
+        this.initAuth();
+      }
+
+      if (window.firebase.firestore) {
+        this.db = window.firebase.firestore();
+      }
+
+      this.isInitialized = true;
+      this.isOnline = navigator.onLine !== false;
+      console.log('[Firebase] Successfully connected to aenigmarchive project.');
+
+      // Listen to network status
+      if (typeof window !== 'undefined') {
+        window.addEventListener('online', () => {
+          this.isOnline = true;
+          this.notify('network_status', { isOnline: true });
+        });
+        window.addEventListener('offline', () => {
+          this.isOnline = false;
+          this.notify('network_status', { isOnline: false });
+        });
+      }
+
+      return true;
+    } catch (e) {
+      console.error('[Firebase] Initialization error:', e);
+      this.lastError = e.message;
+      return false;
+    }
+  }
+
+  initAuth() {
+    if (!this.auth) return;
+
+    this.auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        this.user = user;
+        this.playerId = user.uid;
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(CLOUD_PLAYER_ID_KEY, user.uid);
+        }
+        console.log('[Firebase Auth] Active user ID:', user.uid);
+        this.notify('auth_ready', { user, playerId: this.playerId });
+      } else {
+        // Attempt anonymous sign-in for seamless zero-friction player identity
+        try {
+          const cred = await this.auth.signInAnonymously();
+          this.user = cred.user;
+          this.playerId = cred.user.uid;
+          if (typeof localStorage !== 'undefined') {
+            localStorage.setItem(CLOUD_PLAYER_ID_KEY, cred.user.uid);
+          }
+          console.log('[Firebase Auth] Anonymous sign-in established:', this.playerId);
+          this.notify('auth_ready', { user: this.user, playerId: this.playerId });
+        } catch (err) {
+          console.warn('[Firebase Auth] Anonymous sign-in note (using persistent player ID):', err.message);
+          this.notify('auth_fallback', { playerId: this.playerId, reason: err.message });
+        }
+      }
+    });
+  }
+
+  subscribe(fn) {
+    this.listeners.push(fn);
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== fn);
+    };
+  }
+
+  notify(event, payload) {
+    this.listeners.forEach(fn => {
+      try {
+        fn(event, payload, this);
+      } catch (err) {
+        console.error('[Firebase] Error in event listener:', err);
+      }
+    });
+  }
+
+  getStatus() {
+    return {
+      isInitialized: this.isInitialized,
+      isOnline: this.isOnline,
+      isSaving: this.isSaving,
+      lastSyncTime: this.lastSyncTime,
+      playerId: this.playerId,
+      hasAuthUser: !!this.user,
+      lastError: this.lastError
+    };
+  }
+
+  // Debounced auto-save so rapid gameplay actions don't flood Firestore
+  queueSaveToCloud(saveData, delay = 1800) {
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
+    }
+    this.saveTimeout = setTimeout(() => {
+      this.saveGameToCloud(saveData);
+    }, delay);
+  }
+
+  async saveGameToCloud(saveData) {
+    if (!this.isInitialized || !this.db) {
+      this.init();
+      if (!this.isInitialized || !this.db) {
+        return { success: false, reason: 'Firebase Firestore not available' };
+      }
+    }
+
+    const docId = (this.user && this.user.uid) ? this.user.uid : this.playerId;
+    if (!docId) {
+      return { success: false, reason: 'No player ID available' };
+    }
+
+    this.isSaving = true;
+    this.notify('save_start', { playerId: docId });
+
+    try {
+      const payload = {
+        saveData: {
+          detective: saveData.detective || null,
+          time: saveData.time || null,
+          inventory: saveData.inventory || [],
+          clues: saveData.clues || [],
+          thoughtCabinet: saveData.thoughtCabinet || null,
+          flags: saveData.flags || {},
+          resolvedChecks: saveData.resolvedChecks || {},
+          visitedChoices: saveData.visitedChoices || {},
+          currentLanguage: saveData.currentLanguage || 'en'
+        },
+        meta: {
+          detectiveName: saveData.detective ? saveData.detective.name : 'Unknown',
+          detectiveAlias: saveData.detective ? saveData.detective.alias : '',
+          health: saveData.detective ? saveData.detective.health : 4,
+          morale: saveData.detective ? saveData.detective.morale : 4,
+          level: saveData.detective ? saveData.detective.level : 1,
+          cluesCount: (saveData.clues && Array.isArray(saveData.clues)) ? saveData.clues.length : 0,
+          caseSolved: !!(saveData.flags && saveData.flags.case_solved),
+          clientTimestamp: Date.now()
+        }
+      };
+
+      // Add Firestore server timestamp if available
+      if (window.firebase && window.firebase.firestore && window.firebase.firestore.FieldValue) {
+        payload.updatedAt = window.firebase.firestore.FieldValue.serverTimestamp();
+      } else {
+        payload.updatedAt = new Date().toISOString();
+      }
+
+      await this.db.collection('detective_saves').doc(docId).set(payload, { merge: true });
+
+      this.isSaving = false;
+      this.lastSyncTime = new Date();
+      this.lastError = null;
+      console.log(`[Firebase Cloud] Game saved successfully for investigator: ${docId}`);
+
+      this.notify('save_success', {
+        timestamp: this.lastSyncTime,
+        playerId: docId
+      });
+
+      return { success: true, timestamp: this.lastSyncTime, playerId: docId };
+    } catch (err) {
+      this.isSaving = false;
+      this.lastError = err.message;
+      console.warn('[Firebase Cloud] Save error:', err.message);
+      this.notify('save_error', { error: err.message, playerId: docId });
+      return { success: false, error: err.message };
+    }
+  }
+
+  async loadGameFromCloud() {
+    if (!this.isInitialized || !this.db) {
+      this.init();
+      if (!this.isInitialized || !this.db) {
+        return { success: false, reason: 'Firebase Firestore not available' };
+      }
+    }
+
+    const docId = (this.user && this.user.uid) ? this.user.uid : this.playerId;
+    if (!docId) {
+      return { success: false, reason: 'No player ID available' };
+    }
+
+    this.notify('load_start', { playerId: docId });
+
+    try {
+      const doc = await this.db.collection('detective_saves').doc(docId).get();
+      if (!doc.exists) {
+        console.log(`[Firebase Cloud] No existing cloud record found for ${docId}`);
+        this.notify('load_not_found', { playerId: docId });
+        return { success: false, reason: 'no_record' };
+      }
+
+      const remoteData = doc.data();
+      const actualSave = remoteData.saveData || remoteData;
+
+      this.lastSyncTime = new Date();
+      this.lastError = null;
+      console.log(`[Firebase Cloud] Loaded remote game archive for investigator: ${docId}`);
+
+      this.notify('load_success', {
+        data: actualSave,
+        timestamp: this.lastSyncTime,
+        playerId: docId
+      });
+
+      return { success: true, data: actualSave, timestamp: this.lastSyncTime };
+    } catch (err) {
+      this.lastError = err.message;
+      console.warn('[Firebase Cloud] Load error:', err.message);
+      this.notify('load_error', { error: err.message, playerId: docId });
+      return { success: false, error: err.message };
+    }
+  }
+}
+
+const firebaseService = new FirebaseService();
+
+// --- END: firebase.js ---
+
 // --- BEGIN: state.js ---
 // Aenigma Central Game State & Reactive Store
 
@@ -8646,6 +8932,7 @@ class GameState {
     this.detective.health = Math.max(0, this.detective.health - amount);
     this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth, delta: -amount });
     this.checkSurvivalState();
+    this.save();
     if (this.detective.health <= 0) {
       this.triggerGameOver('physical', 'Cardiac Arrest / Physical Collapse');
     }
@@ -8655,12 +8942,14 @@ class GameState {
     this.detective.health = Math.min(this.detective.maxHealth, this.detective.health + amount);
     this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth, delta: amount });
     this.checkSurvivalState();
+    this.save();
   }
 
   damageMorale(amount = 1) {
     this.detective.morale = Math.max(0, this.detective.morale - amount);
     this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale, delta: -amount });
     this.checkSurvivalState();
+    this.save();
     if (this.detective.morale <= 0) {
       this.triggerGameOver('psychological', 'Existential Psychosis & Breakdown');
     }
@@ -8670,6 +8959,7 @@ class GameState {
     this.detective.morale = Math.min(this.detective.maxMorale, this.detective.morale + amount);
     this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale, delta: amount });
     this.checkSurvivalState();
+    this.save();
   }
 
   checkSurvivalState() {
@@ -8732,6 +9022,7 @@ class GameState {
       this.notify('level_up', { level: this.detective.level, points: this.detective.skillPoints });
     }
     this.notify('xp_gained', { xp: this.detective.xp });
+    this.save();
   }
 
   // Inventory actions
@@ -8743,6 +9034,7 @@ class GameState {
       }
       this.inventory.push(item);
       this.notify('item_added', item);
+      this.save();
     }
   }
 
@@ -8893,6 +9185,7 @@ class GameState {
     if (!alreadyKnown && !isCooking && !isDone) {
       this.thoughtCabinet.known.push({ ...thought });
       this.notify('thought_unlocked', thought);
+      this.save();
     }
   }
 
@@ -8907,6 +9200,7 @@ class GameState {
     thought.progress = 0;
     this.thoughtCabinet.internalizing.push(thought);
     this.notify('thought_started', thought);
+    this.save();
     return { success: true };
   }
 
@@ -8924,24 +9218,52 @@ class GameState {
       this.thoughtCabinet.internalized.push(t);
       this.notify('thought_internalized', t);
     });
+    if (finished.length > 0) {
+      this.save();
+    }
   }
 
-  // Persistence
-  save() {
+  // Persistence & Serialization
+  serialize() {
+    return {
+      detective: this.detective,
+      time: this.time,
+      inventory: this.inventory,
+      clues: this.clues,
+      thoughtCabinet: this.thoughtCabinet,
+      flags: this.flags,
+      resolvedChecks: this.resolvedChecks,
+      visitedChoices: this.visitedChoices,
+      currentLanguage: this.currentLanguage
+    };
+  }
+
+  applyLoadedData(data) {
+    if (!data) return false;
+    if (data.detective) this.detective = { ...this.detective, ...data.detective };
+    if (data.time) this.time = { ...this.time, ...data.time };
+    if (Array.isArray(data.inventory)) this.inventory = data.inventory;
+    if (Array.isArray(data.clues)) this.clues = data.clues;
+    if (data.thoughtCabinet) this.thoughtCabinet = data.thoughtCabinet;
+    if (data.flags) this.flags = { ...this.flags, ...data.flags };
+    if (data.resolvedChecks) this.resolvedChecks = data.resolvedChecks;
+    if (data.visitedChoices) this.visitedChoices = data.visitedChoices;
+    if (data.currentLanguage) this.currentLanguage = data.currentLanguage;
+
+    this.checkSurvivalState();
+    this.notify('loaded', this);
+    return true;
+  }
+
+  save(syncCloud = true) {
     try {
-      const data = {
-        detective: this.detective,
-        time: this.time,
-        inventory: this.inventory,
-        clues: this.clues,
-        thoughtCabinet: this.thoughtCabinet,
-        flags: this.flags,
-        resolvedChecks: this.resolvedChecks,
-        visitedChoices: this.visitedChoices,
-        currentLanguage: this.currentLanguage
-      };
+      const data = this.serialize();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       this.notify('saved');
+
+      if (syncCloud && typeof firebaseService !== 'undefined' && firebaseService) {
+        firebaseService.queueSaveToCloud(data);
+      }
       return true;
     } catch (e) {
       console.error('Failed to save state:', e);
@@ -8954,21 +9276,31 @@ class GameState {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return false;
       const data = JSON.parse(raw);
-      this.detective = data.detective;
-      this.time = data.time;
-      this.inventory = data.inventory;
-      this.clues = data.clues;
-      this.thoughtCabinet = data.thoughtCabinet;
-      this.flags = data.flags;
-      this.resolvedChecks = data.resolvedChecks || {};
-      this.visitedChoices = data.visitedChoices || {};
-      if (data.currentLanguage) this.currentLanguage = data.currentLanguage;
-      this.notify('loaded');
-      return true;
+      return this.applyLoadedData(data);
     } catch (e) {
       console.error('Failed to load state:', e);
       return false;
     }
+  }
+
+  async saveToCloudNow() {
+    if (typeof firebaseService !== 'undefined' && firebaseService) {
+      const data = this.serialize();
+      return await firebaseService.saveGameToCloud(data);
+    }
+    return { success: false, reason: 'Firebase service not initialized' };
+  }
+
+  async loadFromCloud() {
+    if (typeof firebaseService !== 'undefined' && firebaseService) {
+      const res = await firebaseService.loadGameFromCloud();
+      if (res && res.success && res.data) {
+        this.applyLoadedData(res.data);
+        this.save(false); // Update local cache
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -9110,6 +9442,7 @@ class UIController {
     this.initLanguageSelector();
     this.bindEvents();
     this.applyLanguage(this.state.currentLanguage);
+    this.initCloudSyncListeners();
   }
 
   initElements() {
@@ -9127,6 +9460,7 @@ class UIController {
     this.languageModal = document.getElementById('language-modal');
     this.gameoverModal = document.getElementById('gameover-modal');
     this.profileModal = document.getElementById('profile-modal');
+    this.cloudModal = document.getElementById('cloud-modal');
 
     // Header buttons & preview stats
     this.hudBtnProfile = document.getElementById('hud-btn-profile');
@@ -9195,6 +9529,112 @@ class UIController {
   openLanguageModal() {
     this.openModal(this.languageModal);
     this.renderLanguageList();
+  }
+
+  openCloudModal() {
+    this.openModal(this.cloudModal);
+    this.updateCloudModalUI();
+  }
+
+  updateCloudModalUI() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+    const status = firebaseService.getStatus();
+    const pill = document.getElementById('cloud-status-pill');
+    const idBadge = document.getElementById('cloud-player-id-display');
+    const lastSync = document.getElementById('cloud-last-sync-time');
+    const summary = document.getElementById('cloud-save-state-summary');
+
+    if (pill) {
+      if (status.isOnline && status.isInitialized) {
+        pill.className = 'status-pill';
+        pill.textContent = '● TERHUBUNG KE FIREBASE';
+      } else {
+        pill.className = 'status-pill offline';
+        pill.textContent = '○ MODE OFFLINE';
+      }
+    }
+
+    if (idBadge) {
+      idBadge.textContent = `ID: ${status.playerId || 'det_local'}`;
+    }
+
+    if (lastSync) {
+      if (status.lastSyncTime) {
+        const d = new Date(status.lastSyncTime);
+        lastSync.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      } else {
+        lastSync.textContent = 'Belum pernah disinkronkan';
+      }
+    }
+
+    if (summary) {
+      summary.textContent = status.isSaving ? 'Sedang menyimpan ke cloud...' : 'Sinkronisasi Otomatis Aktif';
+    }
+  }
+
+  initCloudSyncListeners() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+
+    // Listen to Firebase status changes
+    firebaseService.subscribe((event, data) => {
+      const dots = document.querySelectorAll('.hud-cloud-dot');
+      if (event === 'save_start') {
+        dots.forEach(d => {
+          d.className = 'hud-cloud-dot syncing';
+        });
+      } else if (event === 'save_success') {
+        dots.forEach(d => {
+          d.className = 'hud-cloud-dot';
+        });
+        this.updateCloudModalUI();
+      } else if (event === 'save_error') {
+        dots.forEach(d => {
+          d.className = 'hud-cloud-dot offline';
+        });
+        this.updateCloudModalUI();
+      } else if (event === 'auth_ready' || event === 'network_status') {
+        dots.forEach(d => {
+          d.className = (data && data.isOnline !== false) ? 'hud-cloud-dot' : 'hud-cloud-dot offline';
+        });
+        this.updateCloudModalUI();
+      }
+    });
+
+    // Cloud modal action buttons
+    document.getElementById('btn-cloud-save-now')?.addEventListener('click', async () => {
+      audio.playUiClick();
+      const feedback = document.getElementById('cloud-feedback-msg');
+      if (feedback) feedback.textContent = 'Sedang mengunggah data ke Firestore...';
+      const res = await this.state.saveToCloudNow();
+      if (res && res.success) {
+        if (feedback) feedback.textContent = '✓ Berhasil disimpan ke Cloud Firebase!';
+        this.showToast('☁️ Kemajuan Detektif tersimpan di Firebase Cloud!');
+        audio.playSuccess();
+      } else {
+        if (feedback) feedback.textContent = `Gagal menyimpan: ${res ? (res.error || res.reason) : 'Offline'}`;
+        audio.playDissonantDrone();
+      }
+      this.updateCloudModalUI();
+    });
+
+    document.getElementById('btn-cloud-load-now')?.addEventListener('click', async () => {
+      audio.playUiClick();
+      const feedback = document.getElementById('cloud-feedback-msg');
+      if (feedback) feedback.textContent = 'Mengunduh data dari Cloud Firebase...';
+      const success = await this.state.loadFromCloud();
+      if (success) {
+        if (feedback) feedback.textContent = '✓ Data berhasil dimuat dari Cloud!';
+        this.updateHUD();
+        this.renderScene();
+        this.showToast(`☁️ Berkas Kasus ${this.state.detective.name} dimuat dari Cloud!`);
+        audio.playSuccess();
+        setTimeout(() => this.closeModal(this.cloudModal), 1000);
+      } else {
+        if (feedback) feedback.textContent = 'Belum ada data simpanan di Cloud atau gagal memuat.';
+        audio.playDissonantDrone();
+      }
+      this.updateCloudModalUI();
+    });
   }
 
   renderLanguageList() {
@@ -9538,6 +9978,14 @@ class UIController {
     document.getElementById('nav-btn-clues')?.addEventListener('click', () => {
       audio.playTabSwitch();
       this.openCluesModal();
+    });
+    document.getElementById('nav-btn-cloud')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCloudModal();
+    });
+    document.getElementById('loader-cloud-btn')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCloudModal();
     });
     document.getElementById('nav-btn-audio')?.addEventListener('click', (e) => {
       const isMuted = audio.toggleMute();
@@ -10992,6 +11440,11 @@ function bootGame() {
 
   const ui = new UIController(state);
 
+  // Initialize Firebase Cloud Archive Service
+  if (typeof firebaseService !== 'undefined') {
+    firebaseService.init();
+  }
+
   // Initialize animated glitch silhouette walkers
   const stopGlitchCanvas = initGlitchSilhouetteCanvas();
 
@@ -11554,8 +12007,9 @@ if (document.readyState === 'loading') {
 
 // Global debug and test exposures
 if (typeof window !== 'undefined') {
-  window.aenigma = { state, CASE_DATA, getLocalizedDialogueNode, t, tClue, tPoi, tItem, tSkill, audio };
+  window.aenigma = { state, CASE_DATA, getLocalizedDialogueNode, t, tClue, tPoi, tItem, tSkill, audio, firebaseService };
   window.state = state;
+  window.firebaseService = firebaseService;
   window.CASE_DATA = CASE_DATA;
   window.getLocalizedDialogueNode = getLocalizedDialogueNode;
   window.t = t;

@@ -1,6 +1,7 @@
 // Aenigma Main Bootstrap & Flow Orchestrator
 import { audio } from './audio.js';
 import { state } from './state.js';
+import { firebaseService } from './firebase.js';
 import { UIController } from './ui.js';
 import { CASE_DATA } from './cases.js';
 import { LOADER_QUOTES_I18N, TELEMETRY_PHASES_I18N, ALIASES_I18N, DOSSIER_I18N, LOADER_DECRYPT_I18N, t } from './i18n.js';
@@ -312,6 +313,11 @@ function bootGame() {
   hasBooted = true;
 
   const ui = new UIController(state);
+
+  // Initialize Firebase Cloud Archive Service
+  if (typeof firebaseService !== 'undefined') {
+    firebaseService.init();
+  }
 
   // Initialize animated glitch silhouette walkers
   const stopGlitchCanvas = initGlitchSilhouetteCanvas();
@@ -875,8 +881,9 @@ if (document.readyState === 'loading') {
 
 // Global debug and test exposures
 if (typeof window !== 'undefined') {
-  window.aenigma = { state, CASE_DATA, getLocalizedDialogueNode, t, tClue, tPoi, tItem, tSkill, audio };
+  window.aenigma = { state, CASE_DATA, getLocalizedDialogueNode, t, tClue, tPoi, tItem, tSkill, audio, firebaseService };
   window.state = state;
+  window.firebaseService = firebaseService;
   window.CASE_DATA = CASE_DATA;
   window.getLocalizedDialogueNode = getLocalizedDialogueNode;
   window.t = t;

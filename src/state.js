@@ -1,4 +1,5 @@
 // Aenigma Central Game State & Reactive Store
+import { firebaseService } from './firebase.js';
 
 const STORAGE_KEY = 'aenigma_detective_save_v1';
 const LANG_STORAGE_KEY = 'aenigma_language_preference';
@@ -218,6 +219,7 @@ export class GameState {
     this.detective.health = Math.max(0, this.detective.health - amount);
     this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth, delta: -amount });
     this.checkSurvivalState();
+    this.save();
     if (this.detective.health <= 0) {
       this.triggerGameOver('physical', 'Cardiac Arrest / Physical Collapse');
     }
@@ -227,12 +229,14 @@ export class GameState {
     this.detective.health = Math.min(this.detective.maxHealth, this.detective.health + amount);
     this.notify('health_changed', { current: this.detective.health, max: this.detective.maxHealth, delta: amount });
     this.checkSurvivalState();
+    this.save();
   }
 
   damageMorale(amount = 1) {
     this.detective.morale = Math.max(0, this.detective.morale - amount);
     this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale, delta: -amount });
     this.checkSurvivalState();
+    this.save();
     if (this.detective.morale <= 0) {
       this.triggerGameOver('psychological', 'Existential Psychosis & Breakdown');
     }
@@ -242,6 +246,7 @@ export class GameState {
     this.detective.morale = Math.min(this.detective.maxMorale, this.detective.morale + amount);
     this.notify('morale_changed', { current: this.detective.morale, max: this.detective.maxMorale, delta: amount });
     this.checkSurvivalState();
+    this.save();
   }
 
   checkSurvivalState() {
@@ -304,6 +309,7 @@ export class GameState {
       this.notify('level_up', { level: this.detective.level, points: this.detective.skillPoints });
     }
     this.notify('xp_gained', { xp: this.detective.xp });
+    this.save();
   }
 
   // Inventory actions
@@ -315,6 +321,7 @@ export class GameState {
       }
       this.inventory.push(item);
       this.notify('item_added', item);
+      this.save();
     }
   }
 
@@ -465,6 +472,7 @@ export class GameState {
     if (!alreadyKnown && !isCooking && !isDone) {
       this.thoughtCabinet.known.push({ ...thought });
       this.notify('thought_unlocked', thought);
+      this.save();
     }
   }
 
@@ -479,6 +487,7 @@ export class GameState {
     thought.progress = 0;
     this.thoughtCabinet.internalizing.push(thought);
     this.notify('thought_started', thought);
+    this.save();
     return { success: true };
   }
 
@@ -496,24 +505,52 @@ export class GameState {
       this.thoughtCabinet.internalized.push(t);
       this.notify('thought_internalized', t);
     });
+    if (finished.length > 0) {
+      this.save();
+    }
   }
 
-  // Persistence
-  save() {
+  // Persistence & Serialization
+  serialize() {
+    return {
+      detective: this.detective,
+      time: this.time,
+      inventory: this.inventory,
+      clues: this.clues,
+      thoughtCabinet: this.thoughtCabinet,
+      flags: this.flags,
+      resolvedChecks: this.resolvedChecks,
+      visitedChoices: this.visitedChoices,
+      currentLanguage: this.currentLanguage
+    };
+  }
+
+  applyLoadedData(data) {
+    if (!data) return false;
+    if (data.detective) this.detective = { ...this.detective, ...data.detective };
+    if (data.time) this.time = { ...this.time, ...data.time };
+    if (Array.isArray(data.inventory)) this.inventory = data.inventory;
+    if (Array.isArray(data.clues)) this.clues = data.clues;
+    if (data.thoughtCabinet) this.thoughtCabinet = data.thoughtCabinet;
+    if (data.flags) this.flags = { ...this.flags, ...data.flags };
+    if (data.resolvedChecks) this.resolvedChecks = data.resolvedChecks;
+    if (data.visitedChoices) this.visitedChoices = data.visitedChoices;
+    if (data.currentLanguage) this.currentLanguage = data.currentLanguage;
+
+    this.checkSurvivalState();
+    this.notify('loaded', this);
+    return true;
+  }
+
+  save(syncCloud = true) {
     try {
-      const data = {
-        detective: this.detective,
-        time: this.time,
-        inventory: this.inventory,
-        clues: this.clues,
-        thoughtCabinet: this.thoughtCabinet,
-        flags: this.flags,
-        resolvedChecks: this.resolvedChecks,
-        visitedChoices: this.visitedChoices,
-        currentLanguage: this.currentLanguage
-      };
+      const data = this.serialize();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       this.notify('saved');
+
+      if (syncCloud && typeof firebaseService !== 'undefined' && firebaseService) {
+        firebaseService.queueSaveToCloud(data);
+      }
       return true;
     } catch (e) {
       console.error('Failed to save state:', e);
@@ -526,21 +563,31 @@ export class GameState {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return false;
       const data = JSON.parse(raw);
-      this.detective = data.detective;
-      this.time = data.time;
-      this.inventory = data.inventory;
-      this.clues = data.clues;
-      this.thoughtCabinet = data.thoughtCabinet;
-      this.flags = data.flags;
-      this.resolvedChecks = data.resolvedChecks || {};
-      this.visitedChoices = data.visitedChoices || {};
-      if (data.currentLanguage) this.currentLanguage = data.currentLanguage;
-      this.notify('loaded');
-      return true;
+      return this.applyLoadedData(data);
     } catch (e) {
       console.error('Failed to load state:', e);
       return false;
     }
+  }
+
+  async saveToCloudNow() {
+    if (typeof firebaseService !== 'undefined' && firebaseService) {
+      const data = this.serialize();
+      return await firebaseService.saveGameToCloud(data);
+    }
+    return { success: false, reason: 'Firebase service not initialized' };
+  }
+
+  async loadFromCloud() {
+    if (typeof firebaseService !== 'undefined' && firebaseService) {
+      const res = await firebaseService.loadGameFromCloud();
+      if (res && res.success && res.data) {
+        this.applyLoadedData(res.data);
+        this.save(false); // Update local cache
+        return true;
+      }
+    }
+    return false;
   }
 }
 

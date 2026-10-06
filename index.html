@@ -34,9 +34,14 @@
       <div class="ambience-rain-layer"></div>
       <div class="ambience-vignette-overlay"></div>
     </div>
-    <button id="loader-lang-btn" class="hud-btn stage-lang-btn" style="position: absolute; top: 20px; right: 20px; z-index: 50;">
-      🌐 <span class="lang-label">ENGLISH</span>
-    </button>
+    <div style="position: absolute; top: 20px; right: 20px; z-index: 50; display: flex; gap: 8px;">
+      <button id="loader-cloud-btn" class="hud-btn stage-lang-btn" title="Firebase Cloud Archive">
+        ☁️ <span id="loader-cloud-status">CLOUD</span> <span id="loader-cloud-dot" class="hud-cloud-dot"></span>
+      </button>
+      <button id="loader-lang-btn" class="hud-btn stage-lang-btn">
+        🌐 <span class="lang-label">ENGLISH</span>
+      </button>
+    </div>
     <div class="loader-content">
       <h1 class="title-ornament" id="loader-title-ornament">A E N I G M A</h1>
 
@@ -358,6 +363,9 @@
         <button id="nav-btn-inventory" class="hud-btn">
           <span id="tab-inv-text">💼 INVENTORY</span> <span id="inv-count-badge" class="badge-counter">3</span>
         </button>
+        <button id="nav-btn-cloud" class="hud-btn" title="Firebase Cloud Archive & Sync">
+          ☁️ <span id="cloud-sync-label">CLOUD</span> <span id="hud-cloud-dot" class="hud-cloud-dot"></span>
+        </button>
         <button id="nav-btn-audio" class="hud-btn" title="Toggle Sound">
           🔊 <span class="btn-label" id="audio-btn-label">AUDIO: ON</span>
         </button>
@@ -671,7 +679,56 @@
     </div>
   </div>
 
-<!-- JavaScript Entry Point (Universal standalone bundle, runs on both file:// and http://) -->
+  <!-- ========================================================================
+       MODAL 9: FIREBASE CLOUD ARCHIVE & SAVE SYNC
+       ======================================================================== -->
+  <div id="cloud-modal" class="modal-backdrop">
+    <div class="modal-window" style="max-width: 620px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="cloud-modal-title">☁️ ARSIP CLOUD FIREBASE</h2>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <div class="cloud-status-panel">
+          <div class="cloud-status-indicator">
+            <span id="cloud-status-pill" class="status-pill">● TERHUBUNG KE FIREBASE</span>
+            <span id="cloud-player-id-display" class="player-id-badge">ID: Loading...</span>
+          </div>
+          <div class="cloud-info-box">
+            <div class="cloud-info-row">
+              <span class="info-label" id="cloud-info-project-label">Proyek Firebase:</span>
+              <span class="info-val">aenigmarchive</span>
+            </div>
+            <div class="cloud-info-row">
+              <span class="info-label" id="cloud-info-sync-label">Terakhir Disinkronkan:</span>
+              <span id="cloud-last-sync-time" class="info-val">Belum ada</span>
+            </div>
+            <div class="cloud-info-row">
+              <span class="info-label" id="cloud-info-state-label">Status Sinkronisasi:</span>
+              <span id="cloud-save-state-summary" class="info-val">Otomatis tersimpan ke Cloud</span>
+            </div>
+          </div>
+          
+          <div class="cloud-actions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px;">
+            <button id="btn-cloud-save-now" class="action-btn-large" style="padding: 12px 14px; font-size: 0.95rem;">
+              💾 SIMPAN KE CLOUD
+            </button>
+            <button id="btn-cloud-load-now" class="action-btn-large" style="padding: 12px 14px; font-size: 0.95rem; background: var(--bg-surface); border: 1px solid var(--border-bright);">
+              📥 MUAT DARI CLOUD
+            </button>
+          </div>
+          <div id="cloud-feedback-msg" class="cloud-feedback" style="margin-top: 14px; font-size: 0.9rem; color: var(--gold-accent); text-align: center; min-height: 20px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK Compatibility CDN (v10.12.2) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <!-- JavaScript Entry Point (Universal standalone bundle, runs on both file:// and http://) -->
   <script src="dist/bundle.js"></script>
 </body>
 </html>

@@ -13,6 +13,7 @@ $fileOrder = @(
   'i18n.js',
   'thoughts.js',
   'cases.js',
+  'firebase.js',
   'state.js',
   'dice.js',
   'ui.js',
