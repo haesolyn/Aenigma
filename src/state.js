@@ -10,7 +10,9 @@ export class GameState {
     const savedLang = (typeof localStorage !== 'undefined') ? localStorage.getItem(LANG_STORAGE_KEY) : null;
     const validLangs = ['en', 'id', 'zh', 'ja', 'ko'];
     let defaultLang = 'en';
-    if (typeof navigator !== 'undefined' && navigator.language) {
+    if (typeof window !== 'undefined' && window.__AENIGMA_LANG__ && validLangs.includes(window.__AENIGMA_LANG__)) {
+      defaultLang = window.__AENIGMA_LANG__;
+    } else if (typeof navigator !== 'undefined' && navigator.language) {
       const navLang = navigator.language.toLowerCase();
       if (navLang.startsWith('id')) defaultLang = 'id';
       else if (navLang.startsWith('ja')) defaultLang = 'ja';

@@ -12,6 +12,25 @@
   <link rel="stylesheet" href="styles/dialogue.css">
   <link rel="stylesheet" href="styles/cabinet.css">
   <link rel="stylesheet" href="styles/scene.css">
+
+  <!-- Immediate Pre-Render Language Resolver -->
+  <script>
+    (function() {
+      var LANG_KEY = 'aenigma_language_preference';
+      var saved = null;
+      try { saved = localStorage.getItem(LANG_KEY); } catch(e) {}
+      var valid = ['en', 'id', 'zh', 'ja', 'ko'];
+      var lang = (valid.indexOf(saved) !== -1) ? saved : 'en';
+      if (!saved && typeof navigator !== 'undefined' && navigator.language) {
+        var nl = navigator.language.toLowerCase();
+        if (nl.indexOf('id') === 0) lang = 'id';
+        else if (nl.indexOf('ja') === 0) lang = 'ja';
+        else if (nl.indexOf('zh') === 0) lang = 'zh';
+        else if (nl.indexOf('ko') === 0) lang = 'ko';
+      }
+      window.__AENIGMA_LANG__ = lang;
+    })();
+  </script>
 </head>
 <body>
 
@@ -23,9 +42,241 @@
   <div id="notification-toast-container"></div>
 
   <!-- ========================================================================
+       STAGE 0: INVESTIGATOR IDENTIFICATION GATE (SEBELUM LOADING SCREEN)
+       ======================================================================== -->
+  <section id="auth-gate-stage" class="fullscreen-stage">
+    <!-- Atmospheric Noir Ambience Backdrop with Mystery Canvas -->
+    <div class="loader-dark-ambience">
+      <div class="ambience-noir-backdrop"></div>
+      <canvas id="gate-mystery-canvas" class="loader-glitch-canvas"></canvas>
+      <div class="ambience-fog-layer"></div>
+      <div class="ambience-rain-layer"></div>
+      <div class="ambience-vignette-overlay"></div>
+    </div>
+
+    <div style="position: absolute; top: 20px; right: 20px; z-index: 100;">
+      <button id="gate-lang-btn" class="hud-btn stage-lang-btn" title="Select Language">
+        🌐 <span class="lang-label">ENGLISH</span>
+      </button>
+    </div>
+
+    <div class="auth-gate-content">
+      <h1 class="title-ornament" id="gate-title-ornament">A E N I G M A</h1>
+      <div class="auth-gate-badge" id="gate-badge-text">◈ KOMISI KEPOLISIAN SEKTOR 7 · TERMINAL VERIFIKASI ◈</div>
+      <p class="auth-gate-lead" id="gate-instructions">
+        Verifikasi lencana penyelidik Anda untuk transmisi arsip kasus kepolisian pusat, atau lakukan penyelidikan lepas tanpa afiliasi resmi (Mode Anonim).
+      </p>
+
+      <div class="auth-gate-card">
+        <!-- View A: Detected Active Session -->
+        <div id="gate-active-session-view" class="gate-session-card" style="display: none;">
+          <div class="gate-session-tag" id="gate-session-tag">LENCANA PENYELIDIK TERVERIFIKASI</div>
+          <div class="auth-user-info-row" style="margin: 14px 0; justify-content: center;">
+            <div class="auth-avatar-mini">🕵️</div>
+            <div class="auth-user-text" style="text-align: left;">
+              <div class="auth-user-email-label" id="gate-active-email-label">LENCANA TERHUBUNG:</div>
+              <div id="gate-active-email" class="auth-user-email">detective@aenigma.com</div>
+            </div>
+          </div>
+          <button type="button" id="btn-gate-continue-active" class="action-btn-large ready" style="width: 100%; margin-bottom: 10px;">
+            🚀 LANJUTKAN INVESTIGASI RESMI
+          </button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="btn-gate-switch-account" class="action-btn-secondary" style="flex: 1; padding: 8px;">
+              🔄 GANTI LENCANA
+            </button>
+            <button type="button" id="btn-gate-guest-from-active" class="action-btn-secondary" style="flex: 1; padding: 8px;">
+              🕵️ INSPEKSI MANDIRI (ANONIM)
+            </button>
+          </div>
+        </div>
+
+        <!-- View B: Login / Register Form -->
+        <div id="gate-form-view" class="gate-form-view">
+          <div class="auth-tabs-row">
+            <button type="button" id="tab-gate-login" class="auth-tab-btn active">🔑 OTORISASI LENCANA (MASUK)</button>
+            <button type="button" id="tab-gate-register" class="auth-tab-btn">📝 PENDAFTARAN PENYELIDIK</button>
+          </div>
+
+          <div class="auth-form-body">
+            <div class="field-group">
+              <label for="gate-email-input" id="lbl-gate-email">IDENTITAS LENCANA / DISPATCH (EMAIL)</label>
+              <input type="email" id="gate-email-input" class="text-input" placeholder="investigator@sektor7.gov" autocomplete="email">
+            </div>
+
+            <div class="field-group" style="margin-top: 10px;">
+              <label for="gate-password-input" id="lbl-gate-password">KATA KUNCI CIPHER (SANDI RAHASIA)</label>
+              <input type="password" id="gate-password-input" class="text-input" placeholder="••••••••" autocomplete="current-password">
+            </div>
+
+            <div style="margin-top: 14px;">
+              <button type="button" id="btn-gate-submit-login" class="action-btn-large ready" style="width: 100%;">
+                🔑 OTORISASI & BUKA ARSIP KASUS
+              </button>
+              <button type="button" id="btn-gate-submit-register" class="action-btn-large ready" style="width: 100%; display: none;">
+                📝 DAFTARKAN LENCANA BARU KE KOMISI
+              </button>
+            </div>
+
+            <div id="gate-auth-feedback" class="auth-feedback-msg" style="min-height: 20px; margin-top: 8px; font-size: 0.85rem; text-align: center;"></div>
+          </div>
+
+          <!-- Divider -->
+          <div class="auth-gate-divider">
+            <span id="gate-divider-text">ATAU / OR</span>
+          </div>
+
+          <!-- Anonymous / Guest Button -->
+          <div class="gate-guest-container">
+            <button type="button" id="btn-gate-guest" class="action-btn-guest">
+              <div class="guest-btn-title" id="gate-guest-btn-title">🕵️ PENYELIDIK LEPAS (MODE ANONIM)</div>
+              <div class="guest-btn-sub" id="gate-guest-btn-sub">Penyelidikan tanpa lencana dinas · Catatan lapangan disimpan di memori peramban lokal</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fast-Pass Pre-Render Gate Localizer -->
+  <script>
+    (function() {
+      var gateDict = {
+        en: {
+          langLabel: 'ENGLISH',
+          badge: '◈ SECTOR 7 POLICE COMMISSION · CLEARANCE TERMINAL ◈',
+          lead: 'Authenticate your investigator badge to access central commission archives, or proceed as an independent detective without official record (Anonymous Mode).',
+          sessionTag: 'COMMISSIONED DETECTIVE BADGE ACTIVE',
+          emailLabel: 'LINKED BADGE IDENTITY:',
+          continueActive: '🚀 PROCEED WITH COMMISSIONED INQUIRY',
+          switchAccount: '🔄 SWITCH BADGE',
+          guestActive: '🕵️ INDEPENDENT INQUIRY (ANONYMOUS)',
+          tabLogin: '🔑 BADGE CLEARANCE (SIGN IN)',
+          tabRegister: '📝 COMMISSION DETECTIVE',
+          lblEmail: 'BADGE ID / DISPATCH CODE (EMAIL)',
+          lblPassword: 'SECRET CIPHER / CLEARANCE KEY',
+          placeholderEmail: 'detective@precinct4.gov',
+          btnLogin: '🔑 AUTHORIZE & OPEN CASE ARCHIVE',
+          btnRegister: '📝 REGISTER BADGE WITH COMMISSION',
+          divider: 'OR PROCEED UNRECORDED',
+          guestTitle: '🕵️ INDEPENDENT DETECTIVE (ANONYMOUS)',
+          guestSub: 'Commence inquiry without commission badge · Field logs stored in local terminal cache'
+        },
+        id: {
+          langLabel: 'BAHASA INDONESIA',
+          badge: '◈ KOMISI KEPOLISIAN SEKTOR 7 · TERMINAL VERIFIKASI ◈',
+          lead: 'Verifikasi lencana penyelidik Anda untuk transmisi arsip kasus kepolisian pusat, atau lakukan penyelidikan lepas tanpa afiliasi resmi (Mode Anonim).',
+          sessionTag: 'LENCANA PENYELIDIK TERVERIFIKASI',
+          emailLabel: 'LENCANA TERHUBUNG:',
+          continueActive: '🚀 LANJUTKAN INVESTIGASI RESMI',
+          switchAccount: '🔄 GANTI LENCANA',
+          guestActive: '🕵️ INSPEKSI MANDIRI (ANONIM)',
+          tabLogin: '🔑 OTORISASI LENCANA (MASUK)',
+          tabRegister: '📝 PENDAFTARAN PENYELIDIK',
+          lblEmail: 'IDENTITAS LENCANA / SURAT DINAS (EMAIL)',
+          lblPassword: 'KATA KUNCI CIPHER (SANDI RAHASIA)',
+          placeholderEmail: 'penyelidik@sektor7.gov',
+          btnLogin: '🔑 OTORISASI & BUKA ARSIP KASUS',
+          btnRegister: '📝 DAFTARKAN LENCANA BARU KE KOMISI',
+          divider: 'ATAU LANJUTKAN TANPA LENCANA DINAS',
+          guestTitle: '🕵️ PENYELIDIK LEPAS (MODE ANONIM)',
+          guestSub: 'Penyelidikan tanpa lencana dinas · Catatan lapangan disimpan di memori peramban lokal'
+        },
+        ja: {
+          langLabel: '日本語',
+          badge: '◈ 第7区警察委員会 · 捜査官認証端末 ◈',
+          lead: '中央本部の事件調書と同期するため捜査官バッジを照合するか、所属無しの民間探偵として捜査を開始してください（匿名モード）。',
+          sessionTag: '認証済 捜査官バッジ有効',
+          emailLabel: '接続中の捜査官名札:',
+          continueActive: '🚀 本部認可の捜査を続行する',
+          switchAccount: '🔄 バッジ切替',
+          guestActive: '🕵️ 民間単独捜査（匿名）',
+          tabLogin: '🔑 バッジ照合（ログイン）',
+          tabRegister: '📝 新規捜査官登録',
+          lblEmail: '捜査官識別符 / 配属先連絡先 (EMAIL)',
+          lblPassword: '暗号照合鍵（パスワード）',
+          placeholderEmail: 'investigator@precinct4.gov',
+          btnLogin: '🔑 認証して事件調書を開く',
+          btnRegister: '📝 委員会へ新バッジを登録',
+          divider: 'または非公式に潜入',
+          guestTitle: '🕵️ 民間探偵として着手（匿名モード）',
+          guestSub: '公式認可なしで現場へ急行 · 現地調査記録は端末内部キャッシュに記録'
+        },
+        zh: {
+          langLabel: '简体中文',
+          badge: '◈ 第七区警署督察委员会 · 身份核验终端 ◈',
+          lead: '核验您的督察警徽以同步总局核心档案，或以无编制在野侦探身份直接开启秘密调查（匿名模式）。',
+          sessionTag: '已验证 官方督察身份处于激活状态',
+          emailLabel: '已连结督察信物:',
+          continueActive: '🚀 继续官方立案侦查',
+          switchAccount: '🔄 切换身份',
+          guestActive: '🕵️ 独立调查（匿名）',
+          tabLogin: '🔑 警徽核验（登录）',
+          tabRegister: '📝 登记新任督察',
+          lblEmail: '督察编号 / 调度联络邮箱 (EMAIL)',
+          lblPassword: '保密密钥 / 授权暗号',
+          placeholderEmail: 'inspector@district7.gov',
+          btnLogin: '🔑 核验授权并调取卷宗',
+          btnRegister: '📝 向警署委员会核准新徽章',
+          divider: '或以匿名密探身份切入',
+          guestTitle: '🕵️ 在野侦探潜入调查（匿名模式）',
+          guestSub: '无需官方警徽立案 · 现场手记与线索仅保存在本地终端缓存中'
+        },
+        ko: {
+          langLabel: '한국어',
+          badge: '◈ 제7구역 경찰위원회 · 수사관 신원 인가 단말 ◈',
+          lead: '경찰청 중앙 아카이브와 동기화하려면 수사관 배지를 인증하거나, 비인가 독립 탐정으로 즉시 착수하십시오 (익명 모드).',
+          sessionTag: '인가 완료: 공식 수사관 배지 활성',
+          emailLabel: '연결된 수사관 배지:',
+          continueActive: '🚀 공식 수사 계속 진행',
+          switchAccount: '🔄 배지 교체',
+          guestActive: '🕵️ 독립 단독수사 (익명)',
+          tabLogin: '🔑 배지 인가 (로그인)',
+          tabRegister: '📝 신임 수사관 임명',
+          lblEmail: '수사관 식별 번호 / 송신처 이메일 (EMAIL)',
+          lblPassword: '보안 암호 키 (비밀번호)',
+          placeholderEmail: 'detective@precinct4.gov',
+          btnLogin: '🔑 인가 확인 및 사건 기록 열람',
+          btnRegister: '📝 위원회에 신임 배지 등록',
+          divider: '또는 비공식 단독 잠입',
+          guestTitle: '🕵️ 독립 수사관 단독 착수 (익명 모드)',
+          guestSub: '공식 배지 없이 현장 착수 · 현장 수사 일지는 로컬 브라우저에만 기록'
+        }
+      };
+
+      window.__applyGateLang = function(l) {
+        var d = gateDict[l] || gateDict.en;
+        document.querySelectorAll('.stage-lang-btn .lang-label').forEach(function(el) { el.textContent = d.langLabel; });
+        var set = function(id, text) { var el = document.getElementById(id); if (el && text) el.textContent = text; };
+        set('gate-badge-text', d.badge);
+        set('gate-instructions', d.lead);
+        set('gate-session-tag', d.sessionTag);
+        set('gate-active-email-label', d.emailLabel);
+        set('btn-gate-continue-active', d.continueActive);
+        set('btn-gate-switch-account', d.switchAccount);
+        set('btn-gate-guest-from-active', d.guestActive);
+        set('tab-gate-login', d.tabLogin);
+        set('tab-gate-register', d.tabRegister);
+        set('lbl-gate-email', d.lblEmail);
+        set('lbl-gate-password', d.lblPassword);
+        set('btn-gate-submit-login', d.btnLogin);
+        set('btn-gate-submit-register', d.btnRegister);
+        set('gate-divider-text', d.divider);
+        set('gate-guest-btn-title', d.guestTitle);
+        set('gate-guest-btn-sub', d.guestSub);
+        var emailInput = document.getElementById('gate-email-input');
+        if (emailInput && d.placeholderEmail) emailInput.placeholder = d.placeholderEmail;
+      };
+
+      var activeLang = window.__AENIGMA_LANG__ || 'en';
+      window.__applyGateLang(activeLang);
+    })();
+  </script>
+
+  <!-- ========================================================================
        STAGE 1: ANIMATED LOADING SCREEN
        ======================================================================== -->
-  <section id="loading-stage" class="fullscreen-stage">
+  <section id="loading-stage" class="fullscreen-stage hidden" style="display: none;">
     <!-- Dark Noir Ambience: Real Generated Street Backdrop + Glitch Silhouette Walkers -->
     <div class="loader-dark-ambience" id="loader-dark-ambience">
       <div class="ambience-noir-backdrop"></div>
@@ -35,12 +286,6 @@
       <div class="ambience-vignette-overlay"></div>
     </div>
     <div style="position: absolute; top: 20px; right: 20px; z-index: 50; display: flex; gap: 8px;">
-      <button id="loader-auth-btn" class="hud-btn stage-lang-btn" title="Firebase Investigator Login & Register">
-        🔑 <span id="loader-auth-label">LOGIN</span>
-      </button>
-      <button id="loader-cloud-btn" class="hud-btn stage-lang-btn" title="Firebase Cloud Archive">
-        ☁️ <span id="loader-cloud-status">CLOUD</span> <span id="loader-cloud-dot" class="hud-cloud-dot"></span>
-      </button>
       <button id="loader-lang-btn" class="hud-btn stage-lang-btn">
         🌐 <span class="lang-label">ENGLISH</span>
       </button>
@@ -175,7 +420,7 @@
   <!-- ========================================================================
        STAGE 2: DETECTIVE PROFILING (CHARACTER CREATION)
        ======================================================================== -->
-  <section id="creator-stage" class="fullscreen-stage hidden">
+  <section id="creator-stage" class="fullscreen-stage hidden" style="display: none;">
     <button id="creator-lang-btn" class="hud-btn stage-lang-btn" style="position: absolute; top: 20px; right: 20px; z-index: 50;">
       🌐 <span class="lang-label">ENGLISH</span>
     </button>
@@ -330,7 +575,7 @@
   <!-- ========================================================================
        STAGE 3: MAIN GAMEPLAY DASHBOARD
        ======================================================================== -->
-  <main id="app-container">
+  <main id="app-container" class="hidden" style="display: none;">
     
     <!-- Top HUD Header -->
     <header class="game-header">
@@ -365,12 +610,6 @@
         </button>
         <button id="nav-btn-inventory" class="hud-btn">
           <span id="tab-inv-text">💼 INVENTORY</span> <span id="inv-count-badge" class="badge-counter">3</span>
-        </button>
-        <button id="nav-btn-auth" class="hud-btn" title="Firebase Investigator Account">
-          🔑 <span id="nav-auth-label">LOGIN</span>
-        </button>
-        <button id="nav-btn-cloud" class="hud-btn" title="Firebase Cloud Archive & Sync">
-          ☁️ <span id="cloud-sync-label">CLOUD</span> <span id="hud-cloud-dot" class="hud-cloud-dot"></span>
         </button>
         <button id="nav-btn-audio" class="hud-btn" title="Toggle Sound">
           🔊 <span class="btn-label" id="audio-btn-label">AUDIO: ON</span>
@@ -681,105 +920,90 @@
 
           </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ========================================================================
-       MODAL 9: FIREBASE CLOUD ARCHIVE & AUTHENTICATION
-       ======================================================================== -->
-  <div id="cloud-modal" class="modal-backdrop">
-    <div class="modal-window" style="max-width: 620px;">
-      <div class="modal-header">
-        <h2 class="modal-title" id="cloud-modal-title">☁️ ARSIP CLOUD & AKUN INVESTIGATOR</h2>
-        <button class="modal-close-btn">&times;</button>
-      </div>
-      <div class="modal-body" style="padding: 24px;">
-        <div class="cloud-status-panel">
-          <div class="cloud-status-indicator">
-            <span id="cloud-status-pill" class="status-pill">● TERHUBUNG KE FIREBASE</span>
-            <span id="cloud-player-id-display" class="player-id-badge">ID: Loading...</span>
+        <!-- Integrated Investigator Account & Central Archive Section -->
+        <div class="profile-auth-section" id="profile-auth-section">
+          <div class="profile-section-title" id="profile-auth-section-title">
+            🏛️ ARSIP PUSAT KEPOLISIAN & LENCANA PENYELIDIK
           </div>
 
-          <!-- Authentication Section (Email/Password Login, Register, Logout) -->
-          <div class="auth-section-box" id="auth-section-box">
-            <div class="auth-section-header">
-              <span class="auth-section-title">🕵️ KREDENSIAL INVESTIGATOR</span>
-              <span id="auth-status-badge" class="auth-badge-guest">MODE TAMU</span>
-            </div>
-
-            <!-- View: Logged In Account Summary & Logout -->
-            <div id="auth-logged-in-view" class="auth-card-logged-in" style="display: none;">
-              <div class="auth-user-info-row">
-                <div class="auth-avatar-mini">🕵️</div>
-                <div class="auth-user-text">
-                  <div class="auth-user-email-label">IDENTITAS RESMI:</div>
-                  <div id="auth-user-email-display" class="auth-user-email">detective@aenigma.com</div>
-                </div>
+          <!-- Logged Out / Guest Mode -->
+          <div id="profile-auth-logged-out" class="profile-auth-card">
+            <div class="profile-auth-row">
+              <div class="profile-auth-status-info">
+                <span class="auth-badge-guest" id="profile-auth-guest-badge">PENYELIDIK LEPAS (CATATAN LOKAL)</span>
+                <span class="profile-auth-subtext" id="profile-auth-guest-subtext">Beroperasi tanpa lencana dinas resmi. Berkas kasus tersimpan di cache terminal peramban.</span>
               </div>
-              <button type="button" id="btn-auth-logout" class="action-btn-danger" style="margin-top: 12px; width: 100%;">
-                🚪 KELUAR DARI AKUN (LOGOUT)
+              <button type="button" id="btn-profile-toggle-login" class="action-btn-large ready" style="padding: 9px 16px; font-size: 0.85rem;">
+                🔑 OTORISASI LENCANA KOMISI
               </button>
             </div>
 
-            <!-- View: Logged Out Form (Login & Register) -->
-            <div id="auth-logged-out-view" class="auth-card-logged-out">
+            <!-- Expandable Login/Register Drawer -->
+            <div id="profile-auth-drawer" class="profile-auth-drawer" style="display: none; margin-top: 14px;">
               <div class="auth-tabs-row">
-                <button type="button" id="tab-auth-login" class="auth-tab-btn active">🔑 MASUK (LOGIN)</button>
-                <button type="button" id="tab-auth-register" class="auth-tab-btn">📝 DAFTAR (REGISTER)</button>
+                <button type="button" id="tab-profile-login" class="auth-tab-btn active">🔑 OTORISASI LENCANA (MASUK)</button>
+                <button type="button" id="tab-profile-register" class="auth-tab-btn">📝 PENDAFTARAN PENYELIDIK</button>
               </div>
 
               <div class="auth-form-body">
                 <div class="field-group">
-                  <label for="auth-email-input" id="auth-email-label">EMAIL INVESTIGATOR</label>
-                  <input type="email" id="auth-email-input" class="text-input" placeholder="investigator@precinct4.gov" autocomplete="email">
+                  <label for="profile-email-input" id="lbl-profile-email">IDENTITAS LENCANA / DISPATCH (EMAIL)</label>
+                  <input type="email" id="profile-email-input" class="text-input" placeholder="investigator@sektor7.gov" autocomplete="email">
                 </div>
 
-                <div class="field-group" style="margin-top: 10px;">
-                  <label for="auth-password-input" id="auth-password-label">KATA SANDI (MIN. 6 KARAKTER)</label>
-                  <input type="password" id="auth-password-input" class="text-input" placeholder="••••••••" autocomplete="current-password">
+                <div class="field-group" style="margin-top: 8px;">
+                  <label for="profile-password-input" id="lbl-profile-password">KATA KUNCI CIPHER (MIN. 6 KARAKTER)</label>
+                  <input type="password" id="profile-password-input" class="text-input" placeholder="••••••••" autocomplete="current-password">
                 </div>
 
-                <div style="margin-top: 14px;">
-                  <button type="button" id="btn-auth-submit-login" class="action-btn-large ready" style="width: 100%;">
-                    🔑 MASUK KE ARSIP KASUS
+                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                  <button type="button" id="btn-profile-submit-login" class="action-btn-large ready" style="flex: 1;">
+                    🔑 OTORISASI SEKARANG
                   </button>
-                  <button type="button" id="btn-auth-submit-register" class="action-btn-large ready" style="width: 100%; display: none;">
-                    📝 DAFTAR INVESTIGATOR BARU
+                  <button type="button" id="btn-profile-submit-register" class="action-btn-large ready" style="flex: 1; display: none;">
+                    📝 DAFTARKAN LENCANA BARU
+                  </button>
+                  <button type="button" id="btn-profile-cancel-auth" class="action-btn-secondary" style="padding: 8px 14px;">
+                    BATAL
                   </button>
                 </div>
               </div>
+              <div id="profile-auth-feedback-msg" class="auth-feedback-msg" style="min-height: 20px; margin-top: 8px; font-size: 0.85rem; text-align: center;"></div>
             </div>
-
-            <!-- Auth Feedback Message -->
-            <div id="auth-feedback-msg" class="auth-feedback-msg" style="min-height: 20px; margin-top: 8px; font-size: 0.85rem; text-align: center;"></div>
           </div>
 
-          <!-- Cloud Info Box -->
-          <div class="cloud-info-box">
-            <div class="cloud-info-row">
-              <span class="info-label" id="cloud-info-project-label">Proyek Firebase:</span>
-              <span class="info-val">aenigmarchive</span>
+          <!-- Logged In / Authenticated Mode -->
+          <div id="profile-auth-logged-in" class="profile-auth-card" style="display: none;">
+            <div class="profile-auth-header-row">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span class="auth-badge-verified" id="profile-verified-badge">● TERAUTENTIKASI KOMISI</span>
+                <span id="profile-cloud-status-pill" class="status-pill">● DIVERIFIKASI KOMISI PUSAT</span>
+              </div>
+              <span id="profile-cloud-last-sync" class="profile-last-sync-text">Transmisi Terakhir: Belum ada</span>
             </div>
-            <div class="cloud-info-row">
-              <span class="info-label" id="cloud-info-sync-label">Terakhir Disinkronkan:</span>
-              <span id="cloud-last-sync-time" class="info-val">Belum ada</span>
+
+            <div class="auth-user-info-row" style="margin-top: 10px;">
+              <div class="auth-avatar-mini">🕵️</div>
+              <div class="auth-user-text">
+                <div class="auth-user-email-label" id="profile-user-email-label">IDENTITAS LENCANA RESMI:</div>
+                <div id="profile-user-email-display" class="auth-user-email">detective@aenigma.com</div>
+              </div>
             </div>
-            <div class="cloud-info-row">
-              <span class="info-label" id="cloud-info-state-label">Status Sinkronisasi:</span>
-              <span id="cloud-save-state-summary" class="info-val">Otomatis tersimpan ke Cloud</span>
+
+            <div class="profile-cloud-actions-row" style="margin-top: 12px;">
+              <button type="button" id="btn-profile-cloud-save" class="action-btn-large ready" style="flex: 1; padding: 9px 12px; font-size: 0.84rem;">
+                💾 TRANSMISI ARSIP KE PUSAT
+              </button>
+              <button type="button" id="btn-profile-cloud-load" class="action-btn-large" style="flex: 1; padding: 9px 12px; font-size: 0.84rem; background: var(--bg-surface); border: 1px solid var(--border-bright);">
+                📥 TARIK ARSIP DARI PUSAT
+              </button>
+              <button type="button" id="btn-profile-logout" class="action-btn-danger" style="flex: 1; padding: 9px 12px; font-size: 0.84rem;">
+                🚪 LEPAS LENCANA (KELUAR)
+              </button>
             </div>
+            <div id="profile-cloud-feedback-msg" class="auth-feedback-msg" style="min-height: 18px; margin-top: 8px; font-size: 0.85rem; text-align: center;"></div>
           </div>
-          
-          <div class="cloud-actions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
-            <button id="btn-cloud-save-now" class="action-btn-large" style="padding: 12px 14px; font-size: 0.95rem;">
-              💾 SIMPAN KE CLOUD
-            </button>
-            <button id="btn-cloud-load-now" class="action-btn-large" style="padding: 12px 14px; font-size: 0.95rem; background: var(--bg-surface); border: 1px solid var(--border-bright);">
-              📥 MUAT DARI CLOUD
-            </button>
-          </div>
-          <div id="cloud-feedback-msg" class="cloud-feedback" style="margin-top: 12px; font-size: 0.9rem; color: var(--gold-accent); text-align: center; min-height: 20px;"></div>
         </div>
       </div>
     </div>
@@ -791,6 +1015,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <!-- JavaScript Entry Point (Universal standalone bundle, runs on both file:// and http://) -->
-  <script src="dist/bundle.js"></script>
+  <script src="dist/bundle.js?v=20261009_03"></script>
 </body>
 </html>

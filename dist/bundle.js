@@ -4776,7 +4776,64 @@ const UI_TRANSLATIONS = {
     profile_modal_title: 'DOSSIER DETEKTIF & PROFIL PSIKOLOGIS',
     profile_vitals_title: 'KONDISI VITAL & KETAHANAN',
     profile_progress_header: 'RESOLUSI KASUS',
-    profile_time_label: 'WAKTU INVESTIGASI'
+    profile_time_label: 'WAKTU INVESTIGASI',
+    gate_badge: '◈ KOMISI KEPOLISIAN SEKTOR 7 · TERMINAL VERIFIKASI ◈',
+    gate_instructions: 'Verifikasi lencana penyelidik Anda untuk transmisi arsip kasus kepolisian pusat, atau lakukan penyelidikan lepas tanpa afiliasi resmi (Mode Anonim).',
+    gate_session_tag: 'LENCANA PENYELIDIK TERVERIFIKASI',
+    gate_active_email_label: 'LENCANA TERHUBUNG:',
+    gate_btn_continue_active: '🚀 LANJUTKAN INVESTIGASI RESMI',
+    gate_btn_switch_account: '🔄 GANTI LENCANA',
+    gate_btn_guest_active: '🕵️ INSPEKSI MANDIRI (ANONIM)',
+    gate_tab_login: '🔑 OTORISASI LENCANA (MASUK)',
+    gate_tab_register: '📝 PENDAFTARAN PENYELIDIK',
+    gate_lbl_email: 'IDENTITAS LENCANA / SURAT DINAS (EMAIL)',
+    gate_lbl_password: 'KATA KUNCI CIPHER (SANDI RAHASIA)',
+    gate_placeholder_email: 'penyelidik@sektor7.gov',
+    gate_btn_login: '🔑 OTORISASI & BUKA ARSIP KASUS',
+    gate_btn_register: '📝 DAFTARKAN LENCANA BARU KE KOMISI',
+    gate_divider: 'ATAU LANJUTKAN TANPA LENCANA DINAS',
+    gate_guest_title: '🕵️ PENYELIDIK LEPAS (MODE ANONIM)',
+    gate_guest_sub: 'Penyelidikan tanpa lencana dinas · Catatan lapangan disimpan di memori peramban lokal',
+    gate_feedback_empty: 'Harap masukkan identitas lencana dan kata kunci cipher!',
+    gate_feedback_validating: 'Memverifikasi kredensial lencana ke Komisi Sektor 7...',
+    gate_feedback_login_success: '✓ Otorisasi lencana disetujui! Selamat bertugas, {email}.',
+    gate_feedback_password_min: 'Kata kunci cipher minimal 6 karakter!',
+    gate_feedback_registering: 'Mendaftarkan lencana penyelidik ke Komisi Pusat...',
+    gate_feedback_register_success: '✓ Lencana resmi terdaftar! Selamat bertugas, {email}.',
+    gate_feedback_failed: 'Otorisasi lencana gagal atau ditolak.',
+    gate_toast_approved: 'Otorisasi lencana disetujui',
+    gate_toast_dossier_loaded: 'Berkas kasus untuk {email} dimuat dari arsip pusat!',
+    gate_toast_registered: 'Lencana penyelidik resmi terdaftar',
+    profile_auth_section_title: '🏛️ ARSIP PUSAT KEPOLISIAN & LENCANA PENYELIDIK',
+    profile_auth_guest_badge: 'PENYELIDIK LEPAS (CATATAN LOKAL)',
+    profile_auth_guest_sub: 'Beroperasi tanpa lencana dinas resmi. Berkas kasus tersimpan di cache terminal peramban.',
+    profile_btn_toggle_login: '🔑 OTORISASI LENCANA KOMISI',
+    profile_lbl_password: 'KATA KUNCI CIPHER (MIN. 6 KARAKTER)',
+    profile_verified_badge: '● TERAUTENTIKASI KOMISI',
+    profile_cloud_status_verified: '● DIVERIFIKASI KOMISI PUSAT',
+    profile_user_email_label: 'IDENTITAS LENCANA RESMI:',
+    profile_btn_save_cloud: '💾 TRANSMISI ARSIP KE PUSAT',
+    profile_btn_load_cloud: '📥 TARIK ARSIP DARI PUSAT',
+    profile_btn_logout: '🚪 LEPAS LENCANA (KELUAR)',
+    profile_btn_cancel_auth: 'BATAL',
+    gate_toast_dossier_loaded_short: 'Berkas kasus dimuat dari arsip Cloud!',
+    profile_toast_welcome: 'Selamat datang, Penyelidik {email}',
+    profile_toast_registered: 'Akun investigator terdaftar: {email}',
+    profile_toast_logout: 'Anda telah keluar dari akun. Beroperasi dalam Mode Tamu.',
+    profile_toast_saved_cloud: 'Kemajuan Detektif tersimpan di Firebase Cloud!',
+    profile_toast_loaded_cloud: 'Berkas Kasus {name} dimuat dari Cloud!',
+    profile_auth_verifying: 'Memverifikasi berkas identitas di Firebase...',
+    profile_auth_success: '✓ Berhasil masuk sebagai {email}!',
+    profile_auth_fail: 'Gagal masuk.',
+    profile_register_success: '✓ Pendaftaran berhasil! Selamat datang, {email}.',
+    profile_register_fail: 'Gagal mendaftar.',
+    profile_fill_fields: 'Harap isi email dan kata sandi!',
+    profile_cloud_uploading: 'Sedang mengunggah data ke Firestore...',
+    profile_cloud_upload_success: '✓ Berhasil disimpan ke Cloud Firebase!',
+    profile_cloud_upload_fail: 'Gagal menyimpan: {error}',
+    profile_cloud_downloading: 'Mengunduh data dari Cloud Firebase...',
+    profile_cloud_download_success: '✓ Data berhasil dimuat dari Cloud!',
+    profile_cloud_download_fail: 'Belum ada data simpanan di Cloud atau gagal memuat.'
   },
   en: {
     toast_case_opened: 'Case File Opened: Aurelia Vance · Welcome to District 7, Detective {name}',
@@ -4901,7 +4958,64 @@ const UI_TRANSLATIONS = {
     profile_modal_title: 'DETECTIVE DOSSIER & PSYCHOLOGICAL PROFILE',
     profile_vitals_title: 'VITALS & ENDURANCE',
     profile_progress_header: 'CASE RESOLUTION',
-    profile_time_label: 'INVESTIGATION TIME'
+    profile_time_label: 'INVESTIGATION TIME',
+    gate_badge: '◈ SECTOR 7 POLICE COMMISSION · CLEARANCE TERMINAL ◈',
+    gate_instructions: 'Authenticate your investigator badge to access central commission archives, or proceed as an independent detective without official record (Anonymous Mode).',
+    gate_session_tag: 'COMMISSIONED DETECTIVE BADGE ACTIVE',
+    gate_active_email_label: 'LINKED BADGE IDENTITY:',
+    gate_btn_continue_active: '🚀 PROCEED WITH COMMISSIONED INQUIRY',
+    gate_btn_switch_account: '🔄 SWITCH BADGE',
+    gate_btn_guest_active: '🕵️ INDEPENDENT INQUIRY (ANONYMOUS)',
+    gate_tab_login: '🔑 BADGE CLEARANCE (SIGN IN)',
+    gate_tab_register: '📝 COMMISSION DETECTIVE',
+    gate_lbl_email: 'BADGE ID / DISPATCH CODE (EMAIL)',
+    gate_lbl_password: 'SECRET CIPHER / CLEARANCE KEY',
+    gate_placeholder_email: 'detective@precinct4.gov',
+    gate_btn_login: '🔑 AUTHORIZE & OPEN CASE ARCHIVE',
+    gate_btn_register: '📝 REGISTER BADGE WITH COMMISSION',
+    gate_divider: 'OR PROCEED UNRECORDED',
+    gate_guest_title: '🕵️ INDEPENDENT DETECTIVE (ANONYMOUS)',
+    gate_guest_sub: 'Commence inquiry without commission badge · Field logs stored in local terminal cache',
+    gate_feedback_empty: 'Please enter badge identity and secret cipher!',
+    gate_feedback_validating: 'Verifying badge credentials with Sector 7 Commission...',
+    gate_feedback_login_success: '✓ Badge clearance approved! Welcome, {email}.',
+    gate_feedback_password_min: 'Secret cipher must be at least 6 characters!',
+    gate_feedback_registering: 'Commissioning investigator badge with HQ...',
+    gate_feedback_register_success: '✓ Official badge commissioned! Welcome to the force, {email}.',
+    gate_feedback_failed: 'Badge authorization denied or failed.',
+    gate_toast_approved: 'Badge clearance approved',
+    gate_toast_dossier_loaded: 'Case files for {email} retrieved from central archives!',
+    gate_toast_registered: 'Official detective badge commissioned',
+    profile_auth_section_title: '🏛️ CENTRAL ARCHIVE & DETECTIVE CREDENTIALS',
+    profile_auth_guest_badge: 'INDEPENDENT DETECTIVE (LOCAL FIELD LOG)',
+    profile_auth_guest_sub: 'Operating without central commission badge. Case files reside in local browser storage.',
+    profile_btn_toggle_login: '🔑 AUTHORIZE COMMISSION BADGE',
+    profile_lbl_password: 'SECRET CIPHER (MIN. 6 CHARACTERS)',
+    profile_verified_badge: '● COMMISSION AUTHENTICATED',
+    profile_cloud_status_verified: '● VERIFIED BY CENTRAL COMMISSION',
+    profile_user_email_label: 'COMMISSIONED BADGE IDENTITY:',
+    profile_btn_save_cloud: '💾 TRANSMIT DOSSIER TO HQ',
+    profile_btn_load_cloud: '📥 RETRIEVE DOSSIER FROM HQ',
+    profile_btn_logout: '🚪 SURRENDER BADGE (SIGN OUT)',
+    profile_btn_cancel_auth: 'CANCEL',
+    gate_toast_dossier_loaded_short: 'Case dossier retrieved from Cloud HQ!',
+    profile_toast_welcome: 'Welcome to duty, Investigator {email}',
+    profile_toast_registered: 'Investigator badge registered: {email}',
+    profile_toast_logout: 'Badge decommissioned. Operating in Guest Mode.',
+    profile_toast_saved_cloud: 'Detective progress secured to Firebase Cloud!',
+    profile_toast_loaded_cloud: 'Case dossier for {name} retrieved from Cloud!',
+    profile_auth_verifying: 'Verifying badge credentials with Firebase...',
+    profile_auth_success: '✓ Authenticated as {email}!',
+    profile_auth_fail: 'Authentication failed.',
+    profile_register_success: '✓ Commission approved! Welcome, {email}.',
+    profile_register_fail: 'Registration failed.',
+    profile_fill_fields: 'Please enter badge identity and secret cipher!',
+    profile_cloud_uploading: 'Uploading dossier to Firestore...',
+    profile_cloud_upload_success: '✓ Case progress secured to Firebase Cloud!',
+    profile_cloud_upload_fail: 'Failed to save: {error}',
+    profile_cloud_downloading: 'Retrieving case data from Firebase Cloud...',
+    profile_cloud_download_success: '✓ Case data retrieved from Cloud!',
+    profile_cloud_download_fail: 'No saved cloud dossier found or sync failed.'
   },
   ja: {
     toast_case_opened: '捜査ファイル開封：オレリア・ヴァンス · 第7管区へようこそ、{name}刑事',
@@ -5026,7 +5140,64 @@ const UI_TRANSLATIONS = {
     profile_modal_title: '刑事調書・精神プロファイル',
     profile_vitals_title: 'バイタル＆耐久状態',
     profile_progress_header: '事件解決進捗',
-    profile_time_label: '捜査経過時間'
+    profile_time_label: '捜査経過時間',
+    gate_badge: '◈ 第7区警察委員会 · 捜査官認証端末 ◈',
+    gate_instructions: '中央本部の事件調書と同期するため捜査官バッジを照合するか、所属無しの民間探偵として捜査を開始してください（匿名モード）。',
+    gate_session_tag: '認証済 捜査官バッジ有効',
+    gate_active_email_label: '接続中の捜査官名札:',
+    gate_btn_continue_active: '🚀 本部認可の捜査を続行する',
+    gate_btn_switch_account: '🔄 バッジ切替',
+    gate_btn_guest_active: '🕵️ 民間単独捜査（匿名）',
+    gate_tab_login: '🔑 バッジ照合（ログイン）',
+    gate_tab_register: '📝 新規捜査官登録',
+    gate_lbl_email: '捜査官識別符 / 配属先連絡先 (EMAIL)',
+    gate_lbl_password: '暗号照合鍵（パスワード）',
+    gate_placeholder_email: 'investigator@precinct4.gov',
+    gate_btn_login: '🔑 認証して事件調書を開く',
+    gate_btn_register: '📝 委員会へ新バッジを登録',
+    gate_divider: 'または非公式に潜入',
+    gate_guest_title: '🕵️ 民間探偵として着手（匿名モード）',
+    gate_guest_sub: '公式認可なしで現場へ急行 · 現地調査記録は端末内部キャッシュに記録',
+    gate_feedback_empty: '捜査官識別符と暗号照合鍵を入力してください。',
+    gate_feedback_validating: '第7区警察委員会へバッジ資格を照会中...',
+    gate_feedback_login_success: '✓ 認証承認！現場へ復帰、{email} 捜査官。',
+    gate_feedback_password_min: '暗号照合鍵は6文字以上で設定してください。',
+    gate_feedback_registering: '第7区委員会へ新規捜査官バッジを登録中...',
+    gate_feedback_register_success: '✓ 捜査官バッジが公式登録されました！{email}',
+    gate_feedback_failed: 'バッジ認証に失敗しました。',
+    gate_toast_approved: 'バッジ認証承認',
+    gate_toast_dossier_loaded: '{email} 捜査官の事件調書を本部より受信完了！',
+    gate_toast_registered: '公式捜査官バッジ登録完了',
+    profile_auth_section_title: '🏛️ 中央警察本部アーカイブ＆捜査官資格',
+    profile_auth_guest_badge: '民間探偵（端末内ローカル記録）',
+    profile_auth_guest_sub: '公式バッジなしで捜査中。事件記録は端末のローカルストレージにのみ保存されます。',
+    profile_btn_toggle_login: '🔑 本部バッジを照合・登録',
+    profile_lbl_password: '暗号照合鍵（6文字以上）',
+    profile_verified_badge: '● 警察本部認証済',
+    profile_cloud_status_verified: '● 中央警察委員会認証済',
+    profile_user_email_label: '認可済 捜査官識別符:',
+    profile_btn_save_cloud: '💾 本部へ調書を送信・保管',
+    profile_btn_load_cloud: '📥 本部から保管調書を受信',
+    profile_btn_logout: '🚪 バッジ返納（ログアウト）',
+    profile_btn_cancel_auth: 'キャンセル',
+    gate_toast_dossier_loaded_short: '捜査記録をクラウド本部より取得しました！',
+    profile_toast_welcome: '任務着任を承認、{email} 捜査官',
+    profile_toast_registered: '新任捜査官バッジ登録完了: {email}',
+    profile_toast_logout: 'ログアウトしました。民間単独モードで捜査を継続します。',
+    profile_toast_saved_cloud: '捜査進捗がクラウドへ保存されました！',
+    profile_toast_loaded_cloud: '{name} 捜査官の記録をクラウドより取得しました！',
+    profile_auth_verifying: 'Firebaseで認証情報を照合中...',
+    profile_auth_success: '✓ {email} として認証完了！',
+    profile_auth_fail: '認証に失敗しました。',
+    profile_register_success: '✓ 登録完了！配属を歓迎します、{email}。',
+    profile_register_fail: '登録に失敗しました。',
+    profile_fill_fields: '識別符と暗号鍵を入力してください！',
+    profile_cloud_uploading: 'Firestoreへ捜査記録を送信中...',
+    profile_cloud_upload_success: '✓ クラウドへの保存が完了しました！',
+    profile_cloud_upload_fail: '保存に失敗しました: {error}',
+    profile_cloud_downloading: 'クラウドより捜査記録を取得中...',
+    profile_cloud_download_success: '✓ クラウドよりデータを取得しました！',
+    profile_cloud_download_fail: '保存データが見つからないか取得に失敗しました。'
   },
   zh: {
     toast_case_opened: '案件档案已开启：奥蕾莉亚·梵斯 · 欢迎来到第七区，{name}探长',
@@ -5151,7 +5322,64 @@ const UI_TRANSLATIONS = {
     profile_modal_title: '侦探档案与心理侧写',
     profile_vitals_title: '生命体征与生存状态',
     profile_progress_header: '案情推进进度',
-    profile_time_label: '调查历时'
+    profile_time_label: '调查历时',
+    gate_badge: '◈ 第七区警署督察委员会 · 身份核验终端 ◈',
+    gate_instructions: '核验您的督察警徽以同步总局核心档案，或以无编制在野侦探身份直接开启秘密调查（匿名模式）。',
+    gate_session_tag: '已验证 官方督察身份处于激活状态',
+    gate_active_email_label: '已连结督察信物:',
+    gate_btn_continue_active: '🚀 继续官方立案侦查',
+    gate_btn_switch_account: '🔄 切换身份',
+    gate_btn_guest_active: '🕵️ 独立调查（匿名）',
+    gate_tab_login: '🔑 警徽核验（登录）',
+    gate_tab_register: '📝 登记新任督察',
+    gate_lbl_email: '督察编号 / 调度联络邮箱 (EMAIL)',
+    gate_lbl_password: '保密密钥 / 授权暗号',
+    gate_placeholder_email: 'inspector@district7.gov',
+    gate_btn_login: '🔑 核验授权并调取卷宗',
+    gate_btn_register: '📝 向警署委员会核准新徽章',
+    gate_divider: '或以匿名密探身份切入',
+    gate_guest_title: '🕵️ 在野侦探潜入调查（匿名模式）',
+    gate_guest_sub: '无需官方警徽立案 · 现场手记与线索仅保存在本地终端缓存中',
+    gate_feedback_empty: '请填写督察编号与保密密钥！',
+    gate_feedback_validating: '正在向第七区督察委员会核验证明...',
+    gate_feedback_login_success: '✓ 授权批准！欢迎返回现场，{email}。',
+    gate_feedback_password_min: '保密密钥长度不得少于6位！',
+    gate_feedback_registering: '正在向上级委员会登记新任督察警徽...',
+    gate_feedback_register_success: '✓ 督察信物正式核准发给：{email}',
+    gate_feedback_failed: '警徽身份核验未通过。',
+    gate_toast_approved: '警徽身份核验通过',
+    gate_toast_dossier_loaded: '已从总署调取 {email} 的案件卷宗！',
+    gate_toast_registered: '官方督察徽章正式核发',
+    profile_auth_section_title: '🏛️ 警务总署档案馆与督察信物',
+    profile_auth_guest_badge: '在野侦探（本地现场记录）',
+    profile_auth_guest_sub: '处于非官方编制状态。案件卷宗仅保存在当前终端本地存储中。',
+    profile_btn_toggle_login: '🔑 验证或注册督察徽章',
+    profile_lbl_password: '保密密钥（至少6位）',
+    profile_verified_badge: '● 总署认证督察',
+    profile_cloud_status_verified: '● 总署督察委员会已核验',
+    profile_user_email_label: '官方授权督察编号:',
+    profile_btn_save_cloud: '💾 向上级总署回传加密卷宗',
+    profile_btn_load_cloud: '📥 从总署调取云端案件档案',
+    profile_btn_logout: '🚪 封存警徽（退出）',
+    profile_btn_cancel_auth: '取消',
+    gate_toast_dossier_loaded_short: '已从总局云端档案库调取卷宗！',
+    profile_toast_welcome: '欢迎归队执行任务，{email} 督察',
+    profile_toast_registered: '督察警徽登记完成: {email}',
+    profile_toast_logout: '已注销警徽。继续以独立探员模式调查。',
+    profile_toast_saved_cloud: '侦查进度已安全保存至云端总局！',
+    profile_toast_loaded_cloud: '已从云端调取 {name} 的案件卷宗！',
+    profile_auth_verifying: '正在通过 Firebase 核验警徽...',
+    profile_auth_success: '✓ 已成功验证为 {email}！',
+    profile_auth_fail: '验证失败。',
+    profile_register_success: '✓ 登记成功！欢迎入职，{email}。',
+    profile_register_fail: '登记失败。',
+    profile_fill_fields: '请输入督察编号与密钥！',
+    profile_cloud_uploading: '正在向 Firestore 上传卷宗...',
+    profile_cloud_upload_success: '✓ 侦查卷宗已成功备份至云端！',
+    profile_cloud_upload_fail: '保存失败: {error}',
+    profile_cloud_downloading: '正在从云端调取卷宗...',
+    profile_cloud_download_success: '✓ 云端卷宗调取成功！',
+    profile_cloud_download_fail: '未找到有效云端卷宗或调取失败。'
   },
   ko: {
     toast_case_opened: '사건 파일 개시: 오렐리아 밴스 · 제7구역에 오신 것을 환영합니다, {name} 형사님',
@@ -5276,7 +5504,64 @@ const UI_TRANSLATIONS = {
     profile_modal_title: '형사 조서 및 심리 프로필',
     profile_vitals_title: '활력 징후 및 생존 상태',
     profile_progress_header: '사건 해결 진행',
-    profile_time_label: '수사 경과 시간'
+    profile_time_label: '수사 경과 시간',
+    gate_badge: '◈ 제7구역 경찰위원회 · 수사관 신원 인가 단말 ◈',
+    gate_instructions: '경찰청 중앙 아카이브와 동기화하려면 수사관 배지를 인증하거나, 비인가 독립 탐정으로 즉시 착수하십시오 (익명 모드).',
+    gate_session_tag: '인가 완료: 공식 수사관 배지 활성',
+    gate_active_email_label: '연결된 수사관 배지:',
+    gate_btn_continue_active: '🚀 공식 수사 계속 진행',
+    gate_btn_switch_account: '🔄 배지 교체',
+    gate_btn_guest_active: '🕵️ 독립 단독수사 (익명)',
+    gate_tab_login: '🔑 배지 인가 (로그인)',
+    gate_tab_register: '📝 신임 수사관 임명',
+    gate_lbl_email: '수사관 식별 번호 / 송신처 이메일 (EMAIL)',
+    gate_lbl_password: '보안 암호 키 (비밀번호)',
+    gate_placeholder_email: 'detective@precinct4.gov',
+    gate_btn_login: '🔑 인가 확인 및 사건 기록 열람',
+    gate_btn_register: '📝 위원회에 신임 배지 등록',
+    gate_divider: '또는 비공식 단독 잠입',
+    gate_guest_title: '🕵️ 독립 수사관 단독 착수 (익명 모드)',
+    gate_guest_sub: '공식 배지 없이 현장 착수 · 현장 수사 일지는 로컬 브라우저에만 기록',
+    gate_feedback_empty: '수사관 식별 번호와 보안 암호 키를 입력하십시오!',
+    gate_feedback_validating: '제7구역 경찰위원회에 배지 자격을 조회하는 중...',
+    gate_feedback_login_success: '✓ 인가 승인! 환영합니다, {email} 수사관님.',
+    gate_feedback_password_min: '보안 암호 키는 최소 6자 이상이어야 합니다!',
+    gate_feedback_registering: '경찰위원회에 신임 수사관 배지를 등록하는 중...',
+    gate_feedback_register_success: '✓ 공식 배지가 등록되었습니다! {email}',
+    gate_feedback_failed: '배지 인가 승인에 실패하였습니다.',
+    gate_toast_approved: '배지 인가 승인 완료',
+    gate_toast_dossier_loaded: '중앙 보관소에서 {email}의 사건 일지를 수신했습니다!',
+    gate_toast_registered: '공식 수사관 배지 임명 완료',
+    profile_auth_section_title: '🏛️ 경찰청 중앙 아카이브 및 수사관 자격',
+    profile_auth_guest_badge: '독립 수사관 (로컬 현장 기록)',
+    profile_auth_guest_sub: '공식 배지 없이 단독 수사 중입니다. 사건 일지는 로컬 저장소에만 보관됩니다.',
+    profile_btn_toggle_login: '🔑 공식 배지 인가 / 등록',
+    profile_lbl_password: '보안 암호 키 (최소 6자)',
+    profile_verified_badge: '● 경찰청 정식 인가',
+    profile_cloud_status_verified: '● 중앙 경찰위원회 인증 완료',
+    profile_user_email_label: '정식 인가 수사관 식별 번호:',
+    profile_btn_save_cloud: '💾 경찰청에 수사 기록 송신',
+    profile_btn_load_cloud: '📥 경찰청에서 수사 기록 수신',
+    profile_btn_logout: '🚪 배지 반납 (로그아웃)',
+    profile_btn_cancel_auth: '취소',
+    gate_toast_dossier_loaded_short: '중앙 클라우드에서 사건 기록을 동기화했습니다!',
+    profile_toast_welcome: '임무 착수 승인, {email} 수사관',
+    profile_toast_registered: '신임 수사관 배지 등록 완료: {email}',
+    profile_toast_logout: '배지 인가가 해제되었습니다. 게스트 모드로 수사를 계속합니다.',
+    profile_toast_saved_cloud: '수사 진행 상황이 클라우드에 저장되었습니다!',
+    profile_toast_loaded_cloud: '{name} 수사관의 기록이 클라우드에서 동기화되었습니다!',
+    profile_auth_verifying: 'Firebase에서 배지 인가 정보 검증 중...',
+    profile_auth_success: '✓ {email} 수사관으로 인가 완료!',
+    profile_auth_fail: '인가 실패.',
+    profile_register_success: '✓ 배지 임명 완료! 환영합니다, {email}.',
+    profile_register_fail: '등록 실패.',
+    profile_fill_fields: '수사관 번호와 암호 키를 입력하세요!',
+    profile_cloud_uploading: 'Firestore로 수사 기록 업로드 중...',
+    profile_cloud_upload_success: '✓ 사건 기록이 클라우드에 안전하게 저장되었습니다!',
+    profile_cloud_upload_fail: '저장 실패: {error}',
+    profile_cloud_downloading: '클라우드에서 사건 기록 다운로드 중...',
+    profile_cloud_download_success: '✓ 클라우드 데이터 동기화 완료!',
+    profile_cloud_download_fail: '클라우드에 저장된 기록이 없거나 동기화에 실패했습니다.'
   },
   es: {
     toast_case_opened: 'Expediente del caso abierto: Aurelia Vance · Bienvenido al Distrito 7, Detective {name}',
@@ -8851,7 +9136,9 @@ class GameState {
     const savedLang = (typeof localStorage !== 'undefined') ? localStorage.getItem(LANG_STORAGE_KEY) : null;
     const validLangs = ['en', 'id', 'zh', 'ja', 'ko'];
     let defaultLang = 'en';
-    if (typeof navigator !== 'undefined' && navigator.language) {
+    if (typeof window !== 'undefined' && window.__AENIGMA_LANG__ && validLangs.includes(window.__AENIGMA_LANG__)) {
+      defaultLang = window.__AENIGMA_LANG__;
+    } else if (typeof navigator !== 'undefined' && navigator.language) {
       const navLang = navigator.language.toLowerCase();
       if (navLang.startsWith('id')) defaultLang = 'id';
       else if (navLang.startsWith('ja')) defaultLang = 'ja';
@@ -9626,6 +9913,9 @@ class UIController {
     document.getElementById('loader-lang-btn')?.addEventListener('click', () => {
       this.openLanguageModal();
     });
+    document.getElementById('gate-lang-btn')?.addEventListener('click', () => {
+      this.openLanguageModal();
+    });
     document.getElementById('creator-lang-btn')?.addEventListener('click', () => {
       this.openLanguageModal();
     });
@@ -9660,113 +9950,59 @@ class UIController {
   }
 
   openCloudModal() {
-    this.openModal(this.cloudModal);
-    this.updateCloudModalUI();
-    // Auto-focus email input if not authenticated
-    const status = (typeof firebaseService !== 'undefined' && firebaseService) ? firebaseService.getStatus() : null;
-    if (status && !status.isAuthenticated) {
-      setTimeout(() => {
-        document.getElementById('auth-email-input')?.focus();
-      }, 150);
+    this.openProfileModal();
+  }
+
+  updateProfileAuthUI() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+    const status = firebaseService.getStatus();
+
+    const loggedOutCard = document.getElementById('profile-auth-logged-out');
+    const loggedInCard = document.getElementById('profile-auth-logged-in');
+    const emailDisplay = document.getElementById('profile-user-email-display');
+    const statusPill = document.getElementById('profile-cloud-status-pill');
+    const lastSync = document.getElementById('profile-cloud-last-sync');
+
+    if (status.isAuthenticated) {
+      if (loggedOutCard) loggedOutCard.style.display = 'none';
+      if (loggedInCard) loggedInCard.style.display = 'block';
+      if (emailDisplay) {
+        emailDisplay.textContent = status.userEmail || (status.user ? status.user.email : 'Investigator');
+      }
+      if (statusPill) {
+        if (status.isOnline && status.isInitialized) {
+          statusPill.className = 'status-pill';
+          statusPill.textContent = t('profile_cloud_status_verified', this.state.currentLanguage) || '● DIVERIFIKASI KOMISI PUSAT';
+        } else {
+          statusPill.className = 'status-pill offline';
+          statusPill.textContent = '○ TRANSMISI TERPUTUS';
+        }
+      }
+      if (lastSync) {
+        if (status.lastSyncTime) {
+          const d = new Date(status.lastSyncTime);
+          lastSync.textContent = `Transmisi Terakhir: ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+        } else {
+          lastSync.textContent = 'Transmisi Terakhir: Belum ada';
+        }
+      }
+    } else {
+      if (loggedOutCard) loggedOutCard.style.display = 'block';
+      if (loggedInCard) loggedInCard.style.display = 'none';
+    }
+
+    // Update tooltip on header profile chip
+    if (this.hudBtnProfile) {
+      if (status.isAuthenticated && status.userEmail) {
+        this.hudBtnProfile.title = `Dossier Detektif (${status.userEmail}) · Kredensial & Arsip Komisi`;
+      } else {
+        this.hudBtnProfile.title = 'Dossier Detektif (Penyelidik Lepas) · Klik untuk Profil & Kredensial';
+      }
     }
   }
 
   updateCloudModalUI() {
-    if (typeof firebaseService === 'undefined' || !firebaseService) return;
-    const status = firebaseService.getStatus();
-    const pill = document.getElementById('cloud-status-pill');
-    const idBadge = document.getElementById('cloud-player-id-display');
-    const lastSync = document.getElementById('cloud-last-sync-time');
-    const summary = document.getElementById('cloud-save-state-summary');
-
-    if (pill) {
-      if (status.isOnline && status.isInitialized) {
-        pill.className = 'status-pill';
-        pill.textContent = '● TERHUBUNG KE FIREBASE';
-      } else {
-        pill.className = 'status-pill offline';
-        pill.textContent = '○ MODE OFFLINE';
-      }
-    }
-
-    if (idBadge) {
-      idBadge.textContent = `ID: ${status.playerId || 'det_local'}`;
-    }
-
-    if (lastSync) {
-      if (status.lastSyncTime) {
-        const d = new Date(status.lastSyncTime);
-        lastSync.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      } else {
-        lastSync.textContent = 'Belum pernah disinkronkan';
-      }
-    }
-
-    if (summary) {
-      summary.textContent = status.isSaving ? 'Sedang menyimpan ke cloud...' : (status.isAuthenticated ? 'Sinkronisasi Otomatis Aktif (Terautentikasi)' : 'Sinkronisasi Otomatis Aktif (Mode Tamu)');
-    }
-
-    // Update Authentication Section
-    const loggedInView = document.getElementById('auth-logged-in-view');
-    const loggedOutView = document.getElementById('auth-logged-out-view');
-    const authStatusBadge = document.getElementById('auth-status-badge');
-    const emailDisplay = document.getElementById('auth-user-email-display');
-
-    if (status.isAuthenticated) {
-      if (loggedInView) loggedInView.style.display = 'block';
-      if (loggedOutView) loggedOutView.style.display = 'none';
-      if (authStatusBadge) {
-        authStatusBadge.className = 'auth-badge-verified';
-        authStatusBadge.textContent = '● TERAUTENTIKASI';
-      }
-      if (emailDisplay) {
-        emailDisplay.textContent = status.userEmail || (status.user ? status.user.email : 'Investigator');
-      }
-    } else {
-      if (loggedInView) loggedInView.style.display = 'none';
-      if (loggedOutView) loggedOutView.style.display = 'block';
-      if (authStatusBadge) {
-        authStatusBadge.className = 'auth-badge-guest';
-        authStatusBadge.textContent = 'MODE TAMU (BELUM MASUK)';
-      }
-    }
-
-    this.updateAuthNavUI();
-  }
-
-  updateAuthNavUI() {
-    if (typeof firebaseService === 'undefined' || !firebaseService) return;
-    const status = firebaseService.getStatus();
-    const navAuthLabel = document.getElementById('nav-auth-label');
-    const loaderAuthLabel = document.getElementById('loader-auth-label');
-    const navBtnAuth = document.getElementById('nav-btn-auth');
-    const loaderBtnAuth = document.getElementById('loader-auth-btn');
-
-    if (status.isAuthenticated && status.userEmail) {
-      const emailPrefix = status.userEmail.split('@')[0];
-      const displayLabel = emailPrefix.length > 10 ? emailPrefix.slice(0, 9) + '…' : emailPrefix;
-      if (navAuthLabel) navAuthLabel.textContent = displayLabel;
-      if (loaderAuthLabel) loaderAuthLabel.textContent = displayLabel;
-      if (navBtnAuth) {
-        navBtnAuth.title = `Investigator: ${status.userEmail} (Klik untuk Akun & Logout)`;
-        navBtnAuth.classList.add('active');
-      }
-      if (loaderBtnAuth) {
-        loaderBtnAuth.title = `Investigator: ${status.userEmail} (Klik untuk Akun & Logout)`;
-        loaderBtnAuth.classList.add('active');
-      }
-    } else {
-      if (navAuthLabel) navAuthLabel.textContent = 'LOGIN';
-      if (loaderAuthLabel) loaderAuthLabel.textContent = 'LOGIN';
-      if (navBtnAuth) {
-        navBtnAuth.title = 'Masuk / Daftar Akun Firebase';
-        navBtnAuth.classList.remove('active');
-      }
-      if (loaderBtnAuth) {
-        loaderBtnAuth.title = 'Masuk / Daftar Akun Firebase';
-        loaderBtnAuth.classList.remove('active');
-      }
-    }
+    this.updateProfileAuthUI();
   }
 
   initCloudSyncListeners() {
@@ -9783,30 +10019,50 @@ class UIController {
         dots.forEach(d => {
           d.className = 'hud-cloud-dot';
         });
-        this.updateCloudModalUI();
+        this.updateProfileAuthUI();
       } else if (event === 'save_error') {
         dots.forEach(d => {
           d.className = 'hud-cloud-dot offline';
         });
-        this.updateCloudModalUI();
+        this.updateProfileAuthUI();
       } else if (event === 'auth_ready' || event === 'auth_success' || event === 'auth_signed_out' || event === 'network_status') {
         dots.forEach(d => {
           d.className = (data && data.isOnline !== false) ? 'hud-cloud-dot' : 'hud-cloud-dot offline';
         });
-        this.updateCloudModalUI();
+        this.updateProfileAuthUI();
       }
     });
 
     // ------------------------------------------------------------------------
-    // Firebase Authentication UI Interactions
+    // Profile Modal - Investigator Authentication & Cloud Sync Listeners
     // ------------------------------------------------------------------------
-    const tabLogin = document.getElementById('tab-auth-login');
-    const tabRegister = document.getElementById('tab-auth-register');
-    const submitLoginBtn = document.getElementById('btn-auth-submit-login');
-    const submitRegisterBtn = document.getElementById('btn-auth-submit-register');
-    const authFeedback = document.getElementById('auth-feedback-msg');
-    const emailInput = document.getElementById('auth-email-input');
-    const passwordInput = document.getElementById('auth-password-input');
+    const btnToggleLogin = document.getElementById('btn-profile-toggle-login');
+    const drawer = document.getElementById('profile-auth-drawer');
+    const btnCancelAuth = document.getElementById('btn-profile-cancel-auth');
+    const tabLogin = document.getElementById('tab-profile-login');
+    const tabRegister = document.getElementById('tab-profile-register');
+    const submitLoginBtn = document.getElementById('btn-profile-submit-login');
+    const submitRegisterBtn = document.getElementById('btn-profile-submit-register');
+    const authFeedback = document.getElementById('profile-auth-feedback-msg');
+    const cloudFeedback = document.getElementById('profile-cloud-feedback-msg');
+    const emailInput = document.getElementById('profile-email-input');
+    const passwordInput = document.getElementById('profile-password-input');
+
+    btnToggleLogin?.addEventListener('click', () => {
+      audio.playUiClick();
+      if (drawer) {
+        const isHidden = drawer.style.display === 'none';
+        drawer.style.display = isHidden ? 'block' : 'none';
+        if (isHidden && emailInput) {
+          emailInput.focus();
+        }
+      }
+    });
+
+    btnCancelAuth?.addEventListener('click', () => {
+      audio.playUiClick();
+      if (drawer) drawer.style.display = 'none';
+    });
 
     tabLogin?.addEventListener('click', () => {
       audio.playUiClick();
@@ -9848,19 +10104,20 @@ class UIController {
 
       if (authFeedback) {
         authFeedback.className = 'auth-feedback-msg';
-        authFeedback.textContent = 'Memverifikasi berkas identitas di Firebase...';
+        authFeedback.textContent = t('profile_auth_verifying', this.state.currentLanguage) || 'Memverifikasi berkas identitas...';
       }
 
       const res = await firebaseService.loginWithEmailPassword(email, password);
       if (res && res.success) {
         if (passwordInput) passwordInput.value = '';
+        if (drawer) drawer.style.display = 'none';
         if (authFeedback) {
           authFeedback.className = 'auth-feedback-msg success';
-          authFeedback.textContent = `✓ Berhasil masuk sebagai ${res.user.email}!`;
+          authFeedback.textContent = (t('profile_auth_success', this.state.currentLanguage) || '✓ Berhasil masuk sebagai {email}!').replace('{email}', res.user.email);
         }
         audio.playSuccess();
-        this.showToast(`🔑 Selamat datang, Investigator ${res.user.email}`);
-        this.updateCloudModalUI();
+        this.showToast(`🔑 ${(t('profile_toast_welcome', this.state.currentLanguage) || 'Selamat datang, Penyelidik {email}').replace('{email}', res.user.email)}`);
+        this.updateProfileAuthUI();
 
         // Attempt to auto-sync or retrieve saved case data from cloud
         const loadRes = await firebaseService.loadGameFromCloud();
@@ -9869,19 +10126,18 @@ class UIController {
           this.state.save(false);
           this.updateHUD();
           this.renderScene();
-          this.showToast(`☁️ Berkas investigasi untuk ${res.user.email} dimuat dari Cloud!`);
+          this.showToast(`☁️ ${(t('profile_toast_loaded_cloud', this.state.currentLanguage) || 'Berkas kasus dimuat dari Cloud!').replace('{name}', this.state.detective.name || res.user.email)}`);
         } else {
-          // If no remote save exists yet, sync current state
           await this.state.saveToCloudNow();
         }
       } else {
         if (authFeedback) {
           authFeedback.className = 'auth-feedback-msg error';
-          authFeedback.textContent = res ? res.error : 'Gagal masuk.';
+          authFeedback.textContent = res ? res.error : (t('profile_auth_fail', this.state.currentLanguage) || 'Gagal masuk.');
         }
         audio.playDissonantDrone();
       }
-      this.updateCloudModalUI();
+      this.updateProfileAuthUI();
     };
 
     const triggerRegister = async () => {
@@ -9892,7 +10148,7 @@ class UIController {
       if (!email || !password) {
         if (authFeedback) {
           authFeedback.className = 'auth-feedback-msg error';
-          authFeedback.textContent = 'Harap isi email dan kata sandi!';
+          authFeedback.textContent = t('profile_fill_fields', this.state.currentLanguage) || 'Harap isi email dan kata sandi!';
         }
         audio.playDissonantDrone();
         return;
@@ -9901,7 +10157,7 @@ class UIController {
       if (password.length < 6) {
         if (authFeedback) {
           authFeedback.className = 'auth-feedback-msg error';
-          authFeedback.textContent = 'Kata sandi minimal 6 karakter!';
+          authFeedback.textContent = t('gate_feedback_password_min', this.state.currentLanguage) || 'Kata kunci cipher minimal 6 karakter!';
         }
         audio.playDissonantDrone();
         return;
@@ -9909,36 +10165,34 @@ class UIController {
 
       if (authFeedback) {
         authFeedback.className = 'auth-feedback-msg';
-        authFeedback.textContent = 'Mendaftarkan akun investigator ke Firebase...';
+        authFeedback.textContent = t('gate_feedback_registering', this.state.currentLanguage) || 'Mendaftarkan lencana penyelidik...';
       }
 
       const res = await firebaseService.registerWithEmailPassword(email, password);
       if (res && res.success) {
         if (passwordInput) passwordInput.value = '';
+        if (drawer) drawer.style.display = 'none';
         if (authFeedback) {
           authFeedback.className = 'auth-feedback-msg success';
-          authFeedback.textContent = `✓ Pendaftaran berhasil! Selamat datang, ${res.user.email}.`;
+          authFeedback.textContent = (t('profile_register_success', this.state.currentLanguage) || '✓ Pendaftaran berhasil! Selamat datang, {email}.').replace('{email}', res.user.email);
         }
         audio.playSuccess();
-        this.showToast(`🎉 Akun investigator terdaftar: ${res.user.email}`);
-        this.updateCloudModalUI();
-
-        // Immediately sync current gameplay progress to cloud for newly registered user
+        this.showToast(`🎉 ${(t('profile_toast_registered', this.state.currentLanguage) || 'Lencana resmi terdaftar: {email}').replace('{email}', res.user.email)}`);
+        this.updateProfileAuthUI();
         await this.state.saveToCloudNow();
       } else {
         if (authFeedback) {
           authFeedback.className = 'auth-feedback-msg error';
-          authFeedback.textContent = res ? res.error : 'Gagal mendaftar.';
+          authFeedback.textContent = res ? res.error : (t('profile_register_fail', this.state.currentLanguage) || 'Gagal mendaftar.');
         }
         audio.playDissonantDrone();
       }
-      this.updateCloudModalUI();
+      this.updateProfileAuthUI();
     };
 
     submitLoginBtn?.addEventListener('click', triggerLogin);
     submitRegisterBtn?.addEventListener('click', triggerRegister);
 
-    // Support submitting with Enter key
     const handleEnterPress = (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -9952,66 +10206,58 @@ class UIController {
     emailInput?.addEventListener('keydown', handleEnterPress);
     passwordInput?.addEventListener('keydown', handleEnterPress);
 
-    // Logout button
-    document.getElementById('btn-auth-logout')?.addEventListener('click', async () => {
+    // Profile Logout button
+    document.getElementById('btn-profile-logout')?.addEventListener('click', async () => {
       audio.playUiClick();
-      if (authFeedback) {
-        authFeedback.className = 'auth-feedback-msg';
-        authFeedback.textContent = 'Mengakhiri sesi investigator...';
-      }
       const res = await firebaseService.logout();
       if (res && res.success) {
-        if (authFeedback) {
-          authFeedback.className = 'auth-feedback-msg';
-          authFeedback.textContent = 'Sesi telah diakhiri. Beroperasi dalam Mode Tamu.';
-        }
-        this.showToast('🚪 Anda telah keluar dari akun Firebase.');
+        this.showToast(`🚪 ${t('profile_toast_logout', this.state.currentLanguage) || 'Anda telah keluar dari akun. Beroperasi dalam Mode Tamu.'}`);
         audio.playUiClick();
-        this.updateCloudModalUI();
+        this.updateProfileAuthUI();
       } else {
-        if (authFeedback) {
-          authFeedback.className = 'auth-feedback-msg error';
-          authFeedback.textContent = `Gagal keluar: ${res ? res.error : ''}`;
+        if (cloudFeedback) {
+          cloudFeedback.className = 'auth-feedback-msg error';
+          cloudFeedback.textContent = `Gagal keluar: ${res ? res.error : ''}`;
         }
       }
     });
 
-    // ------------------------------------------------------------------------
-    // Cloud Manual Save & Load Buttons
-    // ------------------------------------------------------------------------
-    document.getElementById('btn-cloud-save-now')?.addEventListener('click', async () => {
+    // Profile Cloud Manual Save & Load Buttons
+    document.getElementById('btn-profile-cloud-save')?.addEventListener('click', async () => {
       audio.playUiClick();
-      const feedback = document.getElementById('cloud-feedback-msg');
-      if (feedback) feedback.textContent = 'Sedang mengunggah data ke Firestore...';
+      if (cloudFeedback) cloudFeedback.textContent = t('profile_cloud_uploading', this.state.currentLanguage) || 'Sedang mengunggah data ke Cloud...';
       const res = await this.state.saveToCloudNow();
       if (res && res.success) {
-        if (feedback) feedback.textContent = '✓ Berhasil disimpan ke Cloud Firebase!';
-        this.showToast('☁️ Kemajuan Detektif tersimpan di Firebase Cloud!');
+        if (cloudFeedback) cloudFeedback.textContent = t('profile_cloud_upload_success', this.state.currentLanguage) || '✓ Berhasil disimpan ke Cloud!';
+        this.showToast(`☁️ ${t('profile_toast_saved_cloud', this.state.currentLanguage) || 'Kemajuan Detektif tersimpan di Cloud!'}`);
         audio.playSuccess();
       } else {
-        if (feedback) feedback.textContent = `Gagal menyimpan: ${res ? (res.error || res.reason) : 'Offline'}`;
+        if (cloudFeedback) {
+          const errMsg = res ? (res.error || res.reason) : 'Offline';
+          cloudFeedback.textContent = (t('profile_cloud_upload_fail', this.state.currentLanguage) || 'Gagal menyimpan: {error}').replace('{error}', errMsg);
+        }
         audio.playDissonantDrone();
       }
-      this.updateCloudModalUI();
+      this.updateProfileAuthUI();
     });
 
-    document.getElementById('btn-cloud-load-now')?.addEventListener('click', async () => {
+    document.getElementById('btn-profile-cloud-load')?.addEventListener('click', async () => {
       audio.playUiClick();
-      const feedback = document.getElementById('cloud-feedback-msg');
-      if (feedback) feedback.textContent = 'Mengunduh data dari Cloud Firebase...';
+      if (cloudFeedback) cloudFeedback.textContent = t('profile_cloud_downloading', this.state.currentLanguage) || 'Mengunduh data dari Cloud...';
       const success = await this.state.loadFromCloud();
       if (success) {
-        if (feedback) feedback.textContent = '✓ Data berhasil dimuat dari Cloud!';
+        if (cloudFeedback) cloudFeedback.textContent = t('profile_cloud_download_success', this.state.currentLanguage) || '✓ Data berhasil dimuat dari Cloud!';
         this.updateHUD();
         this.renderScene();
-        this.showToast(`☁️ Berkas Kasus ${this.state.detective.name} dimuat dari Cloud!`);
+        const toastMsg = (t('profile_toast_loaded_cloud', this.state.currentLanguage) || 'Berkas Kasus {name} dimuat dari Cloud!').replace('{name}', this.state.detective.name);
+        this.showToast(`☁️ ${toastMsg}`);
         audio.playSuccess();
-        setTimeout(() => this.closeModal(this.cloudModal), 1000);
+        setTimeout(() => this.closeModal(this.profileModal), 1000);
       } else {
-        if (feedback) feedback.textContent = 'Belum ada data simpanan di Cloud atau gagal memuat.';
+        if (cloudFeedback) cloudFeedback.textContent = t('profile_cloud_download_fail', this.state.currentLanguage) || 'Belum ada data simpanan di Cloud atau gagal memuat.';
         audio.playDissonantDrone();
       }
-      this.updateCloudModalUI();
+      this.updateProfileAuthUI();
     });
   }
 
@@ -10055,6 +10301,64 @@ class UIController {
     document.querySelectorAll('.stage-lang-btn .lang-label').forEach(el => {
       el.textContent = langObj.native.toUpperCase();
     });
+
+    // 0. Update Gate (Stage 0) Detective Credentials Texts
+    if (typeof window !== 'undefined' && typeof window.__applyGateLang === 'function') {
+      window.__applyGateLang(currentLang);
+    }
+    const setElemText = (id, textKey) => {
+      const el = document.getElementById(id);
+      if (el && textKey) {
+        const val = t(textKey, currentLang);
+        if (val && val !== textKey) el.textContent = val;
+      }
+    };
+
+    setElemText('gate-badge-text', 'gate_badge');
+    setElemText('gate-instructions', 'gate_instructions');
+    setElemText('gate-session-tag', 'gate_session_tag');
+    setElemText('gate-active-email-label', 'gate_active_email_label');
+    setElemText('btn-gate-continue-active', 'gate_btn_continue_active');
+    setElemText('btn-gate-switch-account', 'gate_btn_switch_account');
+    setElemText('btn-gate-guest-from-active', 'gate_btn_guest_active');
+    setElemText('tab-gate-login', 'gate_tab_login');
+    setElemText('tab-gate-register', 'gate_tab_register');
+    setElemText('lbl-gate-email', 'gate_lbl_email');
+    setElemText('lbl-gate-password', 'gate_lbl_password');
+    setElemText('btn-gate-submit-login', 'gate_btn_login');
+    setElemText('btn-gate-submit-register', 'gate_btn_register');
+    setElemText('gate-divider-text', 'gate_divider');
+    setElemText('gate-guest-btn-title', 'gate_guest_title');
+    setElemText('gate-guest-btn-sub', 'gate_guest_sub');
+
+    const gateEmailInput = document.getElementById('gate-email-input');
+    if (gateEmailInput) {
+      const ph = t('gate_placeholder_email', currentLang);
+      if (ph && ph !== 'gate_placeholder_email') gateEmailInput.placeholder = ph;
+    }
+
+    // Update Profile Modal Auth Texts
+    setElemText('profile-auth-section-title', 'profile_auth_section_title');
+    setElemText('profile-auth-guest-badge', 'profile_auth_guest_badge');
+    setElemText('profile-auth-guest-subtext', 'profile_auth_guest_sub');
+    setElemText('btn-profile-toggle-login', 'profile_btn_toggle_login');
+    setElemText('tab-profile-login', 'gate_tab_login');
+    setElemText('tab-profile-register', 'gate_tab_register');
+    setElemText('lbl-profile-email', 'gate_lbl_email');
+    setElemText('lbl-profile-password', 'profile_lbl_password');
+    setElemText('btn-profile-submit-login', 'gate_btn_login');
+    setElemText('btn-profile-submit-register', 'gate_btn_register');
+    setElemText('btn-profile-cancel-auth', 'profile_btn_cancel_auth');
+    setElemText('profile-verified-badge', 'profile_verified_badge');
+    setElemText('profile-user-email-label', 'profile_user_email_label');
+    setElemText('btn-profile-cloud-save', 'profile_btn_save_cloud');
+    setElemText('btn-profile-cloud-load', 'profile_btn_load_cloud');
+    setElemText('btn-profile-logout', 'profile_btn_logout');
+    const profileEmailInput = document.getElementById('profile-email-input');
+    if (profileEmailInput) {
+      const ph = t('gate_placeholder_email', currentLang);
+      if (ph && ph !== 'gate_placeholder_email') profileEmailInput.placeholder = ph;
+    }
 
     // Update Stage 1 texts & loading indicators in active language
     const quoteEl = document.getElementById('loader-quote-text');
@@ -10227,7 +10531,40 @@ class UIController {
     const fMotLabel = document.getElementById('profile-facet-motorics-label');
     if (fMotLabel) fMotLabel.textContent = t('motorics_name', currentLang).toUpperCase();
 
+    // Auth Gate Texts
+    const gateInst = document.getElementById('gate-instructions');
+    if (gateInst) gateInst.textContent = t('gate_instructions', currentLang);
+    const gateGuestTitle = document.getElementById('gate-guest-btn-title');
+    if (gateGuestTitle) gateGuestTitle.textContent = t('gate_guest_title', currentLang);
+    const gateGuestSub = document.getElementById('gate-guest-btn-sub');
+    if (gateGuestSub) gateGuestSub.textContent = t('gate_guest_sub', currentLang);
+    const tabGateLogin = document.getElementById('tab-gate-login');
+    if (tabGateLogin) tabGateLogin.textContent = t('gate_tab_login', currentLang);
+    const tabGateReg = document.getElementById('tab-gate-register');
+    if (tabGateReg) tabGateReg.textContent = t('gate_tab_register', currentLang);
+    const btnGateLogin = document.getElementById('btn-gate-submit-login');
+    if (btnGateLogin) btnGateLogin.textContent = t('gate_btn_login', currentLang);
+    const btnGateReg = document.getElementById('btn-gate-submit-register');
+    if (btnGateReg) btnGateReg.textContent = t('gate_btn_register', currentLang);
+
+    // Profile Auth Section Texts
+    const profAuthTitle = document.getElementById('profile-auth-section-title');
+    if (profAuthTitle) profAuthTitle.textContent = t('profile_auth_section_title', currentLang);
+    const profGuestBadge = document.getElementById('profile-auth-guest-badge');
+    if (profGuestBadge) profGuestBadge.textContent = t('profile_auth_guest_badge', currentLang);
+    const profGuestSub = document.getElementById('profile-auth-guest-subtext');
+    if (profGuestSub) profGuestSub.textContent = t('profile_auth_guest_sub', currentLang);
+    const btnProfToggleLogin = document.getElementById('btn-profile-toggle-login');
+    if (btnProfToggleLogin) btnProfToggleLogin.textContent = t('profile_btn_toggle_login', currentLang);
+    const btnProfLogout = document.getElementById('btn-profile-logout');
+    if (btnProfLogout) btnProfLogout.textContent = t('profile_btn_logout', currentLang);
+    const btnProfSave = document.getElementById('btn-profile-cloud-save');
+    if (btnProfSave) btnProfSave.textContent = t('profile_btn_save_cloud', currentLang);
+    const btnProfLoad = document.getElementById('btn-profile-cloud-load');
+    if (btnProfLoad) btnProfLoad.textContent = t('profile_btn_load_cloud', currentLang);
+
     this.renderProfile();
+    this.updateProfileAuthUI();
 
     // Update Modals Titles
     const cabTitle = document.querySelector('#cabinet-modal .modal-title');
@@ -10356,22 +10693,6 @@ class UIController {
     document.getElementById('nav-btn-clues')?.addEventListener('click', () => {
       audio.playTabSwitch();
       this.openCluesModal();
-    });
-    document.getElementById('nav-btn-auth')?.addEventListener('click', () => {
-      audio.playTabSwitch();
-      this.openCloudModal();
-    });
-    document.getElementById('loader-auth-btn')?.addEventListener('click', () => {
-      audio.playTabSwitch();
-      this.openCloudModal();
-    });
-    document.getElementById('nav-btn-cloud')?.addEventListener('click', () => {
-      audio.playTabSwitch();
-      this.openCloudModal();
-    });
-    document.getElementById('loader-cloud-btn')?.addEventListener('click', () => {
-      audio.playTabSwitch();
-      this.openCloudModal();
     });
     document.getElementById('nav-btn-audio')?.addEventListener('click', (e) => {
       const isMuted = audio.toggleMute();
@@ -10550,6 +10871,7 @@ class UIController {
   openProfileModal() {
     this.openModal(this.profileModal);
     this.renderProfile();
+    this.updateProfileAuthUI();
   }
 
   renderProfile() {
@@ -11524,291 +11846,197 @@ let hasBooted = false;
 // ----------------------------------------------------------------------------
 // GLITCH SILHOUETTE WALKERS CANVAS ENGINE
 // ----------------------------------------------------------------------------
-function initGlitchSilhouetteCanvas() {
-  const canvas = document.getElementById('loader-glitch-canvas');
+// ATMOSPHERIC MYSTERY & NOIR FORENSIC CANVAS ENGINE
+// Replaces stick walkers with cinematic esoteric runes, golden ember dust,
+// synaptic clue filaments (evidence web), and volumetric clocktower beacon sweep.
+// ----------------------------------------------------------------------------
+function initAtmosphericMysteryCanvas(canvasTarget = 'loader-glitch-canvas') {
+  const canvas = (typeof canvasTarget === 'string') 
+    ? document.getElementById(canvasTarget) 
+    : canvasTarget;
   if (!canvas) return () => {};
   const ctx = canvas.getContext('2d');
   if (!ctx) return () => {};
 
   let animId = null;
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let width = 0;
+  let height = 0;
 
   const handleResize = () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = canvas.clientWidth || window.innerWidth;
+    height = canvas.clientHeight || window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
+  handleResize();
   window.addEventListener('resize', handleResize);
 
-  // Mysterious figures moving through the rainy dark street
-  const walkers = [
-    {
-      type: 'detective',
-      x: -100,
-      yRate: 0.74,
-      speed: 1.2,
-      direction: 1, // left to right
-      scale: 1.1,
-      cycle: 0,
-      strideFreq: 0.08,
-      glitchTimer: 0,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.92
-    },
-    {
-      type: 'umbrella',
-      x: width + 100,
-      yRate: 0.69,
-      speed: 0.85,
-      direction: -1, // right to left
-      scale: 0.95,
-      cycle: 1.8,
-      strideFreq: 0.07,
-      glitchTimer: 45,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.88
-    },
-    {
-      type: 'watcher',
-      x: width * 0.82,
-      yRate: 0.71,
-      speed: 0,
-      direction: -1,
-      scale: 1.0,
-      cycle: 0,
-      strideFreq: 0,
-      glitchTimer: 120,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.85,
-      emberGlow: 0.5
-    }
-  ];
+  const isMobile = window.innerWidth < 768;
+  const particleCount = isMobile ? 32 : 56;
+  const runeCount = isMobile ? 8 : 15;
 
-  function drawSilhouette(w, colorOverride) {
-    const groundY = height * w.yRate;
-    const x = w.x;
-    const s = w.scale * Math.max(0.7, Math.min(1.25, height / 850));
-    const dir = w.direction;
-    const cycle = w.cycle;
-
-    ctx.save();
-    ctx.translate(x, groundY);
-    ctx.scale(dir * s, s);
-
-    const leg1Angle = Math.sin(cycle) * 0.48;
-    const leg2Angle = -Math.sin(cycle) * 0.48;
-    const arm1Angle = -Math.sin(cycle) * 0.42;
-    const coatSwing = Math.sin(cycle) * 0.18;
-
-    const baseColor = colorOverride || '#05070d';
-    ctx.fillStyle = baseColor;
-    ctx.strokeStyle = baseColor;
-
-    if (w.type === 'detective') {
-      // Legs
-      ctx.lineWidth = 14;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-6, -60);
-      ctx.lineTo(-6 + Math.sin(leg1Angle) * 32, -30);
-      ctx.lineTo(-6 + Math.sin(leg1Angle) * 60, 0);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(6, -60);
-      ctx.lineTo(6 + Math.sin(leg2Angle) * 32, -30);
-      ctx.lineTo(6 + Math.sin(leg2Angle) * 60, 0);
-      ctx.stroke();
-
-      // Long Billowing Trenchcoat
-      ctx.beginPath();
-      ctx.moveTo(-16, -115);
-      ctx.lineTo(16, -115);
-      ctx.lineTo(26 + coatSwing * 14, -58);
-      ctx.lineTo(-24 - coatSwing * 12, -58);
-      ctx.closePath();
-      ctx.fill();
-
-      // Arms
-      ctx.lineWidth = 10;
-      ctx.beginPath();
-      ctx.moveTo(10, -110);
-      ctx.lineTo(12 + Math.sin(arm1Angle) * 26, -80);
-      ctx.lineTo(12 + Math.sin(arm1Angle) * 46, -60);
-      ctx.stroke();
-
-      // Head & Fedora
-      ctx.beginPath();
-      ctx.arc(0, -135, 12, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.ellipse(3, -145, 24, 5, -0.08, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.rect(-10, -160, 20, 16);
-      ctx.fill();
-
-    } else if (w.type === 'umbrella') {
-      // Umbrella Figure
-      ctx.lineWidth = 12;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-5, -55);
-      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -26);
-      ctx.lineTo(-5 + Math.sin(leg1Angle) * 55, 0);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(5, -55);
-      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -26);
-      ctx.lineTo(5 + Math.sin(leg2Angle) * 55, 0);
-      ctx.stroke();
-
-      // Coat
-      ctx.beginPath();
-      ctx.moveTo(-14, -110);
-      ctx.lineTo(14, -110);
-      ctx.lineTo(20, -55);
-      ctx.lineTo(-20, -55);
-      ctx.closePath();
-      ctx.fill();
-
-      // Head
-      ctx.beginPath();
-      ctx.arc(0, -125, 11, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Umbrella Shaft & Large Canopy
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(4, -85);
-      ctx.lineTo(8, -148);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(8, -148, 42, Math.PI, 0);
-      ctx.closePath();
-      ctx.fill();
-
-    } else if (w.type === 'watcher') {
-      // Watcher leaning in the shadows
-      ctx.lineWidth = 13;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-5, -50);
-      ctx.lineTo(-5, 0);
-      ctx.moveTo(7, -50);
-      ctx.lineTo(10, 0);
-      ctx.stroke();
-
-      // Tall Trenchcoat
-      ctx.beginPath();
-      ctx.moveTo(-15, -112);
-      ctx.lineTo(15, -112);
-      ctx.lineTo(20, -48);
-      ctx.lineTo(-20, -48);
-      ctx.closePath();
-      ctx.fill();
-
-      // High Turned-up Collar
-      ctx.beginPath();
-      ctx.moveTo(-16, -116);
-      ctx.lineTo(-20, -132);
-      ctx.lineTo(-10, -120);
-      ctx.closePath();
-      ctx.fill();
-
-      // Head & Fedora
-      ctx.beginPath();
-      ctx.arc(0, -130, 11, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(0, -138, 20, 5, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.rect(-9, -152, 18, 14);
-      ctx.fill();
-
-      // Cigarette & Glowing Ember (simple fast arc)
-      if (!colorOverride) {
-        w.emberGlow = (Math.sin(Date.now() * 0.005) + 1) * 0.5;
-        ctx.fillStyle = `rgba(255, 95, 25, ${0.5 + w.emberGlow * 0.5})`;
-        ctx.beginPath();
-        ctx.arc(9, -126, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    ctx.restore();
+  // 1. Floating Mystery & Forensic Particles (Golden embers + Phosphor cyan motes)
+  const particles = [];
+  for (let i = 0; i < particleCount; i++) {
+    const isCyan = Math.random() < 0.22;
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: -(Math.random() * 0.55 + 0.25),
+      radius: Math.random() * 1.8 + 0.8,
+      baseAlpha: Math.random() * 0.45 + 0.25,
+      currentAlpha: 0.3,
+      pulsePhase: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.025 + 0.015,
+      isCyan: isCyan,
+      colorRgb: isCyan ? '77, 240, 255' : '212, 175, 55',
+      swayAmp: Math.random() * 0.35 + 0.1,
+      swayFreq: Math.random() * 0.02 + 0.01
+    });
   }
 
-  function render() {
+  // 2. Esoteric Mystery Runes & Clue Glyphs
+  const RUNE_GLYPHS = ['⎊', '⧖', '◈', '🜂', '🜄', '✦', '⚖', '👁', '⚙', '⌘', '⌬', '🜁', '⚔', '⚝', '⨀', '🜃'];
+  const runes = [];
+  for (let i = 0; i < runeCount; i++) {
+    runes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      char: RUNE_GLYPHS[Math.floor(Math.random() * RUNE_GLYPHS.length)],
+      vy: -(Math.random() * 0.35 + 0.18),
+      vx: (Math.random() - 0.5) * 0.2,
+      fontSize: Math.floor(Math.random() * 12 + 14),
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.006,
+      baseAlpha: Math.random() * 0.25 + 0.12,
+      pulsePhase: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.02 + 0.01,
+      isCyan: Math.random() < 0.25
+    });
+  }
+
+  // 3. Volumetric Clocktower Light Sweep
+  let beaconSweep = 0;
+  let lastTime = performance.now();
+
+  function render(time) {
+    const dt = Math.min((time - lastTime) / 1000, 0.1);
+    lastTime = time;
+
     ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < walkers.length; i++) {
-      const w = walkers[i];
+    // Dynamic beacon sweep from midnight clocktower
+    beaconSweep += dt * 0.15;
+    const sweepAngle = Math.sin(beaconSweep) * 0.45;
+    const originX = width * 0.5;
+    const originY = -30;
 
-      if (w.speed > 0) {
-        w.x += w.speed * w.direction;
-        w.cycle += w.strideFreq;
+    const grad = ctx.createRadialGradient(
+      originX + Math.sin(sweepAngle) * (width * 0.2), 
+      originY, 
+      20,
+      originX + Math.sin(sweepAngle) * (width * 0.35), 
+      height * 0.65, 
+      height * 0.8
+    );
+    grad.addColorStop(0, 'rgba(212, 175, 55, 0.045)');
+    grad.addColorStop(0.5, 'rgba(77, 240, 255, 0.015)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
 
-        if (w.direction === 1 && w.x > width + 150) {
-          w.x = -130;
-        } else if (w.direction === -1 && w.x < -150) {
-          w.x = width + 130;
-        }
+    // Update & draw particles
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.pulsePhase += p.pulseSpeed;
+      p.currentAlpha = p.baseAlpha + Math.sin(p.pulsePhase) * 0.18;
+      p.currentAlpha = Math.max(0.08, Math.min(0.95, p.currentAlpha));
+
+      p.x += p.vx + Math.sin(p.pulsePhase * 0.5) * p.swayAmp;
+      p.y += p.vy;
+
+      if (p.y < -10) {
+        p.y = height + 10;
+        p.x = Math.random() * width;
+      } else if (p.y > height + 10) {
+        p.y = -10;
       }
+      if (p.x < -10) p.x = width + 10;
+      else if (p.x > width + 10) p.x = -10;
 
-      // Glitch timing: triggers cleanly without heavy overhead
-      w.glitchTimer++;
-      if (!w.glitching && Math.random() < 0.02 && w.glitchTimer > 40) {
-        w.glitching = true;
-        w.glitchDuration = 5;
-        w.glitchTimer = 0;
-        w.glitchShift = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 12 + 8);
-      }
-
-      ctx.globalAlpha = w.opacity;
-
-      // Chromatic Glitch Aberration: Pure fast vector ghosts
-      if (w.glitching) {
-        // Cyan ghost
-        ctx.save();
-        ctx.translate(w.glitchShift, 0);
-        drawSilhouette(w, 'rgba(0, 235, 255, 0.7)');
-        ctx.restore();
-
-        // Magenta ghost
-        ctx.save();
-        ctx.translate(-w.glitchShift, 0);
-        drawSilhouette(w, 'rgba(255, 30, 80, 0.7)');
-        ctx.restore();
-
-        // Horizontal digital glitch slices
-        const groundY = height * w.yRate;
-        ctx.fillStyle = 'rgba(0, 235, 255, 0.8)';
-        ctx.fillRect(w.x - 30, groundY - 60, 60, 2);
-        ctx.fillStyle = 'rgba(255, 30, 80, 0.8)';
-        ctx.fillRect(w.x - 20, groundY - 35, 50, 2);
-
-        w.glitchDuration--;
-        if (w.glitchDuration <= 0) {
-          w.glitching = false;
-        }
-      }
-
-      // Main Dark Noir Silhouette
-      drawSilhouette(w, null);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.colorRgb}, ${p.currentAlpha})`;
+      ctx.shadowBlur = p.radius * 4;
+      ctx.shadowColor = `rgba(${p.colorRgb}, 0.7)`;
+      ctx.fill();
+      ctx.restore();
     }
 
-    ctx.globalAlpha = 1.0;
+    // Synaptic Clue Filaments (Evidence Web between nearby embers)
+    const maxLinkDist = isMobile ? 70 : 95;
+    ctx.save();
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i];
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const distSq = dx * dx + dy * dy;
+        if (distSq < maxLinkDist * maxLinkDist) {
+          const dist = Math.sqrt(distSq);
+          const linkAlpha = (1 - dist / maxLinkDist) * 0.22 * Math.min(p1.currentAlpha, p2.currentAlpha);
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = p1.isCyan 
+            ? `rgba(77, 240, 255, ${linkAlpha})` 
+            : `rgba(212, 175, 55, ${linkAlpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+
+    // Floating Esoteric Mystery Runes
+    ctx.save();
+    for (let i = 0; i < runes.length; i++) {
+      const r = runes[i];
+      r.pulsePhase += r.pulseSpeed;
+      r.rot += r.rotSpeed;
+      const alpha = Math.max(0.06, Math.min(0.45, r.baseAlpha + Math.sin(r.pulsePhase) * 0.12));
+
+      r.y += r.vy;
+      r.x += r.vx + Math.sin(r.pulsePhase * 0.7) * 0.25;
+
+      if (r.y < -30) {
+        r.y = height + 30;
+        r.x = Math.random() * width;
+      }
+      if (r.x < -30) r.x = width + 30;
+      else if (r.x > width + 30) r.x = -30;
+
+      ctx.save();
+      ctx.translate(r.x, r.y);
+      ctx.rotate(r.rot);
+      ctx.font = `${r.fontSize}px "Cinzel", "Cinzel Decorative", Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const color = r.isCyan ? `rgba(77, 240, 255, ${alpha})` : `rgba(212, 175, 55, ${alpha})`;
+      ctx.fillStyle = color;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = r.isCyan ? 'rgba(77, 240, 255, 0.4)' : 'rgba(212, 175, 55, 0.4)';
+      ctx.fillText(r.char, 0, 0);
+      ctx.restore();
+    }
+    ctx.restore();
+
     animId = requestAnimationFrame(render);
   }
 
@@ -11831,38 +12059,279 @@ function bootGame() {
     firebaseService.init();
   }
 
-  // Initialize animated glitch silhouette walkers
-  const stopGlitchCanvas = initGlitchSilhouetteCanvas();
-
-  // Immediately apply active language to entire loading screen
+  // Immediately apply active language to entire interface & clearance gate
   ui.applyLanguage(state.currentLanguage);
+
+  // Initialize Atmospheric Mystery Canvas immediately on Gate Stage
+  const stopGateCanvas = initAtmosphericMysteryCanvas('gate-mystery-canvas');
+
+  // --------------------------------------------------------------------------
+  // 0. INVESTIGATOR CLEARANCE GATE CONTROLLER (BEFORE LOADING SCREEN)
+  // --------------------------------------------------------------------------
+  const authGateStage = document.getElementById('auth-gate-stage');
+  const gateActiveSessionView = document.getElementById('gate-active-session-view');
+  const gateFormView = document.getElementById('gate-form-view');
+  const gateActiveEmail = document.getElementById('gate-active-email');
+  const btnGateContinueActive = document.getElementById('btn-gate-continue-active');
+  const btnGateSwitchAccount = document.getElementById('btn-gate-switch-account');
+  const btnGateGuestFromActive = document.getElementById('btn-gate-guest-from-active');
+  const btnGateGuest = document.getElementById('btn-gate-guest');
+
+  const tabGateLogin = document.getElementById('tab-gate-login');
+  const tabGateRegister = document.getElementById('tab-gate-register');
+  const btnGateSubmitLogin = document.getElementById('btn-gate-submit-login');
+  const btnGateSubmitRegister = document.getElementById('btn-gate-submit-register');
+  const gateAuthFeedback = document.getElementById('gate-auth-feedback');
+  const gateEmailInput = document.getElementById('gate-email-input');
+  const gatePasswordInput = document.getElementById('gate-password-input');
+
+  function updateGateSessionUI() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+    const status = firebaseService.getStatus();
+    if (status.isAuthenticated && status.userEmail) {
+      if (gateActiveEmail) gateActiveEmail.textContent = status.userEmail;
+      if (gateActiveSessionView) gateActiveSessionView.style.display = 'block';
+      if (gateFormView) gateFormView.style.display = 'none';
+    } else {
+      if (gateActiveSessionView) gateActiveSessionView.style.display = 'none';
+      if (gateFormView) gateFormView.style.display = 'block';
+    }
+  }
+
+  updateGateSessionUI();
+
+  if (typeof firebaseService !== 'undefined') {
+    firebaseService.subscribe((event) => {
+      if (['auth_ready', 'auth_success', 'auth_signed_out'].includes(event)) {
+        updateGateSessionUI();
+      }
+    });
+  }
+
+  tabGateLogin?.addEventListener('click', () => {
+    audio.playUiClick();
+    tabGateLogin.classList.add('active');
+    tabGateRegister?.classList.remove('active');
+    if (btnGateSubmitLogin) btnGateSubmitLogin.style.display = 'block';
+    if (btnGateSubmitRegister) btnGateSubmitRegister.style.display = 'none';
+    if (gateAuthFeedback) {
+      gateAuthFeedback.textContent = '';
+      gateAuthFeedback.className = 'auth-feedback-msg';
+    }
+  });
+
+  tabGateRegister?.addEventListener('click', () => {
+    audio.playUiClick();
+    tabGateRegister.classList.add('active');
+    tabGateLogin?.classList.remove('active');
+    if (btnGateSubmitLogin) btnGateSubmitLogin.style.display = 'none';
+    if (btnGateSubmitRegister) btnGateSubmitRegister.style.display = 'block';
+    if (gateAuthFeedback) {
+      gateAuthFeedback.textContent = '';
+      gateAuthFeedback.className = 'auth-feedback-msg';
+    }
+  });
+
+  let hasStartedLoading = false;
+  let stopGlitchCanvas = null;
+
+  function startLoadingScreen() {
+    if (hasStartedLoading) return;
+    hasStartedLoading = true;
+
+    if (audio.init) audio.init();
+    if (audio.playUiClick) audio.playUiClick();
+
+    if (authGateStage) {
+      if (stopGateCanvas) stopGateCanvas();
+      authGateStage.classList.add('transition-exit');
+      setTimeout(() => {
+        authGateStage.style.display = 'none';
+      }, 650);
+    }
+
+    const loadingStageEl = document.getElementById('loading-stage');
+    if (loadingStageEl) {
+      loadingStageEl.style.display = 'flex';
+      setTimeout(() => {
+        loadingStageEl.classList.remove('hidden');
+        loadingStageEl.classList.add('loader-entering');
+      }, 40);
+    }
+
+    // Initialize atmospheric mystery canvas with floating runes, embers, and synaptic filaments
+    stopGlitchCanvas = initAtmosphericMysteryCanvas('loader-glitch-canvas');
+
+    // Start loading progress
+    startLoaderProgress();
+  }
+
+  // Continue / Guest buttons
+  btnGateGuest?.addEventListener('click', () => {
+    startLoadingScreen();
+  });
+
+  btnGateGuestFromActive?.addEventListener('click', () => {
+    startLoadingScreen();
+  });
+
+  btnGateContinueActive?.addEventListener('click', async () => {
+    audio.playUiClick();
+    const loadRes = await firebaseService.loadGameFromCloud();
+    if (loadRes && loadRes.success && loadRes.data) {
+      state.applyLoadedData(loadRes.data);
+      state.save(false);
+      ui.updateHUD();
+      const userEmail = firebaseService.currentUser?.email || '';
+      const toastMsg = (t('gate_toast_dossier_loaded_short', state.currentLanguage) || t('gate_toast_dossier_loaded', state.currentLanguage) || 'Case dossier loaded from cloud!').replace('{email}', userEmail);
+      ui.showToast(`☁️ ${toastMsg}`);
+    }
+    startLoadingScreen();
+  });
+
+  btnGateSwitchAccount?.addEventListener('click', async () => {
+    audio.playUiClick();
+    await firebaseService.logout();
+    updateGateSessionUI();
+  });
+
+  const triggerGateLogin = async () => {
+    audio.playUiClick();
+    const email = gateEmailInput ? gateEmailInput.value.trim() : '';
+    const password = gatePasswordInput ? gatePasswordInput.value : '';
+
+    if (!email || !password) {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = t('gate_feedback_empty', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+      return;
+    }
+
+    if (gateAuthFeedback) {
+      gateAuthFeedback.className = 'auth-feedback-msg';
+      gateAuthFeedback.textContent = t('gate_feedback_validating', state.currentLanguage);
+    }
+
+    const res = await firebaseService.loginWithEmailPassword(email, password);
+    if (res && res.success) {
+      if (gatePasswordInput) gatePasswordInput.value = '';
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg success';
+        gateAuthFeedback.textContent = t('gate_feedback_login_success', state.currentLanguage).replace('{email}', res.user.email);
+      }
+      audio.playSuccess();
+      ui.showToast(`🔑 ${t('gate_toast_approved', state.currentLanguage)}: ${res.user.email}`);
+
+      // Attempt to auto-sync or retrieve saved case data from cloud
+      const loadRes = await firebaseService.loadGameFromCloud();
+      if (loadRes && loadRes.success && loadRes.data) {
+        state.applyLoadedData(loadRes.data);
+        state.save(false);
+        ui.updateHUD();
+        ui.showToast(`🏛️ ${t('gate_toast_dossier_loaded', state.currentLanguage).replace('{email}', res.user.email)}`);
+      } else {
+        await state.saveToCloudNow();
+      }
+
+      setTimeout(() => {
+        startLoadingScreen();
+      }, 400);
+    } else {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = res ? res.error : t('gate_feedback_failed', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+    }
+  };
+
+  const triggerGateRegister = async () => {
+    audio.playUiClick();
+    const email = gateEmailInput ? gateEmailInput.value.trim() : '';
+    const password = gatePasswordInput ? gatePasswordInput.value : '';
+
+    if (!email || !password) {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = t('gate_feedback_empty', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+      return;
+    }
+
+    if (password.length < 6) {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = t('gate_feedback_password_min', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+      return;
+    }
+
+    if (gateAuthFeedback) {
+      gateAuthFeedback.className = 'auth-feedback-msg';
+      gateAuthFeedback.textContent = t('gate_feedback_registering', state.currentLanguage);
+    }
+
+    const res = await firebaseService.registerWithEmailPassword(email, password);
+    if (res && res.success) {
+      if (gatePasswordInput) gatePasswordInput.value = '';
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg success';
+        gateAuthFeedback.textContent = t('gate_feedback_register_success', state.currentLanguage).replace('{email}', res.user.email);
+      }
+      audio.playSuccess();
+      ui.showToast(`🎉 ${t('gate_toast_registered', state.currentLanguage)}: ${res.user.email}`);
+      await state.saveToCloudNow();
+
+      setTimeout(() => {
+        startLoadingScreen();
+      }, 400);
+    } else {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = res ? res.error : 'Gagal mendaftar.';
+      }
+      audio.playDissonantDrone();
+    }
+  };
+
+  btnGateSubmitLogin?.addEventListener('click', triggerGateLogin);
+  btnGateSubmitRegister?.addEventListener('click', triggerGateRegister);
+
+  const handleGateEnter = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (btnGateSubmitRegister && btnGateSubmitRegister.style.display !== 'none') {
+        triggerGateRegister();
+      } else {
+        triggerGateLogin();
+      }
+    }
+  };
+  gateEmailInput?.addEventListener('keydown', handleGateEnter);
+  gatePasswordInput?.addEventListener('keydown', handleGateEnter);
 
   // --------------------------------------------------------------------------
   // 1. ANIMATED LOADING SCREEN CONTROLLER
   // --------------------------------------------------------------------------
+  const loadingStage = document.getElementById('loading-stage');
   const quoteEl = document.getElementById('loader-quote-text');
   const progressFill = document.getElementById('loader-progress-fill');
   const progressPct = document.getElementById('loader-progress-pct');
   const telemetryText = document.getElementById('loader-telemetry-text');
   const enterBtn = document.getElementById('loader-enter-btn');
-  const loadingStage = document.getElementById('loading-stage');
 
   let quoteIdx = 0;
-  const quoteInterval = setInterval(() => {
-    const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
-    quoteIdx = (quoteIdx + 1) % activeQuotes.length;
-    if (quoteEl) {
-      quoteEl.style.opacity = '0';
-      setTimeout(() => {
-        quoteEl.textContent = activeQuotes[quoteIdx];
-        quoteEl.style.opacity = '1';
-      }, 300);
-    }
-  }, 2800);
-
+  let quoteInterval = null;
+  let progressInterval = null;
   let currentProgress = 0;
   let isLoaded = false;
   let lastMilestone = 0;
+  let isEntering = false;
+  let transitionCompleted = false;
 
   function finishLoading() {
     if (isLoaded) return;
@@ -11881,56 +12350,76 @@ function bootGame() {
     if (telemetryText) {
       telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
     }
-    clearInterval(progressInterval);
-    clearInterval(quoteInterval);
+    if (progressInterval) clearInterval(progressInterval);
+    if (quoteInterval) clearInterval(quoteInterval);
     if (enterBtn) {
       enterBtn.classList.add('ready');
       enterBtn.focus();
     }
-    if (audio.playClockworkChime) audio.playClockworkChime();
+    try {
+      if (audio.playClockworkChime) audio.playClockworkChime();
+    } catch (e) {}
   }
 
-  const progressInterval = setInterval(() => {
-    // Dynamic forensic pacing: rapid start, calibration pauses at milestones, smooth lock
-    let step = Math.floor(Math.random() * 3) + 2; // base step 2-4%
-    if (currentProgress < 25) {
-      step += 2; // quick initial neural spooling
-    } else if (currentProgress >= 25 && currentProgress < 35) {
-      step = 1; // forensic calibration pause at 30%
-    } else if (currentProgress >= 60 && currentProgress < 70) {
-      step = 1; // forensic sector lock pause
-    } else if (currentProgress >= 88 && currentProgress < 95) {
-      step = 2;
-    }
-
-    currentProgress += step;
-
-    if (currentProgress >= 100) {
-      finishLoading();
-      return;
-    }
-
-    if (progressFill) progressFill.style.width = `${currentProgress}%`;
-    if (progressPct) {
-      progressPct.textContent = `${currentProgress}%`;
-      // Check milestone flash (25%, 50%, 75%)
-      const currentMilestone = Math.floor(currentProgress / 25);
-      if (currentMilestone > lastMilestone) {
-        lastMilestone = currentMilestone;
-        progressPct.classList.add('milestone-flash');
-        setTimeout(() => progressPct.classList.remove('milestone-flash'), 250);
-        if (audio.playUiHover) audio.playUiHover();
+  function startLoaderProgress() {
+    quoteIdx = 0;
+    if (quoteInterval) clearInterval(quoteInterval);
+    quoteInterval = setInterval(() => {
+      const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
+      quoteIdx = (quoteIdx + 1) % activeQuotes.length;
+      if (quoteEl) {
+        quoteEl.style.opacity = '0';
+        setTimeout(() => {
+          quoteEl.textContent = activeQuotes[quoteIdx];
+          quoteEl.style.opacity = '1';
+        }, 300);
       }
-    }
+    }, 2800);
 
-    const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
-    const phase = activePhases.find(p => currentProgress <= p.at);
-    if (phase && telemetryText) {
-      telemetryText.textContent = phase.text;
-    }
-  }, 65);
+    if (progressInterval) clearInterval(progressInterval);
+    progressInterval = setInterval(() => {
+      // Dynamic forensic pacing: rapid start, calibration pauses at milestones, smooth lock
+      let step = Math.floor(Math.random() * 3) + 2; // base step 2-4%
+      if (currentProgress < 25) {
+        step += 2; // quick initial neural spooling
+      } else if (currentProgress >= 25 && currentProgress < 35) {
+        step = 1; // forensic calibration pause at 30%
+      } else if (currentProgress >= 60 && currentProgress < 70) {
+        step = 1; // forensic sector lock pause
+      } else if (currentProgress >= 88 && currentProgress < 95) {
+        step = 2;
+      }
 
-  
+      currentProgress += step;
+
+      if (currentProgress >= 100) {
+        finishLoading();
+        return;
+      }
+
+      if (progressFill) progressFill.style.width = `${currentProgress}%`;
+      if (progressPct) {
+        progressPct.textContent = `${currentProgress}%`;
+        // Check milestone flash (25%, 50%, 75%)
+        const currentMilestone = Math.floor(currentProgress / 25);
+        if (currentMilestone > lastMilestone) {
+          lastMilestone = currentMilestone;
+          progressPct.classList.add('milestone-flash');
+          setTimeout(() => progressPct.classList.remove('milestone-flash'), 250);
+          try {
+            if (audio.playUiHover) audio.playUiHover();
+          } catch (e) {}
+        }
+      }
+
+      const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+      const phase = activePhases.find(p => currentProgress <= p.at);
+      if (phase && telemetryText) {
+        telemetryText.textContent = phase.text;
+      }
+    }, 65);
+  }
+
   function updateDossierLanguage(lang) {
     const data = (typeof DOSSIER_I18N !== 'undefined' && (DOSSIER_I18N[lang] || DOSSIER_I18N['en'])) || {};
     const setT = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
@@ -11951,15 +12440,38 @@ function bootGame() {
     setT('dossier-footer-note', data.footer);
   }
 
-  let isEntering = false;
+  function completeTransitionToCreator() {
+    if (transitionCompleted) return;
+    transitionCompleted = true;
+    if (loadingStage) {
+      loadingStage.style.display = 'none';
+      loadingStage.classList.add('hidden');
+    }
+    const caseTransition = document.getElementById('detective-case-transition');
+    if (caseTransition) {
+      caseTransition.classList.add('hidden');
+      caseTransition.classList.remove('opening');
+    }
+    const creatorStage = document.getElementById('creator-stage');
+    if (creatorStage) {
+      creatorStage.style.display = 'flex';
+      creatorStage.classList.remove('hidden');
+    }
+    ui.applyLanguage(state.currentLanguage);
+    initCharacterCreator();
+  }
 
   function enterGameStage() {
     if (isEntering) return;
     isEntering = true;
 
-    audio.init();
-    if (audio.playRadioTune) audio.playRadioTune();
-    if (audio.playUiClick) audio.playUiClick();
+    try {
+      if (audio.init) audio.init();
+      if (audio.playRadioTune) audio.playRadioTune();
+      if (audio.playUiClick) audio.playUiClick();
+    } catch (e) {
+      console.warn('Audio init error:', e);
+    }
 
     const titleEl = document.getElementById('loader-title-ornament') || document.querySelector('.title-ornament');
     const cassetteUnit = document.querySelector('.tape-cassette-unit');
@@ -11976,6 +12488,11 @@ function bootGame() {
       enterBtn.style.transition = 'all 0.3s ease';
     }
 
+    // Safety fallback timer: guarantee character creator opens after 2.8s max even if animations glitch
+    const safetyTimer = setTimeout(() => {
+      completeTransitionToCreator();
+    }, 2800);
+
     // High-tech decryption / deciphering sequence morphing AENIGMA into aenigmArchive
     const cypherChars = '0123456789ABCDEF!#$&*@%¥§';
     const targetStem = 'aenigm';
@@ -11984,7 +12501,7 @@ function bootGame() {
     const targetFull = 'aenigmArchive';
     
     let scrambleTicks = 0;
-    const maxTicks = 16; // ~400ms at 25ms per tick
+    const maxTicks = 8; // snappy ~160ms at 20ms per tick
 
     const dec = (typeof LOADER_DECRYPT_I18N !== 'undefined' && (LOADER_DECRYPT_I18N[state.currentLanguage] || LOADER_DECRYPT_I18N['en'])) || {
       decrypting_telemetry: "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]",
@@ -12032,19 +12549,23 @@ function bootGame() {
             telemetryText.style.color = "#d4af37";
           }
 
-          if (audio.playDiscovery) audio.playDiscovery();
-          if (audio.playDossierStamp) audio.playDossierStamp();
+          try {
+            if (audio.playDiscovery) audio.playDiscovery();
+            if (audio.playDossierStamp) audio.playDossierStamp();
+          } catch (e) {}
 
-          // Longer hold for aenigmArchive: 2200ms with telemetry progression
+          // Snappy hold before launching dossier transition: 300ms
           setTimeout(() => {
             if (telemetryText) {
               telemetryText.textContent = dec.dispatching_dossier;
             }
-          }, 1100);
+          }, 150);
 
           setTimeout(() => {
-            if (audio.stopLoadingScreenAmbience) audio.stopLoadingScreenAmbience();
-            loadingStage.classList.add('loader-stage-warp');
+            try {
+              if (audio.stopLoadingScreenAmbience) audio.stopLoadingScreenAmbience();
+            } catch (e) {}
+            if (loadingStage) loadingStage.classList.add('loader-stage-warp');
 
             // Launch High-Octane Noir Detective Case Dossier Transition
             const caseTransition = document.getElementById('detective-case-transition');
@@ -12053,78 +12574,68 @@ function bootGame() {
             const cautionTape = document.getElementById('dossier-caution-tape');
 
             if (caseTransition) {
-              if (stopGlitchCanvas) stopGlitchCanvas();
+              try { if (stopGlitchCanvas) stopGlitchCanvas(); } catch (e) {}
               updateDossierLanguage(state.currentLanguage);
               caseTransition.classList.remove('hidden');
 
-              // Clean solid desk impact sound
-              if (audio.playDeskSlam) audio.playDeskSlam();
+              // Click-to-skip support on dossier transition
+              caseTransition.onclick = () => {
+                clearTimeout(safetyTimer);
+                completeTransitionToCreator();
+              };
 
-              // 1. Red Rubber Stamp Slams down (at 600ms)
+              // Clean solid desk impact sound
+              try { if (audio.playDeskSlam) audio.playDeskSlam(); } catch (e) {}
+
+              // 1. Red Rubber Stamp Slams down (at 300ms)
               setTimeout(() => {
                 if (rubberStamp) rubberStamp.classList.add('stamped');
                 if (stampSplatter) stampSplatter.classList.add('splattered');
-                if (audio.playDossierStamp) audio.playDossierStamp();
+                try { if (audio.playDossierStamp) audio.playDossierStamp(); } catch (e) {}
 
-                // 2. Police Caution Tape Unseals (at 1400ms)
+                // 2. Police Caution Tape Unseals (at 600ms)
                 setTimeout(() => {
                   if (cautionTape) cautionTape.classList.add('ripped');
-                  if (audio.playTapeTear) audio.playTapeTear();
+                  try { if (audio.playTapeTear) audio.playTapeTear(); } catch (e) {}
 
-                  // 3. Dossier Unseals & Opens into Scene (at 1900ms)
+                  // 3. Dossier Unseals & Opens into Scene (at 900ms)
                   setTimeout(() => {
                     caseTransition.classList.add('opening');
-                    if (audio.playCathedralBell) audio.playCathedralBell();
+                    try { if (audio.playCathedralBell) audio.playCathedralBell(); } catch (e) {}
 
                     setTimeout(() => {
-                      loadingStage.style.display = 'none';
-                      caseTransition.classList.add('hidden');
-                      caseTransition.classList.remove('opening');
+                      clearTimeout(safetyTimer);
                       if (rubberStamp) rubberStamp.classList.remove('stamped');
                       if (stampSplatter) stampSplatter.classList.remove('splattered');
                       if (cautionTape) cautionTape.classList.remove('ripped');
-
-                      if (creatorStage) {
-                        creatorStage.classList.remove('hidden');
-                      }
-                      ui.applyLanguage(state.currentLanguage);
-                      initCharacterCreator();
-                    }, 550);
-                  }, 500);
-                }, 800);
-              }, 600);
+                      completeTransitionToCreator();
+                    }, 350);
+                  }, 300);
+                }, 300);
+              }, 300);
 
             } else {
-              // Fallback
+              // Fallback if no caseTransition
               setTimeout(() => {
-                loadingStage.style.display = 'none';
-                if (creatorStage) {
-                  creatorStage.classList.remove('hidden');
-                }
-                ui.applyLanguage(state.currentLanguage);
-                initCharacterCreator();
-              }, 550);
+                clearTimeout(safetyTimer);
+                completeTransitionToCreator();
+              }, 200);
             }
-          }, 2200);
+          }, 400);
         }
-      }, 25);
+      }, 20);
     } else {
-      // Fallback
-      loadingStage.classList.add('hidden');
-      setTimeout(() => {
-        loadingStage.style.display = 'none';
-        if (creatorStage) {
-          creatorStage.classList.remove('hidden');
-        }
-        ui.applyLanguage(state.currentLanguage);
-        initCharacterCreator();
-      }, 400);
+      // Fallback if no titleEl
+      clearTimeout(safetyTimer);
+      completeTransitionToCreator();
     }
   }
 
   // Start gritty noir ambience on first interaction
   const triggerLoadingAudio = () => {
-    if (audio.startLoadingScreenAmbience) audio.startLoadingScreenAmbience();
+    try {
+      if (audio.startLoadingScreenAmbience) audio.startLoadingScreenAmbience();
+    } catch (e) {}
   };
   loadingStage?.addEventListener('pointerdown', triggerLoadingAudio, { once: true });
   document.addEventListener('keydown', triggerLoadingAudio, { once: true });
@@ -12139,9 +12650,17 @@ function bootGame() {
     }
   });
 
-  enterBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
+  const handleEnterClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isLoaded) {
+      finishLoading();
+    }
     enterGameStage();
+  };
+  enterBtn?.addEventListener('click', handleEnterClick);
+  enterBtn?.addEventListener('touchend', (e) => {
+    if (e) e.preventDefault();
+    handleEnterClick(e);
   });
 
   // --------------------------------------------------------------------------
@@ -12154,8 +12673,16 @@ function bootGame() {
   let selectedVice = 'smoker';
   let selectedGender = 'female';
   let selectedPortrait = 'assets/portrait_female.jpg';
+  let creatorInitialized = false;
 
   function initCharacterCreator() {
+    if (creatorInitialized) {
+      updateCreatorAttributes();
+      ui.applyLanguage(state.currentLanguage);
+      return;
+    }
+    creatorInitialized = true;
+
     const nameInput = document.getElementById('creator-name-input');
     const aliasInput = document.getElementById('creator-alias-input');
     const pointsPoolEl = document.getElementById('creator-points-pool');

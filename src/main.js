@@ -12,291 +12,197 @@ let hasBooted = false;
 // ----------------------------------------------------------------------------
 // GLITCH SILHOUETTE WALKERS CANVAS ENGINE
 // ----------------------------------------------------------------------------
-function initGlitchSilhouetteCanvas() {
-  const canvas = document.getElementById('loader-glitch-canvas');
+// ATMOSPHERIC MYSTERY & NOIR FORENSIC CANVAS ENGINE
+// Replaces stick walkers with cinematic esoteric runes, golden ember dust,
+// synaptic clue filaments (evidence web), and volumetric clocktower beacon sweep.
+// ----------------------------------------------------------------------------
+function initAtmosphericMysteryCanvas(canvasTarget = 'loader-glitch-canvas') {
+  const canvas = (typeof canvasTarget === 'string') 
+    ? document.getElementById(canvasTarget) 
+    : canvasTarget;
   if (!canvas) return () => {};
   const ctx = canvas.getContext('2d');
   if (!ctx) return () => {};
 
   let animId = null;
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let width = 0;
+  let height = 0;
 
   const handleResize = () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = canvas.clientWidth || window.innerWidth;
+    height = canvas.clientHeight || window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   };
+  handleResize();
   window.addEventListener('resize', handleResize);
 
-  // Mysterious figures moving through the rainy dark street
-  const walkers = [
-    {
-      type: 'detective',
-      x: -100,
-      yRate: 0.74,
-      speed: 1.2,
-      direction: 1, // left to right
-      scale: 1.1,
-      cycle: 0,
-      strideFreq: 0.08,
-      glitchTimer: 0,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.92
-    },
-    {
-      type: 'umbrella',
-      x: width + 100,
-      yRate: 0.69,
-      speed: 0.85,
-      direction: -1, // right to left
-      scale: 0.95,
-      cycle: 1.8,
-      strideFreq: 0.07,
-      glitchTimer: 45,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.88
-    },
-    {
-      type: 'watcher',
-      x: width * 0.82,
-      yRate: 0.71,
-      speed: 0,
-      direction: -1,
-      scale: 1.0,
-      cycle: 0,
-      strideFreq: 0,
-      glitchTimer: 120,
-      glitching: false,
-      glitchDuration: 0,
-      glitchShift: 0,
-      opacity: 0.85,
-      emberGlow: 0.5
-    }
-  ];
+  const isMobile = window.innerWidth < 768;
+  const particleCount = isMobile ? 32 : 56;
+  const runeCount = isMobile ? 8 : 15;
 
-  function drawSilhouette(w, colorOverride) {
-    const groundY = height * w.yRate;
-    const x = w.x;
-    const s = w.scale * Math.max(0.7, Math.min(1.25, height / 850));
-    const dir = w.direction;
-    const cycle = w.cycle;
-
-    ctx.save();
-    ctx.translate(x, groundY);
-    ctx.scale(dir * s, s);
-
-    const leg1Angle = Math.sin(cycle) * 0.48;
-    const leg2Angle = -Math.sin(cycle) * 0.48;
-    const arm1Angle = -Math.sin(cycle) * 0.42;
-    const coatSwing = Math.sin(cycle) * 0.18;
-
-    const baseColor = colorOverride || '#05070d';
-    ctx.fillStyle = baseColor;
-    ctx.strokeStyle = baseColor;
-
-    if (w.type === 'detective') {
-      // Legs
-      ctx.lineWidth = 14;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-6, -60);
-      ctx.lineTo(-6 + Math.sin(leg1Angle) * 32, -30);
-      ctx.lineTo(-6 + Math.sin(leg1Angle) * 60, 0);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(6, -60);
-      ctx.lineTo(6 + Math.sin(leg2Angle) * 32, -30);
-      ctx.lineTo(6 + Math.sin(leg2Angle) * 60, 0);
-      ctx.stroke();
-
-      // Long Billowing Trenchcoat
-      ctx.beginPath();
-      ctx.moveTo(-16, -115);
-      ctx.lineTo(16, -115);
-      ctx.lineTo(26 + coatSwing * 14, -58);
-      ctx.lineTo(-24 - coatSwing * 12, -58);
-      ctx.closePath();
-      ctx.fill();
-
-      // Arms
-      ctx.lineWidth = 10;
-      ctx.beginPath();
-      ctx.moveTo(10, -110);
-      ctx.lineTo(12 + Math.sin(arm1Angle) * 26, -80);
-      ctx.lineTo(12 + Math.sin(arm1Angle) * 46, -60);
-      ctx.stroke();
-
-      // Head & Fedora
-      ctx.beginPath();
-      ctx.arc(0, -135, 12, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.ellipse(3, -145, 24, 5, -0.08, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.rect(-10, -160, 20, 16);
-      ctx.fill();
-
-    } else if (w.type === 'umbrella') {
-      // Umbrella Figure
-      ctx.lineWidth = 12;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-5, -55);
-      ctx.lineTo(-5 + Math.sin(leg1Angle) * 28, -26);
-      ctx.lineTo(-5 + Math.sin(leg1Angle) * 55, 0);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(5, -55);
-      ctx.lineTo(5 + Math.sin(leg2Angle) * 28, -26);
-      ctx.lineTo(5 + Math.sin(leg2Angle) * 55, 0);
-      ctx.stroke();
-
-      // Coat
-      ctx.beginPath();
-      ctx.moveTo(-14, -110);
-      ctx.lineTo(14, -110);
-      ctx.lineTo(20, -55);
-      ctx.lineTo(-20, -55);
-      ctx.closePath();
-      ctx.fill();
-
-      // Head
-      ctx.beginPath();
-      ctx.arc(0, -125, 11, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Umbrella Shaft & Large Canopy
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(4, -85);
-      ctx.lineTo(8, -148);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(8, -148, 42, Math.PI, 0);
-      ctx.closePath();
-      ctx.fill();
-
-    } else if (w.type === 'watcher') {
-      // Watcher leaning in the shadows
-      ctx.lineWidth = 13;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-5, -50);
-      ctx.lineTo(-5, 0);
-      ctx.moveTo(7, -50);
-      ctx.lineTo(10, 0);
-      ctx.stroke();
-
-      // Tall Trenchcoat
-      ctx.beginPath();
-      ctx.moveTo(-15, -112);
-      ctx.lineTo(15, -112);
-      ctx.lineTo(20, -48);
-      ctx.lineTo(-20, -48);
-      ctx.closePath();
-      ctx.fill();
-
-      // High Turned-up Collar
-      ctx.beginPath();
-      ctx.moveTo(-16, -116);
-      ctx.lineTo(-20, -132);
-      ctx.lineTo(-10, -120);
-      ctx.closePath();
-      ctx.fill();
-
-      // Head & Fedora
-      ctx.beginPath();
-      ctx.arc(0, -130, 11, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(0, -138, 20, 5, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.rect(-9, -152, 18, 14);
-      ctx.fill();
-
-      // Cigarette & Glowing Ember (simple fast arc)
-      if (!colorOverride) {
-        w.emberGlow = (Math.sin(Date.now() * 0.005) + 1) * 0.5;
-        ctx.fillStyle = `rgba(255, 95, 25, ${0.5 + w.emberGlow * 0.5})`;
-        ctx.beginPath();
-        ctx.arc(9, -126, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    ctx.restore();
+  // 1. Floating Mystery & Forensic Particles (Golden embers + Phosphor cyan motes)
+  const particles = [];
+  for (let i = 0; i < particleCount; i++) {
+    const isCyan = Math.random() < 0.22;
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: -(Math.random() * 0.55 + 0.25),
+      radius: Math.random() * 1.8 + 0.8,
+      baseAlpha: Math.random() * 0.45 + 0.25,
+      currentAlpha: 0.3,
+      pulsePhase: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.025 + 0.015,
+      isCyan: isCyan,
+      colorRgb: isCyan ? '77, 240, 255' : '212, 175, 55',
+      swayAmp: Math.random() * 0.35 + 0.1,
+      swayFreq: Math.random() * 0.02 + 0.01
+    });
   }
 
-  function render() {
+  // 2. Esoteric Mystery Runes & Clue Glyphs
+  const RUNE_GLYPHS = ['⎊', '⧖', '◈', '🜂', '🜄', '✦', '⚖', '👁', '⚙', '⌘', '⌬', '🜁', '⚔', '⚝', '⨀', '🜃'];
+  const runes = [];
+  for (let i = 0; i < runeCount; i++) {
+    runes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      char: RUNE_GLYPHS[Math.floor(Math.random() * RUNE_GLYPHS.length)],
+      vy: -(Math.random() * 0.35 + 0.18),
+      vx: (Math.random() - 0.5) * 0.2,
+      fontSize: Math.floor(Math.random() * 12 + 14),
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.006,
+      baseAlpha: Math.random() * 0.25 + 0.12,
+      pulsePhase: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.02 + 0.01,
+      isCyan: Math.random() < 0.25
+    });
+  }
+
+  // 3. Volumetric Clocktower Light Sweep
+  let beaconSweep = 0;
+  let lastTime = performance.now();
+
+  function render(time) {
+    const dt = Math.min((time - lastTime) / 1000, 0.1);
+    lastTime = time;
+
     ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < walkers.length; i++) {
-      const w = walkers[i];
+    // Dynamic beacon sweep from midnight clocktower
+    beaconSweep += dt * 0.15;
+    const sweepAngle = Math.sin(beaconSweep) * 0.45;
+    const originX = width * 0.5;
+    const originY = -30;
 
-      if (w.speed > 0) {
-        w.x += w.speed * w.direction;
-        w.cycle += w.strideFreq;
+    const grad = ctx.createRadialGradient(
+      originX + Math.sin(sweepAngle) * (width * 0.2), 
+      originY, 
+      20,
+      originX + Math.sin(sweepAngle) * (width * 0.35), 
+      height * 0.65, 
+      height * 0.8
+    );
+    grad.addColorStop(0, 'rgba(212, 175, 55, 0.045)');
+    grad.addColorStop(0.5, 'rgba(77, 240, 255, 0.015)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
 
-        if (w.direction === 1 && w.x > width + 150) {
-          w.x = -130;
-        } else if (w.direction === -1 && w.x < -150) {
-          w.x = width + 130;
-        }
+    // Update & draw particles
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.pulsePhase += p.pulseSpeed;
+      p.currentAlpha = p.baseAlpha + Math.sin(p.pulsePhase) * 0.18;
+      p.currentAlpha = Math.max(0.08, Math.min(0.95, p.currentAlpha));
+
+      p.x += p.vx + Math.sin(p.pulsePhase * 0.5) * p.swayAmp;
+      p.y += p.vy;
+
+      if (p.y < -10) {
+        p.y = height + 10;
+        p.x = Math.random() * width;
+      } else if (p.y > height + 10) {
+        p.y = -10;
       }
+      if (p.x < -10) p.x = width + 10;
+      else if (p.x > width + 10) p.x = -10;
 
-      // Glitch timing: triggers cleanly without heavy overhead
-      w.glitchTimer++;
-      if (!w.glitching && Math.random() < 0.02 && w.glitchTimer > 40) {
-        w.glitching = true;
-        w.glitchDuration = 5;
-        w.glitchTimer = 0;
-        w.glitchShift = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 12 + 8);
-      }
-
-      ctx.globalAlpha = w.opacity;
-
-      // Chromatic Glitch Aberration: Pure fast vector ghosts
-      if (w.glitching) {
-        // Cyan ghost
-        ctx.save();
-        ctx.translate(w.glitchShift, 0);
-        drawSilhouette(w, 'rgba(0, 235, 255, 0.7)');
-        ctx.restore();
-
-        // Magenta ghost
-        ctx.save();
-        ctx.translate(-w.glitchShift, 0);
-        drawSilhouette(w, 'rgba(255, 30, 80, 0.7)');
-        ctx.restore();
-
-        // Horizontal digital glitch slices
-        const groundY = height * w.yRate;
-        ctx.fillStyle = 'rgba(0, 235, 255, 0.8)';
-        ctx.fillRect(w.x - 30, groundY - 60, 60, 2);
-        ctx.fillStyle = 'rgba(255, 30, 80, 0.8)';
-        ctx.fillRect(w.x - 20, groundY - 35, 50, 2);
-
-        w.glitchDuration--;
-        if (w.glitchDuration <= 0) {
-          w.glitching = false;
-        }
-      }
-
-      // Main Dark Noir Silhouette
-      drawSilhouette(w, null);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.colorRgb}, ${p.currentAlpha})`;
+      ctx.shadowBlur = p.radius * 4;
+      ctx.shadowColor = `rgba(${p.colorRgb}, 0.7)`;
+      ctx.fill();
+      ctx.restore();
     }
 
-    ctx.globalAlpha = 1.0;
+    // Synaptic Clue Filaments (Evidence Web between nearby embers)
+    const maxLinkDist = isMobile ? 70 : 95;
+    ctx.save();
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p1 = particles[i];
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const distSq = dx * dx + dy * dy;
+        if (distSq < maxLinkDist * maxLinkDist) {
+          const dist = Math.sqrt(distSq);
+          const linkAlpha = (1 - dist / maxLinkDist) * 0.22 * Math.min(p1.currentAlpha, p2.currentAlpha);
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = p1.isCyan 
+            ? `rgba(77, 240, 255, ${linkAlpha})` 
+            : `rgba(212, 175, 55, ${linkAlpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+
+    // Floating Esoteric Mystery Runes
+    ctx.save();
+    for (let i = 0; i < runes.length; i++) {
+      const r = runes[i];
+      r.pulsePhase += r.pulseSpeed;
+      r.rot += r.rotSpeed;
+      const alpha = Math.max(0.06, Math.min(0.45, r.baseAlpha + Math.sin(r.pulsePhase) * 0.12));
+
+      r.y += r.vy;
+      r.x += r.vx + Math.sin(r.pulsePhase * 0.7) * 0.25;
+
+      if (r.y < -30) {
+        r.y = height + 30;
+        r.x = Math.random() * width;
+      }
+      if (r.x < -30) r.x = width + 30;
+      else if (r.x > width + 30) r.x = -30;
+
+      ctx.save();
+      ctx.translate(r.x, r.y);
+      ctx.rotate(r.rot);
+      ctx.font = `${r.fontSize}px "Cinzel", "Cinzel Decorative", Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const color = r.isCyan ? `rgba(77, 240, 255, ${alpha})` : `rgba(212, 175, 55, ${alpha})`;
+      ctx.fillStyle = color;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = r.isCyan ? 'rgba(77, 240, 255, 0.4)' : 'rgba(212, 175, 55, 0.4)';
+      ctx.fillText(r.char, 0, 0);
+      ctx.restore();
+    }
+    ctx.restore();
+
     animId = requestAnimationFrame(render);
   }
 
@@ -319,38 +225,279 @@ function bootGame() {
     firebaseService.init();
   }
 
-  // Initialize animated glitch silhouette walkers
-  const stopGlitchCanvas = initGlitchSilhouetteCanvas();
-
-  // Immediately apply active language to entire loading screen
+  // Immediately apply active language to entire interface & clearance gate
   ui.applyLanguage(state.currentLanguage);
+
+  // Initialize Atmospheric Mystery Canvas immediately on Gate Stage
+  const stopGateCanvas = initAtmosphericMysteryCanvas('gate-mystery-canvas');
+
+  // --------------------------------------------------------------------------
+  // 0. INVESTIGATOR CLEARANCE GATE CONTROLLER (BEFORE LOADING SCREEN)
+  // --------------------------------------------------------------------------
+  const authGateStage = document.getElementById('auth-gate-stage');
+  const gateActiveSessionView = document.getElementById('gate-active-session-view');
+  const gateFormView = document.getElementById('gate-form-view');
+  const gateActiveEmail = document.getElementById('gate-active-email');
+  const btnGateContinueActive = document.getElementById('btn-gate-continue-active');
+  const btnGateSwitchAccount = document.getElementById('btn-gate-switch-account');
+  const btnGateGuestFromActive = document.getElementById('btn-gate-guest-from-active');
+  const btnGateGuest = document.getElementById('btn-gate-guest');
+
+  const tabGateLogin = document.getElementById('tab-gate-login');
+  const tabGateRegister = document.getElementById('tab-gate-register');
+  const btnGateSubmitLogin = document.getElementById('btn-gate-submit-login');
+  const btnGateSubmitRegister = document.getElementById('btn-gate-submit-register');
+  const gateAuthFeedback = document.getElementById('gate-auth-feedback');
+  const gateEmailInput = document.getElementById('gate-email-input');
+  const gatePasswordInput = document.getElementById('gate-password-input');
+
+  function updateGateSessionUI() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+    const status = firebaseService.getStatus();
+    if (status.isAuthenticated && status.userEmail) {
+      if (gateActiveEmail) gateActiveEmail.textContent = status.userEmail;
+      if (gateActiveSessionView) gateActiveSessionView.style.display = 'block';
+      if (gateFormView) gateFormView.style.display = 'none';
+    } else {
+      if (gateActiveSessionView) gateActiveSessionView.style.display = 'none';
+      if (gateFormView) gateFormView.style.display = 'block';
+    }
+  }
+
+  updateGateSessionUI();
+
+  if (typeof firebaseService !== 'undefined') {
+    firebaseService.subscribe((event) => {
+      if (['auth_ready', 'auth_success', 'auth_signed_out'].includes(event)) {
+        updateGateSessionUI();
+      }
+    });
+  }
+
+  tabGateLogin?.addEventListener('click', () => {
+    audio.playUiClick();
+    tabGateLogin.classList.add('active');
+    tabGateRegister?.classList.remove('active');
+    if (btnGateSubmitLogin) btnGateSubmitLogin.style.display = 'block';
+    if (btnGateSubmitRegister) btnGateSubmitRegister.style.display = 'none';
+    if (gateAuthFeedback) {
+      gateAuthFeedback.textContent = '';
+      gateAuthFeedback.className = 'auth-feedback-msg';
+    }
+  });
+
+  tabGateRegister?.addEventListener('click', () => {
+    audio.playUiClick();
+    tabGateRegister.classList.add('active');
+    tabGateLogin?.classList.remove('active');
+    if (btnGateSubmitLogin) btnGateSubmitLogin.style.display = 'none';
+    if (btnGateSubmitRegister) btnGateSubmitRegister.style.display = 'block';
+    if (gateAuthFeedback) {
+      gateAuthFeedback.textContent = '';
+      gateAuthFeedback.className = 'auth-feedback-msg';
+    }
+  });
+
+  let hasStartedLoading = false;
+  let stopGlitchCanvas = null;
+
+  function startLoadingScreen() {
+    if (hasStartedLoading) return;
+    hasStartedLoading = true;
+
+    if (audio.init) audio.init();
+    if (audio.playUiClick) audio.playUiClick();
+
+    if (authGateStage) {
+      if (stopGateCanvas) stopGateCanvas();
+      authGateStage.classList.add('transition-exit');
+      setTimeout(() => {
+        authGateStage.style.display = 'none';
+      }, 650);
+    }
+
+    const loadingStageEl = document.getElementById('loading-stage');
+    if (loadingStageEl) {
+      loadingStageEl.style.display = 'flex';
+      setTimeout(() => {
+        loadingStageEl.classList.remove('hidden');
+        loadingStageEl.classList.add('loader-entering');
+      }, 40);
+    }
+
+    // Initialize atmospheric mystery canvas with floating runes, embers, and synaptic filaments
+    stopGlitchCanvas = initAtmosphericMysteryCanvas('loader-glitch-canvas');
+
+    // Start loading progress
+    startLoaderProgress();
+  }
+
+  // Continue / Guest buttons
+  btnGateGuest?.addEventListener('click', () => {
+    startLoadingScreen();
+  });
+
+  btnGateGuestFromActive?.addEventListener('click', () => {
+    startLoadingScreen();
+  });
+
+  btnGateContinueActive?.addEventListener('click', async () => {
+    audio.playUiClick();
+    const loadRes = await firebaseService.loadGameFromCloud();
+    if (loadRes && loadRes.success && loadRes.data) {
+      state.applyLoadedData(loadRes.data);
+      state.save(false);
+      ui.updateHUD();
+      const userEmail = firebaseService.currentUser?.email || '';
+      const toastMsg = (t('gate_toast_dossier_loaded_short', state.currentLanguage) || t('gate_toast_dossier_loaded', state.currentLanguage) || 'Case dossier loaded from cloud!').replace('{email}', userEmail);
+      ui.showToast(`☁️ ${toastMsg}`);
+    }
+    startLoadingScreen();
+  });
+
+  btnGateSwitchAccount?.addEventListener('click', async () => {
+    audio.playUiClick();
+    await firebaseService.logout();
+    updateGateSessionUI();
+  });
+
+  const triggerGateLogin = async () => {
+    audio.playUiClick();
+    const email = gateEmailInput ? gateEmailInput.value.trim() : '';
+    const password = gatePasswordInput ? gatePasswordInput.value : '';
+
+    if (!email || !password) {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = t('gate_feedback_empty', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+      return;
+    }
+
+    if (gateAuthFeedback) {
+      gateAuthFeedback.className = 'auth-feedback-msg';
+      gateAuthFeedback.textContent = t('gate_feedback_validating', state.currentLanguage);
+    }
+
+    const res = await firebaseService.loginWithEmailPassword(email, password);
+    if (res && res.success) {
+      if (gatePasswordInput) gatePasswordInput.value = '';
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg success';
+        gateAuthFeedback.textContent = t('gate_feedback_login_success', state.currentLanguage).replace('{email}', res.user.email);
+      }
+      audio.playSuccess();
+      ui.showToast(`🔑 ${t('gate_toast_approved', state.currentLanguage)}: ${res.user.email}`);
+
+      // Attempt to auto-sync or retrieve saved case data from cloud
+      const loadRes = await firebaseService.loadGameFromCloud();
+      if (loadRes && loadRes.success && loadRes.data) {
+        state.applyLoadedData(loadRes.data);
+        state.save(false);
+        ui.updateHUD();
+        ui.showToast(`🏛️ ${t('gate_toast_dossier_loaded', state.currentLanguage).replace('{email}', res.user.email)}`);
+      } else {
+        await state.saveToCloudNow();
+      }
+
+      setTimeout(() => {
+        startLoadingScreen();
+      }, 400);
+    } else {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = res ? res.error : t('gate_feedback_failed', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+    }
+  };
+
+  const triggerGateRegister = async () => {
+    audio.playUiClick();
+    const email = gateEmailInput ? gateEmailInput.value.trim() : '';
+    const password = gatePasswordInput ? gatePasswordInput.value : '';
+
+    if (!email || !password) {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = t('gate_feedback_empty', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+      return;
+    }
+
+    if (password.length < 6) {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = t('gate_feedback_password_min', state.currentLanguage);
+      }
+      audio.playDissonantDrone();
+      return;
+    }
+
+    if (gateAuthFeedback) {
+      gateAuthFeedback.className = 'auth-feedback-msg';
+      gateAuthFeedback.textContent = t('gate_feedback_registering', state.currentLanguage);
+    }
+
+    const res = await firebaseService.registerWithEmailPassword(email, password);
+    if (res && res.success) {
+      if (gatePasswordInput) gatePasswordInput.value = '';
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg success';
+        gateAuthFeedback.textContent = t('gate_feedback_register_success', state.currentLanguage).replace('{email}', res.user.email);
+      }
+      audio.playSuccess();
+      ui.showToast(`🎉 ${t('gate_toast_registered', state.currentLanguage)}: ${res.user.email}`);
+      await state.saveToCloudNow();
+
+      setTimeout(() => {
+        startLoadingScreen();
+      }, 400);
+    } else {
+      if (gateAuthFeedback) {
+        gateAuthFeedback.className = 'auth-feedback-msg error';
+        gateAuthFeedback.textContent = res ? res.error : 'Gagal mendaftar.';
+      }
+      audio.playDissonantDrone();
+    }
+  };
+
+  btnGateSubmitLogin?.addEventListener('click', triggerGateLogin);
+  btnGateSubmitRegister?.addEventListener('click', triggerGateRegister);
+
+  const handleGateEnter = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (btnGateSubmitRegister && btnGateSubmitRegister.style.display !== 'none') {
+        triggerGateRegister();
+      } else {
+        triggerGateLogin();
+      }
+    }
+  };
+  gateEmailInput?.addEventListener('keydown', handleGateEnter);
+  gatePasswordInput?.addEventListener('keydown', handleGateEnter);
 
   // --------------------------------------------------------------------------
   // 1. ANIMATED LOADING SCREEN CONTROLLER
   // --------------------------------------------------------------------------
+  const loadingStage = document.getElementById('loading-stage');
   const quoteEl = document.getElementById('loader-quote-text');
   const progressFill = document.getElementById('loader-progress-fill');
   const progressPct = document.getElementById('loader-progress-pct');
   const telemetryText = document.getElementById('loader-telemetry-text');
   const enterBtn = document.getElementById('loader-enter-btn');
-  const loadingStage = document.getElementById('loading-stage');
 
   let quoteIdx = 0;
-  const quoteInterval = setInterval(() => {
-    const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
-    quoteIdx = (quoteIdx + 1) % activeQuotes.length;
-    if (quoteEl) {
-      quoteEl.style.opacity = '0';
-      setTimeout(() => {
-        quoteEl.textContent = activeQuotes[quoteIdx];
-        quoteEl.style.opacity = '1';
-      }, 300);
-    }
-  }, 2800);
-
+  let quoteInterval = null;
+  let progressInterval = null;
   let currentProgress = 0;
   let isLoaded = false;
   let lastMilestone = 0;
+  let isEntering = false;
+  let transitionCompleted = false;
 
   function finishLoading() {
     if (isLoaded) return;
@@ -369,56 +516,76 @@ function bootGame() {
     if (telemetryText) {
       telemetryText.textContent = finalPhase ? finalPhase.text : "Consciousness restored. Ready to investigate.";
     }
-    clearInterval(progressInterval);
-    clearInterval(quoteInterval);
+    if (progressInterval) clearInterval(progressInterval);
+    if (quoteInterval) clearInterval(quoteInterval);
     if (enterBtn) {
       enterBtn.classList.add('ready');
       enterBtn.focus();
     }
-    if (audio.playClockworkChime) audio.playClockworkChime();
+    try {
+      if (audio.playClockworkChime) audio.playClockworkChime();
+    } catch (e) {}
   }
 
-  const progressInterval = setInterval(() => {
-    // Dynamic forensic pacing: rapid start, calibration pauses at milestones, smooth lock
-    let step = Math.floor(Math.random() * 3) + 2; // base step 2-4%
-    if (currentProgress < 25) {
-      step += 2; // quick initial neural spooling
-    } else if (currentProgress >= 25 && currentProgress < 35) {
-      step = 1; // forensic calibration pause at 30%
-    } else if (currentProgress >= 60 && currentProgress < 70) {
-      step = 1; // forensic sector lock pause
-    } else if (currentProgress >= 88 && currentProgress < 95) {
-      step = 2;
-    }
-
-    currentProgress += step;
-
-    if (currentProgress >= 100) {
-      finishLoading();
-      return;
-    }
-
-    if (progressFill) progressFill.style.width = `${currentProgress}%`;
-    if (progressPct) {
-      progressPct.textContent = `${currentProgress}%`;
-      // Check milestone flash (25%, 50%, 75%)
-      const currentMilestone = Math.floor(currentProgress / 25);
-      if (currentMilestone > lastMilestone) {
-        lastMilestone = currentMilestone;
-        progressPct.classList.add('milestone-flash');
-        setTimeout(() => progressPct.classList.remove('milestone-flash'), 250);
-        if (audio.playUiHover) audio.playUiHover();
+  function startLoaderProgress() {
+    quoteIdx = 0;
+    if (quoteInterval) clearInterval(quoteInterval);
+    quoteInterval = setInterval(() => {
+      const activeQuotes = LOADER_QUOTES_I18N[state.currentLanguage] || LOADER_QUOTES_I18N['en'];
+      quoteIdx = (quoteIdx + 1) % activeQuotes.length;
+      if (quoteEl) {
+        quoteEl.style.opacity = '0';
+        setTimeout(() => {
+          quoteEl.textContent = activeQuotes[quoteIdx];
+          quoteEl.style.opacity = '1';
+        }, 300);
       }
-    }
+    }, 2800);
 
-    const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
-    const phase = activePhases.find(p => currentProgress <= p.at);
-    if (phase && telemetryText) {
-      telemetryText.textContent = phase.text;
-    }
-  }, 65);
+    if (progressInterval) clearInterval(progressInterval);
+    progressInterval = setInterval(() => {
+      // Dynamic forensic pacing: rapid start, calibration pauses at milestones, smooth lock
+      let step = Math.floor(Math.random() * 3) + 2; // base step 2-4%
+      if (currentProgress < 25) {
+        step += 2; // quick initial neural spooling
+      } else if (currentProgress >= 25 && currentProgress < 35) {
+        step = 1; // forensic calibration pause at 30%
+      } else if (currentProgress >= 60 && currentProgress < 70) {
+        step = 1; // forensic sector lock pause
+      } else if (currentProgress >= 88 && currentProgress < 95) {
+        step = 2;
+      }
 
-  
+      currentProgress += step;
+
+      if (currentProgress >= 100) {
+        finishLoading();
+        return;
+      }
+
+      if (progressFill) progressFill.style.width = `${currentProgress}%`;
+      if (progressPct) {
+        progressPct.textContent = `${currentProgress}%`;
+        // Check milestone flash (25%, 50%, 75%)
+        const currentMilestone = Math.floor(currentProgress / 25);
+        if (currentMilestone > lastMilestone) {
+          lastMilestone = currentMilestone;
+          progressPct.classList.add('milestone-flash');
+          setTimeout(() => progressPct.classList.remove('milestone-flash'), 250);
+          try {
+            if (audio.playUiHover) audio.playUiHover();
+          } catch (e) {}
+        }
+      }
+
+      const activePhases = TELEMETRY_PHASES_I18N[state.currentLanguage] || TELEMETRY_PHASES_I18N['en'];
+      const phase = activePhases.find(p => currentProgress <= p.at);
+      if (phase && telemetryText) {
+        telemetryText.textContent = phase.text;
+      }
+    }, 65);
+  }
+
   function updateDossierLanguage(lang) {
     const data = (typeof DOSSIER_I18N !== 'undefined' && (DOSSIER_I18N[lang] || DOSSIER_I18N['en'])) || {};
     const setT = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
@@ -439,15 +606,38 @@ function bootGame() {
     setT('dossier-footer-note', data.footer);
   }
 
-  let isEntering = false;
+  function completeTransitionToCreator() {
+    if (transitionCompleted) return;
+    transitionCompleted = true;
+    if (loadingStage) {
+      loadingStage.style.display = 'none';
+      loadingStage.classList.add('hidden');
+    }
+    const caseTransition = document.getElementById('detective-case-transition');
+    if (caseTransition) {
+      caseTransition.classList.add('hidden');
+      caseTransition.classList.remove('opening');
+    }
+    const creatorStage = document.getElementById('creator-stage');
+    if (creatorStage) {
+      creatorStage.style.display = 'flex';
+      creatorStage.classList.remove('hidden');
+    }
+    ui.applyLanguage(state.currentLanguage);
+    initCharacterCreator();
+  }
 
   function enterGameStage() {
     if (isEntering) return;
     isEntering = true;
 
-    audio.init();
-    if (audio.playRadioTune) audio.playRadioTune();
-    if (audio.playUiClick) audio.playUiClick();
+    try {
+      if (audio.init) audio.init();
+      if (audio.playRadioTune) audio.playRadioTune();
+      if (audio.playUiClick) audio.playUiClick();
+    } catch (e) {
+      console.warn('Audio init error:', e);
+    }
 
     const titleEl = document.getElementById('loader-title-ornament') || document.querySelector('.title-ornament');
     const cassetteUnit = document.querySelector('.tape-cassette-unit');
@@ -464,6 +654,11 @@ function bootGame() {
       enterBtn.style.transition = 'all 0.3s ease';
     }
 
+    // Safety fallback timer: guarantee character creator opens after 2.8s max even if animations glitch
+    const safetyTimer = setTimeout(() => {
+      completeTransitionToCreator();
+    }, 2800);
+
     // High-tech decryption / deciphering sequence morphing AENIGMA into aenigmArchive
     const cypherChars = '0123456789ABCDEF!#$&*@%¥§';
     const targetStem = 'aenigm';
@@ -472,7 +667,7 @@ function bootGame() {
     const targetFull = 'aenigmArchive';
     
     let scrambleTicks = 0;
-    const maxTicks = 16; // ~400ms at 25ms per tick
+    const maxTicks = 8; // snappy ~160ms at 20ms per tick
 
     const dec = (typeof LOADER_DECRYPT_I18N !== 'undefined' && (LOADER_DECRYPT_I18N[state.currentLanguage] || LOADER_DECRYPT_I18N['en'])) || {
       decrypting_telemetry: "[DECRYPTING SECTOR 7 DOSSIER ARCHIVE...]",
@@ -520,19 +715,23 @@ function bootGame() {
             telemetryText.style.color = "#d4af37";
           }
 
-          if (audio.playDiscovery) audio.playDiscovery();
-          if (audio.playDossierStamp) audio.playDossierStamp();
+          try {
+            if (audio.playDiscovery) audio.playDiscovery();
+            if (audio.playDossierStamp) audio.playDossierStamp();
+          } catch (e) {}
 
-          // Longer hold for aenigmArchive: 2200ms with telemetry progression
+          // Snappy hold before launching dossier transition: 300ms
           setTimeout(() => {
             if (telemetryText) {
               telemetryText.textContent = dec.dispatching_dossier;
             }
-          }, 1100);
+          }, 150);
 
           setTimeout(() => {
-            if (audio.stopLoadingScreenAmbience) audio.stopLoadingScreenAmbience();
-            loadingStage.classList.add('loader-stage-warp');
+            try {
+              if (audio.stopLoadingScreenAmbience) audio.stopLoadingScreenAmbience();
+            } catch (e) {}
+            if (loadingStage) loadingStage.classList.add('loader-stage-warp');
 
             // Launch High-Octane Noir Detective Case Dossier Transition
             const caseTransition = document.getElementById('detective-case-transition');
@@ -541,78 +740,68 @@ function bootGame() {
             const cautionTape = document.getElementById('dossier-caution-tape');
 
             if (caseTransition) {
-              if (stopGlitchCanvas) stopGlitchCanvas();
+              try { if (stopGlitchCanvas) stopGlitchCanvas(); } catch (e) {}
               updateDossierLanguage(state.currentLanguage);
               caseTransition.classList.remove('hidden');
 
-              // Clean solid desk impact sound
-              if (audio.playDeskSlam) audio.playDeskSlam();
+              // Click-to-skip support on dossier transition
+              caseTransition.onclick = () => {
+                clearTimeout(safetyTimer);
+                completeTransitionToCreator();
+              };
 
-              // 1. Red Rubber Stamp Slams down (at 600ms)
+              // Clean solid desk impact sound
+              try { if (audio.playDeskSlam) audio.playDeskSlam(); } catch (e) {}
+
+              // 1. Red Rubber Stamp Slams down (at 300ms)
               setTimeout(() => {
                 if (rubberStamp) rubberStamp.classList.add('stamped');
                 if (stampSplatter) stampSplatter.classList.add('splattered');
-                if (audio.playDossierStamp) audio.playDossierStamp();
+                try { if (audio.playDossierStamp) audio.playDossierStamp(); } catch (e) {}
 
-                // 2. Police Caution Tape Unseals (at 1400ms)
+                // 2. Police Caution Tape Unseals (at 600ms)
                 setTimeout(() => {
                   if (cautionTape) cautionTape.classList.add('ripped');
-                  if (audio.playTapeTear) audio.playTapeTear();
+                  try { if (audio.playTapeTear) audio.playTapeTear(); } catch (e) {}
 
-                  // 3. Dossier Unseals & Opens into Scene (at 1900ms)
+                  // 3. Dossier Unseals & Opens into Scene (at 900ms)
                   setTimeout(() => {
                     caseTransition.classList.add('opening');
-                    if (audio.playCathedralBell) audio.playCathedralBell();
+                    try { if (audio.playCathedralBell) audio.playCathedralBell(); } catch (e) {}
 
                     setTimeout(() => {
-                      loadingStage.style.display = 'none';
-                      caseTransition.classList.add('hidden');
-                      caseTransition.classList.remove('opening');
+                      clearTimeout(safetyTimer);
                       if (rubberStamp) rubberStamp.classList.remove('stamped');
                       if (stampSplatter) stampSplatter.classList.remove('splattered');
                       if (cautionTape) cautionTape.classList.remove('ripped');
-
-                      if (creatorStage) {
-                        creatorStage.classList.remove('hidden');
-                      }
-                      ui.applyLanguage(state.currentLanguage);
-                      initCharacterCreator();
-                    }, 550);
-                  }, 500);
-                }, 800);
-              }, 600);
+                      completeTransitionToCreator();
+                    }, 350);
+                  }, 300);
+                }, 300);
+              }, 300);
 
             } else {
-              // Fallback
+              // Fallback if no caseTransition
               setTimeout(() => {
-                loadingStage.style.display = 'none';
-                if (creatorStage) {
-                  creatorStage.classList.remove('hidden');
-                }
-                ui.applyLanguage(state.currentLanguage);
-                initCharacterCreator();
-              }, 550);
+                clearTimeout(safetyTimer);
+                completeTransitionToCreator();
+              }, 200);
             }
-          }, 2200);
+          }, 400);
         }
-      }, 25);
+      }, 20);
     } else {
-      // Fallback
-      loadingStage.classList.add('hidden');
-      setTimeout(() => {
-        loadingStage.style.display = 'none';
-        if (creatorStage) {
-          creatorStage.classList.remove('hidden');
-        }
-        ui.applyLanguage(state.currentLanguage);
-        initCharacterCreator();
-      }, 400);
+      // Fallback if no titleEl
+      clearTimeout(safetyTimer);
+      completeTransitionToCreator();
     }
   }
 
   // Start gritty noir ambience on first interaction
   const triggerLoadingAudio = () => {
-    if (audio.startLoadingScreenAmbience) audio.startLoadingScreenAmbience();
+    try {
+      if (audio.startLoadingScreenAmbience) audio.startLoadingScreenAmbience();
+    } catch (e) {}
   };
   loadingStage?.addEventListener('pointerdown', triggerLoadingAudio, { once: true });
   document.addEventListener('keydown', triggerLoadingAudio, { once: true });
@@ -627,9 +816,17 @@ function bootGame() {
     }
   });
 
-  enterBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
+  const handleEnterClick = (e) => {
+    if (e) e.stopPropagation();
+    if (!isLoaded) {
+      finishLoading();
+    }
     enterGameStage();
+  };
+  enterBtn?.addEventListener('click', handleEnterClick);
+  enterBtn?.addEventListener('touchend', (e) => {
+    if (e) e.preventDefault();
+    handleEnterClick(e);
   });
 
   // --------------------------------------------------------------------------
@@ -642,8 +839,16 @@ function bootGame() {
   let selectedVice = 'smoker';
   let selectedGender = 'female';
   let selectedPortrait = 'assets/portrait_female.jpg';
+  let creatorInitialized = false;
 
   function initCharacterCreator() {
+    if (creatorInitialized) {
+      updateCreatorAttributes();
+      ui.applyLanguage(state.currentLanguage);
+      return;
+    }
+    creatorInitialized = true;
+
     const nameInput = document.getElementById('creator-name-input');
     const aliasInput = document.getElementById('creator-alias-input');
     const pointsPoolEl = document.getElementById('creator-points-pool');
