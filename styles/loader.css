@@ -752,6 +752,7 @@
   color: #ff2a6d;
   background: linear-gradient(180deg, #ff2a6d 0%, #ff6b35 50%, #f7c531 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 10px rgba(255, 42, 109, 0.95)) drop-shadow(0 0 24px rgba(255, 107, 53, 0.75));
   animation: junctionPulse 2.2s infinite alternate ease-in-out;
@@ -805,6 +806,7 @@
   text-shadow: 0 0 18px #4df0ff, 0 0 35px rgba(77, 240, 255, 0.7);
   background: linear-gradient(135deg, #70f3ff 0%, #d4af37 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
   text-transform: none;

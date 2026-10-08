@@ -35,6 +35,9 @@
       <div class="ambience-vignette-overlay"></div>
     </div>
     <div style="position: absolute; top: 20px; right: 20px; z-index: 50; display: flex; gap: 8px;">
+      <button id="loader-auth-btn" class="hud-btn stage-lang-btn" title="Firebase Investigator Login & Register">
+        🔑 <span id="loader-auth-label">LOGIN</span>
+      </button>
       <button id="loader-cloud-btn" class="hud-btn stage-lang-btn" title="Firebase Cloud Archive">
         ☁️ <span id="loader-cloud-status">CLOUD</span> <span id="loader-cloud-dot" class="hud-cloud-dot"></span>
       </button>
@@ -363,6 +366,9 @@
         <button id="nav-btn-inventory" class="hud-btn">
           <span id="tab-inv-text">💼 INVENTORY</span> <span id="inv-count-badge" class="badge-counter">3</span>
         </button>
+        <button id="nav-btn-auth" class="hud-btn" title="Firebase Investigator Account">
+          🔑 <span id="nav-auth-label">LOGIN</span>
+        </button>
         <button id="nav-btn-cloud" class="hud-btn" title="Firebase Cloud Archive & Sync">
           ☁️ <span id="cloud-sync-label">CLOUD</span> <span id="hud-cloud-dot" class="hud-cloud-dot"></span>
         </button>
@@ -680,12 +686,12 @@
   </div>
 
   <!-- ========================================================================
-       MODAL 9: FIREBASE CLOUD ARCHIVE & SAVE SYNC
+       MODAL 9: FIREBASE CLOUD ARCHIVE & AUTHENTICATION
        ======================================================================== -->
   <div id="cloud-modal" class="modal-backdrop">
     <div class="modal-window" style="max-width: 620px;">
       <div class="modal-header">
-        <h2 class="modal-title" id="cloud-modal-title">☁️ ARSIP CLOUD FIREBASE</h2>
+        <h2 class="modal-title" id="cloud-modal-title">☁️ ARSIP CLOUD & AKUN INVESTIGATOR</h2>
         <button class="modal-close-btn">&times;</button>
       </div>
       <div class="modal-body" style="padding: 24px;">
@@ -694,6 +700,62 @@
             <span id="cloud-status-pill" class="status-pill">● TERHUBUNG KE FIREBASE</span>
             <span id="cloud-player-id-display" class="player-id-badge">ID: Loading...</span>
           </div>
+
+          <!-- Authentication Section (Email/Password Login, Register, Logout) -->
+          <div class="auth-section-box" id="auth-section-box">
+            <div class="auth-section-header">
+              <span class="auth-section-title">🕵️ KREDENSIAL INVESTIGATOR</span>
+              <span id="auth-status-badge" class="auth-badge-guest">MODE TAMU</span>
+            </div>
+
+            <!-- View: Logged In Account Summary & Logout -->
+            <div id="auth-logged-in-view" class="auth-card-logged-in" style="display: none;">
+              <div class="auth-user-info-row">
+                <div class="auth-avatar-mini">🕵️</div>
+                <div class="auth-user-text">
+                  <div class="auth-user-email-label">IDENTITAS RESMI:</div>
+                  <div id="auth-user-email-display" class="auth-user-email">detective@aenigma.com</div>
+                </div>
+              </div>
+              <button type="button" id="btn-auth-logout" class="action-btn-danger" style="margin-top: 12px; width: 100%;">
+                🚪 KELUAR DARI AKUN (LOGOUT)
+              </button>
+            </div>
+
+            <!-- View: Logged Out Form (Login & Register) -->
+            <div id="auth-logged-out-view" class="auth-card-logged-out">
+              <div class="auth-tabs-row">
+                <button type="button" id="tab-auth-login" class="auth-tab-btn active">🔑 MASUK (LOGIN)</button>
+                <button type="button" id="tab-auth-register" class="auth-tab-btn">📝 DAFTAR (REGISTER)</button>
+              </div>
+
+              <div class="auth-form-body">
+                <div class="field-group">
+                  <label for="auth-email-input" id="auth-email-label">EMAIL INVESTIGATOR</label>
+                  <input type="email" id="auth-email-input" class="text-input" placeholder="investigator@precinct4.gov" autocomplete="email">
+                </div>
+
+                <div class="field-group" style="margin-top: 10px;">
+                  <label for="auth-password-input" id="auth-password-label">KATA SANDI (MIN. 6 KARAKTER)</label>
+                  <input type="password" id="auth-password-input" class="text-input" placeholder="••••••••" autocomplete="current-password">
+                </div>
+
+                <div style="margin-top: 14px;">
+                  <button type="button" id="btn-auth-submit-login" class="action-btn-large ready" style="width: 100%;">
+                    🔑 MASUK KE ARSIP KASUS
+                  </button>
+                  <button type="button" id="btn-auth-submit-register" class="action-btn-large ready" style="width: 100%; display: none;">
+                    📝 DAFTAR INVESTIGATOR BARU
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Auth Feedback Message -->
+            <div id="auth-feedback-msg" class="auth-feedback-msg" style="min-height: 20px; margin-top: 8px; font-size: 0.85rem; text-align: center;"></div>
+          </div>
+
+          <!-- Cloud Info Box -->
           <div class="cloud-info-box">
             <div class="cloud-info-row">
               <span class="info-label" id="cloud-info-project-label">Proyek Firebase:</span>
@@ -709,7 +771,7 @@
             </div>
           </div>
           
-          <div class="cloud-actions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px;">
+          <div class="cloud-actions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
             <button id="btn-cloud-save-now" class="action-btn-large" style="padding: 12px 14px; font-size: 0.95rem;">
               💾 SIMPAN KE CLOUD
             </button>
@@ -717,7 +779,7 @@
               📥 MUAT DARI CLOUD
             </button>
           </div>
-          <div id="cloud-feedback-msg" class="cloud-feedback" style="margin-top: 14px; font-size: 0.9rem; color: var(--gold-accent); text-align: center; min-height: 20px;"></div>
+          <div id="cloud-feedback-msg" class="cloud-feedback" style="margin-top: 12px; font-size: 0.9rem; color: var(--gold-accent); text-align: center; min-height: 20px;"></div>
         </div>
       </div>
     </div>

@@ -112,6 +112,13 @@ export class UIController {
   openCloudModal() {
     this.openModal(this.cloudModal);
     this.updateCloudModalUI();
+    // Auto-focus email input if not authenticated
+    const status = (typeof firebaseService !== 'undefined' && firebaseService) ? firebaseService.getStatus() : null;
+    if (status && !status.isAuthenticated) {
+      setTimeout(() => {
+        document.getElementById('auth-email-input')?.focus();
+      }, 150);
+    }
   }
 
   updateCloudModalUI() {
@@ -146,7 +153,69 @@ export class UIController {
     }
 
     if (summary) {
-      summary.textContent = status.isSaving ? 'Sedang menyimpan ke cloud...' : 'Sinkronisasi Otomatis Aktif';
+      summary.textContent = status.isSaving ? 'Sedang menyimpan ke cloud...' : (status.isAuthenticated ? 'Sinkronisasi Otomatis Aktif (Terautentikasi)' : 'Sinkronisasi Otomatis Aktif (Mode Tamu)');
+    }
+
+    // Update Authentication Section
+    const loggedInView = document.getElementById('auth-logged-in-view');
+    const loggedOutView = document.getElementById('auth-logged-out-view');
+    const authStatusBadge = document.getElementById('auth-status-badge');
+    const emailDisplay = document.getElementById('auth-user-email-display');
+
+    if (status.isAuthenticated) {
+      if (loggedInView) loggedInView.style.display = 'block';
+      if (loggedOutView) loggedOutView.style.display = 'none';
+      if (authStatusBadge) {
+        authStatusBadge.className = 'auth-badge-verified';
+        authStatusBadge.textContent = '● TERAUTENTIKASI';
+      }
+      if (emailDisplay) {
+        emailDisplay.textContent = status.userEmail || (status.user ? status.user.email : 'Investigator');
+      }
+    } else {
+      if (loggedInView) loggedInView.style.display = 'none';
+      if (loggedOutView) loggedOutView.style.display = 'block';
+      if (authStatusBadge) {
+        authStatusBadge.className = 'auth-badge-guest';
+        authStatusBadge.textContent = 'MODE TAMU (BELUM MASUK)';
+      }
+    }
+
+    this.updateAuthNavUI();
+  }
+
+  updateAuthNavUI() {
+    if (typeof firebaseService === 'undefined' || !firebaseService) return;
+    const status = firebaseService.getStatus();
+    const navAuthLabel = document.getElementById('nav-auth-label');
+    const loaderAuthLabel = document.getElementById('loader-auth-label');
+    const navBtnAuth = document.getElementById('nav-btn-auth');
+    const loaderBtnAuth = document.getElementById('loader-auth-btn');
+
+    if (status.isAuthenticated && status.userEmail) {
+      const emailPrefix = status.userEmail.split('@')[0];
+      const displayLabel = emailPrefix.length > 10 ? emailPrefix.slice(0, 9) + '…' : emailPrefix;
+      if (navAuthLabel) navAuthLabel.textContent = displayLabel;
+      if (loaderAuthLabel) loaderAuthLabel.textContent = displayLabel;
+      if (navBtnAuth) {
+        navBtnAuth.title = `Investigator: ${status.userEmail} (Klik untuk Akun & Logout)`;
+        navBtnAuth.classList.add('active');
+      }
+      if (loaderBtnAuth) {
+        loaderBtnAuth.title = `Investigator: ${status.userEmail} (Klik untuk Akun & Logout)`;
+        loaderBtnAuth.classList.add('active');
+      }
+    } else {
+      if (navAuthLabel) navAuthLabel.textContent = 'LOGIN';
+      if (loaderAuthLabel) loaderAuthLabel.textContent = 'LOGIN';
+      if (navBtnAuth) {
+        navBtnAuth.title = 'Masuk / Daftar Akun Firebase';
+        navBtnAuth.classList.remove('active');
+      }
+      if (loaderBtnAuth) {
+        loaderBtnAuth.title = 'Masuk / Daftar Akun Firebase';
+        loaderBtnAuth.classList.remove('active');
+      }
     }
   }
 
@@ -170,7 +239,7 @@ export class UIController {
           d.className = 'hud-cloud-dot offline';
         });
         this.updateCloudModalUI();
-      } else if (event === 'auth_ready' || event === 'network_status') {
+      } else if (event === 'auth_ready' || event === 'auth_success' || event === 'auth_signed_out' || event === 'network_status') {
         dots.forEach(d => {
           d.className = (data && data.isOnline !== false) ? 'hud-cloud-dot' : 'hud-cloud-dot offline';
         });
@@ -178,7 +247,188 @@ export class UIController {
       }
     });
 
-    // Cloud modal action buttons
+    // ------------------------------------------------------------------------
+    // Firebase Authentication UI Interactions
+    // ------------------------------------------------------------------------
+    const tabLogin = document.getElementById('tab-auth-login');
+    const tabRegister = document.getElementById('tab-auth-register');
+    const submitLoginBtn = document.getElementById('btn-auth-submit-login');
+    const submitRegisterBtn = document.getElementById('btn-auth-submit-register');
+    const authFeedback = document.getElementById('auth-feedback-msg');
+    const emailInput = document.getElementById('auth-email-input');
+    const passwordInput = document.getElementById('auth-password-input');
+
+    tabLogin?.addEventListener('click', () => {
+      audio.playUiClick();
+      tabLogin.classList.add('active');
+      tabRegister?.classList.remove('active');
+      if (submitLoginBtn) submitLoginBtn.style.display = 'block';
+      if (submitRegisterBtn) submitRegisterBtn.style.display = 'none';
+      if (authFeedback) {
+        authFeedback.textContent = '';
+        authFeedback.className = 'auth-feedback-msg';
+      }
+    });
+
+    tabRegister?.addEventListener('click', () => {
+      audio.playUiClick();
+      tabRegister.classList.add('active');
+      tabLogin?.classList.remove('active');
+      if (submitLoginBtn) submitLoginBtn.style.display = 'none';
+      if (submitRegisterBtn) submitRegisterBtn.style.display = 'block';
+      if (authFeedback) {
+        authFeedback.textContent = '';
+        authFeedback.className = 'auth-feedback-msg';
+      }
+    });
+
+    const triggerLogin = async () => {
+      audio.playUiClick();
+      const email = emailInput ? emailInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!email || !password) {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg error';
+          authFeedback.textContent = 'Harap isi email dan kata sandi!';
+        }
+        audio.playDissonantDrone();
+        return;
+      }
+
+      if (authFeedback) {
+        authFeedback.className = 'auth-feedback-msg';
+        authFeedback.textContent = 'Memverifikasi berkas identitas di Firebase...';
+      }
+
+      const res = await firebaseService.loginWithEmailPassword(email, password);
+      if (res && res.success) {
+        if (passwordInput) passwordInput.value = '';
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg success';
+          authFeedback.textContent = `✓ Berhasil masuk sebagai ${res.user.email}!`;
+        }
+        audio.playSuccess();
+        this.showToast(`🔑 Selamat datang, Investigator ${res.user.email}`);
+        this.updateCloudModalUI();
+
+        // Attempt to auto-sync or retrieve saved case data from cloud
+        const loadRes = await firebaseService.loadGameFromCloud();
+        if (loadRes && loadRes.success && loadRes.data) {
+          this.state.applyLoadedData(loadRes.data);
+          this.state.save(false);
+          this.updateHUD();
+          this.renderScene();
+          this.showToast(`☁️ Berkas investigasi untuk ${res.user.email} dimuat dari Cloud!`);
+        } else {
+          // If no remote save exists yet, sync current state
+          await this.state.saveToCloudNow();
+        }
+      } else {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg error';
+          authFeedback.textContent = res ? res.error : 'Gagal masuk.';
+        }
+        audio.playDissonantDrone();
+      }
+      this.updateCloudModalUI();
+    };
+
+    const triggerRegister = async () => {
+      audio.playUiClick();
+      const email = emailInput ? emailInput.value.trim() : '';
+      const password = passwordInput ? passwordInput.value : '';
+
+      if (!email || !password) {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg error';
+          authFeedback.textContent = 'Harap isi email dan kata sandi!';
+        }
+        audio.playDissonantDrone();
+        return;
+      }
+
+      if (password.length < 6) {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg error';
+          authFeedback.textContent = 'Kata sandi minimal 6 karakter!';
+        }
+        audio.playDissonantDrone();
+        return;
+      }
+
+      if (authFeedback) {
+        authFeedback.className = 'auth-feedback-msg';
+        authFeedback.textContent = 'Mendaftarkan akun investigator ke Firebase...';
+      }
+
+      const res = await firebaseService.registerWithEmailPassword(email, password);
+      if (res && res.success) {
+        if (passwordInput) passwordInput.value = '';
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg success';
+          authFeedback.textContent = `✓ Pendaftaran berhasil! Selamat datang, ${res.user.email}.`;
+        }
+        audio.playSuccess();
+        this.showToast(`🎉 Akun investigator terdaftar: ${res.user.email}`);
+        this.updateCloudModalUI();
+
+        // Immediately sync current gameplay progress to cloud for newly registered user
+        await this.state.saveToCloudNow();
+      } else {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg error';
+          authFeedback.textContent = res ? res.error : 'Gagal mendaftar.';
+        }
+        audio.playDissonantDrone();
+      }
+      this.updateCloudModalUI();
+    };
+
+    submitLoginBtn?.addEventListener('click', triggerLogin);
+    submitRegisterBtn?.addEventListener('click', triggerRegister);
+
+    // Support submitting with Enter key
+    const handleEnterPress = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (submitRegisterBtn && submitRegisterBtn.style.display !== 'none') {
+          triggerRegister();
+        } else {
+          triggerLogin();
+        }
+      }
+    };
+    emailInput?.addEventListener('keydown', handleEnterPress);
+    passwordInput?.addEventListener('keydown', handleEnterPress);
+
+    // Logout button
+    document.getElementById('btn-auth-logout')?.addEventListener('click', async () => {
+      audio.playUiClick();
+      if (authFeedback) {
+        authFeedback.className = 'auth-feedback-msg';
+        authFeedback.textContent = 'Mengakhiri sesi investigator...';
+      }
+      const res = await firebaseService.logout();
+      if (res && res.success) {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg';
+          authFeedback.textContent = 'Sesi telah diakhiri. Beroperasi dalam Mode Tamu.';
+        }
+        this.showToast('🚪 Anda telah keluar dari akun Firebase.');
+        audio.playUiClick();
+        this.updateCloudModalUI();
+      } else {
+        if (authFeedback) {
+          authFeedback.className = 'auth-feedback-msg error';
+          authFeedback.textContent = `Gagal keluar: ${res ? res.error : ''}`;
+        }
+      }
+    });
+
+    // ------------------------------------------------------------------------
+    // Cloud Manual Save & Load Buttons
+    // ------------------------------------------------------------------------
     document.getElementById('btn-cloud-save-now')?.addEventListener('click', async () => {
       audio.playUiClick();
       const feedback = document.getElementById('cloud-feedback-msg');
@@ -556,6 +806,14 @@ export class UIController {
     document.getElementById('nav-btn-clues')?.addEventListener('click', () => {
       audio.playTabSwitch();
       this.openCluesModal();
+    });
+    document.getElementById('nav-btn-auth')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCloudModal();
+    });
+    document.getElementById('loader-auth-btn')?.addEventListener('click', () => {
+      audio.playTabSwitch();
+      this.openCloudModal();
     });
     document.getElementById('nav-btn-cloud')?.addEventListener('click', () => {
       audio.playTabSwitch();
